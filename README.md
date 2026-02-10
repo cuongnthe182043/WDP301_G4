@@ -51,7 +51,7 @@ Hệ thống phân quyền sâu với 6 vai trò riêng biệt:
 ### 2. Triển khai
 ```bash
 # Clone dự án
-git clone [https://github.com/VH1203/Web-Ecommerces-AI.git](https://github.com/VH1203/Web-Ecommerces-AI.git)
+git clone [https://github.com/cuongnthe182043/WDP301_G4.git]
 
 # Di chuyển vào thư mục dự án
 cd Web-Ecommerces-AI
