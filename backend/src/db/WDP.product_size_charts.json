@@ -1,0 +1,805 @@
+[{
+  "_id": "psc-df9befbf-70ce-4d2a-9340-8673f1ffc8a1",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "gender": "men",
+  "unit": "cm",
+  "rows": [
+    {
+      "measurements": {
+        "chest": 96,
+        "waist": 82,
+        "length": 68,
+        "shoulder": 45
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66971"
+      }
+    },
+    {
+      "measurements": {
+        "chest": 102,
+        "waist": 88,
+        "length": 70,
+        "shoulder": 47
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66972"
+      }
+    },
+    {
+      "measurements": {
+        "chest": 108,
+        "waist": 94,
+        "length": 72,
+        "shoulder": 49
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66973"
+      }
+    }
+  ],
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  }
+},
+{
+  "_id": "psc-f8fe1a51-e9bc-4ba4-99fd-39944dac9e8f",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "gender": "women",
+  "unit": "cm",
+  "rows": [
+    {
+      "measurements": {
+        "chest": 84,
+        "waist": 66,
+        "length": 58,
+        "shoulder": 36
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66974"
+      }
+    },
+    {
+      "measurements": {
+        "chest": 90,
+        "waist": 72,
+        "length": 60,
+        "shoulder": 38
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66975"
+      }
+    },
+    {
+      "measurements": {
+        "chest": 96,
+        "waist": 78,
+        "length": 62,
+        "shoulder": 40
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66976"
+      }
+    }
+  ],
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  }
+},
+{
+  "_id": "psc-98fb77a7-d678-4b24-81b8-83cbf4cce7ad",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "gender": "unisex",
+  "unit": "cm",
+  "rows": [
+    {
+      "measurements": {
+        "length": 26
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66977"
+      }
+    },
+    {
+      "measurements": {
+        "length": 27
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66978"
+      }
+    },
+    {
+      "measurements": {
+        "length": 28
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc66979"
+      }
+    }
+  ],
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  }
+},
+{
+  "_id": "psc-59fc0ef7-ada5-4932-9350-bb2fc12b8480",
+  "brand_id": "brd-010e9e76-dfe7-4f22-9158-2c15c6adf319",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "gender": "men",
+  "unit": "cm",
+  "rows": [
+    {
+      "measurements": {
+        "waist": 82,
+        "hip": 98,
+        "length": 100
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc6697a"
+      }
+    },
+    {
+      "measurements": {
+        "waist": 88,
+        "hip": 104,
+        "length": 102
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc6697b"
+      }
+    },
+    {
+      "measurements": {
+        "waist": 94,
+        "hip": 110,
+        "length": 104
+      },
+      "_id": {
+        "$oid": "68f60816f2b3a286bfc6697c"
+      }
+    }
+  ],
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.444Z"
+  }
+},
+{
+  "_id": "psz-043704cd-19d4-493b-b2ae-bfbb9d5f94a0",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "category_id": "cat-a617e81a-2192-4f5f-a029-be6c7f35356b",
+  "gender": "men",
+  "height_unit": "cm",
+  "is_active": true,
+  "notes": "Áo thun nam Uniqlo form regular.",
+  "rows": [
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 96,
+        "shoulder": 44,
+        "sleeve_length": 21,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 68,
+        "height_min": 165,
+        "height_max": 175
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb2d"
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 102,
+        "shoulder": 46,
+        "sleeve_length": 22,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 78,
+        "height_min": 170,
+        "height_max": 180
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb2e"
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 108,
+        "shoulder": 48,
+        "sleeve_length": 23,
+        "shirt_length": 72,
+        "weight_min": 75,
+        "weight_max": 90,
+        "height_min": 175,
+        "height_max": 185
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb2f"
+      }
+    }
+  ],
+  "unit": "cm",
+  "weight_unit": "kg"
+},
+{
+  "_id": "psz-bc4de999-9792-4542-b5f0-03315aa5b782",
+  "gender": "women",
+  "brand_id": "brand-651a7b21-75bf-4091-8eb8-ba12af8fda70",
+  "category_id": "cat-ac6ff62d-71ec-4711-bb0b-7221e931c4be",
+  "height_unit": "cm",
+  "is_active": true,
+  "notes": "Đầm nữ IVY moda dáng A.",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 82,
+        "waist": 64,
+        "hip": 86,
+        "shirt_length": 90,
+        "weight_min": 40,
+        "weight_max": 50,
+        "height_min": 150,
+        "height_max": 165
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb33"
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 86,
+        "waist": 68,
+        "hip": 90,
+        "shirt_length": 92,
+        "weight_min": 47,
+        "weight_max": 57,
+        "height_min": 155,
+        "height_max": 168
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb34"
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 90,
+        "waist": 72,
+        "hip": 94,
+        "shirt_length": 94,
+        "weight_min": 54,
+        "weight_max": 64,
+        "height_min": 158,
+        "height_max": 170
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb35"
+      }
+    }
+  ],
+  "unit": "cm",
+  "weight_unit": "kg"
+},
+{
+  "_id": "psz-9b832cc0-42fc-456c-8348-21b91fbe6403",
+  "brand_id": "brand-df2cae75-1636-4ca7-af90-8bd64aa42830",
+  "category_id": "cat-7f426e6c-bc3e-4fcc-9646-7abb2aecb34b",
+  "gender": "unisex",
+  "height_unit": "cm",
+  "is_active": true,
+  "notes": "Hoodie unisex Levents form rộng.",
+  "rows": [
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 110,
+        "shoulder": 54,
+        "sleeve_length": 60,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 70,
+        "height_min": 165,
+        "height_max": 180
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb39"
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 116,
+        "shoulder": 56,
+        "sleeve_length": 62,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 80,
+        "height_min": 170,
+        "height_max": 185
+      },
+      "_id": {
+        "$oid": "6908ede0151fc0ab4cf4bb3a"
+      }
+    }
+  ],
+  "unit": "cm",
+  "weight_unit": "kg"
+},
+{
+  "_id": "psz-ed3930ee-a8bd-4a16-81d0-d5d8eb839cb5",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "gender": "men",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 48,
+        "shoulder": 42,
+        "shirt_length": 66
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 50,
+        "shoulder": 44,
+        "shirt_length": 68
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 52,
+        "shoulder": 46,
+        "shirt_length": 70
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 54,
+        "shoulder": 48,
+        "shirt_length": 72
+      }
+    }
+  ],
+  "notes": "",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-04T12:43:37.749Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:37.749Z"
+  }
+},
+{
+  "_id": "psz-a3caddaa-4502-4d53-88a9-757d507cda6d",
+  "brand_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "category_id": "cat-53a0e92b-1afa-49c0-bcac-64430ce3f91e",
+  "gender": "unisex",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 52,
+        "sleeve_length": 59,
+        "shirt_length": 66
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 54,
+        "sleeve_length": 61,
+        "shirt_length": 68
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 56,
+        "sleeve_length": 63,
+        "shirt_length": 70
+      }
+    }
+  ],
+  "notes": "",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-04T12:43:37.892Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:37.892Z"
+  }
+},
+{
+  "_id": "psz-21027974-9edd-464c-9b8a-7ae35347b336",
+  "brand_id": "brand-0cec8794-3945-407c-a12e-b04cc41e6fcb",
+  "category_id": "cat-d949df89-9a43-446b-8529-dbe5bfadd6ed",
+  "gender": "men",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 88,
+        "shoulder": 40,
+        "shirt_length": 66,
+        "weight_min": 45,
+        "weight_max": 55,
+        "height_min": 155,
+        "height_max": 168
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 94,
+        "shoulder": 42,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 65,
+        "height_min": 165,
+        "height_max": 175
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 100,
+        "shoulder": 44,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 75,
+        "height_min": 170,
+        "height_max": 180
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 106,
+        "shoulder": 46,
+        "shirt_length": 72,
+        "weight_min": 75,
+        "weight_max": 85,
+        "height_min": 175,
+        "height_max": 185
+      }
+    }
+  ],
+  "notes": "Áo thun nam cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.578Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.578Z"
+  }
+},
+{
+  "_id": "psz-36f710e8-2319-4f69-81d3-ea8334e84e45",
+  "brand_id": "brand-3bd38004-334c-4d00-90b5-e00e9fff59a0",
+  "category_id": "cat-d949df89-9a43-446b-8529-dbe5bfadd6ed",
+  "gender": "men",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 88,
+        "shoulder": 40,
+        "shirt_length": 66,
+        "weight_min": 45,
+        "weight_max": 55,
+        "height_min": 155,
+        "height_max": 168
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 94,
+        "shoulder": 42,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 65,
+        "height_min": 165,
+        "height_max": 175
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 100,
+        "shoulder": 44,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 75,
+        "height_min": 170,
+        "height_max": 180
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 106,
+        "shoulder": 46,
+        "shirt_length": 72,
+        "weight_min": 75,
+        "weight_max": 85,
+        "height_min": 175,
+        "height_max": 185
+      }
+    }
+  ],
+  "notes": "Áo thun nam cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.650Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.650Z"
+  }
+},
+{
+  "_id": "psz-0a5f48a1-42e6-4270-a68e-a1d98b90b6cd",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "category_id": "cat-95ab8b57-50d7-4276-b67d-2033eb9d0b3c",
+  "gender": "women",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 82,
+        "waist": 64,
+        "hip": 88,
+        "shirt_length": 90
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 86,
+        "waist": 68,
+        "hip": 92,
+        "shirt_length": 92
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 90,
+        "waist": 72,
+        "hip": 96,
+        "shirt_length": 94
+      }
+    }
+  ],
+  "notes": "Đầm nữ cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.722Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.722Z"
+  }
+},
+{
+  "_id": "psz-384a7e31-aea8-4d7f-a561-7b22f1db027c",
+  "brand_id": "brand-3f1235bf-97f6-4e9a-b739-d63169c89318",
+  "category_id": "cat-95ab8b57-50d7-4276-b67d-2033eb9d0b3c",
+  "gender": "women",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 82,
+        "waist": 64,
+        "hip": 88,
+        "shirt_length": 90
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 86,
+        "waist": 68,
+        "hip": 92,
+        "shirt_length": 92
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 90,
+        "waist": 72,
+        "hip": 96,
+        "shirt_length": 94
+      }
+    }
+  ],
+  "notes": "Đầm nữ cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.786Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.786Z"
+  }
+},
+{
+  "_id": "psz-45f17bae-b1e6-41fc-bcb8-7b57eba5db63",
+  "brand_id": "brand-0cec8794-3945-407c-a12e-b04cc41e6fcb",
+  "category_id": "cat-95f4b735-aaa8-4f81-8a82-3045ce29d560",
+  "gender": "unisex",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 88,
+        "shoulder": 40,
+        "shirt_length": 66,
+        "weight_min": 45,
+        "weight_max": 55,
+        "height_min": 155,
+        "height_max": 168
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 94,
+        "shoulder": 42,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 65,
+        "height_min": 165,
+        "height_max": 175
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 100,
+        "shoulder": 44,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 75,
+        "height_min": 170,
+        "height_max": 180
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 106,
+        "shoulder": 46,
+        "shirt_length": 72,
+        "weight_min": 75,
+        "weight_max": 85,
+        "height_min": 175,
+        "height_max": 185
+      }
+    }
+  ],
+  "notes": "Hoodie unisex cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.858Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.858Z"
+  }
+},
+{
+  "_id": "psz-239a9b2a-839c-45c8-aed0-cd02e2995e57",
+  "brand_id": "brand-3f1235bf-97f6-4e9a-b739-d63169c89318",
+  "category_id": "cat-95f4b735-aaa8-4f81-8a82-3045ce29d560",
+  "gender": "unisex",
+  "unit": "cm",
+  "weight_unit": "kg",
+  "height_unit": "cm",
+  "rows": [
+    {
+      "label": "S",
+      "measurements": {
+        "chest": 88,
+        "shoulder": 40,
+        "shirt_length": 66,
+        "weight_min": 45,
+        "weight_max": 55,
+        "height_min": 155,
+        "height_max": 168
+      }
+    },
+    {
+      "label": "M",
+      "measurements": {
+        "chest": 94,
+        "shoulder": 42,
+        "shirt_length": 68,
+        "weight_min": 55,
+        "weight_max": 65,
+        "height_min": 165,
+        "height_max": 175
+      }
+    },
+    {
+      "label": "L",
+      "measurements": {
+        "chest": 100,
+        "shoulder": 44,
+        "shirt_length": 70,
+        "weight_min": 65,
+        "weight_max": 75,
+        "height_min": 170,
+        "height_max": 180
+      }
+    },
+    {
+      "label": "XL",
+      "measurements": {
+        "chest": 106,
+        "shoulder": 46,
+        "shirt_length": 72,
+        "weight_min": 75,
+        "weight_max": 85,
+        "height_min": 175,
+        "height_max": 185
+      }
+    }
+  ],
+  "notes": "Hoodie unisex cơ bản",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.928Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.928Z"
+  }
+}]

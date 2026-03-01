@@ -1,0 +1,190 @@
+[{
+  "_id": "ful-fc751b17-994d-4c89-953c-b77e36a352da",
+  "order_id": "ord-931cfe6d-bd9e-4918-bbc3-c72168dad66a",
+  "shipping_provider": "GHN",
+  "tracking_code": "TRK100000",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1000.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.142Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.142Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-b2a12568-1578-4872-a2de-86aa3bd29019",
+  "order_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "shipping_provider": "GHTK",
+  "tracking_code": "TRK100001",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1001.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.518Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.518Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-9ce270a9-76f1-4275-ab06-e7fc74f9359e",
+  "order_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "shipping_provider": "GHN",
+  "tracking_code": "TRK100002",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1002.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.897Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.897Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-25a0df1d-3629-4ddc-87d0-8b138ab583fe",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "shipping_provider": "GHTK",
+  "tracking_code": "TRK100003",
+  "fee": 30000,
+  "status": "delivered",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1003.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.366Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.366Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-a63e1ed9-4050-4550-8ff7-04444517c744",
+  "order_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "shipping_provider": "GHN",
+  "tracking_code": "TRK100004",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1004.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.717Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.717Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-b0f86078-4753-4b16-b0f3-9925fc925e57",
+  "order_id": "ord-2ddbb43f-b5d4-427b-a20f-42b6dda24967",
+  "shipping_provider": "GHTK",
+  "tracking_code": "TRK100005",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1005.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.086Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.086Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-0c894405-2513-457d-905d-f3dc565d5a20",
+  "order_id": "ord-83307e1d-0524-4c47-be0f-39505dddb710",
+  "shipping_provider": "GHN",
+  "tracking_code": "TRK100006",
+  "fee": 30000,
+  "status": "delivered",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1006.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.439Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.439Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-16ddcdb1-d045-4937-9cfe-bc520b5e75b0",
+  "order_id": "ord-0d83b83f-dd59-497e-b19c-689db80b8b26",
+  "shipping_provider": "GHTK",
+  "tracking_code": "TRK100007",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1007.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.583Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.583Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-1e9f9437-9542-4332-aa58-c4e9d7fcc8a6",
+  "order_id": "ord-24f6652f-90b5-445a-b5e1-7ade00b69800",
+  "shipping_provider": "GHN",
+  "tracking_code": "TRK100008",
+  "fee": 30000,
+  "status": "in_transit",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1008.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.947Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.947Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "ful-7ba030dc-9e28-4a50-8e3d-d71bfcc6d17f",
+  "order_id": "ord-fdfe5e60-b17b-476d-af0a-e47f1a9649c5",
+  "shipping_provider": "GHTK",
+  "tracking_code": "TRK100009",
+  "fee": 30000,
+  "status": "delivered",
+  "label_url": "https://cdn.dfs-demo.com/labels/DFS1009.pdf",
+  "metadata": {
+    "note": "demo"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.322Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.322Z"
+  },
+  "__v": 0
+}]

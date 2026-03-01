@@ -1,0 +1,2963 @@
+[{
+  "_id": "ord-931cfe6d-bd9e-4918-bbc3-c72168dad66a",
+  "order_code": "DFS1000",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-4d911a61-6139-463c-bcae-538851235340",
+      "variant_id": "var-e293d539-758a-471c-a91e-36549153f66d",
+      "name": "Converse Canvas Sneakers",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "voucher_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
+  "payment_method": "COD",
+  "payment_status": "failed",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:51.064Z"
+  },
+  "total_price": 249000,
+  "note": "Leave at reception",
+  "status": "processing",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.067Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.067Z"
+  }
+},
+{
+  "_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "order_code": "DFS1001",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "qty": 2,
+      "price": 649000,
+      "discount": 0,
+      "total": 1298000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:51.215Z"
+  },
+  "total_price": 1298000,
+  "note": "",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.216Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.216Z"
+  }
+},
+{
+  "_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "order_code": "DFS1002",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cd5c759f-d907-48bd-8141-338a92f244ae",
+      "name": "Calvin Klein Logo Hoodie",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:51.593Z"
+  },
+  "total_price": 499000,
+  "note": "Leave at reception",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.593Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.593Z"
+  }
+},
+{
+  "_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "order_code": "DFS1003",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-084da2b9-f474-4c2b-8fa3-396cce58100e",
+      "variant_id": "var-98bffa88-a0e0-4dff-93df-2aacfc85bc45",
+      "name": "Uniqlo Essential Tee",
+      "qty": 2,
+      "price": 699000,
+      "discount": 0,
+      "total": 1398000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:51.968Z"
+  },
+  "total_price": 1398000,
+  "note": "",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.970Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.970Z"
+  }
+},
+{
+  "_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "order_code": "DFS1004",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-f7e616c7-ba36-418d-878e-a8ccf4281eb5",
+      "variant_id": "var-4ab1bfd1-351e-4735-bd93-1bd1ad076674",
+      "name": "Nike Fleece Hoodie",
+      "qty": 1,
+      "price": 599000,
+      "discount": 0,
+      "total": 599000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "voucher_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:52.435Z"
+  },
+  "total_price": 599000,
+  "note": "Leave at reception",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.435Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.435Z"
+  }
+},
+{
+  "_id": "ord-2ddbb43f-b5d4-427b-a20f-42b6dda24967",
+  "order_code": "DFS1005",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-43cc215d-15a1-466c-8150-bf60d4ec1449",
+      "variant_id": "var-81aeeefc-31b3-4b41-bd58-c303aa15ffa8",
+      "name": "New Balance Cap Classic",
+      "qty": 2,
+      "price": 349000,
+      "discount": 0,
+      "total": 698000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:52.786Z"
+  },
+  "total_price": 698000,
+  "note": "",
+  "status": "processing",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.787Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.787Z"
+  }
+},
+{
+  "_id": "ord-83307e1d-0524-4c47-be0f-39505dddb710",
+  "order_code": "DFS1006",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-6e5351bc-eb6c-4034-869c-64f9567e2859",
+      "variant_id": "var-f3395909-1c59-4694-918d-99f82b8eff36",
+      "name": "Guess Street Sneakers",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:53.154Z"
+  },
+  "total_price": 449000,
+  "note": "Leave at reception",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.155Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.155Z"
+  }
+},
+{
+  "_id": "ord-0d83b83f-dd59-497e-b19c-689db80b8b26",
+  "order_code": "DFS1007",
+  "user_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+      "variant_id": "var-53e2d86d-db0b-431c-a276-32c3bf00c89b",
+      "name": "Zara Classic Shirt",
+      "qty": 2,
+      "price": 399000,
+      "discount": 0,
+      "total": 798000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "failed",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:53.510Z"
+  },
+  "total_price": 798000,
+  "note": "",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.512Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.512Z"
+  }
+},
+{
+  "_id": "ord-24f6652f-90b5-445a-b5e1-7ade00b69800",
+  "order_code": "DFS1008",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-cc42c73a-a325-4199-bfb7-e44cb37c0898",
+      "variant_id": "var-29d3d69f-c45c-46bb-844e-2814341d6bf0",
+      "name": "The North Face Puffer Jacket",
+      "qty": 1,
+      "price": 699000,
+      "discount": 0,
+      "total": 699000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "voucher_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:53.655Z"
+  },
+  "total_price": 699000,
+  "note": "Leave at reception",
+  "status": "confirmed",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.657Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.657Z"
+  }
+},
+{
+  "_id": "ord-fdfe5e60-b17b-476d-af0a-e47f1a9649c5",
+  "order_code": "DFS1009",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-44e0550e-363f-440e-ac16-6f1098b9d4fb",
+      "variant_id": "var-873703d6-d3bb-47f2-aaa6-2bafeb74c9f2",
+      "name": "New Balance Running Shoes",
+      "qty": 2,
+      "price": 399000,
+      "discount": 0,
+      "total": 798000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:54.016Z"
+  },
+  "total_price": 798000,
+  "note": "",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.017Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.017Z"
+  }
+},
+{
+  "_id": "ord-5330292f-eba2-4909-9134-f79d2e12d19d",
+  "order_code": "ORD251027-1F61E4",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-3f084115-1e2c-4fd2-99cb-61d76d863733",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-2.jpg",
+      "qty": 3,
+      "price": 749000,
+      "discount": 0,
+      "total": 2247000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-3ac1dfcb-5569-4176-a05a-a9762f559cfd",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 2262000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-27T18:22:57.171Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-27T18:22:57.171Z"
+  }
+},
+{
+  "_id": "ord-8bfbc387-c388-407b-8c50-0ab262ec1fdd",
+  "order_code": "ORD251027-C7D78F",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-3f084115-1e2c-4fd2-99cb-61d76d863733",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-2.jpg",
+      "qty": 3,
+      "price": 749000,
+      "discount": 0,
+      "total": 2247000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-3ac1dfcb-5569-4176-a05a-a9762f559cfd",
+  "voucher_id": null,
+  "payment_method": "MOMO",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 2262000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-27T18:23:11.446Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-27T18:23:11.446Z"
+  }
+},
+{
+  "_id": "ord-cecdf7c9-a1f4-4c9e-ad9c-ade5981c735e",
+  "order_code": "ORD251028-985424",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-3f084115-1e2c-4fd2-99cb-61d76d863733",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-2.jpg",
+      "qty": 3,
+      "price": 749000,
+      "discount": 0,
+      "total": 2247000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-23b29313-72b5-4763-8241-2efca2b7e8aa",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 2262000,
+  "note": "Hello",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T13:02:24.546Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T13:02:24.546Z"
+  }
+},
+{
+  "_id": "ord-d273e794-971f-4045-9290-f66db680cfee",
+  "order_code": "ORD251028-0E23CD",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 6,
+      "price": 649000,
+      "discount": 0,
+      "total": 3894000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "delivered"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3909000,
+  "note": "",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T14:59:37.247Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T14:59:37.247Z"
+  }
+},
+{
+  "_id": "ord-f0bc1cf5-5fcd-4d83-8a1f-5ceb7206b4f9",
+  "order_code": "ORD251028-2659BE",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-owner\"",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 6,
+      "price": 649000,
+      "discount": 0,
+      "total": 3894000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3909000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:49:33.149Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:49:33.149Z"
+  }
+},
+{
+  "_id": "ord-7845aeee-b198-4183-8e7d-68fac77c65c4",
+  "order_code": "ORD251028-DE87C8",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 6,
+      "price": 649000,
+      "discount": 0,
+      "total": 3894000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "MOMO",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3909000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:52:00.255Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:52:00.255Z"
+  }
+},
+{
+  "_id": "ord-266556e0-59d1-465a-9a98-251fb739079c",
+  "order_code": "ORD251028-CAC2C2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 6,
+      "price": 649000,
+      "discount": 0,
+      "total": 3894000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3909000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:52:12.450Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:52:12.450Z"
+  }
+},
+{
+  "_id": "ord-de10a455-c544-4f44-a830-5aaf1d4056f2",
+  "order_code": "ORD251028-31618D",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 6,
+      "price": 649000,
+      "discount": 0,
+      "total": 3894000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3909000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:56:40.901Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:56:40.901Z"
+  }
+},
+{
+  "_id": "ord-3436e863-abe5-4614-8315-41b6bfd70bfe",
+  "order_code": "ORD251028-4D1C67",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 5,
+      "price": 649000,
+      "discount": 0,
+      "total": 3245000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3260000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:57:37.467Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:57:37.467Z"
+  }
+},
+{
+  "_id": "ord-a3f81d20-cd54-475e-bc4a-a8891e222bea",
+  "order_code": "ORD251028-EF5EB2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 5,
+      "price": 649000,
+      "discount": 0,
+      "total": 3245000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "MOMO",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 3260000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T15:57:45.537Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:57:45.537Z"
+  }
+},
+{
+  "_id": "ord-713450e4-8725-4a0d-a4f1-06036d44f4f9",
+  "order_code": "ORD251028-91F7CD",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 5,
+      "price": 649000,
+      "discount": 0,
+      "total": 3245000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHTK",
+  "shipping_fee": 18000,
+  "total_price": 3263000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-28T16:06:45.641Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T16:06:45.641Z"
+  }
+},
+{
+  "_id": "ord-cbdea77d-9680-46da-b683-532323ffbf65",
+  "order_code": "ORD251029-4585F7",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+      "variant_id": "var-46d0836d-f793-45de-86ab-e229a9588ac5",
+      "name": "Under Armour Seamless Leggings",
+      "image_url": "https://cdn.dfs-demo.com/products/under-armour-seamless-leggings-49-1.jpg",
+      "qty": 2,
+      "price": 649000,
+      "discount": 0,
+      "total": 1298000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-06a4a5d6-3e27-4ea6-8a14-1f5ee1ed2c51",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 1313000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T07:09:02.252Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T07:09:02.252Z"
+  }
+},
+{
+  "_id": "ord-d995d695-0f1c-468a-bd05-1f3da65971e2",
+  "order_code": "ORD251029-CF3E5B",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+      "variant_id": "var-ac2924bf-47cc-4c9a-8dff-dda2c5e4f196",
+      "name": "Levi's Denim Jacket",
+      "image_url": "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+      "qty": 1,
+      "price": 599000,
+      "discount": 0,
+      "total": 599000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 614000,
+  "note": "đóng hàng cẩn thận",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T07:59:19.593Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T07:59:19.593Z"
+  }
+},
+{
+  "_id": "ord-80f6122e-477c-4df8-a4e6-c8d4fbe16b8f",
+  "order_code": "ORD251029-A81BCC",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+      "variant_id": "var-ac2924bf-47cc-4c9a-8dff-dda2c5e4f196",
+      "name": "Levi's Denim Jacket",
+      "image_url": "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+      "qty": 1,
+      "price": 599000,
+      "discount": 0,
+      "total": 599000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 614000,
+  "note": "ok",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T08:58:49.136Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T08:58:49.136Z"
+  }
+},
+{
+  "_id": "ord-af665cb4-6e21-414f-a09e-4f2a0b6d54fc",
+  "order_code": "ORD251029-D9692E",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+      "variant_id": "var-ac2924bf-47cc-4c9a-8dff-dda2c5e4f196",
+      "name": "Levi's Denim Jacket",
+      "image_url": "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+      "qty": 1,
+      "price": 599000,
+      "discount": 0,
+      "total": 599000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-11549dda-b7ce-48af-b3b6-e0856045cecc",
+      "variant_id": "var-eaedf369-f654-4731-83dd-e74b6757a8ca",
+      "name": "Calvin Klein Tapered Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-tapered-pants-8-1.jpg",
+      "qty": 2,
+      "price": 599000,
+      "discount": 0,
+      "total": 1198000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+      "variant_id": "var-53e2d86d-db0b-431c-a276-32c3bf00c89b",
+      "name": "Zara Classic Shirt",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-classic-shirt-4-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+      "variant_id": "var-7f55cd70-117f-4e56-9d46-74ea8556a8d4",
+      "name": "H&M Casual Shirt",
+      "image_url": "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-8bb22444-66b4-4252-87ec-f2b6236f129b",
+      "variant_id": "var-5e24e97d-f314-4ef0-a61e-fddd2024d052",
+      "name": "Uniqlo Everyday Tee",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-everyday-tee-3-1.jpg",
+      "qty": 1,
+      "price": 349000,
+      "discount": 0,
+      "total": 349000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-026557de-1f0d-43aa-9c99-ffca4af6d4e2",
+      "variant_id": "var-335ae878-d564-4edb-96de-b96ca1a03d3b",
+      "name": "Mango Slim Blouse",
+      "image_url": "https://cdn.dfs-demo.com/products/mango-slim-blouse-17-1.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-38719dc0-8309-44ed-b85a-f26ab521fc6c",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 25000,
+  "total_price": 3568000,
+  "note": "hhihi",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T15:25:32.190Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T15:25:32.190Z"
+  }
+},
+{
+  "_id": "ord-9299d14f-3913-43a3-a5f2-e3d2323610fb",
+  "order_code": "ORD251029-0D70F1",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-190ce520-5678-4819-878b-0e21c9551d72",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 865000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:16:23.353Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:16:23.353Z"
+  }
+},
+{
+  "_id": "ord-a3bc0bc0-0b30-4ac4-9643-75da160f50a0",
+  "order_code": "ORD251029-A35EEB",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-190ce520-5678-4819-878b-0e21c9551d72",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 865000,
+  "note": "sadfádf",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:17:07.011Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:17:07.011Z"
+  }
+},
+{
+  "_id": "ord-5388267c-a932-4b26-a0f0-1854819e4996",
+  "order_code": "ORD251029-B72B70",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 865000,
+  "note": "testttt",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:30:22.357Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:30:22.357Z"
+  }
+},
+{
+  "_id": "ord-e8deb5e5-5022-44a7-9269-ad5207fe414d",
+  "order_code": "ORD251030-C1C4EF",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T05:26:36.155Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T05:26:36.155Z"
+  }
+},
+{
+  "_id": "ord-5e5948c1-9a7c-4ff0-ac5d-34e46b1d126d",
+  "order_code": "ORD251030-1521E8",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:11:35.804Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:11:35.804Z"
+  }
+},
+{
+  "_id": "ord-0505b6e6-cf74-47ad-afcf-7f66c6cc2bda",
+  "order_code": "ORD251030-DE844C",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:16:24.082Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:16:24.082Z"
+  }
+},
+{
+  "_id": "ord-a8ded962-996e-428b-9d86-141a339cfc73",
+  "order_code": "ORD251030-3F4A70",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:21:16.469Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:21:16.469Z"
+  }
+},
+{
+  "_id": "ord-0f2031fd-1507-44cd-8c34-9eec341c0d23",
+  "order_code": "ORD251030-5583FF",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:22:33.620Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:22:33.620Z"
+  }
+},
+{
+  "_id": "ord-12fc16d8-2dff-4676-9d93-81df46a4d008",
+  "order_code": "ORD251030-E6BC17",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:25:03.358Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:25:03.358Z"
+  }
+},
+{
+  "_id": "ord-3499fa8f-f2cb-4557-bd0e-06c55cbb86b2",
+  "order_code": "ORD251030-694EBC",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:26:52.839Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:26:52.839Z"
+  }
+},
+{
+  "_id": "ord-c7ce07d7-bd49-48d4-9ad5-1823fc5d04ad",
+  "order_code": "ORD251030-6C20B2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-999ef616-0f68-445b-a3b4-050c3301365d",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg",
+      "qty": 1,
+      "price": 549000,
+      "discount": 0,
+      "total": 549000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image_url": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 965000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:31:18.599Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:31:18.599Z"
+  }
+},
+{
+  "_id": "ord-0b214100-ad02-49b5-8d16-d86814d9f69c",
+  "order_code": "ORD251030-5AD711",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T14:31:53.792Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:31:53.792Z"
+  }
+},
+{
+  "_id": "ord-94b64380-bdd8-4999-abae-9de9cc0870a4",
+  "order_code": "ORD251030-BC0E1F",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T15:50:16.597Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T15:50:16.597Z"
+  }
+},
+{
+  "_id": "ord-e105d964-f006-494e-953c-121c14351350",
+  "order_code": "ORD251030-35417C",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T15:56:19.911Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T15:56:19.911Z"
+  }
+},
+{
+  "_id": "ord-4346ef33-2311-4bdc-96d2-bc239a94a187",
+  "order_code": "ORD251030-ABE792",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:01:41.026Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:01:41.026Z"
+  }
+},
+{
+  "_id": "ord-79e164d9-6780-41bf-b7c3-c2bf4d06ab6f",
+  "order_code": "ORD251030-B8400F",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:03:52.062Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:03:52.062Z"
+  }
+},
+{
+  "_id": "ord-89569885-ec64-4aa1-8233-0cc17314a32b",
+  "order_code": "ORD251030-82A9DC",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:04:15.063Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:04:15.063Z"
+  }
+},
+{
+  "_id": "ord-0cacfa30-f778-4973-9c01-1b90e85759b6",
+  "order_code": "ORD251030-82C0C1",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:10:36.879Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:10:36.879Z"
+  }
+},
+{
+  "_id": "ord-38ed0ee7-3390-441c-97dc-64730c2a0fe2",
+  "order_code": "ORD251030-DAC6AB",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+      "variant_id": "var-3dbe70e8-ba75-4fd6-9bac-30d586663ae5",
+      "name": "Zara Scarf Soft",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "success",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:25:46.056Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:25:46.056Z"
+  }
+},
+{
+  "_id": "ord-a8da68e9-d377-4e89-aaa7-f14cce9efca6",
+  "order_code": "ORD251030-FB537F",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+      "variant_id": "var-53e2d86d-db0b-431c-a276-32c3bf00c89b",
+      "name": "Zara Classic Shirt",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-classic-shirt-4-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 414000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:28:14.572Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:28:14.572Z"
+  }
+},
+{
+  "_id": "ord-d5b5734b-d1b2-43d3-ae11-5297fdf19d7b",
+  "order_code": "ORD251030-5BFE66",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-61f852f9-c38f-4ae2-a293-ce2e1fd0b17d",
+      "variant_id": "var-ba045f0c-e4a4-4f90-bbeb-38384211ccd1",
+      "name": "Uniqlo Tote Bag",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-1.jpg",
+      "qty": 1,
+      "price": 699000,
+      "discount": 0,
+      "total": 699000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 714000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:34:09.508Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:34:09.508Z"
+  }
+},
+{
+  "_id": "ord-0ac24c54-1bf5-4692-823a-2665329f43d7",
+  "order_code": "ORD251030-CB414E",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-61f852f9-c38f-4ae2-a293-ce2e1fd0b17d",
+      "variant_id": "var-ba045f0c-e4a4-4f90-bbeb-38384211ccd1",
+      "name": "Uniqlo Tote Bag",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-1.jpg",
+      "qty": 1,
+      "price": 699000,
+      "discount": 0,
+      "total": 699000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "paid",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 714000,
+  "note": "",
+  "status": "confirmed",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:37:58.672Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:38:28.464Z"
+  }
+},
+{
+  "_id": "ord-cbdf319f-aeb9-423c-8264-82d3430e3191",
+  "order_code": "ORD251031-4EA782",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-3a28fb19-f97d-4c79-aeb7-08e531fc71ca",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 464000,
+  "note": "okok",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-31T17:58:11.416Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T17:58:11.416Z"
+  }
+},
+{
+  "_id": "ord-96d06bbf-46a2-48c6-b551-5fa19cbfbe56",
+  "order_code": "ORD251031-3464A0",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-3a28fb19-f97d-4c79-aeb7-08e531fc71ca",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "paid",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 464000,
+  "note": "okhhh",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-31T18:00:13.257Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T18:02:21.597Z"
+  }
+},
+{
+  "_id": "ord-9e9a464f-c341-4998-ab44-693dcbe0af19",
+  "order_code": "ORD251031-6047FE",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+      "variant_id": "var-53e2d86d-db0b-431c-a276-32c3bf00c89b",
+      "name": "Zara Classic Shirt",
+      "image_url": "https://cdn.dfs-demo.com/products/zara-classic-shirt-4-1.jpg",
+      "qty": 1,
+      "price": 399000,
+      "discount": 0,
+      "total": 399000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-61f852f9-c38f-4ae2-a293-ce2e1fd0b17d",
+      "variant_id": "var-ba045f0c-e4a4-4f90-bbeb-38384211ccd1",
+      "name": "Uniqlo Tote Bag",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-1.jpg",
+      "qty": 1,
+      "price": 699000,
+      "discount": 0,
+      "total": 699000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 1115000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-31T18:04:01.743Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T18:04:01.743Z"
+  }
+},
+{
+  "_id": "ord-d753b354-117b-463b-8650-c2f67826aee3",
+  "order_code": "ORD251031-F407E3",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-d87c47ad-e6ef-47ff-a4b7-b28ed9135f78",
+      "variant_id": "var-146251c7-4987-4bae-893a-ef959f1f3ec7",
+      "name": "Levi's High Waist Jeans",
+      "image_url": "https://cdn.dfs-demo.com/products/levi-s-high-waist-jeans-21-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-efa10189-e568-4f5f-9e99-3c7941ce1df8",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "paid",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 264000,
+  "note": "",
+  "status": "confirmed",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-31T19:37:07.456Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T19:37:41.675Z"
+  }
+},
+{
+  "_id": "ord-7b3e9951-65df-4a87-a70b-c808198f9d9f",
+  "order_code": "ORD251031-F9C637",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-d87c47ad-e6ef-47ff-a4b7-b28ed9135f78",
+      "variant_id": "var-146251c7-4987-4bae-893a-ef959f1f3ec7",
+      "name": "Levi's High Waist Jeans",
+      "image_url": "https://cdn.dfs-demo.com/products/levi-s-high-waist-jeans-21-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-efa10189-e568-4f5f-9e99-3c7941ce1df8",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "failed",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 264000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-31T19:39:01.615Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T19:39:06.797Z"
+  }
+},
+{
+  "_id": "ord-f1480fe0-e7a4-42e6-9187-4365bf9711e5",
+  "order_code": "ORD251102-CA963A",
+  "user_id": "user-1a9d0303-5132-4c92-b44f-066586b8eb44",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+      "variant_id": "var-7f55cd70-117f-4e56-9d46-74ea8556a8d4",
+      "name": "H&M Casual Shirt",
+      "image_url": "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-1.jpg",
+      "qty": 1,
+      "price": 449000,
+      "discount": 0,
+      "total": 449000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-55a137e8-a3e8-45cd-96dc-f4e94a9dcecf",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "paid",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 464000,
+  "note": "",
+  "status": "confirmed",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-02T13:38:57.113Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T13:39:38.204Z"
+  }
+},
+{
+  "_id": "ord-5fe8cd10-33f1-4e38-b885-d3828d480b27",
+  "order_code": "ORD251105-CAD352",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 264000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-05T17:06:23.039Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T17:06:23.039Z"
+  }
+},
+{
+  "_id": "ord-bbc2be63-1afd-4f7b-a48c-b568dd723d42",
+  "order_code": "ORD251105-8839CB",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-05T18:48:30.390Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T18:48:30.390Z"
+  }
+},
+{
+  "_id": "ord-c9d83ebb-32b9-40ce-87e1-4dee4a7a1376",
+  "order_code": "ORD251106-C8D532",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T13:01:06.176Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:06.176Z"
+  }
+},
+{
+  "_id": "ord-20e2ac6e-dc4d-4658-b892-b3395f65fc50",
+  "order_code": "ORD251106-4F4155",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "MOMO",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T13:01:18.786Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:18.786Z"
+  }
+},
+{
+  "_id": "ord-be9c48d0-287e-4262-80cf-e035fdfb8611",
+  "order_code": "ORD251106-F82EE6",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "WALLET",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T13:01:25.252Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:25.252Z"
+  }
+},
+{
+  "_id": "ord-262ddab1-b42b-4399-b1d5-22d583f450e5",
+  "order_code": "ORD251106-C7B8C8",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T13:01:28.004Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:28.004Z"
+  }
+},
+{
+  "_id": "ord-a50d9241-51b1-4fea-ba5d-c0c411801c18",
+  "order_code": "ORD251106-240EE3",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 1,
+      "price": 249000,
+      "discount": 0,
+      "total": 249000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 17000,
+  "total_price": 765000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T13:01:48.681Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:48.681Z"
+  }
+},
+{
+  "_id": "ord-f485b73a-695a-4dc0-8df5-6ad458c8890c",
+  "order_code": "ORD251106-7D363C",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-06T16:15:56.078Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T16:15:56.078Z"
+  }
+},
+{
+  "_id": "ord-9f722abc-3d54-436c-91f2-d67d6ab6b491",
+  "order_code": "ORD251107-49C818",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 9,
+      "price": 499000,
+      "discount": 0,
+      "total": 4491000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 2,
+      "price": 249000,
+      "discount": 0,
+      "total": 498000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prod-55f9a6c5-3d56-412c-860a-d65255877d9c",
+      "variant_id": "var-c671cb39-44a5-409f-85c9-12122169b1ce",
+      "name": "Áo polo Basic #703",
+      "image_url": "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+      "qty": 2,
+      "price": 741347,
+      "discount": 0,
+      "total": 1482694,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 19000,
+  "total_price": 6490694,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-07T02:11:27.023Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-07T02:11:27.023Z"
+  }
+},
+{
+  "_id": "ord-d860fefd-1a71-4a49-ad6b-cefcdf88a6da",
+  "order_code": "ORD251107-B343D5",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 9,
+      "price": 499000,
+      "discount": 0,
+      "total": 4491000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image_url": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "qty": 2,
+      "price": 249000,
+      "discount": 0,
+      "total": 498000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    },
+    {
+      "product_id": "prod-55f9a6c5-3d56-412c-860a-d65255877d9c",
+      "variant_id": "var-c671cb39-44a5-409f-85c9-12122169b1ce",
+      "name": "Áo polo Basic #703",
+      "image_url": "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+      "qty": 2,
+      "price": 741347,
+      "discount": 0,
+      "total": 1482694,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 19000,
+  "total_price": 6490694,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-07T02:11:47.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-07T02:11:47.542Z"
+  }
+},
+{
+  "_id": "ord-54be1f05-7ecd-48ef-a84e-2a9db6bef14a",
+  "order_code": "ORD251109-F8C273",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-09T20:53:51.884Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T20:53:51.884Z"
+  }
+},
+{
+  "_id": "ord-f2dbd3f5-2b07-44ed-a216-bd447509ddb6",
+  "order_code": "ORD251109-6014A9",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-8058f0a6-c9cb-4878-82d8-2fc72faa7c78",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-09T20:54:25.200Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T20:54:25.200Z"
+  }
+},
+{
+  "_id": "ord-43a82d04-eaff-452a-a87d-9abad4c7df09",
+  "order_code": "ORD251109-9F397B",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 2,
+      "price": 499000,
+      "discount": 0,
+      "total": 998000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-9976fa94-554f-45bd-805a-6a25eae6a8db",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 1013000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-09T20:55:58.894Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-09T20:55:58.894Z"
+  }
+},
+{
+  "_id": "ord-a1f91cef-cd80-441f-a132-9ca229ac8007",
+  "order_code": "ORD251113-D9935C",
+  "user_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 1,
+      "price": 499000,
+      "discount": 0,
+      "total": 499000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-1280b3e5-6a04-4dc3-9028-a98065ed4f81",
+  "voucher_id": null,
+  "payment_method": "COD",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 514000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-11-13T16:47:57.402Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T16:47:57.402Z"
+  }
+},
+{
+  "_id": "ord-9dcf55ef-997f-4281-a0a4-81f1cf566ba8",
+  "order_code": "ORD260219-A63A24",
+  "user_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "shop_id": "shop-admin",
+  "items": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image_url": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "qty": 2,
+      "price": 499000,
+      "discount": 0,
+      "total": 998000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 0,
+      "status": "pending"
+    }
+  ],
+  "address_id": "addr-a84f607c-4c63-4646-a5d2-2f791be98658",
+  "voucher_id": null,
+  "payment_method": "VNPAY",
+  "payment_status": "pending",
+  "shipping_provider": "GHN",
+  "shipping_fee": 15000,
+  "total_price": 1013000,
+  "note": "",
+  "status": "pending",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2026-02-19T13:11:59.469Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-19T13:11:59.469Z"
+  }
+}]

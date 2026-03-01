@@ -1,0 +1,78 @@
+[{
+  "_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "name": "customer",
+  "permissions": [],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:49.890Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:49.890Z"
+  }
+},
+{
+  "_id": "rol-7a020325-7b3a-4de2-9652-6de8a07e1698",
+  "name": "shop_owner",
+  "permissions": [
+    "shop:access",
+    "shop:dashboard:view",
+    "product:read",
+    "product:create",
+    "product:update",
+    "product:delete",
+    "order:read",
+    "order:update",
+    "refund:read",
+    "refund:update",
+    "review:moderate",
+    "marketing:manage",
+    "wallet:read",
+    "wallet:withdraw"
+  ],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  }
+},
+{
+  "_id": "rol-547dafc8-e883-457f-9fc9-9007c192ebd8",
+  "name": "system_admin",
+  "permissions": [
+    "all:*"
+  ],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  }
+},
+{
+  "_id": "rol-08d58490-9e3d-4d87-b511-2b96baca87a4",
+  "name": "sales",
+  "permissions": [
+    "shop:access",
+    "product:read",
+    "product:update",
+    "order:read",
+    "order:update"
+  ],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  }
+},
+{
+  "_id": "rol-920d4284-5860-4b18-99da-92c2cca9ae09",
+  "name": "support",
+  "permissions": [],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:49.891Z"
+  }
+}]

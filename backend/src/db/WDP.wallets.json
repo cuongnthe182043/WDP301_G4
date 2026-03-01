@@ -1,0 +1,30 @@
+[{
+  "_id": "wal-4f526468-53a7-4ac3-8ff9-d17f7b0f6cb4",
+  "user_id": "usr-9bdacac7-d7c7-4b3a-bcc8-ff4d2edae3fe",
+  "type": "system",
+  "balance_available": 500000000,
+  "balance_pending": 0,
+  "currency": "VND",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.393Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.393Z"
+  }
+},
+{
+  "_id": "wal-d8f3fe5f-01a0-4ab1-a7f6-925eabcd3606",
+  "user_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "type": "shop",
+  "balance_available": 20000000,
+  "balance_pending": 0,
+  "currency": "VND",
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.462Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.462Z"
+  }
+}]

@@ -1,0 +1,189 @@
+[{
+  "_id": "addr-38719dc0-8309-44ed-b85a-f26ab521fc6c",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "name": "Phạm Tiền",
+  "phone": "0123456789",
+  "city": "Thành phố Hà Nội",
+  "district": "Huyện Thạch Thất",
+  "ward": "Xã Bình Yên",
+  "street": "thôn thái bình",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-29T15:23:38.867Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T15:23:38.867Z"
+  }
+},
+{
+  "_id": "addr-e89766f3-29ca-40f4-9a98-8dbc2aff0d95",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "name": "Phạm Tiền",
+  "phone": "0123456789",
+  "city": "Tỉnh Bình Dương",
+  "district": "Thị xã Bến Cát",
+  "ward": "Phường Chánh Phú Hòa",
+  "street": "thôn thái bình",
+  "createdAt": {
+    "$date": "2025-10-29T15:23:40.663Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T15:24:04.358Z"
+  }
+},
+{
+  "_id": "addr-190ce520-5678-4819-878b-0e21c9551d72",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "name": "Việt anh",
+  "phone": "0123456789",
+  "city": "Tỉnh Cao Bằng",
+  "district": "Huyện Bảo Lâm",
+  "ward": "Thị trấn Pác Miầu",
+  "street": "GVY",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:10:38.647Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:10:38.647Z"
+  }
+},
+{
+  "_id": "addr-239b710a-8b68-4d66-a031-ff60356afb2f",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "name": "áđa",
+  "phone": "áda",
+  "city": "Tỉnh Cà Mau",
+  "district": "Huyện Cái Nước",
+  "ward": "Xã Hoà Mỹ",
+  "street": "áđá",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:27:56.927Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:27:56.927Z"
+  }
+},
+{
+  "_id": "addr-f1a5bf2a-3982-4754-9e77-3b02941dce31",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "name": "ád",
+  "phone": "0123456789",
+  "city": "Thành phố Hải Phòng",
+  "district": "-",
+  "ward": "Phường Kinh Môn",
+  "street": "áda",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-29T16:28:50.301Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T16:28:50.301Z"
+  }
+},
+{
+  "_id": "addr-3a28fb19-f97d-4c79-aeb7-08e531fc71ca",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "name": "sfsdfsdf",
+  "phone": "52",
+  "city": "hà nội",
+  "ward": "hhhh",
+  "street": "fffff",
+  "district": "thạch thâts",
+  "source": "63",
+  "province_code": null,
+  "district_code": null,
+  "ward_code": null,
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-31T17:46:28.717Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T17:46:28.717Z"
+  }
+},
+{
+  "_id": "addr-efa10189-e568-4f5f-9e99-3c7941ce1df8",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "name": "ad",
+  "phone": "0123456789",
+  "city": "Thành phố Hải Phòng",
+  "ward": "Phường Kinh Môn",
+  "street": "a",
+  "district": "",
+  "source": "34",
+  "province_code": "31",
+  "district_code": null,
+  "ward_code": "10675",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-10-31T19:36:26.870Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T19:36:26.870Z"
+  }
+},
+{
+  "_id": "addr-55a137e8-a3e8-45cd-96dc-f4e94a9dcecf",
+  "user_id": "user-1a9d0303-5132-4c92-b44f-066586b8eb44",
+  "name": "akjshdkj",
+  "phone": "0123456789",
+  "city": "Tỉnh Phú Thọ",
+  "ward": "Phường Vĩnh Yên",
+  "street": "ađa",
+  "district": "",
+  "source": "34",
+  "province_code": "25",
+  "district_code": null,
+  "ward_code": "08707",
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-11-02T13:38:53.305Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T13:38:53.305Z"
+  }
+},
+{
+  "_id": "addr-1280b3e5-6a04-4dc3-9028-a98065ed4f81",
+  "user_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "name": "dsdasd",
+  "phone": "0912212425",
+  "city": "Tỉnh Bình Phước",
+  "ward": "Xã Thọ Sơn",
+  "street": "sdgdg",
+  "district": "Huyện Bù Đăng",
+  "source": "63",
+  "province_code": null,
+  "district_code": null,
+  "ward_code": null,
+  "is_default": false,
+  "createdAt": {
+    "$date": "2025-11-13T16:47:40.802Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T16:47:40.802Z"
+  }
+},
+{
+  "_id": "addr-a84f607c-4c63-4646-a5d2-2f791be98658",
+  "user_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "name": "Đỗ Anh",
+  "phone": "0123456789",
+  "city": "Thành phố Hà Nội",
+  "ward": "Phường Hàng Gai",
+  "street": "Newwwww",
+  "district": "Quận Hoàn Kiếm",
+  "source": "63",
+  "province_code": null,
+  "district_code": null,
+  "ward_code": null,
+  "is_default": false,
+  "createdAt": {
+    "$date": "2026-02-19T13:11:35.767Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-19T13:11:35.767Z"
+  }
+}]

@@ -1,0 +1,6907 @@
+[{
+  "_id": "prd-4d911a61-6139-463c-bcae-538851235340",
+  "name": "Quần Lót Nam-Mens Organic Cotton Trunks",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "description": "Thông tin sản phẩm\nThêm thông tin\nMàu Sắc\tTRUE NAVY/WHITE/BLACK\nChất liệu\tMain: 95% Cotton, 5% Elastane.\nKích cỡ\t\nSize: Vòng eo x Chiều dài đáy trước\n2XS - 54.0 x 18.0 cm\nXS - 59.0 x 19.5 cm\nS - 64.0 x 21.0 cm\nM - 69.0 x 22.5 cm\nL - 74.0 x 24.0 cm\nXL - 79.0 x 25.5 cm\n2XL - 84.0 x 27.0 cm\n\nHDSD & BQ\tLộn mặt trái sản phẩm, cho vào túi giặt trước khi giặt.\n",
+  "tags": [
+    "demo",
+    "nike",
+    "dfs"
+  ],
+  "images": [
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/3/6/3612928-04-2_qhv6vjdd3jx1zwb7.webp",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/3/6/3612928-04-3_4e77fhrqyda4vhy9.webp",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/3/6/3612928-04-1_u5sin1uu07ezwunc.webp"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "quan-lot-nam-mens-organic-cotton-trunks",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-5fe2a797-090e-45b3-b119-f77261e1ec4c",
+  "name": "Áo Ngực Thể Thao Chạy Bộ Nữ On Running Performance Bra Lumos",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-ec799272-2c37-438d-b8cb-6d8eb10f1fac",
+  "description": "Chi tiết phản quang\nĐược trang trí bằng các sọc phản quang ở phía sau, lấy cảm hứng từ vạch qua đường rực sáng. Các viền phản quang trên dây đai và dải thun đàn hồi phía sau hỗ trợ hiệu suất tối đa.\n\nĐộ nâng đỡ trung bình\nChiếc bra thể thao với lớp vải đệm nhẹ và vải thấm hút mồ hôi ôm sát cơ thể từ mọi phía, mang lại sự chắc chắn, ổn định trong từng chuyển động, đồng thời vẫn cho bạn tự do bứt tốc và chinh phục mục tiêu.\n\nVừa vặn hoàn hảo\nCơ thể bạn là độc nhất. Bra chạy bộ này được thiết kế để thích ứng với dáng bạn – chứ không bắt bạn phải thích ứng. Cụ thể: dây đeo đàn hồi có thể điều chỉnh và thiết kế lưng chữ T racerback thông minh. Vừa khít, thoải mái, thông thoáng – cho bạn toàn quyền tự do vận động.",
+  "tags": [
+    "demo",
+    "adidas",
+    "dfs"
+  ],
+  "images": [
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30260553-performance_bra_lumos-fw25-black-w-1x1-tr-PLP_800x.png?v=1759466976",
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30260553-performance_bra_lumos-fw25-black-w-4x5-tr-g3_819x.png?v=1759466976",
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30260553-performance_bra_lumos-fw25-black-w-4x5-tr-g4_800x.png?v=1759466975"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 349000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "adidas-run-tee",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-8bb22444-66b4-4252-87ec-f2b6236f129b",
+  "name": "Áo Tank Top chạy bộ adidas Adi365 CLIMACOOL+ Nam - JM5711",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "description": "Áo tank chạy bộ với công nghệ CLIMACOOL+ mang lại hiệu suất tối ưu.\nDù là giữa trưa nắng gắt, những cung đường không bóng râm hay các bài tập leo dốc, chiếc áo chạy bộ adidas này sẽ giúp bạn luôn mát mẻ. Sử dụng công nghệ CLIMACOOL+ – công nghệ làm mát tiên tiến nhất của adidas – áo được thiết kế với khả năng thông gió tối ưu, giúp không khí lưu thông đến da. Đường xẻ hai bên gấu áo hỗ trợ sải bước dài hơn mà không bị gò bó, trong khi các chi tiết phản quang tăng khả năng nhận diện khi thiếu sáng.\n\nCông nghệ CLIMACOOL+ giúp kiểm soát mồ hôi hiệu quả với chất liệu thấm hút nhanh, sợi vải khô thoáng mang lại cảm giác mát lạnh trên da. Hệ thống kiểm soát mồ hôi theo từng vùng cơ thể hỗ trợ làm mát tập trung, kết hợp giữa thiết kế kỹ thuật cao và chất liệu tiên tiến để mang lại cảm giác khô thoáng, thoải mái và tập trung tối đa.\n\nĐẶC ĐIỂM NỔI BẬT \n\nDáng Regular Fit\n100% polyester (tái chế)\nCông nghệ CLIMACOOL+\nMàu sắc: Halo Silver / White\nMã sản phẩm: JM5711\n\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM adidas\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU adidas\n\n",
+  "tags": [
+    "demo",
+    "uniqlo",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.hstatic.net/products/200000477321/upload_99816a0b11934071a2e74d0e5e3f5938_master.jpg",
+    "https://cdn.hstatic.net/products/200000477321/upload_a328155c6ade4577aaeba1e9bb42dedb_grande.jpg",
+    "https://cdn.hstatic.net/products/200000477321/upload_80c95adeb2ae4aa38366083952aaa9cb.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 3.5,
+  "rating_count": 10000,
+  "sold_count": 80,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 399000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-tank-top-chay-bo-adidas-adi365-climacool-nam-jm5711",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+  "name": "Áo jersey adidas 90s Nam - JX3068",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "description": "Áo jacquard kẻ sọc lấy cảm hứng từ những chiếc áo bóng đá huyền thoại của thập niên 90.\nVới sự kết hợp giữa quá khứ và hiện tại, chiếc áo jersey adidas này mang đến phong cách bóng đá huyền thoại đã làm mưa làm gió trong thập niên 90. Với vải jacquard sọc mịn, chiếc áo mang lại cảm giác mềm mại và nhẹ nhàng, thoải mái suốt cả ngày. Với thiết kế thoải mái, chiếc áo mang đến phong cách thư giãn, dễ chịu, và 3 sọc dọc tay áo là điểm nhấn đậm phong cách cổ điển của adidas.\n\nĐẶC ĐIỂM NỔI BẬT\n\nVừa vặn rộng rãi\nCổ tròn\n100% polyester (tái chế)\nMàu sản phẩm: Black\nMã sản phẩm: JX3068\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM ADIDAS\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU ADIDAS\n\nNgày nay adidas không chỉ là nhãn hiệu thể thao chuyên nghiệp mà còn là một sản phẩm thời trang. adidas đã phân chia các dòng sản phẩm của mình thành 3 phân nhóm:\n\nThành tích thể thao: tập trung vào tính năng của sản phẩm đáp ứng cho các VĐV chuyên nghiệp\nDi sản thể thao: những sản phẩm truyền thống đã mang lại danh tiếng\nThời trang thể thao: tập trung vào những khách hàng trẻ thích những sản phẩm trang phục thể thao hợp thời trang và sang trọng.\nCó thể nói adidas thành công nhờ:\n\nLuôn luôn sáng tạo nhằm vào sự nâng cao thành tích cho các VĐV chuyên nghiệp.\nLuôn trung thành với KH mục tiêu là các VĐV chuyên nghiệp.\nLuôn giữ gìn lịch sử đẹp đẽ và phát triển nó thành 1 phong cách thời trang.\nLuôn kiên định với Dassler ngày nào: “phong độ” cho dù có lúc sóng gió nhưng họ không bao giờ bắt sản phẩm mình phải trả giá.\nNhững ngôi sao thể hiện đúng phong cách mà Adidas truyền đạt.",
+  "tags": [
+    "demo",
+    "zara",
+    "dfs"
+  ],
+  "images": [
+    "https://assets.adidas.com/images/w_766,h_766,f_auto,q_auto,fl_lossy,c_fill,g_auto/c80a44b3f32149d1b756429003181b62_9366/ao-dau-san-nha-argentina-26-phien-ban-authentic.jpg",
+    "https://assets.adidas.com/images/w_766,h_766,f_auto,q_auto,fl_lossy,c_fill,g_auto/c80a44b3f32149d1b756429003181b62_9366/ao-dau-san-nha-argentina-26-phien-ban-authentic.jpg",
+    "https://assets.adidas.com/images/w_766,h_766,f_auto,q_auto,fl_lossy,c_fill,g_auto/c80a44b3f32149d1b756429003181b62_9366/ao-dau-san-nha-argentina-26-phien-ban-authentic.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 3,
+  "rating_count": 1,
+  "sold_count": 2500,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 449000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T17:00:37.185Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-jersey-adidas-90s-nam-jx3068",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+  "name": "H&M Casual Shirt",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-b5d4fc21-d270-4a03-b35e-c3ff97d74a96",
+  "description": "H&M Casual Shirt with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "h&m",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-1.jpg",
+    "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 4,
+  "rating_count": 4,
+  "sold_count": 1000,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "h-m-casual-shirt",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-f186b13c-4600-40f5-948a-2b25441d507f",
+  "name": "Levi's 501 Jeans",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "brand_id": "brd-010e9e76-dfe7-4f22-9158-2c15c6adf319",
+  "description": "Levi's 501 Jeans with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "levi's",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/levi-s-501-jeans-6-1.jpg",
+    "https://cdn.dfs-demo.com/products/levi-s-501-jeans-6-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 549000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "levi-s-501-jeans",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-7ebec5de-b369-4e10-b675-f203509a5c46",
+  "name": "Mango Chino Pants",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "brand_id": "brd-adcbe7ec-ffe2-4386-8449-82f29c6b82cf",
+  "description": "Mango Chino Pants with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "mango",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/mango-chino-pants-7-1.jpg",
+    "https://cdn.dfs-demo.com/products/mango-chino-pants-7-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 599000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "mango-chino-pants",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-6d50d5ef-9296-4182-9a51-ec680377ed03",
+  "name": "Puma Track Pants",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "brand_id": "brd-5ef8718e-be1a-4c84-a5c5-f3b1fda33d90",
+  "description": "Puma Track Pants with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "puma",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/puma-track-pants-9-1.jpg",
+    "https://cdn.dfs-demo.com/products/puma-track-pants-9-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 699000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "puma-track-pants",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-88a7435d-333d-4c01-8ebd-409c3c0d4545",
+  "name": "Under Armour Jogger Pants",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "brand_id": "brd-48a89ac0-2f0d-4379-b520-9c67e1ee1c70",
+  "description": "Under Armour Jogger Pants with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "under armour",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/under-armour-jogger-pants-10-1.jpg",
+    "https://cdn.dfs-demo.com/products/under-armour-jogger-pants-10-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 749000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "under-armour-jogger-pants",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-092bf56e-79f1-49fe-983b-dacde76e041a",
+  "name": "Áo Baby Tee adidas 3 sọc Nữ - IP0662",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-294d0a07-893c-4a8d-afff-cc277a43cfc2",
+  "description": "Chiếc áo thun ôm sát, mềm mại và ngập tràn năng lượng adidas.\n\nChiếc áo thun adidas ôm body này cùng bạn tôn vinh di sản Originals một cách mới mẻ và tràn đầy năng lượng. Áo kết hợp chất vải pha cotton thoải mái với 3 Sọc đặc trưng chạy dọc hai tay áo. Hãy diện chiếc áo này để thể hiện sự kết nối giữa chính bạn với hàng thập kỷ truyền thống thể thao.\n\nĐẶC ĐIỂM NỔI BẬT\n\nDáng slim fit\nCổ tròn\nVải thun gân dệt kim làm từ 94% cotton, 6% elastane\nĐược khai thác thông qua Better Cotton sử dụng hệ thống cân bằng khối lượng và do đó sản phẩm này có thể không chứa chất liệu Better Cotton\nMàu sản phẩm: White\nMã sản phẩm: IP0662\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM ADIDAS\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU ADIDAS\n\nNgày nay adidas không chỉ là nhãn hiệu thể thao chuyên nghiệp mà còn là một sản phẩm thời trang. adidas đã phân chia các dòng sản phẩm của mình thành 3 phân nhóm:\n\nThành tích thể thao: tập trung vào tính năng của sản phẩm đáp ứng cho các VĐV chuyên nghiệp\nDi sản thể thao: những sản phẩm truyền thống đã mang lại danh tiếng\nThời trang thể thao: tập trung vào những khách hàng trẻ thích những sản phẩm trang phục thể thao hợp thời trang và sang trọng.\nCó thể nói adidas thành công nhờ:\n\nLuôn luôn sáng tạo nhằm vào sự nâng cao thành tích cho các VĐV chuyên nghiệp.\nLuôn trung thành với KH mục tiêu là các VĐV chuyên nghiệp.\nLuôn giữ gìn lịch sử đẹp đẽ và phát triển nó thành 1 phong cách thời trang.\nLuôn kiên định với Dassler ngày nào: “phong độ” cho dù có lúc sóng gió nhưng họ không bao giờ bắt sản phẩm mình phải trả giá.\nNhững ngôi sao thể hiện đúng phong cách mà Adidas truyền đạt.",
+  "tags": [
+    "demo",
+    "converse",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.hstatic.net/products/200000477321/_baby_tee_3_soc_trang_ip0662_21_model_b07ff5cba40f46b3b8e37a4273d8041b_9f836074dcac4f31a846c7528cd2df46.jpg",
+    "https://cdn.hstatic.net/products/200000477321/aby_tee_3_soc_trang_ip0662_01_laydown_1389f5a2371a4d198b9bc26a72d849b2_af5b55d13b9847b2ace16bbc0a072b4d.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 1300,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-baby-tee-adidas-3-soc-nu-ip0662",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-44e0550e-363f-440e-ac16-6f1098b9d4fb",
+  "name": "Quần Đùi Thể Thao Chạy Bộ Nữ On Running Performance Shorts Lumos",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-04851d43-16aa-45c5-bb4a-f91f1f789e52",
+  "description": "Chi tiết nổi bật\nMặt trước sử dụng chất liệu phản quang độc đáo, kết hợp logo phản quang và họa tiết lấy cảm hứng từ vạch sang đường ở mặt sau, tạo điểm nhấn nổi bật.\n\nThiết kế cho vận động\nQuần có dây rút tại cạp để điều chỉnh vừa vặn, lớp quần trong giúp che phủ và hỗ trợ, cùng vải đục lỗ phía sau tăng độ thoáng khí, mang lại sự tự tin trên từng bước chạy.\n\nKhông gian lưu trữ tiện lợi\nTúi sau có khóa kéo ẩn dưới lớp vải tinh gọn, an toàn cho chìa khóa và thẻ. Ngoài ra, lớp quần trong còn có túi riêng dành cho điện thoại, giúp bạn thoải mái chạy mà không cần cầm tay.",
+  "tags": [
+    "demo",
+    "new balance",
+    "dfs"
+  ],
+  "images": [
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30300264-performance_shorts_lumos-fw25-eclipse_black-w-4x5-tr-g4_700x.png?v=1759466562",
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30300264-performance_shorts_lumos-fw25-eclipse_black-w-4x5-tr-g9_700x.png?v=1759466579",
+    "https://ash.vn/cdn/shop/files/CreateSmallPNG-1WF30300264-performance_shorts_lumos-fw25-eclipse_black-w-4x5-tr-g6_700x.png?v=1759466579"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 349000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "new-balance-running-shoes",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-1eef255f-f9c0-4093-a009-eaddfe840e37",
+  "name": "Lacoste Court Sneakers",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-54f95c67-f0a6-49d3-9b89-c3325506c9b2",
+  "description": "Lacoste Court Sneakers with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "lacoste",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/lacoste-court-sneakers-13-1.jpg",
+    "https://cdn.dfs-demo.com/products/lacoste-court-sneakers-13-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 399000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "lacoste-court-sneakers",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-b0b72a3f-243c-404a-ab01-421d322e8554",
+  "name": "The North Face Trail Shoes",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-d49efd9f-59ce-44f6-8dd0-20ae40bf9641",
+  "description": "The North Face Trail Shoes with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "the north face",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/the-north-face-trail-shoes-14-1.jpg",
+    "https://cdn.dfs-demo.com/products/the-north-face-trail-shoes-14-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 449000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "the-north-face-trail-shoes",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-6e5351bc-eb6c-4034-869c-64f9567e2859",
+  "name": "Guess Street Sneakers",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-a4c724bd-dfa5-4a8f-866a-39aea4d9641f",
+  "description": "Guess Street Sneakers with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "guess",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/guess-street-sneakers-15-1.jpg",
+    "https://cdn.dfs-demo.com/products/guess-street-sneakers-15-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "guess-street-sneakers",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-6084be30-6b3a-49ae-83ed-4d8e259b14dc",
+  "name": "Zara Ribbed Tee",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "description": "Zara Ribbed Tee with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "zara",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/zara-ribbed-tee-16-1.jpg",
+    "https://cdn.dfs-demo.com/products/zara-ribbed-tee-16-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 549000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "zara-ribbed-tee",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-026557de-1f0d-43aa-9c99-ffca4af6d4e2",
+  "name": "Áo T-shirt adidas ALL SZN Nam - JJ3658",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "brand_id": "brd-adcbe7ec-ffe2-4386-8449-82f29c6b82cf",
+  "description": "Áo thun dáng rộng làm từ cotton mềm mại.\nThư giãn suốt cả ngày trong chiếc áo thun adidas này. Áo được làm từ vải jersey cotton với cảm giác mềm mại dễ chịu. Logo đồ họa nổi bật ở ngực thể hiện cá tính thể thao của bạn.\n\nĐẶC ĐIỂM NỔI BẬT  \n\nDáng Loose Fit\nCổ tròn\n100% cotton\nLogo adidas Sportswear in nổi\nChi tiết thêu\nMã sản phẩm: JJ3658\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM adidas\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU adidas\n\nNgày nay adidas không chỉ là nhãn hiệu thể thao chuyên nghiệp mà còn là một sản phẩm thời trang. adidas đã phân chia các dòng sản phẩm của mình thành 3 phân nhóm:\n\nThành tích thể thao: tập trung vào tính năng của sản phẩm đáp ứng cho các VĐV chuyên nghiệp\nDi sản thể thao: những sản phẩm truyền thống đã mang lại danh tiếng\nThời trang thể thao: tập trung vào những khách hàng trẻ thích những sản phẩm trang phục thể thao hợp thời trang và sang trọng.\nCó thể nói adidas thành công nhờ:\n\nLuôn luôn sáng tạo nhằm vào sự nâng cao thành tích cho các VĐV chuyên nghiệp.\nLuôn trung thành với KH mục tiêu là các VĐV chuyên nghiệp.\nLuôn giữ gìn lịch sử đẹp đẽ và phát triển nó thành 1 phong cách thời trang.\nLuôn kiên định với Dassler ngày nào: “phong độ” cho dù có lúc sóng gió nhưng họ không bao giờ bắt sản phẩm mình phải trả giá.\nNhững ngôi sao thể hiện đúng phong cách mà adidas truyền đạt.",
+  "tags": [
+    "demo",
+    "mango",
+    "dfs"
+  ],
+  "images": [
+    "https://product.hstatic.net/200000477321/product/upload_91ee1a58801c4a7a8669596cab2eb44e.jpg",
+    "https://product.hstatic.net/200000477321/product/upload_2f945f5a50734e909085a031941dc7e6.jpg",
+    "https://product.hstatic.net/200000477321/product/upload_f2d1594bb60d451f9535f3b95481aa86.jpg",
+    "https://product.hstatic.net/200000477321/product/upload_408f5c01084a4011a39e88d7a905721d.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 5000,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 599000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-t-shirt-adidas-all-szn-nam-jj3658",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-490e7e01-ff6a-4591-8b25-fbe10eeef2ed",
+  "name": "H&M Cotton Top",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "brand_id": "brd-b5d4fc21-d270-4a03-b35e-c3ff97d74a96",
+  "description": "H&M Cotton Top with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "h&m",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/h-m-cotton-top-18-1.jpg",
+    "https://cdn.dfs-demo.com/products/h-m-cotton-top-18-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 649000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "h-m-cotton-top",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-66e050f0-f77d-423a-aadb-e51fef92754e",
+  "name": "Calvin Klein Logo Tee",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "brand_id": "brd-d0e76026-1ddf-4ff7-b07b-f19e992506b0",
+  "description": "Calvin Klein Logo Tee with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "calvin klein",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/calvin-klein-logo-tee-19-1.jpg",
+    "https://cdn.dfs-demo.com/products/calvin-klein-logo-tee-19-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 699000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "calvin-klein-logo-tee",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-084da2b9-f474-4c2b-8fa3-396cce58100e",
+  "name": "Uniqlo Essential Tee",
+  "category_id": "cat-8318815a-db4c-420f-9de6-2dea7c55b06f",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "description": "Uniqlo Essential Tee with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "uniqlo",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/uniqlo-essential-tee-20-1.jpg",
+    "https://cdn.dfs-demo.com/products/uniqlo-essential-tee-20-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 4.5,
+  "rating_count": 2,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 749000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T11:56:47.539Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "uniqlo-essential-tee",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-d87c47ad-e6ef-47ff-a4b7-b28ed9135f78",
+  "name": "Levi's High Waist Jeans",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-010e9e76-dfe7-4f22-9158-2c15c6adf319",
+  "description": "Levi's High Waist Jeans with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "levi's",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/levi-s-high-waist-jeans-21-1.jpg",
+    "https://cdn.dfs-demo.com/products/levi-s-high-waist-jeans-21-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "levi-s-high-waist-jeans",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-a93885bf-3532-4a67-8ea8-dde83b694f30",
+  "name": "Zara Wide Pants",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "description": "Zara Wide Pants with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "zara",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/zara-wide-pants-22-1.jpg",
+    "https://cdn.dfs-demo.com/products/zara-wide-pants-22-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 349000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "zara-wide-pants",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-fafd8387-6a11-4d52-bc3b-2d7cbf3a676e",
+  "name": "Under Armour Stretch Leggings",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-48a89ac0-2f0d-4379-b520-9c67e1ee1c70",
+  "description": "Under Armour Stretch Leggings with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "under armour",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/under-armour-stretch-leggings-23-1.jpg",
+    "https://cdn.dfs-demo.com/products/under-armour-stretch-leggings-23-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 399000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "under-armour-stretch-leggings",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-4e6f200e-5d69-47a5-a796-c3fcec4bf521",
+  "name": "H&M Casual Skirt",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-b5d4fc21-d270-4a03-b35e-c3ff97d74a96",
+  "description": "H&M Casual Skirt with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "h&m",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/h-m-casual-skirt-24-1.jpg",
+    "https://cdn.dfs-demo.com/products/h-m-casual-skirt-24-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 449000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "h-m-casual-skirt",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-e5c2a0a5-688b-4eb5-88a2-5721cb5234c6",
+  "name": "Áo T-shirt adidas ALL SZN Nam - JN0609",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-adcbe7ec-ffe2-4386-8449-82f29c6b82cf",
+  "description": "Áo thun cotton dáng rộng, mang vẻ ngoài tự nhiên và phóng khoáng.\nChiếc áo thun adidas này mang phong cách casual dễ phối với hầu hết mọi trang phục trong tủ đồ của bạn. Kết hợp cùng quần jogger cho vẻ ngoài thoải mái, hoặc phối với quần chinos để tạo phong cách năng động cho buổi tối. Chất liệu cotton mềm mại cùng phom dáng rộng giúp bạn luôn dễ chịu suốt cả ngày dài.\n\nĐẶC ĐIỂM NỔI BẬT \n\nDáng Loose Fit\nCổ tròn\n100% cotton\nMàu sắc: Warm Sandstone\nMã sản phẩm: JN0609\n\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM adidas\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU adidas\n\nNgày nay adidas không chỉ là nhãn hiệu thể thao chuyên nghiệp mà còn là một sản phẩm thời trang. adidas đã phân chia các dòng sản phẩm của mình thành 3 phân nhóm:\n\nThành tích thể thao: tập trung vào tính năng của sản phẩm đáp ứng cho các VĐV chuyên nghiệp\nDi sản thể thao: những sản phẩm truyền thống đã mang lại danh tiếng\nThời trang thể thao: tập trung vào những khách hàng trẻ thích những sản phẩm trang phục thể thao hợp thời trang và sang trọng.\nCó thể nói adidas thành công nhờ:\n\nLuôn luôn sáng tạo nhằm vào sự nâng cao thành tích cho các VĐV chuyên nghiệp.\nLuôn trung thành với KH mục tiêu là các VĐV chuyên nghiệp.\nLuôn giữ gìn lịch sử đẹp đẽ và phát triển nó thành 1 phong cách thời trang.\nLuôn kiên định với Dassler ngày nào: “phong độ” cho dù có lúc sóng gió nhưng họ không bao giờ bắt sản phẩm mình phải trả giá.\nNhững ngôi sao thể hiện đúng phong cách mà Adidas truyền đạt.",
+  "tags": [
+    "demo",
+    "mango",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.hstatic.net/products/200000477321/upload_26332c7533694bad9b8ff820096faf7a.jpg",
+    "https://cdn.hstatic.net/products/200000477321/upload_14be27dca49b4b83b2c18386b25435f7.jpg",
+    "https://cdn.hstatic.net/products/200000477321/upload_1cbc8928a10940ac93573e2a78354f5c.jpg",
+    "https://cdn.hstatic.net/products/200000477321/upload_d9159c069c1745d3aeafe700422566fb.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-t-shirt-adidas-all-szn-nam-jn0609",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-f7e616c7-ba36-418d-878e-a8ccf4281eb5",
+  "name": "Nike Fleece Hoodie",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "description": "Nike Fleece Hoodie with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "nike",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/nike-fleece-hoodie-26-1.jpg",
+    "https://cdn.dfs-demo.com/products/nike-fleece-hoodie-26-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 5,
+  "rating_count": 1,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 549000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T12:42:02.213Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "nike-fleece-hoodie",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
+  "name": "Adidas Windbreaker",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-ec799272-2c37-438d-b8cb-6d8eb10f1fac",
+  "description": "Adidas Windbreaker with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "adidas",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/adidas-windbreaker-27-1.jpg",
+    "https://cdn.dfs-demo.com/products/adidas-windbreaker-27-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 599000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "adidas-windbreaker",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+  "name": "Levi's Denim Jacket",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-010e9e76-dfe7-4f22-9158-2c15c6adf319",
+  "description": "Levi's Denim Jacket with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "levi's",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+    "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 649000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "levi-s-denim-jacket",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
+  "name": "Puma Bomber Jacket",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-5ef8718e-be1a-4c84-a5c5-f3b1fda33d90",
+  "description": "Puma Bomber Jacket with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "puma",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/puma-bomber-jacket-29-1.jpg",
+    "https://cdn.dfs-demo.com/products/puma-bomber-jacket-29-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 699000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "puma-bomber-jacket",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-cc42c73a-a325-4199-bfb7-e44cb37c0898",
+  "name": "The North Face Puffer Jacket",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-d49efd9f-59ce-44f6-8dd0-20ae40bf9641",
+  "description": "The North Face Puffer Jacket with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "the north face",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/the-north-face-puffer-jacket-30-1.jpg",
+    "https://cdn.dfs-demo.com/products/the-north-face-puffer-jacket-30-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 749000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "the-north-face-puffer-jacket",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-43cc215d-15a1-466c-8150-bf60d4ec1449",
+  "name": "New Balance Cap Classic",
+  "category_id": "cat-653aa8a4-d43e-4c78-af51-cef36fd22e7b",
+  "brand_id": "brd-04851d43-16aa-45c5-bb4a-f91f1f789e52",
+  "description": "New Balance Cap Classic with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "new balance",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/new-balance-cap-classic-31-1.jpg",
+    "https://cdn.dfs-demo.com/products/new-balance-cap-classic-31-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "new-balance-cap-classic",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-bad168c5-7674-43a8-8f53-71c6dff175c0",
+  "name": "Converse Canvas Belt",
+  "category_id": "cat-653aa8a4-d43e-4c78-af51-cef36fd22e7b",
+  "brand_id": "brd-294d0a07-893c-4a8d-afff-cc277a43cfc2",
+  "description": "Converse Canvas Belt with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "converse",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/converse-canvas-belt-32-1.jpg",
+    "https://cdn.dfs-demo.com/products/converse-canvas-belt-32-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 349000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "converse-canvas-belt",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-517161bc-fb09-4ca0-b8be-f579e3de53fb",
+  "name": "Adidas Sport Socks",
+  "category_id": "cat-653aa8a4-d43e-4c78-af51-cef36fd22e7b",
+  "brand_id": "brd-ec799272-2c37-438d-b8cb-6d8eb10f1fac",
+  "description": "Adidas Sport Socks with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "adidas",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/adidas-sport-socks-33-1.jpg",
+    "https://cdn.dfs-demo.com/products/adidas-sport-socks-33-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 399000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "adidas-sport-socks",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-4299b51f-c115-427e-bcfb-dbe69a7d6dfa",
+  "name": "Calvin Klein Leather Wallet",
+  "category_id": "cat-653aa8a4-d43e-4c78-af51-cef36fd22e7b",
+  "brand_id": "brd-d0e76026-1ddf-4ff7-b07b-f19e992506b0",
+  "description": "Calvin Klein Leather Wallet with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "calvin klein",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/calvin-klein-leather-wallet-34-1.jpg",
+    "https://cdn.dfs-demo.com/products/calvin-klein-leather-wallet-34-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 449000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "calvin-klein-leather-wallet",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-fde4540d-b3d3-4fdf-b3b0-488f9cc4384c",
+  "name": "Áo Baby Tee adidas Essentials 3 sọc Nữ - JE1239",
+  "category_id": "cat-653aa8a4-d43e-4c78-af51-cef36fd22e7b",
+  "brand_id": "brd-a4c724bd-dfa5-4a8f-866a-39aea4d9641f",
+  "description": "Thể hiện chất thể thao trong bạn với chiếc áo thun dáng ôm adidas này.\nMột thiết kế classic nay được biến tấu đầy mới mẻ với chiếc áo thun adidas này. Áo có kiểu dáng ôm sát cơ thể tạo nên một thiết kế hiện đại, kết hợp hoàn hảo với mọi item từ quần jogger đến quần jeans. Logo 3 Bar trên ngực áo tôn vinh di sản thể thao.\n\nĐẶC ĐIỂM NỔI BẬT\nDáng slim fit\nCổ tròn\n93% cotton, 7% elastane\nLogo 3 Bar trên ngực áo\nMàu sản phẩm: White / Black\nMã sản phẩm: JE1239\nHƯỚNG DẪN BẢO QUẢN SẢN PHẨM ADIDAS\n\nGiặt bằng nước lạnh hoặc nước ấm nhẹ để tránh co rút hoặc phai màu.\nDùng bột giặt dịu nhẹ để không làm ảnh hưởng đến chất liệu mỏng nhẹ.\nPhơi nơi râm mát: Tránh ánh nắng gắt trực tiếp, đặc biệt với quần áo có chất liệu sợi tổng hợp (polyester, spandex).\nỦi ở nhiệt độ thấp\nTHÔNG TIN THƯƠNG HIỆU ADIDAS\n\nNgày nay Adidas không chỉ là nhãn hiệu thể thao chuyên nghiệp mà còn là một sản phẩm thời trang. Adidas đã phân chia các dòng sản phẩm của mình thành 3 phân nhóm:\n\nThành tích thể thao: tập trung vào tính năng của sản phẩm đáp ứng cho các VĐV chuyên nghiệp\nDi sản thể thao: những sản phẩm truyền thống đã mang lại danh tiếng\nThời trang thể thao: tập trung vào những khách hàng trẻ thích những sản phẩm trang phục thể thao hợp thời trang và sang trọng.\nCó thể nói Adidas thành công nhờ:\n\nLuôn luôn sáng tạo nhằm vào sự nâng cao thành tích cho các VĐV chuyên nghiệp.\nLuôn trung thành với KH mục tiêu là các VĐV chuyên nghiệp.\nLuôn giữ gìn lịch sử đẹp đẽ và phát triển nó thành 1 phong cách thời trang.\nLuôn kiên định với Dassler ngày nào: “phong độ” cho dù có lúc sóng gió nhưng họ không bao giờ bắt sản phẩm mình phải trả giá.\nNhững ngôi sao thể hiện đúng phong cách mà Adidas truyền đạt.",
+  "tags": [
+    "demo",
+    "guess",
+    "dfs"
+  ],
+  "images": [
+    "https://product.hstatic.net/200000477321/product/tai_xuong_-_2024-12-05t081505.582_dd63b2ea602441cca4fe134fade2388d.png",
+    "https://product.hstatic.net/200000477321/product/tai_xuong_-_2024-12-05t081517.897_8d9e221291bc43e691f6ca7034568a97.png",
+    "https://product.hstatic.net/200000477321/product/upload_b2e89337b182433180746536f6d36d79.jpg",
+    "https://product.hstatic.net/200000477321/product/upload_f16a5d962d7f43dea024faa26e93d752.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ao-baby-tee-adidas-essentials-3-soc-nu-je1239",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-4de26236-089d-4ca2-9da6-a8b5b80d1191",
+  "name": "Zara Scarf Soft",
+  "category_id": "cat-96799d86-1b4e-425a-ba0b-c290c79af066",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "description": "Zara Scarf Soft with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "zara",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-1.jpg",
+    "https://cdn.dfs-demo.com/products/zara-scarf-soft-36-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 549000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "zara-scarf-soft",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-edbccac5-e1a5-4844-8dc4-488b02804aba",
+  "name": "Mango Mini Shoulder Bag",
+  "category_id": "cat-96799d86-1b4e-425a-ba0b-c290c79af066",
+  "brand_id": "brd-adcbe7ec-ffe2-4386-8449-82f29c6b82cf",
+  "description": "Mango Mini Shoulder Bag with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "mango",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/mango-mini-shoulder-bag-37-1.jpg",
+    "https://cdn.dfs-demo.com/products/mango-mini-shoulder-bag-37-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 599000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "mango-mini-shoulder-bag",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-f30a92d9-157c-485b-a25f-c473a69a3c1a",
+  "name": "H&M Logo Belt",
+  "category_id": "cat-96799d86-1b4e-425a-ba0b-c290c79af066",
+  "brand_id": "brd-b5d4fc21-d270-4a03-b35e-c3ff97d74a96",
+  "description": "H&M Logo Belt with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "h&m",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/h-m-logo-belt-38-1.jpg",
+    "https://cdn.dfs-demo.com/products/h-m-logo-belt-38-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 649000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "h-m-logo-belt",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-9d1486b3-1d50-4904-993b-171f58ca61ea",
+  "name": "Under Armour Sporty Cap",
+  "category_id": "cat-96799d86-1b4e-425a-ba0b-c290c79af066",
+  "brand_id": "brd-48a89ac0-2f0d-4379-b520-9c67e1ee1c70",
+  "description": "Under Armour Sporty Cap with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "under armour",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/under-armour-sporty-cap-39-1.jpg",
+    "https://cdn.dfs-demo.com/products/under-armour-sporty-cap-39-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 699000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "under-armour-sporty-cap",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-61f852f9-c38f-4ae2-a293-ce2e1fd0b17d",
+  "name": "Uniqlo Tote Bag",
+  "category_id": "cat-96799d86-1b4e-425a-ba0b-c290c79af066",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "description": "Uniqlo Tote Bag with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "uniqlo",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-1.jpg",
+    "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 749000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "uniqlo-tote-bag",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+  "name": "Uniqlo Dry Polo",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "description": "Uniqlo Dry Polo with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "uniqlo",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+    "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T15:50:16.260Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "uniqlo-dry-polo",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-0a96c1f0-6afe-45f2-89f3-d1b946d6b3c2",
+  "name": "Adidas Trefoil Tee",
+  "category_id": "cat-39615843-132a-4f0e-9829-f32eb7e80414",
+  "brand_id": "brd-ec799272-2c37-438d-b8cb-6d8eb10f1fac",
+  "description": "Adidas Trefoil Tee with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "adidas",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/adidas-trefoil-tee-43-1.jpg",
+    "https://cdn.dfs-demo.com/products/adidas-trefoil-tee-43-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 399000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "adidas-trefoil-tee",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+  "name": "Calvin Klein Logo Hoodie",
+  "category_id": "cat-c3b8b8ac-1dc3-47e0-9206-3e23f163221d",
+  "brand_id": "brd-d0e76026-1ddf-4ff7-b07b-f19e992506b0",
+  "description": "Calvin Klein Logo Hoodie with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "calvin klein",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+    "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 5,
+  "rating_count": 1,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 449000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T12:18:12.686Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "calvin-klein-logo-hoodie",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+  "name": "Nike Tech Fleece Pants",
+  "category_id": "cat-9ab53858-c02b-4943-998f-5775eec35e98",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "description": "Nike Tech Fleece Pants with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "nike",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+    "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "nike-tech-fleece-pants",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+  "name": "Nike Air Max Runner",
+  "category_id": "cat-49c991c6-ce86-4540-bb8e-6081f286c7d8",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "description": "Nike Air Max Runner with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "nike",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+    "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 549000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:06:44.131Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "nike-air-max-runner",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-7c0c7478-3e26-42be-b811-9de9c18a6294",
+  "name": "Lacoste Court Classic",
+  "category_id": "cat-cf6880f5-db1c-48b4-bfb6-ef88263693cc",
+  "brand_id": "brd-54f95c67-f0a6-49d3-9b89-c3325506c9b2",
+  "description": "Lacoste Court Classic with premium materials and comfort.",
+  "tags": [
+    "demo",
+    "lacoste",
+    "dfs"
+  ],
+  "images": [
+    "https://cdn.dfs-demo.com/products/lacoste-court-classic-48-1.jpg",
+    "https://cdn.dfs-demo.com/products/lacoste-court-classic-48-2.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 50,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 649000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "lacoste-court-classic",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+  "name": "GUESS MARCIANO\nÁo Kiểu Nữ - Pat Cropped Shirt",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-48a89ac0-2f0d-4379-b520-9c67e1ee1c70",
+  "description": "Thông tin sản phẩm\nThêm thông tin\nMàu Sắc\tSANDY SHORE\nChất liệu\t97%Co 3%Ea\nMô tả sản phẩm\t\nTối giản nhưng đầy quyền lực – chiếc áo sơ mi Pat Cropped Shirt mang đến tinh thần thanh lịch đậm chất “city chic”.\nVới thiết kế croptop hiện đại trên nền chất liệu poplin dệt nhẹ, chiếc áo này là sự giao thoa hoàn hảo giữa nét cổ điển của áo sơ mi và vẻ trẻ trung thời thượng. Phom dáng lửng cùng hai túi ngực cá tính giúp tôn lên vòng eo một cách đầy tinh tế, còn phần tay dài đến khuỷu lại tạo nên sự cân bằng thanh lịch cho tổng thể.\nGợi ý phối đồ:\nPhối cùng chân váy đồng bộ hoặc quần cạp cao để tạo nên bộ outfit “tone-sur-tone” vừa trang nhã vừa tôn dáng. Một đôi giày cao gót mũi nhọn và khuyên tai bản mảnh sẽ là điểm chốt hoàn hảo cho set đồ công sở nâng tầm.\n- Phom dáng crop\nCổ sơ mi cổ điển\n- Tay ngắn đến khuỷu\n- Hai túi ngực nổi bật, cúc cài phía trước\n- Áo sơ mi tay ngắn nữ Guess\n- Áo sơ mi Guess chính hãng\n\nHDSD & BQ\tTránh ngâm trong nước quá lâu - Tránh tiếp xúc với các chất liệu gây loang màu - Không sử dụng các chất tẩy rửa, tránh giặt bằng máy",
+  "tags": [
+    "demo",
+    "under armour",
+    "dfs"
+  ],
+  "images": [
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/5/g/5ggh277315a-g053-alt1_x5c1ogjay2vmm2c5.webp",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/5/g/5ggh277315a-g053_dkrktftybugtrk60.webp",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/5/g/5ggh277315a-g053-alt5_dqeuhaftzm2mmyxb.webp"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 5,
+  "rating_count": 2,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 699000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T17:26:47.101Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "guess-marciano-ao-kieu-nu-pat-cropped-shirt",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prd-ded05407-5d26-4a97-8a73-beca46c62cfa",
+  "name": "CK UNDERWEAR\nÁo Lót Nữ Plunge Fit",
+  "category_id": "cat-4aa7d999-6200-4a18-a3b1-b1684b8b65e3",
+  "brand_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "description": "Thông tin sản phẩm\nThêm thông tin\nMàu Sắc\tCASUAL BLUE\nChất liệu\t71% Reprocessed Polyamide 29% Elastane\nKiểu Dáng\tPush Up\nHDSD & BQ\tTránh ngâm trong nước quá lâu - Tránh tiếp xúc với các chất liệu gây loang màu - Không sử dụng các chất tẩy rửa, tránh giặt bằng máy\n",
+  "tags": [
+    "demo",
+    "zara",
+    "dfs"
+  ],
+  "images": [
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/q/f/qf7315ad_tkf_1_q8qglo5gushqavwd.webp",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9566f569680d296c/q/f/qf7315ad_tkf_4_ggzwse7seunbkvgb.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 55,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 749000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.542Z"
+  },
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "slug": "ck-underwear-ao-lot-nu-plunge-fit",
+  "variant_dimensions": [
+    "size",
+    "color"
+  ]
+},
+{
+  "_id": "prod-07b6dd14-f543-4236-897d-557e7f097ab9",
+  "slug": "ao-thun-nam-co-tron-uniqlo",
+  "attributes": {},
+  "base_price": 199000,
+  "brand_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "category_id": "cat-a617e81a-2192-4f5f-a029-be6c7f35356b",
+  "currency": "VND",
+  "description": "Áo thun cotton thoáng mát, phù hợp mọi hoạt động.",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "Cotton",
+      "Spandex"
+    ],
+    "material_ratio": {
+      "Cotton": 95,
+      "Spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer",
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy 30°C, không tẩy, ủi nhẹ.",
+    "extras": {}
+  },
+  "image_public_ids": [],
+  "images": [
+    "https://example.com/p/uniqlo-tee-main.jpg"
+  ],
+  "is_featured": false,
+  "name": "Áo thun nam cổ tròn Uniqlo",
+  "rating_avg": 0,
+  "rating_count": 0,
+  "seo": {},
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "sold_count": 0,
+  "status": "active",
+  "stock_total": 90,
+  "tags": [
+    "tshirt",
+    "cotton",
+    "basic"
+  ],
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "videos": []
+},
+{
+  "_id": "prod-b8bee4ce-c568-4a5f-99c5-3de8bbe91344",
+  "slug": "dam-nu-ivy-moda-dang-a",
+  "attributes": {},
+  "base_price": 599000,
+  "brand_id": "brand-651a7b21-75bf-4091-8eb8-ba12af8fda70",
+  "category_id": "cat-ac6ff62d-71ec-4711-bb0b-7221e931c4be",
+  "currency": "VND",
+  "description": "Đầm dáng A chất liệu thoáng mát phù hợp đi làm và dạo phố.",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "Polyester",
+      "Spandex"
+    ],
+    "material_ratio": {
+      "Polyester": 92,
+      "Spandex": 8
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "care_instructions": "Giặt tay nhẹ, không vắt mạnh.",
+    "extras": {}
+  },
+  "image_public_ids": [],
+  "images": [
+    "https://example.com/p/ivy-dress-main.jpg"
+  ],
+  "is_featured": false,
+  "name": "Đầm nữ IVY moda dáng A",
+  "rating_avg": 0,
+  "rating_count": 0,
+  "seo": {},
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "sold_count": 0,
+  "status": "active",
+  "stock_total": 36,
+  "tags": [
+    "dress",
+    "office"
+  ],
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "videos": []
+},
+{
+  "_id": "prod-20f08006-7ead-41f1-9772-6341b8f5ef66",
+  "slug": "hoodie-unisex-levents-form-rong",
+  "attributes": {},
+  "base_price": 459000,
+  "brand_id": "brand-df2cae75-1636-4ca7-af90-8bd64aa42830",
+  "category_id": "cat-7f426e6c-bc3e-4fcc-9646-7abb2aecb34b",
+  "currency": "VND",
+  "description": "Hoodie unisex form rộng, chất cotton dày dặn.",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "Cotton"
+    ],
+    "material_ratio": {
+      "Cotton": 100
+    },
+    "customization_available": true,
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "care_instructions": "Lộn trái khi giặt, phơi râm.",
+    "extras": {}
+  },
+  "image_public_ids": [],
+  "images": [
+    "https://example.com/p/levents-hoodie-main.jpg"
+  ],
+  "is_featured": false,
+  "name": "Hoodie unisex Levents form rộng",
+  "rating_avg": 0,
+  "rating_count": 0,
+  "seo": {},
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "sold_count": 0,
+  "status": "active",
+  "stock_total": 39,
+  "tags": [
+    "hoodie",
+    "oversize"
+  ],
+  "variant_dimensions": [
+    "color",
+    "size",
+    "material_variant"
+  ],
+  "videos": []
+},
+{
+  "_id": "prod-9f05bf70-dbbe-4c64-b7ae-55821fea4b40",
+  "name": "DFS Essential Tee 2.0",
+  "slug": "dfs-essential-tee-2-0",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "DFS Essential Tee 2.0 – chất liệu tối ưu, phù hợp summer, spring",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 172,
+  "seo": {
+    "title": "DFS Essential Tee 2.0",
+    "description": "DFS Essential Tee 2.0",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 199000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:38.049Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:38.209Z"
+  }
+},
+{
+  "_id": "prod-b2a0a89c-8637-46a4-8dca-90c7880ad3f8",
+  "name": "DFS Airy Cotton Tee",
+  "slug": "dfs-airy-cotton-tee",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "DFS Airy Cotton Tee – chất liệu tối ưu, phù hợp summer, spring",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 151,
+  "seo": {
+    "title": "DFS Airy Cotton Tee",
+    "description": "DFS Airy Cotton Tee",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 219000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:38.339Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:38.489Z"
+  }
+},
+{
+  "_id": "prod-8c313ce3-4fd8-48b8-ad70-36cb07fbb30e",
+  "name": "Minimal Form Daily Tee",
+  "slug": "minimal-form-daily-tee",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "description": "Minimal Form Daily Tee – chất liệu tối ưu, phù hợp all-season",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton",
+      "spandex"
+    ],
+    "material_ratio": {
+      "cotton": 95,
+      "spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 197,
+  "seo": {
+    "title": "Minimal Form Daily Tee",
+    "description": "Minimal Form Daily Tee",
+    "keywords": [
+      "cotton",
+      "spandex"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 249000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size",
+    "fit"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:38.622Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:38.768Z"
+  }
+},
+{
+  "_id": "prod-38275e5a-ae2f-41df-a1d6-e66a5dec92fd",
+  "name": "BlueWave Graphic Tee - City",
+  "slug": "bluewave-graphic-tee-city",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Graphic Tee - City – chất liệu tối ưu, phù hợp summer",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton",
+      "spandex"
+    ],
+    "material_ratio": {
+      "cotton": 95,
+      "spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 169,
+  "seo": {
+    "title": "BlueWave Graphic Tee - City",
+    "description": "BlueWave Graphic Tee - City",
+    "keywords": [
+      "cotton",
+      "spandex"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 269000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size",
+    "material_variant"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:38.900Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:39.042Z"
+  }
+},
+{
+  "_id": "prod-7ff0fc99-ed19-46ca-8841-7031f50fbb69",
+  "name": "BlueWave Pocket Tee",
+  "slug": "bluewave-pocket-tee",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Pocket Tee – chất liệu tối ưu, phù hợp all-season",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 123,
+  "seo": {
+    "title": "BlueWave Pocket Tee",
+    "description": "BlueWave Pocket Tee",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 239000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:39.170Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:39.307Z"
+  }
+},
+{
+  "_id": "prod-fbbab2af-9636-4cf8-a4a2-684cbe245ae5",
+  "name": "Minimal Form Heavy Hoodie Pro",
+  "slug": "minimal-form-heavy-hoodie-pro",
+  "category_id": "cat-53a0e92b-1afa-49c0-bcac-64430ce3f91e",
+  "brand_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "description": "Minimal Form Heavy Hoodie Pro – chất liệu tối ưu, phù hợp autumn, winter",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "material_ratio": {
+      "cotton": 65,
+      "polyester": 35
+    },
+    "customization_available": false,
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "hoodies"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 178,
+  "seo": {
+    "title": "Minimal Form Heavy Hoodie Pro",
+    "description": "Minimal Form Heavy Hoodie Pro",
+    "keywords": [
+      "cotton",
+      "polyester"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 479000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size",
+    "fit"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:39.437Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:39.580Z"
+  }
+},
+{
+  "_id": "prod-a8485a34-a35f-41bb-97df-457d564e1a24",
+  "name": "DFS Fleece Hoodie",
+  "slug": "dfs-fleece-hoodie",
+  "category_id": "cat-53a0e92b-1afa-49c0-bcac-64430ce3f91e",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "DFS Fleece Hoodie – chất liệu tối ưu, phù hợp winter",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "polyester",
+      "cotton"
+    ],
+    "material_ratio": {
+      "polyester": 80,
+      "cotton": 20
+    },
+    "customization_available": false,
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "hoodies"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 146,
+  "seo": {
+    "title": "DFS Fleece Hoodie",
+    "description": "DFS Fleece Hoodie",
+    "keywords": [
+      "polyester",
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 429000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:39.710Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:39.860Z"
+  }
+},
+{
+  "_id": "prod-02ffb858-fcc8-4ceb-bf5e-365b9a2a642e",
+  "name": "BlueWave Zip Hoodie",
+  "slug": "bluewave-zip-hoodie",
+  "category_id": "cat-53a0e92b-1afa-49c0-bcac-64430ce3f91e",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Zip Hoodie – chất liệu tối ưu, phù hợp autumn, winter",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "hoodies"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 87,
+  "seo": {
+    "title": "BlueWave Zip Hoodie",
+    "description": "BlueWave Zip Hoodie",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 459000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:39.996Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:40.131Z"
+  }
+},
+{
+  "_id": "prod-e3121aad-fdfd-4944-94a3-eecc9a7e8722",
+  "name": "DFS Stretch Jogger",
+  "slug": "dfs-stretch-jogger",
+  "category_id": "cat-5304df3a-615f-467b-b477-41bf9ccc682d",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "DFS Stretch Jogger – chất liệu tối ưu, phù hợp all-season",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton",
+      "spandex"
+    ],
+    "material_ratio": {
+      "cotton": 95,
+      "spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "pants"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 140,
+  "seo": {
+    "title": "DFS Stretch Jogger",
+    "description": "DFS Stretch Jogger",
+    "keywords": [
+      "cotton",
+      "spandex"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 329000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:40.260Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:40.396Z"
+  }
+},
+{
+  "_id": "prod-62d28786-7549-4f6d-b61d-62f92eae1c7f",
+  "name": "Minimal Form Chino Pants",
+  "slug": "minimal-form-chino-pants",
+  "category_id": "cat-5304df3a-615f-467b-b477-41bf9ccc682d",
+  "brand_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "description": "Minimal Form Chino Pants – chất liệu tối ưu, phù hợp spring, autumn",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "pants"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 92,
+  "seo": {
+    "title": "Minimal Form Chino Pants",
+    "description": "Minimal Form Chino Pants",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 389000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size",
+    "fit"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:40.530Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:40.677Z"
+  }
+},
+{
+  "_id": "prod-30a3f21d-c714-4299-ad32-35a93f354a30",
+  "name": "BlueWave Tech Cargo",
+  "slug": "bluewave-tech-cargo",
+  "category_id": "cat-5304df3a-615f-467b-b477-41bf9ccc682d",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Tech Cargo – chất liệu tối ưu, phù hợp all-season",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "polyester"
+    ],
+    "material_ratio": {
+      "polyester": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "pants"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 156,
+  "seo": {
+    "title": "BlueWave Tech Cargo",
+    "description": "BlueWave Tech Cargo",
+    "keywords": [
+      "polyester"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 419000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:40.816Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:40.950Z"
+  }
+},
+{
+  "_id": "prod-3d3d02ea-9772-4ee4-b5fb-064d4897ac26",
+  "name": "Minimal Form Slip Dress",
+  "slug": "minimal-form-slip-dress",
+  "category_id": "cat-a91645ae-a0b9-4e40-8e07-0e1015e2bd0f",
+  "brand_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "description": "Minimal Form Slip Dress – chất liệu tối ưu, phù hợp summer",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "polyester"
+    ],
+    "material_ratio": {
+      "polyester": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "dresses"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 94,
+  "seo": {
+    "title": "Minimal Form Slip Dress",
+    "description": "Minimal Form Slip Dress",
+    "keywords": [
+      "polyester"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 459000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:41.077Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:41.212Z"
+  }
+},
+{
+  "_id": "prod-5704df8c-af8b-4950-999c-d1ad0b5e329b",
+  "name": "BlueWave Shirt Dress",
+  "slug": "bluewave-shirt-dress",
+  "category_id": "cat-a91645ae-a0b9-4e40-8e07-0e1015e2bd0f",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Shirt Dress – chất liệu tối ưu, phù hợp spring, summer",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "dresses"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 110,
+  "seo": {
+    "title": "BlueWave Shirt Dress",
+    "description": "BlueWave Shirt Dress",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 499000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:41.657Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:41.796Z"
+  }
+},
+{
+  "_id": "prod-3c3d8c43-eb01-41b4-beeb-3581e2a8f0fb",
+  "name": "DFS Long Sleeve Tee",
+  "slug": "dfs-long-sleeve-tee",
+  "category_id": "cat-51a31bf4-a1bb-4d1d-9709-3c9dc795f744",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "DFS Long Sleeve Tee – chất liệu tối ưu, phù hợp autumn",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "cotton"
+    ],
+    "material_ratio": {
+      "cotton": 100
+    },
+    "customization_available": false,
+    "seasons": [
+      "autumn"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 4.8,
+  "rating_count": 100,
+  "sold_count": 10000,
+  "stock_total": 138,
+  "seo": {
+    "title": "DFS Long Sleeve Tee",
+    "description": "DFS Long Sleeve Tee",
+    "keywords": [
+      "cotton"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 259000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:41.923Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:42.063Z"
+  }
+},
+{
+  "_id": "prod-21420fa0-372e-47bb-a535-cbad65b832d2",
+  "name": "BlueWave Active Tee",
+  "slug": "bluewave-active-tee",
+  "category_id": "cat-8b73f0ea-840e-47b2-98ef-b93050d18b69",
+  "brand_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "description": "BlueWave Active Tee – chất liệu tối ưu, phù hợp summer",
+  "detail_info": {
+    "origin_country": "Vietnam",
+    "materials": [
+      "polyester",
+      "spandex"
+    ],
+    "material_ratio": {
+      "polyester": 90,
+      "spandex": 10
+    },
+    "customization_available": false,
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt nhẹ, tránh tẩy."
+  },
+  "tags": [
+    "new",
+    "t"
+  ],
+  "images": [],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 199,
+  "seo": {
+    "title": "BlueWave Active Tee",
+    "description": "BlueWave Active Tee",
+    "keywords": [
+      "polyester",
+      "spandex"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 279000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size",
+    "material_variant"
+  ],
+  "attributes": {},
+  "createdAt": {
+    "$date": "2025-11-04T12:43:42.189Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:21:40.229Z"
+  }
+},
+{
+  "_id": "prod-c74a94af-ddcb-4b91-978e-8ad3d1e9343c",
+  "name": "Áo thun Essential 1ZEM",
+  "slug": "ao-thun-essential-1zem-j2eg",
+  "category_id": "cat-d949df89-9a43-446b-8529-dbe5bfadd6ed",
+  "brand_id": "brand-0cec8794-3945-407c-a12e-b04cc41e6fcb",
+  "description": "Áo thun Essential 1ZEM – sản phẩm mẫu seed tự động.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "Cotton",
+      "Spandex"
+    ],
+    "material_ratio": {
+      "Cotton": 95,
+      "Spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ dưới 30°C, không tẩy."
+  },
+  "tags": [
+    "seed-50",
+    "ao-thun",
+    "urbanwave"
+  ],
+  "images": [
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-4566-1.jpg",
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-4566-2.jpg",
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-4566-3.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 130,
+  "seo": {
+    "title": "Áo thun Essential 1ZEM",
+    "description": "Mua Áo thun Essential 1ZEM giá tốt",
+    "keywords": [
+      "Áo thun Essential 1ZEM",
+      "Áo thun"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 224149,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "fit": "regular"
+  },
+  "createdAt": {
+    "$date": "2025-11-05T14:49:54.001Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:54.150Z"
+  }
+},
+{
+  "_id": "prod-a14f408d-e806-4553-859b-ed3b6eb796cd",
+  "name": "Áo polo Essential LOPE",
+  "slug": "ao-polo-essential-lope-91hl",
+  "category_id": "cat-1cba2ac8-6114-4cf1-aade-9faa19a605e0",
+  "brand_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "description": "Áo polo Essential LOPE – sản phẩm mẫu seed tự động.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "Cotton"
+    ],
+    "material_ratio": {
+      "Cotton": 95,
+      "Spandex": 5
+    },
+    "customization_available": false,
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt nhẹ dưới 30°C, không tẩy."
+  },
+  "tags": [
+    "seed-50",
+    "ao-polo",
+    "dfs-originals"
+  ],
+  "images": [
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-2765-1.jpg",
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-2765-2.jpg",
+    "https://res.cloudinary.com/demo/image/upload/v1670000/dfs/sample-2765-3.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 0,
+  "seo": {
+    "title": "Áo polo Essential LOPE",
+    "description": "Mua Áo polo Essential LOPE giá tốt",
+    "keywords": [
+      "Áo polo Essential LOPE",
+      "Áo polo"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 397619,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "fit": "regular"
+  },
+  "createdAt": {
+    "$date": "2025-11-05T14:49:54.219Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:54.219Z"
+  }
+},
+{
+  "_id": "prod-14f4d1c9-c53d-406d-bbdb-2b9cfe519766",
+  "name": "Áo len Essential #486",
+  "slug": "ao-len-essential-486-aafb80",
+  "category_id": "cat-334cba5f-fccf-40ae-81f6-75b3f92f8a0b",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo len phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 99,
+  "seo": {
+    "title": "Áo len Essential #486",
+    "description": "Áo len Essential #486 – DFS",
+    "keywords": [
+      "Áo len",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 669509,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-polo"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:00.902Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.210Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-66d797bb-1855-4b50-80d2-b69e97d96a01",
+  "name": "Quần tây Essential #655",
+  "slug": "quan-tay-essential-655-5faba2",
+  "category_id": "cat-56a4f9d0-b181-412c-b49b-60556a1c8572",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Quần tây phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 122,
+  "seo": {
+    "title": "Quần tây Essential #655",
+    "description": "Quần tây Essential #655 – DFS",
+    "keywords": [
+      "Quần tây",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 428301,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "quan",
+      "quan-short"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:01.300Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.855Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-902e9883-6758-41db-847b-38c83d4fa6db",
+  "name": "Đầm suông Basic #510",
+  "slug": "dam-suong-basic-510-c22ed8",
+  "category_id": "cat-3fc6d880-84be-47ed-900c-6524c29ccb45",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Đầm suông phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 82,
+  "seo": {
+    "title": "Đầm suông Basic #510",
+    "description": "Đầm suông Basic #510 – DFS",
+    "keywords": [
+      "Đầm suông",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 366279,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "dam",
+      "dam-babydoll"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:01.510Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.705Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-ef9f9bb9-4d6d-49f7-a213-552c4415118d",
+  "name": "Áo nỉ Basic #365",
+  "slug": "ao-ni-basic-365-d33a20",
+  "category_id": "cat-b6428169-ac1c-43c6-b9de-607ba7c2f647",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Áo nỉ phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 147,
+  "seo": {
+    "title": "Áo nỉ Basic #365",
+    "description": "Áo nỉ Basic #365 – DFS",
+    "keywords": [
+      "Áo nỉ",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 680751,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-thun"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:01.725Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.492Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-c2b47b1f-edcb-4f3f-8f9d-66cc2c0f9a69",
+  "name": "Bộ mặc nhà Regular #562",
+  "slug": "bo-mac-nha-regular-562-9c2883",
+  "category_id": "cat-fb218f88-4473-4d51-9e44-22f133e7ce2e",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Bộ mặc nhà phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 83,
+  "seo": {
+    "title": "Bộ mặc nhà Regular #562",
+    "description": "Bộ mặc nhà Regular #562 – DFS",
+    "keywords": [
+      "Bộ mặc nhà",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 455380,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "bo",
+      "bo-the-thao-unisex"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:01.939Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.465Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-945f209d-7a0a-4c1d-8660-ed5745737019",
+  "name": "Áo polo Premium #948",
+  "slug": "ao-polo-premium-948-014288",
+  "category_id": "cat-25cfbca8-b9ce-464d-b58e-f073814f79ef",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Áo polo phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 112,
+  "seo": {
+    "title": "Áo polo Premium #948",
+    "description": "Áo polo Premium #948 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 252949,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-so-mi"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:02.126Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.317Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-5e5f76cd-013d-4fb5-9547-24cc54debecd",
+  "name": "Áo sơ mi Classic #713",
+  "slug": "ao-so-mi-classic-713-155ec3",
+  "category_id": "cat-25cfbca8-b9ce-464d-b58e-f073814f79ef",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Áo sơ mi phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 79,
+  "seo": {
+    "title": "Áo sơ mi Classic #713",
+    "description": "Áo sơ mi Classic #713 – DFS",
+    "keywords": [
+      "Áo sơ mi",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 647783,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-so-mi"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:02.318Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.734Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-a4a8ecf0-50b4-4bde-a2dd-16971e06028a",
+  "name": "Áo thun Classic #141",
+  "slug": "ao-thun-classic-141-5ea5f0",
+  "category_id": "cat-b93bbdb0-4ae9-4f99-b20a-2c5b86b84012",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Áo thun phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 61,
+  "seo": {
+    "title": "Áo thun Classic #141",
+    "description": "Áo thun Classic #141 – DFS",
+    "keywords": [
+      "Áo thun",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 628268,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "sweatshirt"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:02.520Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.517Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-ffde88b2-6d23-416c-8cf3-f3ce34dc9b2c",
+  "name": "Áo len Premium #983",
+  "slug": "ao-len-premium-983-34e4ac",
+  "category_id": "cat-c8c63060-cca1-4bb9-a296-c9428a6c5685",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Áo len phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 170,
+  "seo": {
+    "title": "Áo len Premium #983",
+    "description": "Áo len Premium #983 – DFS",
+    "keywords": [
+      "Áo len",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 779997,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "ao",
+      "ao-the-thao"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:02.715Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.406Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-4459c37e-c0a0-4689-b258-bc5bb9a13134",
+  "name": "Quần jeans Essential #262",
+  "slug": "quan-jeans-essential-262-43689a",
+  "category_id": "cat-976eec38-e30b-48b0-a71f-4bf6fb499a34",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Quần jeans phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 107,
+  "seo": {
+    "title": "Quần jeans Essential #262",
+    "description": "Quần jeans Essential #262 – DFS",
+    "keywords": [
+      "Quần jeans",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 742752,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "quan",
+      "quan-jeans"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:02.893Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.335Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-a94fd2f2-4bf2-4d26-88f8-91a719a0b7de",
+  "name": "Quần lót Classic #653",
+  "slug": "quan-lot-classic-653-890b88",
+  "category_id": "cat-d210d4fc-df33-4f9d-8d70-877fa8b80ec4",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Quần lót phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 213,
+  "seo": {
+    "title": "Quần lót Classic #653",
+    "description": "Quần lót Classic #653 – DFS",
+    "keywords": [
+      "Quần lót",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 298137,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "do-lot",
+      "brief"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.088Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.647Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-493d6a82-ebde-49ca-b182-d903cdba53d0",
+  "name": "Quần tây Essential #277",
+  "slug": "quan-tay-essential-277-ec57f7",
+  "category_id": "cat-23d28c67-486d-41d6-8627-e218fe4827ce",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Quần tây phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 109,
+  "seo": {
+    "title": "Quần tây Essential #277",
+    "description": "Quần tây Essential #277 – DFS",
+    "keywords": [
+      "Quần tây",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 757141,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "quan",
+      "quan-jogger"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.165Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.859Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-65a74ca9-fe2f-4399-b473-10b0050d6b4d",
+  "name": "Bộ đồ thể thao Essential #770",
+  "slug": "bo-do-the-thao-essential-770-9ef3d4",
+  "category_id": "cat-5bffb595-eb2e-4ad7-8aa4-4f43098e19a6",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Bộ đồ thể thao phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 91,
+  "seo": {
+    "title": "Bộ đồ thể thao Essential #770",
+    "description": "Bộ đồ thể thao Essential #770 – DFS",
+    "keywords": [
+      "Bộ đồ thể thao",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 200394,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "bo",
+      "bo-the-thao"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.241Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.785Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-2f872c36-5d63-4e44-9d07-a9c05005ce65",
+  "name": "Áo khoác Premium #288",
+  "slug": "ao-khoac-premium-288-54429b",
+  "category_id": "cat-a4c592be-b810-4fa9-9a92-35d5192b6bd9",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo khoác phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 134,
+  "seo": {
+    "title": "Áo khoác Premium #288",
+    "description": "Áo khoác Premium #288 – DFS",
+    "keywords": [
+      "Áo khoác",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 785303,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "cardigan"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.326Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.616Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-5c575825-5515-4c60-a8fc-563084cd6cf9",
+  "name": "Bộ đồ thể thao Classic #257",
+  "slug": "bo-do-the-thao-classic-257-8f6437",
+  "category_id": "cat-5834f335-22ab-4a9a-a9ca-27eca3975bbc",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Bộ đồ thể thao phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 131,
+  "seo": {
+    "title": "Bộ đồ thể thao Classic #257",
+    "description": "Bộ đồ thể thao Classic #257 – DFS",
+    "keywords": [
+      "Bộ đồ thể thao",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 498134,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "bo",
+      "bo-the-thao"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.411Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.708Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-7d5a7cc6-4c58-4bbc-9d0c-bb522d5595cd",
+  "name": "Quần jeans Basic #964",
+  "slug": "quan-jeans-basic-964-790e49",
+  "category_id": "cat-9838830b-4242-4cf3-a197-1aeadc21350d",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Quần jeans phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 71,
+  "seo": {
+    "title": "Quần jeans Basic #964",
+    "description": "Quần jeans Basic #964 – DFS",
+    "keywords": [
+      "Quần jeans",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 528571,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "quan",
+      "quan-jeans"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.536Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.996Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-90190aa8-52d6-48cb-9710-2888dacf6e63",
+  "name": "Áo polo Essential #830",
+  "slug": "ao-polo-essential-830-eb6903",
+  "category_id": "cat-6ee39841-7dcc-426e-b4f4-3713f4db3154",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Áo polo phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 97,
+  "seo": {
+    "title": "Áo polo Essential #830",
+    "description": "Áo polo Essential #830 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 782788,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "ao-so-mi"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:03.789Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.068Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-3b07fe10-81ff-4e83-8a3b-0a29f77fe546",
+  "name": "Áo len Classic #212",
+  "slug": "ao-len-classic-212-5e3a27",
+  "category_id": "cat-6ee39841-7dcc-426e-b4f4-3713f4db3154",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Áo len phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 114,
+  "seo": {
+    "title": "Áo len Classic #212",
+    "description": "Áo len Classic #212 – DFS",
+    "keywords": [
+      "Áo len",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 320326,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "ao-so-mi"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.243Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:08.988Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-0d54adeb-f90e-41cd-a541-317c23aed9a8",
+  "name": "Áo polo Regular #494",
+  "slug": "ao-polo-regular-494-dc915c",
+  "category_id": "cat-95f4b735-aaa8-4f81-8a82-3045ce29d560",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Áo polo phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 143,
+  "seo": {
+    "title": "Áo polo Regular #494",
+    "description": "Áo polo Regular #494 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 231189,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "hoodie"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.367Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.437Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-74665962-75b3-40e2-b66a-cef40c20b3a9",
+  "name": "Bralette Essential #937",
+  "slug": "bralette-essential-937-2f1506",
+  "category_id": "cat-5dcc6467-3605-4614-8282-18b553b28695",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Bralette phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 58,
+  "seo": {
+    "title": "Bralette Essential #937",
+    "description": "Bralette Essential #937 – DFS",
+    "keywords": [
+      "Bralette",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 494656,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "do-lot",
+      "quan-lot-unisex"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.485Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.550Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-9aabf47d-ea44-4993-85c3-7b45f2f52471",
+  "name": "Áo khoác Regular #444",
+  "slug": "ao-khoac-regular-444-a3357a",
+  "category_id": "cat-fbb56ad0-d576-40ab-a74d-4809428a6c45",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo khoác phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 44,
+  "seo": {
+    "title": "Áo khoác Regular #444",
+    "description": "Áo khoác Regular #444 – DFS",
+    "keywords": [
+      "Áo khoác",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 628468,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "ao-croptop"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.602Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.415Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-2a3ce960-8ebf-4de9-b972-a7babdc29488",
+  "name": "Váy xòe Essential #674",
+  "slug": "vay-xoe-essential-674-75f066",
+  "category_id": "cat-953127e3-82e3-4215-b6b9-3c44e627333d",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Váy xòe phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 58,
+  "seo": {
+    "title": "Váy xòe Essential #674",
+    "description": "Váy xòe Essential #674 – DFS",
+    "keywords": [
+      "Váy xòe",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 289965,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "vay",
+      "vay-2-day"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.739Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.634Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-28c4422e-5254-47d6-b284-98444d51c372",
+  "name": "Áo nỉ Essential #858",
+  "slug": "ao-ni-essential-858-e861d2",
+  "category_id": "cat-d34ff9d0-ec9a-463c-bdb2-ee1e4f9ddac4",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo nỉ phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 293,
+  "seo": {
+    "title": "Áo nỉ Essential #858",
+    "description": "Áo nỉ Essential #858 – DFS",
+    "keywords": [
+      "Áo nỉ",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 742241,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-khoac"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:04.976Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.717Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-c972ae57-c4c2-4959-9a07-ec9848d6acae",
+  "name": "Áo polo Regular #306",
+  "slug": "ao-polo-regular-306-bcc3a6",
+  "category_id": "cat-9345dcff-bd73-41f5-a058-346d5b2d4c49",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Áo polo phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 95,
+  "seo": {
+    "title": "Áo polo Regular #306",
+    "description": "Áo polo Regular #306 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 238104,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "ao",
+      "ao-tanktop"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.058Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.965Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-66498ee7-83d2-4cbf-a973-176a4fe8e200",
+  "name": "Quần lót Classic #891",
+  "slug": "quan-lot-classic-891-f52e06",
+  "category_id": "cat-212b938d-6f30-4a55-920d-ae43e72f5e05",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Quần lót phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 76,
+  "seo": {
+    "title": "Quần lót Classic #891",
+    "description": "Quần lót Classic #891 – DFS",
+    "keywords": [
+      "Quần lót",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 725798,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "do-lot",
+      "quan-lot-cotton"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.140Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.343Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-fec29ee5-c466-402c-9718-1c5e6ea9e567",
+  "name": "Váy chữ A Regular #724",
+  "slug": "vay-chu-a-regular-724-d46cae",
+  "category_id": "cat-95ab8b57-50d7-4276-b67d-2033eb9d0b3c",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Váy chữ A phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 99,
+  "seo": {
+    "title": "Váy chữ A Regular #724",
+    "description": "Váy chữ A Regular #724 – DFS",
+    "keywords": [
+      "Váy chữ A",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 471925,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "vay",
+      "chan-vay"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.238Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.135Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-268d4366-a0dc-46ce-98b0-f4be8f6972db",
+  "name": "Áo lót Basic #775",
+  "slug": "ao-lot-basic-775-64db44",
+  "category_id": "cat-212b938d-6f30-4a55-920d-ae43e72f5e05",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Áo lót phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 102,
+  "seo": {
+    "title": "Áo lót Basic #775",
+    "description": "Áo lót Basic #775 – DFS",
+    "keywords": [
+      "Áo lót",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 743434,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "do-lot",
+      "quan-lot-cotton"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.409Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:08.919Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-f792ad7c-e351-4cdb-a6e4-678c3a010ea0",
+  "name": "Quần jogger Classic #441",
+  "slug": "quan-jogger-classic-441-1bbe99",
+  "category_id": "cat-9a7c027c-22bf-403c-87e7-ad13507a113e",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Quần jogger phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 88,
+  "seo": {
+    "title": "Quần jogger Classic #441",
+    "description": "Quần jogger Classic #441 – DFS",
+    "keywords": [
+      "Quần jogger",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 764032,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "quan",
+      "legging"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.506Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.207Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-6bd6eb43-c792-4347-9278-2163edc9adf4",
+  "name": "Áo sơ mi Basic #384",
+  "slug": "ao-so-mi-basic-384-7e27cc",
+  "category_id": "cat-0dc371ee-8d52-4a8f-8e20-9dc41d30fd43",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo sơ mi phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 25,
+  "seo": {
+    "title": "Áo sơ mi Basic #384",
+    "description": "Áo sơ mi Basic #384 – DFS",
+    "keywords": [
+      "Áo sơ mi",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 793431,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "hoodie"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.599Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.251Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-720a11f1-a38d-4c8a-bb2c-f6eb2f0cb76e",
+  "name": "Đầm body Premium #694",
+  "slug": "dam-body-premium-694-647d46",
+  "category_id": "cat-953127e3-82e3-4215-b6b9-3c44e627333d",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Đầm body phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 122,
+  "seo": {
+    "title": "Đầm body Premium #694",
+    "description": "Đầm body Premium #694 – DFS",
+    "keywords": [
+      "Đầm body",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 471327,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "vay",
+      "vay-2-day"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.700Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:08.672Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-66e0eb28-204f-41d2-a955-2df8bc824121",
+  "name": "Áo polo Classic #260",
+  "slug": "ao-polo-classic-260-16b0ee",
+  "category_id": "cat-6ee39841-7dcc-426e-b4f4-3713f4db3154",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Áo polo phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 30,
+  "seo": {
+    "title": "Áo polo Classic #260",
+    "description": "Áo polo Classic #260 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 636788,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "ao-so-mi"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.802Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.559Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-763c6032-fc63-4962-ac7b-9f01dea33345",
+  "name": "Áo sơ mi Classic #586",
+  "slug": "ao-so-mi-classic-586-3f3d78",
+  "category_id": "cat-a4c592be-b810-4fa9-9a92-35d5192b6bd9",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Áo sơ mi phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 27,
+  "seo": {
+    "title": "Áo sơ mi Classic #586",
+    "description": "Áo sơ mi Classic #586 – DFS",
+    "keywords": [
+      "Áo sơ mi",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 682958,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "cardigan"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.874Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.193Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-4c5296bb-536a-481e-81b6-19f9a8d3679e",
+  "name": "Quần tây Classic #827",
+  "slug": "quan-tay-classic-827-e43b63",
+  "category_id": "cat-97ef9887-5d4e-48a6-bc1a-1116aea33a66",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Quần tây phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 77,
+  "seo": {
+    "title": "Quần tây Classic #827",
+    "description": "Quần tây Classic #827 – DFS",
+    "keywords": [
+      "Quần tây",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 393093,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "quan",
+      "quan-short"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:05.945Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.068Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-be343aad-360b-4bdc-a20e-84db6f407795",
+  "name": "Áo lót Classic #245",
+  "slug": "ao-lot-classic-245-5f29b9",
+  "category_id": "cat-5dcc6467-3605-4614-8282-18b553b28695",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Áo lót phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 146,
+  "seo": {
+    "title": "Áo lót Classic #245",
+    "description": "Áo lót Classic #245 – DFS",
+    "keywords": [
+      "Áo lót",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 457425,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "do-lot",
+      "quan-lot-unisex"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.028Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.821Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-46fd3779-1f66-45ff-beef-2853468ceeca",
+  "name": "Đồ ngủ cotton Basic #330",
+  "slug": "do-ngu-cotton-basic-330-3d6e36",
+  "category_id": "cat-0e0ecabb-be51-4c2a-a3d9-1da3cd57fe03",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Đồ ngủ cotton phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 178,
+  "seo": {
+    "title": "Đồ ngủ cotton Basic #330",
+    "description": "Đồ ngủ cotton Basic #330 – DFS",
+    "keywords": [
+      "Đồ ngủ cotton",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 782352,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "do-ngu",
+      "ao-ngu"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.109Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.119Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-19fecfe5-aec1-470b-82b2-17ea1f31b83e",
+  "name": "Đồ ngủ cotton Essential #713",
+  "slug": "do-ngu-cotton-essential-713-6ff340",
+  "category_id": "cat-1b2f1219-1abd-4388-8c64-ecce7f96f2a1",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Đồ ngủ cotton phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 102,
+  "seo": {
+    "title": "Đồ ngủ cotton Essential #713",
+    "description": "Đồ ngủ cotton Essential #713 – DFS",
+    "keywords": [
+      "Đồ ngủ cotton",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 619881,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "do-ngu",
+      "pyjama"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.181Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.635Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-3cb14478-1334-4c41-b8ac-eefb8caee83d",
+  "name": "Bộ đồ thể thao Premium #588",
+  "slug": "bo-do-the-thao-premium-588-dca558",
+  "category_id": "cat-5834f335-22ab-4a9a-a9ca-27eca3975bbc",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Bộ đồ thể thao phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 244,
+  "seo": {
+    "title": "Bộ đồ thể thao Premium #588",
+    "description": "Bộ đồ thể thao Premium #588 – DFS",
+    "keywords": [
+      "Bộ đồ thể thao",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 261027,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "bo",
+      "bo-the-thao"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.249Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.052Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-af62574b-b1f1-427f-912f-cb024cffaa9a",
+  "name": "Áo thun Essential #250",
+  "slug": "ao-thun-essential-250-035d94",
+  "category_id": "cat-0c9c53e5-7b26-418c-b7b2-edd7dbdf45c4",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Áo thun phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "all-season"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 162,
+  "seo": {
+    "title": "Áo thun Essential #250",
+    "description": "Áo thun Essential #250 – DFS",
+    "keywords": [
+      "Áo thun",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 651005,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "ao-thun"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.325Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.997Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-10752001-fba0-4a8f-bcde-a2639473784d",
+  "name": "Đồ ngủ cotton Basic #586",
+  "slug": "do-ngu-cotton-basic-586-76c7f4",
+  "category_id": "cat-88748842-4f82-4ff7-9b51-cdcedad6600d",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Đồ ngủ cotton phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 67,
+  "seo": {
+    "title": "Đồ ngủ cotton Basic #586",
+    "description": "Đồ ngủ cotton Basic #586 – DFS",
+    "keywords": [
+      "Đồ ngủ cotton",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 745771,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "do-ngu",
+      "vay-ngu"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.417Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:12.392Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-2e7770ab-f33b-46d2-8da4-0173fe5df44d",
+  "name": "Bralette Basic #201",
+  "slug": "bralette-basic-201-a30638",
+  "category_id": "cat-784080a7-81db-48ce-9f13-64f6931c3135",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Bralette phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 27,
+  "seo": {
+    "title": "Bralette Basic #201",
+    "description": "Bralette Basic #201 – DFS",
+    "keywords": [
+      "Bralette",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 708213,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "do-lot",
+      "bodysuit"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.490Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.794Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-d64ff6ff-f482-46eb-97af-1abe19653df4",
+  "name": "Áo nỉ Classic #638",
+  "slug": "ao-ni-classic-638-ced48c",
+  "category_id": "cat-a4c592be-b810-4fa9-9a92-35d5192b6bd9",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Áo nỉ phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 283,
+  "seo": {
+    "title": "Áo nỉ Classic #638",
+    "description": "Áo nỉ Classic #638 – DFS",
+    "keywords": [
+      "Áo nỉ",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 489640,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "ao",
+      "cardigan"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.584Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.924Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-7441af7f-c374-4990-a6aa-b1a23182b209",
+  "name": "Áo polo Regular #218",
+  "slug": "ao-polo-regular-218-e69334",
+  "category_id": "cat-d34ff9d0-ec9a-463c-bdb2-ee1e4f9ddac4",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Áo polo phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 111,
+  "seo": {
+    "title": "Áo polo Regular #218",
+    "description": "Áo polo Regular #218 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 718240,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "ao",
+      "ao-khoac"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.662Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.302Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-784051e5-4589-4056-b32b-abf58507ecb0",
+  "name": "Quần jogger Classic #922",
+  "slug": "quan-jogger-classic-922-22b3e9",
+  "category_id": "cat-e22d1f85-9e1a-43e9-ab34-73786f3a5b2f",
+  "brand_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "description": "Quần jogger phong cách Classic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 112,
+  "seo": {
+    "title": "Quần jogger Classic #922",
+    "description": "Quần jogger Classic #922 – DFS",
+    "keywords": [
+      "Quần jogger",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 416886,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "quan",
+      "quan-tay"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.743Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.263Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-feb3719d-b067-4751-8167-8a0c8ca95762",
+  "name": "Quần jogger Regular #735",
+  "slug": "quan-jogger-regular-735-d79370",
+  "category_id": "cat-489b7cad-6fc7-479f-b351-421598ae9dfe",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Quần jogger phong cách Regular.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 68,
+  "seo": {
+    "title": "Quần jogger Regular #735",
+    "description": "Quần jogger Regular #735 – DFS",
+    "keywords": [
+      "Quần jogger",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 461299,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "quan",
+      "culottes"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.824Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.042Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-73007b8a-c5ba-4bb6-aac7-536b952ccda7",
+  "name": "Bộ nỉ Basic #368",
+  "slug": "bo-ni-basic-368-4c93bf",
+  "category_id": "cat-ed2d4060-7a38-4c71-9469-7fe212ea150a",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Bộ nỉ phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 138,
+  "seo": {
+    "title": "Bộ nỉ Basic #368",
+    "description": "Bộ nỉ Basic #368 – DFS",
+    "keywords": [
+      "Bộ nỉ",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 535445,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "bo",
+      "set-ao-quan-unisex"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.914Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:11.919Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-55f9a6c5-3d56-412c-860a-d65255877d9c",
+  "name": "Áo polo Basic #703",
+  "slug": "ao-polo-basic-703-42b445",
+  "category_id": "cat-d949df89-9a43-446b-8529-dbe5bfadd6ed",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Áo polo phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "spandex",
+      "polyester"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 67,
+  "seo": {
+    "title": "Áo polo Basic #703",
+    "description": "Áo polo Basic #703 – DFS",
+    "keywords": [
+      "Áo polo",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 707031,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "ao",
+      "ao-thun"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:06.997Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:10.532Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-656ad0d9-b643-4ec8-a2a5-254e3819bdda",
+  "name": "Bralette Premium #696",
+  "slug": "bralette-premium-696-7f41a0",
+  "category_id": "cat-784080a7-81db-48ce-9f13-64f6931c3135",
+  "brand_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "description": "Bralette phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton",
+      "polyester"
+    ],
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 148,
+  "seo": {
+    "title": "Bralette Premium #696",
+    "description": "Bralette Premium #696 – DFS",
+    "keywords": [
+      "Bralette",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 371222,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "do-lot",
+      "bodysuit"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:07.070Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:08.783Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-430e4c12-68b2-48d6-8465-7f7a1558264a",
+  "name": "Pyjama Premium #905",
+  "slug": "pyjama-premium-905-dbbd66",
+  "category_id": "cat-f58fbbc8-178d-4540-a63f-dc071608a22a",
+  "brand_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "description": "Pyjama phong cách Premium.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 151,
+  "seo": {
+    "title": "Pyjama Premium #905",
+    "description": "Pyjama Premium #905 – DFS",
+    "keywords": [
+      "Pyjama",
+      "thời trang"
+    ]
+  },
+  "is_featured": true,
+  "status": "active",
+  "base_price": 309592,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "unisex",
+      "do-ngu",
+      "pyjama"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:07.138Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:09.126Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-ee31a69d-97c2-40ca-a7a5-56cda6cab2f4",
+  "name": "Bralette Basic #511",
+  "slug": "bralette-basic-511-ff3337",
+  "category_id": "cat-d210d4fc-df33-4f9d-8d70-877fa8b80ec4",
+  "brand_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "description": "Bralette phong cách Basic.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "winter"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 124,
+  "seo": {
+    "title": "Bralette Basic #511",
+    "description": "Bralette Basic #511 – DFS",
+    "keywords": [
+      "Bralette",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "out_of_stock",
+  "base_price": 432508,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nam",
+      "do-lot",
+      "brief"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:07.209Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T18:46:23.852Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prod-31ddc1f3-9a23-43b3-9e0a-2bc765122b13",
+  "name": "Quần short Essential #784",
+  "slug": "quan-short-essential-784-6dc23a",
+  "category_id": "cat-9a7c027c-22bf-403c-87e7-ad13507a113e",
+  "brand_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "description": "Quần short phong cách Essential.",
+  "detail_info": {
+    "origin_country": "VN",
+    "materials": [
+      "cotton"
+    ],
+    "seasons": [
+      "summer"
+    ],
+    "care_instructions": "Giặt máy nhẹ, không tẩy.",
+    "customization_available": false
+  },
+  "tags": [
+    "dfs",
+    "seed",
+    "seed-50-v2"
+  ],
+  "images": [
+    "https://images.unsplash.com/photo-1520975739546-0e3fb5b1c549",
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    "https://images.unsplash.com/photo-1520975693413-35a9da9f3d59"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 82,
+  "seo": {
+    "title": "Quần short Essential #784",
+    "description": "Quần short Essential #784 – DFS",
+    "keywords": [
+      "Quần short",
+      "thời trang"
+    ]
+  },
+  "is_featured": false,
+  "status": "active",
+  "base_price": 360295,
+  "currency": "VND",
+  "variant_dimensions": [
+    "color",
+    "size"
+  ],
+  "attributes": {
+    "seed_tag": "seed-50-v2",
+    "path": [
+      "thoi-trang-nu",
+      "quan",
+      "legging"
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-11-05T15:05:07.279Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:08.852Z"
+  },
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78"
+},
+{
+  "_id": "prd-test-001",
+  "name": "Quần Lót Nam-Mens Organic Cotton Trunks",
+  "slug": "quan-lot-nam",
+  "category_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "brand_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "description": "Thông tin sản phẩm\nThêm thông tin\nMàu Sắc TRUE NAVY/WHITE/BLACK\nChất liệu cotton hữu cơ",
+  "tags": [
+    "demo",
+    "nike",
+    "dfs"
+  ],
+  "images": [
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9/image1.jpg",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9/image2.jpg",
+    "https://vcdn.acfc.com.vn/media/catalog/product/cache/1590496433db240c9/image3.jpg"
+  ],
+  "image_public_ids": [],
+  "videos": [],
+  "rating_avg": 0,
+  "rating_count": 0,
+  "sold_count": 0,
+  "stock_total": 45,
+  "seo": {
+    "keywords": []
+  },
+  "is_featured": false,
+  "base_price": 299000,
+  "currency": "VND",
+  "shop_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "status": "active",
+  "detail_info": {
+    "origin_country": "",
+    "materials": [],
+    "material_ratio": {},
+    "customization_available": false,
+    "seasons": [],
+    "care_instructions": "",
+    "extras": {}
+  },
+  "variant_dimensions": [
+    "size",
+    "color"
+  ],
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.541Z"
+  }
+}]
