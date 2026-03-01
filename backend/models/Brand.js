@@ -1,0 +1,21 @@
+// models/Brand.js
+const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
+
+const BrandSchema = new mongoose.Schema(
+  {
+    _id: { type: String, default: () => `brand-${uuidv4()}` },
+    name: { type: String, required: true, trim: true },
+    slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    country: { type: String, default: "unknown" },
+    gender_focus: { type: String, enum: ["men", "women", "unisex", "mixed"], default: "mixed" },
+    description: String,
+    logo_url: String,
+    logo_public_id: String,
+    seo: { title: String, description: String, keywords: [String] },
+    is_active: { type: Boolean, default: true },
+  },
+  { timestamps: true, versionKey: false, collection: "brands" }
+);
+
+module.exports = mongoose.model("Brand", BrandSchema);
