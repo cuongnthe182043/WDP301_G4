@@ -1,0 +1,161 @@
+[{
+  "_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "name": "minh hoàng",
+  "username": "minhhoang",
+  "email": "minhhoangdev3108@gmail.com",
+  "role_id": "rol-7a020325-7b3a-4de2-9652-6de8a07e1698",
+  "status": "active",
+  "password_hash": "$2b$10$8hUZBxkO2Xcno5PhDqQA2u9IfoS5xsnBtgFQc7PRDVFXHZzXr1VGy",
+  "createdAt": {
+    "$date": "2025-10-27T04:27:54.057Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T09:55:22.024Z"
+  },
+  "last_login": {
+    "$date": "2025-11-13T09:55:22.020Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLWFjZDgwZWQ1LWRmZGEtNGUwZC05Mzg3LWJhMDc3ZDZhMWQ3OCIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYzMDI3NzIyLCJleHAiOjE3NjM2MzI1MjJ9._xFlgSV8ii-PRypDYRrGNWo20Jo45icEkwUOYUOv--A",
+  "avatar_url": "",
+  "gender": "other",
+  "phone": "",
+  "preferences": {
+    "height": 159,
+    "size_bottom": "45",
+    "size_top": "23",
+    "weight": 55
+  }
+},
+{
+  "_id": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "name": "HuyShop",
+  "username": "huyshop123",
+  "email": "nemo.dev23@gmail.com",
+  "role_id": "rol-7a020325-7b3a-4de2-9652-6de8a07e1698",
+  "status": "active",
+  "password_hash": "$2b$10$szUN5b340lc5q2eJumT/COGBuoBaLxFk.XT5FSR0z.H5yr7iOuu0C",
+  "createdAt": {
+    "$date": "2025-10-28T12:59:11.276Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-10T02:13:17.551Z"
+  },
+  "last_login": {
+    "$date": "2025-11-10T02:13:17.547Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTNmYjJhYWE5LTM5ZjAtNDM2Ny05NzRiLTU5MTE0ZDhjY2ZkMiIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYyNzQwNzk3LCJleHAiOjE3NjMzNDU1OTd9._YvvvEXKaHKZ8IF3K9HUvCNb2APpBfqJtUYZbWdOJ2g"
+},
+{
+  "_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "name": "Star Five",
+  "username": "hanhtrinhthauhieu",
+  "email": "hanhtrinhthauhieu@gmail.com",
+  "role_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "status": "active",
+  "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJGRx4KJhpdDpH3CMMNkR9KlKar3XlUroR4l7CYbW1izioO3VM=s96-c",
+  "createdAt": {
+    "$date": "2025-10-31T18:51:44.053Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T18:51:44.223Z"
+  },
+  "last_login": {
+    "$date": "2025-10-31T18:51:44.222Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTg1MDZjMzczLWQ4ZjctNDRiMy05ZjRjLTM4ZDRjOGM0YWZkZCIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYxOTM2NzA0LCJleHAiOjE3NjI1NDE1MDR9.tdtOEFqUtzqgTaDf1tehX9yBXWqSLQf6NziRreCGKr4"
+},
+{
+  "_id": "user-3df6cc6f-1ccf-4a1c-bdab-6ff41921a768",
+  "name": "Tiền Phạm",
+  "username": "phamtiennb2003",
+  "email": "phamtiennb2003@gmail.com",
+  "role_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "status": "active",
+  "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocKNVhVsiPEAxR94K7I8Dl8DwqzA5YBoIwWm6poPsDaGy_azP_ME=s96-c",
+  "createdAt": {
+    "$date": "2025-10-31T18:58:08.616Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T16:15:57.665Z"
+  },
+  "last_login": {
+    "$date": "2025-11-05T16:15:57.661Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTNkZjZjYzZmLTFjY2YtNGExYy1iZGFiLTZmZjQxOTIxYTc2OCIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYyMzU5MzU3LCJleHAiOjE3NjI5NjQxNTd9.tL4gzsEIP6_PRFS2LdoJQl_2M4zRUKX2HTG0cFj2mlY"
+},
+{
+  "_id": "user-54fafc66-6cde-46e5-9706-55c830b426b2",
+  "name": "Pham Van Tien (K17 HL)",
+  "username": "tienpvhe176306",
+  "email": "tienpvhe176306@fpt.edu.vn",
+  "role_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "status": "active",
+  "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocJnXMMei3p2WkUkoejwoE6FlR2RrpHhzKLGBMXVH3OEfyh26A=s96-c",
+  "createdAt": {
+    "$date": "2025-10-31T18:59:56.883Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T20:10:06.797Z"
+  },
+  "last_login": {
+    "$date": "2025-11-04T20:10:06.794Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTU0ZmFmYzY2LTZjZGUtNDZlNS05NzA2LTU1YzgzMGI0MjZiMiIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYyMjg3MDA2LCJleHAiOjE3NjI4OTE4MDZ9.ygLueUL5t_IssSAgEWUwPe6PD-PJgXBj8LxnZYuUrag"
+},
+{
+  "_id": "user-33b9e807-bdfc-4637-a408-3cbf4ef1480e",
+  "name": "Huy Pham",
+  "username": "huyrongbaoto",
+  "email": "huyrongbaoto@gmail.com",
+  "role_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "status": "active",
+  "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLkgVmPOaGzF_IGABExabLqiTJ9JweDo2n02CvH1stXUflXn77x=s96-c",
+  "createdAt": {
+    "$date": "2025-11-03T04:41:40.630Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-03T04:53:31.855Z"
+  },
+  "last_login": {
+    "$date": "2025-11-03T04:53:31.854Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTMzYjllODA3LWJkZmMtNDYzNy1hNDA4LTNjYmY0ZWYxNDgwZSIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYyMTQ1NjExLCJleHAiOjE3NjI3NTA0MTF9.KFN0a7XCWym7-l024yXbGiCD1Pu1vdilPhMqxDmEHH4"
+},
+{
+  "_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "name": "minh hoang nguyen",
+  "username": "minhdz",
+  "email": "mr.minhhihi@gmail.com",
+  "role_id": "rol-e8f77336-5713-487e-92ee-f4f78ce6ecf3",
+  "status": "active",
+  "password_hash": "$2b$10$Y6bR86kJJlTzvZrriP6D3ufVuAT5NmL8P4qA0B9ycKC2GWXz62ioK",
+  "createdAt": {
+    "$date": "2025-11-13T13:30:14.306Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T16:47:24.474Z"
+  },
+  "last_login": {
+    "$date": "2025-11-13T16:47:24.471Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLWNjMTNlZWFkLTZhNzctNDJhMy1hODQ3LThmNWNmZTRiYWEzNyIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYzMDUyNDQ0LCJleHAiOjE3NjM2NTcyNDR9.cOHrVsYwCMDv7QSceTR9RyBQzIrb-JmNT9o5BTn3Edk"
+},
+{
+  "_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "name": "Anh Việt",
+  "username": "anhdovietvp2003",
+  "email": "anhdovietvp2003@gmail.com",
+  "role_id": "rol-7a020325-7b3a-4de2-9652-6de8a07e1698",
+  "status": "active",
+  "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocK-pCG5QZSEJyjGirL6Ip0bqlIC-JYhdFfXgWvdwv-Oa3imqxBp=s96-c",
+  "createdAt": {
+    "$date": "2026-02-19T12:56:04.575Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-19T13:00:12.296Z"
+  },
+  "last_login": {
+    "$date": "2026-02-19T13:00:12.296Z"
+  },
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJ1c2VyLTU4ZTdmZTFkLWY5NjEtNDUyMi04YTE1LWMyMjMxZDk2M2I4MSIsInRva2VuX3R5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzcxNTA2MDEyLCJleHAiOjE3NzIxMTA4MTJ9.qSozlvbt2X5E62AcNJY_NJ_fOg4tCLLezeBO5S1tArw"
+}]

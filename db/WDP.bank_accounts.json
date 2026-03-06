@@ -1,0 +1,53 @@
+[{
+  "_id": "bac-a773b401-39c4-4d12-8a27-7c3b6663fd7a",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "bank_name": "VCB",
+  "account_number": "00112233",
+  "owner_name": "NGUYEN VAN A",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.137Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.137Z"
+  }
+},
+{
+  "_id": "bac-2c748d01-91b1-47dc-ae03-453cd3683dff",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "bank_name": "ACB",
+  "account_number": "44556677",
+  "owner_name": "TRAN THI B",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.138Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.138Z"
+  }
+},
+{
+  "_id": "bac-784b6e3f-1ccd-43cb-9673-79d87db17da6",
+  "user_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "bank_name": "TPB",
+  "account_number": "99887766",
+  "owner_name": "DAILYFIT SHOP",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.138Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.138Z"
+  }
+},
+{
+  "_id": "bank-da39caab-9eba-4874-9cb0-1ef89c9c7358",
+  "user_id": "user-54fafc66-6cde-46e5-9706-55c830b426b2",
+  "bank_name": "vietinbank",
+  "account_number": "123465456",
+  "owner_name": "sss",
+  "logo_url": "ssss",
+  "createdAt": {
+    "$date": "2025-11-01T16:01:24.393Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-01T16:01:24.393Z"
+  }
+}]

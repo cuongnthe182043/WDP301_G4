@@ -1,0 +1,11 @@
+/* Cart page – now fully handled by HeroUI + Tailwind. No MUI overrides needed. */
+
+/* Fly-to-cart animation (used by ProductDetail) */
+.fly-img {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(.4,0,.2,1), opacity 0.65s ease;
+}

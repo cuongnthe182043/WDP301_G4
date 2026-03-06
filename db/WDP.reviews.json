@@ -1,0 +1,215 @@
+[{
+  "_id": "rev-88505c1d-a641-4faa-95e2-be5a4a865bef",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "product_id": "prd-084da2b9-f474-4c2b-8fa3-396cce58100e",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 4,
+  "comment": "Great quality and comfy.",
+  "images": [
+    "https://cdn.dfs-demo.com/products/review-dfs1003-1.jpg"
+  ],
+  "is_anonymous": true,
+  "size_feedback": "fit",
+  "status": "visible",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  }
+},
+{
+  "_id": "rev-257be649-25ef-4a84-9ac7-b50c2295fc37",
+  "order_id": "ord-83307e1d-0524-4c47-be0f-39505dddb710",
+  "product_id": "prd-6e5351bc-eb6c-4034-869c-64f9567e2859",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "Fits as expected, nice fabric.",
+  "images": [
+    "https://cdn.dfs-demo.com/products/review-dfs1006-1.jpg"
+  ],
+  "is_anonymous": false,
+  "size_feedback": "tight",
+  "status": "visible",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  }
+},
+{
+  "_id": "rev-83ac0d92-9df6-48be-85a8-b54ce4e139c0",
+  "order_id": "ord-fdfe5e60-b17b-476d-af0a-e47f1a9649c5",
+  "product_id": "prd-44e0550e-363f-440e-ac16-6f1098b9d4fb",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 4,
+  "comment": "Great quality and comfy.",
+  "images": [
+    "https://cdn.dfs-demo.com/products/review-dfs1009-1.jpg"
+  ],
+  "is_anonymous": false,
+  "size_feedback": "loose",
+  "status": "visible",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "690a0dc3ea4771fba6352b71"
+  },
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "product_id": "prod-3c3d8c43-eb01-41b4-beeb-3581e2a8f0fb",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "Great quality and comfy.",
+  "images": [
+    "https://cdn.dfs-demo.com/products/review-dfs1003-1.jpg"
+  ],
+  "is_anonymous": true,
+  "size_feedback": "fit",
+  "status": "visible",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.688Z"
+  }
+},
+{
+  "_id": "rev-d0f3a3a6-0d10-4f71-9b26-13a43960ec1f",
+  "order_id": "ord-d273e794-971f-4045-9290-f66db680cfee",
+  "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "rating": 5,
+  "comment": "Sản phẩm chất lượng, đóng gói cẩn thận, giao hàng nhanh.",
+  "images": [
+    "https://example.com/review1.jpg",
+    "https://example.com/review2.jpg"
+  ],
+  "is_anonymous": false,
+  "size_feedback": "fit",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-05T19:52:26.503Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T19:52:26.503Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "rev-94d8d43d-7b51-4547-9b76-54bde88f9f96",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "product_id": "prd-084da2b9-f474-4c2b-8fa3-396cce58100e",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "adad",
+  "images": [],
+  "is_anonymous": false,
+  "size_feedback": "unknown",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-06T11:56:47.415Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T11:56:47.415Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "rev-51f28ab1-9f58-45ba-b723-96a27e438cbb",
+  "order_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "sdsdsds xau",
+  "images": [],
+  "is_anonymous": false,
+  "size_feedback": "fit",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-06T12:18:12.533Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T12:18:12.533Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "rev-98f530fa-452b-4d5d-b39d-956923e553ab",
+  "order_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "product_id": "prd-f7e616c7-ba36-418d-878e-a8ccf4281eb5",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "ok",
+  "images": [
+    "blob:http://localhost:5173/8c7d3708-987f-46d5-96bb-edb2ce73564c"
+  ],
+  "is_anonymous": true,
+  "size_feedback": "fit",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-06T12:42:02.067Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T12:42:02.067Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "rev-d96ad07c-2884-457d-83c5-151cba74da69",
+  "order_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "product_id": "prd-f615e6e9-b11a-4e77-85fb-839572994813",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 5,
+  "comment": "ádasdadadasdasdasdasdasdsda",
+  "images": [],
+  "is_anonymous": false,
+  "size_feedback": "fit",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-06T17:26:46.949Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T17:26:46.949Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "rev-72cf5c57-5f1b-491d-8278-965db27c46eb",
+  "order_id": "ord-0d83b83f-dd59-497e-b19c-689db80b8b26",
+  "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+  "user_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "rating": 3,
+  "comment": "oke",
+  "images": [],
+  "is_anonymous": true,
+  "size_feedback": "unknown",
+  "status": "visible",
+  "createdAt": {
+    "$date": "2025-11-13T17:00:37.049Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-13T17:00:37.049Z"
+  },
+  "__v": 0
+}]

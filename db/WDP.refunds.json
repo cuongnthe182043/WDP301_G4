@@ -1,0 +1,70 @@
+[{
+  "_id": "ref-cb84f260-6683-46ef-8257-61651acfe671",
+  "order_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "reason": "Wrong size",
+  "amount": 1298000,
+  "status": "approved",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  }
+},
+{
+  "_id": "ref-eae774d7-b3f0-429e-8e79-4a355d5c04c2",
+  "order_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "reason": "Damaged packaging",
+  "amount": 499000,
+  "status": "requested",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  }
+},
+{
+  "_id": "ref-b692c916-eaf5-47c1-9c18-9eaf8e874e84",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "reason": "Wrong size",
+  "amount": 1398000,
+  "status": "refunded",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  }
+},
+{
+  "_id": "ref-3a543a76-f5af-4025-aa53-a19281774419",
+  "order_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "reason": "Damaged packaging",
+  "amount": 599000,
+  "status": "approved",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  }
+},
+{
+  "_id": "ref-9b1dd99b-30dd-4ccc-9789-73a3bcbc01eb",
+  "order_id": "ord-2ddbb43f-b5d4-427b-a20f-42b6dda24967",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "reason": "Wrong size",
+  "amount": 698000,
+  "status": "requested",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.617Z"
+  }
+}]

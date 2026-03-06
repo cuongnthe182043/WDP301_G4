@@ -1,0 +1,222 @@
+[{
+  "_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
+  "code": "SALE20",
+  "discount_type": "percent",
+  "discount_value": 20,
+  "max_uses": 500,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "valid_from": {
+    "$date": "2025-10-20T09:59:50.841Z"
+  },
+  "valid_to": {
+    "$date": "2025-11-03T09:59:50.841Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  }
+},
+{
+  "_id": "vou-6565a483-b0ca-4d01-8d6a-462e7cb004dc",
+  "code": "SAVE50K",
+  "discount_type": "fixed",
+  "discount_value": 50000,
+  "max_uses": 300,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "valid_from": {
+    "$date": "2025-10-20T09:59:50.841Z"
+  },
+  "valid_to": {
+    "$date": "2025-11-19T09:59:50.841Z"
+  },
+  "is_active": true,
+  "created_by": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "created_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  }
+},
+{
+  "_id": "vou-48bde6cb-1616-49f3-8a11-0480ca00ad2d",
+  "code": "FREESHIP",
+  "discount_type": "fixed",
+  "discount_value": 30000,
+  "max_uses": 1000,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "valid_from": {
+    "$date": "2025-10-20T09:59:50.841Z"
+  },
+  "valid_to": {
+    "$date": "2025-12-19T09:59:50.841Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  }
+},
+{
+  "_id": "vou-ed8986c4-6715-4c4a-a7de-92c7df48901d",
+  "code": "BF50",
+  "discount_type": "percent",
+  "discount_value": 50,
+  "max_uses": 200,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "valid_from": {
+    "$date": "2025-10-19T09:59:50.841Z"
+  },
+  "valid_to": {
+    "$date": "2025-10-22T09:59:50.841Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  }
+},
+{
+  "_id": "vou-01a380bd-2667-4c9c-a237-a274f603c6f9",
+  "code": "TET100K",
+  "discount_type": "fixed",
+  "discount_value": 100000,
+  "max_uses": 400,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "valid_from": {
+    "$date": "2025-10-30T09:59:50.841Z"
+  },
+  "valid_to": {
+    "$date": "2025-11-29T09:59:50.841Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-20T09:59:50.842Z"
+  }
+},
+{
+  "_id": "vou-b41965fa-d68b-42ed-8018-b8d45bbc0034",
+  "code": "Test04",
+  "discount_type": "fixed",
+  "discount_value": 20,
+  "max_uses": 2,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "shop_id": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "valid_from": {
+    "$date": "2026-10-20T00:00:00.000Z"
+  },
+  "valid_to": {
+    "$date": "2026-10-30T00:00:00.000Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-28T16:58:54.362Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-28T16:58:54.429Z"
+  }
+},
+{
+  "_id": "vou-7ddb6e78-5583-4e80-ace9-0640b23d7ecd",
+  "code": "Test03",
+  "discount_type": "fixed",
+  "discount_value": 20,
+  "max_uses": 2,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 0,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "shop",
+  "shop_id": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "valid_from": {
+    "$date": "2026-10-20T00:00:00.000Z"
+  },
+  "valid_to": {
+    "$date": "2026-10-30T00:00:00.000Z"
+  },
+  "is_active": true,
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "created_at": {
+    "$date": "2025-10-28T16:59:00.450Z"
+  },
+  "updated_at": {
+    "$date": "2025-10-29T07:11:47.696Z"
+  }
+},
+{
+  "_id": "vou-91b36133-8139-4c37-b09e-d5e26c1cca77",
+  "code": "GIAM50",
+  "discount_type": "percent",
+  "discount_value": 50,
+  "max_uses": 10,
+  "used_count": 0,
+  "usage_limit_per_user": 1,
+  "min_order_value": 200000,
+  "applicable_products": [],
+  "applicable_users": [],
+  "scope": "global",
+  "shop_id": null,
+  "valid_from": {
+    "$date": "2025-11-03T00:00:00.000Z"
+  },
+  "valid_to": {
+    "$date": "2025-11-11T00:00:00.000Z"
+  },
+  "is_active": true,
+  "created_by": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "created_at": {
+    "$date": "2025-11-02T14:29:46.583Z"
+  },
+  "updated_at": {
+    "$date": "2025-11-02T14:29:46.662Z"
+  }
+}]

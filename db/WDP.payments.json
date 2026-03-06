@@ -1,0 +1,1173 @@
+[{
+  "_id": "pay-d30d1aa9-42ec-43ca-8eb7-c51a024c1beb",
+  "order_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 1298000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543912911",
+  "idempotency_key": "idem-b05c5d56-cd5d-44c7-ba65-2160f31bc634",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:51.291Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.292Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.292Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-ccb7d4a3-3eee-4b0e-858b-f7900a3c8e25",
+  "order_id": "ord-3c4babbc-1844-4c6e-819e-89c83eb8f1ac",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954391441",
+  "idempotency_key": "idem-bee9f9d2-bc88-47b2-b3db-b531365198a8",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:51.441Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.442Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.442Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-bc2f1185-7f2d-4e77-a51c-209a3876374c",
+  "order_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 499000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543916652",
+  "idempotency_key": "idem-7f627fc2-91f7-4ff0-ba44-7f5c521c425f",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:51.665Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.666Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.666Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-7ce1847e-50ad-454c-bb7d-91653a326140",
+  "order_id": "ord-b29fa541-c114-4195-95bd-abb407be8e01",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954391824",
+  "idempotency_key": "idem-63b7dcdb-5932-43df-ae1a-c9d855933d13",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:51.825Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.825Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.825Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-fed155bb-f8c7-45a6-b412-a650962a3bbb",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 1398000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543920543",
+  "idempotency_key": "idem-00270a93-540a-4c64-9f8b-7ec1c4f0dac4",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:52.054Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.055Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.055Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-ef9c5222-f966-40bb-a5cc-6cca90f4e24e",
+  "order_id": "ord-15a717ad-55c6-48a7-a7d2-f6b8f88e41d1",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954392204",
+  "idempotency_key": "idem-1cfab83c-8802-47a1-bbb5-94edd2fb83ec",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:52.204Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.204Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.204Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-ad1a29f0-31e3-44d2-8aee-4ba0dc342911",
+  "order_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 599000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543925054",
+  "idempotency_key": "idem-16c3f2de-b750-4440-8bda-1abdefbbd9b6",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:52.505Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.506Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.506Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-4e3544f7-d525-44ad-9567-b33b3686b411",
+  "order_id": "ord-b0e8bee4-b444-4973-b008-6977f5fd40d6",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954392643",
+  "idempotency_key": "idem-10db5da4-2cff-47fd-b88e-6e910fa28502",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:52.643Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.644Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.644Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-caeb3b4d-5dad-49a6-ad1d-be504a4cee0f",
+  "order_id": "ord-2ddbb43f-b5d4-427b-a20f-42b6dda24967",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 698000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543928585",
+  "idempotency_key": "idem-1478dd81-89e3-48e3-b1f9-10c74d29f462",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:52.858Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:52.859Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:52.859Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-cf6cf774-c4cb-47f7-9c24-f58f6e5ef3f6",
+  "order_id": "ord-2ddbb43f-b5d4-427b-a20f-42b6dda24967",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954393012",
+  "idempotency_key": "idem-4b3eeede-5c5d-4ad5-948a-c04580647d59",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:53.012Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.012Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.012Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-a345e66c-cb03-4394-a8fd-317810837ae7",
+  "order_id": "ord-83307e1d-0524-4c47-be0f-39505dddb710",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 449000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543932246",
+  "idempotency_key": "idem-6afbe31f-1596-41b0-b670-22b86fa2d164",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:53.224Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.224Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.224Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-a38205ed-4ff5-4c6c-af7a-b049e8dc4b0e",
+  "order_id": "ord-83307e1d-0524-4c47-be0f-39505dddb710",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954393366",
+  "idempotency_key": "idem-26640a1d-956c-42f4-86d5-38041449b6d1",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:53.366Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.366Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.366Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-70b0f9d1-bffe-4e23-a830-af5796bf0a31",
+  "order_id": "ord-24f6652f-90b5-445a-b5e1-7ade00b69800",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 699000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543937348",
+  "idempotency_key": "idem-57ac5269-5c90-4164-bc21-394c43a312b5",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:53.734Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.735Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.735Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-af673fcf-0c54-4dd2-94cd-a6a5b52748e8",
+  "order_id": "ord-24f6652f-90b5-445a-b5e1-7ade00b69800",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954393879",
+  "idempotency_key": "idem-a4993d38-be5a-4c4f-b8c9-322e11b1173f",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:53.879Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:53.880Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:53.880Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-31caa000-6042-4beb-8e41-30d0be024197",
+  "order_id": "ord-fdfe5e60-b17b-476d-af0a-e47f1a9649c5",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 798000,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG17609543940929",
+  "idempotency_key": "idem-7d86f1b1-170f-41d3-ab69-913f9f41f974",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:54.092Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.093Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.093Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-e6b3250c-d7d4-4547-806d-5b4346990a3f",
+  "order_id": "ord-fdfe5e60-b17b-476d-af0a-e47f1a9649c5",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 0,
+  "currency": "VND",
+  "status": "paid",
+  "provider_txn_id": "PG1760954394246",
+  "idempotency_key": "idem-4722530e-90cd-4b71-b246-27e3055103e6",
+  "webhook_verified": true,
+  "return_url": "https://dfs-demo.com/payment/return",
+  "expires_at": {
+    "$date": "2025-10-20T10:59:54.246Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.246Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.246Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-ca5036ea-a8cc-455a-ac53-cddcd6cc613c",
+  "order_id": "ord-8bfbc387-c388-407b-8c50-0ab262ec1fdd",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 2262000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "bcfe37ec-6273-4485-883e-5d909bc90ac7",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-27T18:38:11.518Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-27T18:23:11.520Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-27T18:23:11.520Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-212ca693-99a4-451d-b6ed-4e6f307fb916",
+  "order_id": "ord-f0bc1cf5-5fcd-4d83-8a1f-5ceb7206b4f9",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 3909000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "52ddd4a6-f8f5-42cc-913b-7d9500dc91f2",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:04:33.232Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:49:33.235Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:49:33.235Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-9d10f14d-259d-421e-a050-ee8a025ae49e",
+  "order_id": "ord-7845aeee-b198-4183-8e7d-68fac77c65c4",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 3909000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "f8a051f3-6f93-42d3-8c28-fdd6e1896558",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:07:00.322Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:52:00.323Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:52:00.323Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-24a8e2e3-dbdf-4e96-866c-3311139559b5",
+  "order_id": "ord-266556e0-59d1-465a-9a98-251fb739079c",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 3909000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "88a284e3-dad5-4173-9381-7cf04d3d3d92",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:07:12.518Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:52:12.519Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:52:12.519Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-72143e6f-bbc7-46a5-925a-452becd14c96",
+  "order_id": "ord-de10a455-c544-4f44-a830-5aaf1d4056f2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 3909000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "850a741a-6de8-4518-95db-3db4fe92e2c8",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:11:40.976Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:56:40.983Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:56:40.983Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-105fceff-6479-4b02-acda-be06e15caeaa",
+  "order_id": "ord-3436e863-abe5-4614-8315-41b6bfd70bfe",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 3260000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "4cfbb5fe-6f90-40c6-a4e8-18bbc9296869",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:12:37.535Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:57:37.536Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:57:37.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-52f8dec3-9c79-4af4-b53d-083cf1abd584",
+  "order_id": "ord-a3f81d20-cd54-475e-bc4a-a8891e222bea",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "MOMO",
+  "method": "bank_transfer",
+  "amount": 3260000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "05afa38e-5163-4a3e-a20f-5d72e7adc1cb",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:12:45.603Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T15:57:45.605Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T15:57:45.605Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-f1e1ea6d-0520-4cf4-a947-0c7f2e4d7941",
+  "order_id": "ord-713450e4-8725-4a0d-a4f1-06036d44f4f9",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 3263000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "0dc6ba1c-bde8-44e1-8356-adc58e91b38a",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-28T16:21:45.718Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-28T16:06:45.719Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-28T16:06:45.719Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-b4633d15-3560-42fa-b02d-c0a66c2d335d",
+  "order_id": "ord-5e5948c1-9a7c-4ff0-ac5d-34e46b1d126d",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "a4fb5872-e012-4849-abd7-839b7a1a2b06",
+  "webhook_verified": false,
+  "return_url": "https://frontend-dailyfit-production.up.railway.app/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:26:35.819Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:11:35.821Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:11:35.821Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-ac041e4e-7c39-4853-b5ef-cde87e70cff3",
+  "order_id": "ord-0505b6e6-cf74-47ad-afcf-7f66c6cc2bda",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "b7c48191-764d-40a0-9294-267e9ba2b16e",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:31:24.187Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:16:24.190Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:16:24.190Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-52873658-117c-4994-ba5b-f63ae1c8f7fe",
+  "order_id": "ord-a8ded962-996e-428b-9d86-141a339cfc73",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "566ff1a0-f6f0-42fe-81a1-7ccaff1a438d",
+  "webhook_verified": false,
+  "return_url": "https://frontend-dailyfit-production.up.railway.app/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:36:16.479Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:21:16.480Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:21:16.480Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-7fd926b3-fbe8-42aa-972b-cf4b13e92655",
+  "order_id": "ord-0f2031fd-1507-44cd-8c34-9eec341c0d23",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "BANK",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "a611dc03-02cf-4cb0-a69c-d76fd4487cc8",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:37:33.806Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:22:33.807Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:22:33.807Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-c89b162b-8fc1-42cf-bdc8-2ec690827ddf",
+  "order_id": "ord-12fc16d8-2dff-4676-9d93-81df46a4d008",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "dd669ae6-94c4-4bf8-9ace-9058904a0f4e",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:40:03.439Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:25:03.440Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:25:03.440Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-d6f16cff-9817-42fe-9c5d-dd95465b3da1",
+  "order_id": "ord-3499fa8f-f2cb-4557-bd0e-06c55cbb86b2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "fa1473aa-7439-485e-94bf-d5e18648e1f6",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:41:52.927Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:26:52.929Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:26:52.929Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-d236e4a9-e5cd-4d60-96ea-2ac8ada1d101",
+  "order_id": "ord-c7ce07d7-bd49-48d4-9ad5-1823fc5d04ad",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 965000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "428d6163-bd5c-4da0-a123-c8a08b03b83f",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:46:18.677Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:31:18.678Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:31:18.678Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-2fc6c5ec-e65a-4800-a0da-a8f2f489b585",
+  "order_id": "ord-0b214100-ad02-49b5-8d16-d86814d9f69c",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 514000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "ae9db535-4a94-4a42-b4fd-81696a346924",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T14:46:53.875Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T14:31:53.877Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T14:31:53.877Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-8ff80770-f116-4add-a56f-41a848922a72",
+  "order_id": "ord-94b64380-bdd8-4999-abae-9de9cc0870a4",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 514000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "e92ff8b7-aeef-4170-9e23-8958587c3f41",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:05:17.016Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T15:50:17.019Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T15:50:17.019Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-422b8e95-d3f0-4dbb-a74d-11bde23491a1",
+  "order_id": "ord-e105d964-f006-494e-953c-121c14351350",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 514000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "2e688444-e36c-414d-9b48-16f2a906706f",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:11:20.183Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T15:56:20.185Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T15:56:20.185Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-f1445d28-92a9-4ace-8f06-fcd6a19ea348",
+  "order_id": "ord-89569885-ec64-4aa1-8233-0cc17314a32b",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 514000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "60545dfd-f408-4ca8-9a05-a7b4fedf3269",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:19:15.209Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T16:04:15.212Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:04:15.212Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-715e97dd-35c2-4837-92c0-f2dc09593be2",
+  "order_id": "ord-38ed0ee7-3390-441c-97dc-64730c2a0fe2",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 514000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "eac1b06b-2d08-446b-a44d-a4d1fce171f3",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:40:46.130Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T16:25:46.132Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:25:46.132Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-1e85e2fc-a5c7-4d48-8c6a-a9611c740596",
+  "order_id": "ord-a8da68e9-d377-4e89-aaa7-f14cce9efca6",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 414000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "6da3591b-8b96-4da5-8c4d-711533c5fd52",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:43:14.987Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T16:28:14.988Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:28:14.988Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-1f50ef40-b0aa-4ffd-a384-d09afc2e78da",
+  "order_id": "ord-d5b5734b-d1b2-43d3-ae11-5297fdf19d7b",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 714000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "a6c34018-453b-4283-9825-16d65306f533",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:49:09.661Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T16:34:09.663Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:34:09.663Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-16e85387-2cfb-458f-ac9e-482d78ce0b32",
+  "order_id": "ord-0ac24c54-1bf5-4692-823a-2665329f43d7",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 714000,
+  "currency": "VND",
+  "status": "paid",
+  "idempotency_key": "4525de06-907f-4555-bac6-985ad8f66d1a",
+  "webhook_verified": true,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-30T16:52:58.754Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-30T16:37:58.756Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T16:38:28.541Z"
+  },
+  "__v": 0,
+  "provider_txn_id": "15228570"
+},
+{
+  "_id": "pay-016552a0-9245-4a30-b397-7c8111679b3c",
+  "order_id": "ord-cbdf319f-aeb9-423c-8264-82d3430e3191",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 464000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "0096f1f4-8a12-4c74-af5f-4b6000f45857",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-31T18:13:11.539Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-31T17:58:11.540Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T17:58:11.540Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-54299211-5e32-459e-bd09-57f7979666d7",
+  "order_id": "ord-96d06bbf-46a2-48c6-b551-5fa19cbfbe56",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 464000,
+  "currency": "VND",
+  "status": "failed",
+  "idempotency_key": "5e6d38c1-23fd-404a-adf5-8f82e2d54c49",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-31T18:15:13.326Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-31T18:00:13.327Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T18:02:21.669Z"
+  },
+  "__v": 0,
+  "provider_txn_id": "0"
+},
+{
+  "_id": "pay-da8fe05c-4a29-4c00-a876-ecbfa02163bd",
+  "order_id": "ord-d753b354-117b-463b-8650-c2f67826aee3",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 264000,
+  "currency": "VND",
+  "status": "paid",
+  "idempotency_key": "063242d2-a0af-488d-90f8-610009a514d5",
+  "webhook_verified": true,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-31T19:52:07.674Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-31T19:37:07.689Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T19:37:41.862Z"
+  },
+  "__v": 0,
+  "provider_txn_id": "15230937"
+},
+{
+  "_id": "pay-539634d7-9221-47fd-abb0-c8fb17812d2f",
+  "order_id": "ord-7b3e9951-65df-4a87-a70b-c808198f9d9f",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 264000,
+  "currency": "VND",
+  "status": "failed",
+  "idempotency_key": "f6cd9536-1bf1-4336-ba60-b469ce619703",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-10-31T19:54:01.680Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-31T19:39:01.681Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-31T19:39:06.867Z"
+  },
+  "__v": 0,
+  "provider_txn_id": "0"
+},
+{
+  "_id": "pay-32009598-1adc-4378-a6bc-a2d154ab8d61",
+  "order_id": "ord-f1480fe0-e7a4-42e6-9187-4365bf9711e5",
+  "user_id": "user-1a9d0303-5132-4c92-b44f-066586b8eb44",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 464000,
+  "currency": "VND",
+  "status": "paid",
+  "idempotency_key": "03fc6c67-1948-4ca0-88c2-b69c799a81cf",
+  "webhook_verified": true,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-11-02T13:53:57.222Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-02T13:38:57.225Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T13:39:38.275Z"
+  },
+  "__v": 0,
+  "provider_txn_id": "15233277"
+},
+{
+  "_id": "pay-74d8a8a0-f624-469c-b119-d3207a9eb8eb",
+  "order_id": "ord-c9d83ebb-32b9-40ce-87e1-4dee4a7a1376",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 765000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "2b1d1d6d-c948-4a13-a124-193c6b516c86",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-11-06T13:16:06.236Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-06T13:01:06.238Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:06.238Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-997ac102-c875-41ec-9da9-37808ab0ac99",
+  "order_id": "ord-262ddab1-b42b-4399-b1d5-22d583f450e5",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 765000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "dbac307e-724d-4505-9cde-9990194efc70",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-11-06T13:16:28.065Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-06T13:01:28.065Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-06T13:01:28.065Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-31fee006-be3b-43e0-b4c0-d297cc8c1e6c",
+  "order_id": "ord-9f722abc-3d54-436c-91f2-d67d6ab6b491",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 6490694,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "572f3422-012b-4324-9043-c70ebd4aa4c3",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2025-11-07T02:26:27.146Z"
+  },
+  "createdAt": {
+    "$date": "2025-11-07T02:11:27.147Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-07T02:11:27.147Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "pay-650bb1fb-b5aa-4f06-ba84-288df1184415",
+  "order_id": "ord-9dcf55ef-997f-4281-a0a4-81f1cf566ba8",
+  "user_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "shop_id": "shop-admin",
+  "gateway": "VNPAY",
+  "method": "bank_transfer",
+  "amount": 1013000,
+  "currency": "VND",
+  "status": "pending",
+  "idempotency_key": "da39f51d-74b7-40d2-a2be-3baf6dbafb12",
+  "webhook_verified": false,
+  "return_url": "http://localhost:5173/payment/return?status=success",
+  "expires_at": {
+    "$date": "2026-02-19T13:26:59.596Z"
+  },
+  "createdAt": {
+    "$date": "2026-02-19T13:11:59.598Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-19T13:11:59.598Z"
+  },
+  "__v": 0
+}]
