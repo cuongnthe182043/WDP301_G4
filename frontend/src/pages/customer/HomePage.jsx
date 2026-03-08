@@ -454,7 +454,7 @@ const CAT_GRADIENTS = [
 function CategoryCard({ cat, index = 0 }) {
   const grad = CAT_GRADIENTS[index % CAT_GRADIENTS.length];
   return (
-    <Link to={`/category/${cat.slug}`} className="flex flex-col items-center gap-2.5 group no-underline">
+    <Link to={`/categories/${cat.slug}`} className="flex flex-col items-center gap-2.5 group no-underline">
       <motion.div
         whileHover={{ scale: 1.08, y: -3 }}
         whileTap={{ scale: 0.95 }}
@@ -476,7 +476,7 @@ function CategoryCard({ cat, index = 0 }) {
 /* ─── Brand Card ─── */
 function BrandCard({ br }) {
   return (
-    <Link to={`/brand/${br.slug || br._id || ""}`} className="flex flex-col items-center gap-2 group no-underline">
+    <Link to={`/products`} className="flex flex-col items-center gap-2 group no-underline">
       <motion.div
         whileHover={{ scale: 1.06, y: -2 }}
         whileTap={{ scale: 0.97 }}
@@ -519,7 +519,7 @@ function CategoriesPanel({ categories }) {
             <h2 className="text-[17px] font-black text-white tracking-tight">Danh mục sản phẩm</h2>
           </div>
           <div className="flex items-center gap-2">
-            <ViewAll to="/categories" light />
+            <ViewAll to="/products" light />
             <div className="flex gap-1">
               <NavBtn onClick={scrollPrev} disabled={!canPrev} direction="prev" light />
               <NavBtn onClick={scrollNext} disabled={!canNext} direction="next" light />
@@ -561,7 +561,7 @@ function BrandsPanel({ brands }) {
             <h2 className="text-[17px] font-black text-gray-900 tracking-tight">Thương hiệu nổi bật</h2>
           </div>
           <div className="flex items-center gap-2">
-            <ViewAll to="/brands" />
+            <ViewAll to="/products" />
             <div className="flex gap-1">
               <NavBtn onClick={scrollPrev} disabled={!canPrev} direction="prev" />
               <NavBtn onClick={scrollNext} disabled={!canNext} direction="next" />
@@ -621,7 +621,7 @@ function FlashSaleSection({ flashSale }) {
               endTime={isUpcoming ? flashSale.start_time : flashSale.end_time}
             />
             <Link
-              to="/flash-sale"
+              to="/products"
               className="text-xs font-bold text-white border border-white/40 rounded-full px-3 py-1.5 hover:bg-white hover:text-red-500 transition-all duration-200 whitespace-nowrap hidden md:inline-flex items-center gap-1"
             >
               Xem tất cả <FiChevronRight size={12} />
@@ -843,7 +843,7 @@ export default function HomePage() {
           title="Thời trang Nam"
           Icon={FiUsers}
           accentGradient="from-blue-500 to-blue-700"
-          viewAllHref="/category/men"
+          viewAllHref="/categories/men"
           items={men}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />}
           itemWidth={200}
@@ -857,7 +857,7 @@ export default function HomePage() {
           title="Thời trang Nữ"
           Icon={FiHeart}
           accentGradient="from-sky-400 to-blue-600"
-          viewAllHref="/category/women"
+          viewAllHref="/categories/women"
           items={women}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />}
           itemWidth={200}
@@ -871,7 +871,7 @@ export default function HomePage() {
           title="Unisex"
           Icon={FiStar}
           accentGradient="from-blue-600 to-indigo-700"
-          viewAllHref="/category/unisex"
+          viewAllHref="/categories/unisex"
           items={unisex}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />}
           itemWidth={200}
@@ -885,7 +885,7 @@ export default function HomePage() {
           title="Xu hướng nổi bật"
           Icon={FiTrendingUp}
           accentGradient="from-blue-500 to-cyan-600"
-          viewAllHref="/trending"
+          viewAllHref="/products?sort=popular"
           items={[...men, ...women].slice(0, 12)}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />}
           itemWidth={200}

@@ -334,6 +334,7 @@ async function getProducts({ q, category, brand, sort = "created_at", min_price,
   else if (sort === "price_desc") sortObj = { base_price: -1 };
   else if (sort === "sold")   sortObj = { sold_count: -1 };
   else if (sort === "rating") sortObj = { rating_avg: -1 };
+  else if (sort === "popular")  sortObj = { sold_count: -1 };
   else if (sort === "featured") sortObj = { is_featured: -1, sold_count: -1, createdAt: -1 };
 
   // Handle text score sort

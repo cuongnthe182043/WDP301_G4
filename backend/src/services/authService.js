@@ -152,8 +152,10 @@ exports.resetPassword = async (email, otp, newPassword) => {
   const user = await User.findOne({ email });
   if (!user) throw new Error("Tài khoản không tồn tại");
 
-  const isSame = await bcrypt.compare(newPassword, user.password_hash);
-  if (isSame) throw new Error("Mật khẩu mới không được trùng mật khẩu cũ");
+  if (user.password_hash) {
+    const isSame = await bcrypt.compare(newPassword, user.password_hash);
+    if (isSame) throw new Error("Mật khẩu mới không được trùng mật khẩu cũ");
+  }
 
   const salt = await bcrypt.genSalt(10);
   user.password_hash = await bcrypt.hash(newPassword, salt);

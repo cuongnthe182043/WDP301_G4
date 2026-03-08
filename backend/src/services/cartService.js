@@ -69,7 +69,7 @@ exports.addItem = async (userId, { product_id, variant_id, qty = 1 }) => {
   if (qty < 1) qty = 1;
 
   const { product, variant } = await getVariantFull(variant_id);
-  if (product._id !== product_id) throw new Error("Biến thể không khớp sản phẩm");
+  if (String(product._id) !== String(product_id)) throw new Error("Biến thể không khớp sản phẩm");
   if ((variant.stock || 0) <= 0) throw new Error("Sản phẩm đã bán hết");
   if (qty > variant.stock) throw new Error("Không đủ tồn kho");
 
@@ -96,7 +96,7 @@ exports.addItem = async (userId, { product_id, variant_id, qty = 1 }) => {
   }
 
   await cart.save();
-  return this.getCart(userId);
+  return exports.getCart(userId);
 };
 
 exports.updateItem = async (userId, itemId, { qty, variant_id }) => {
@@ -133,7 +133,7 @@ exports.updateItem = async (userId, itemId, { qty, variant_id }) => {
 
   cart.items[idx] = current;
   await cart.save();
-  return this.getCart(userId);
+  return exports.getCart(userId);
 };
 
 exports.removeItem = async (userId, itemId) => {
@@ -142,12 +142,12 @@ exports.removeItem = async (userId, itemId) => {
   cart.items = cart.items.filter(i => i._id !== itemId);
   if (cart.items.length === before) throw new Error("Mục giỏ hàng không tồn tại");
   await cart.save();
-  return this.getCart(userId);
+  return exports.getCart(userId);
 };
 
 exports.clearCart = async (userId) => {
   const cart = await getOrCreateCart(userId);
   cart.items = [];
   await cart.save();
-  return this.getCart(userId);
+  return exports.getCart(userId);
 };
