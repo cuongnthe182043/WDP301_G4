@@ -13,6 +13,26 @@ import {
   Receipt, LogOut, Heart, Wallet, X, Menu, ChevronRight, Store,
 } from "lucide-react";
 
+/* ── font helper injected once ── */
+if (typeof document !== "undefined" && !document.getElementById("header-font-override")) {
+  const s = document.createElement("style");
+  s.id = "header-font-override";
+  s.textContent = `
+    .dfs-header, .dfs-header * {
+      font-family: 'Quicksand', 'Segoe UI', sans-serif !important;
+    }
+    .dfs-header .brand-name {
+      font-family: 'Baloo 2', cursive !important;
+      font-weight: 800;
+    }
+    .dfs-header .nav-menu-item {
+      font-family: 'Quicksand', sans-serif !important;
+      font-weight: 600;
+    }
+  `;
+  document.head.appendChild(s);
+}
+
 /* ── Scroll detector ── */
 function useScrolled(threshold = 12) {
   const [scrolled, setScrolled] = useState(false);
@@ -27,7 +47,6 @@ function useScrolled(threshold = 12) {
 
 const AUTH_PATHS = ["/login", "/register", "/forgot-password", "/change-password"];
 
-/* ── Inline styles for the two navbar states ── */
 const NAV_BLUE = {
   background: "linear-gradient(135deg, #1E40AF 0%, #1D4ED8 50%, #2563EB 100%)",
   boxShadow: "0 4px 24px rgba(30,64,175,0.35)",
@@ -56,10 +75,8 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
     if (kw) { onSearch?.(kw); setMenuOpen(false); }
   };
 
-  /* ── token colors based on scroll state ── */
-  const textWhite   = !scrolled;   // on blue bg: white text/icons
-  const iconColor   = scrolled ? "#1D4ED8" : "#ffffff";
-  const iconCls     = scrolled ? "text-blue-700" : "text-white";
+  const iconColor = scrolled ? "#1D4ED8" : "#ffffff";
+  const iconCls   = scrolled ? "text-blue-700" : "text-white";
 
   return (
     <Navbar
@@ -68,12 +85,13 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
       isBordered={false}
       maxWidth="full"
       style={scrolled ? NAV_WHITE : NAV_BLUE}
+      className="dfs-header"
       classNames={{
         base: "sticky top-0 z-50 transition-all duration-300",
         wrapper: "px-4 sm:px-6 max-w-7xl mx-auto h-[64px]",
       }}
     >
-      {/* ════════ BRAND ════════ */}
+      {/* ════ BRAND ════ */}
       <NavbarBrand className="flex-shrink-0 gap-0">
         <RouterLink to="/" className="flex items-center gap-2.5 no-underline group">
           <motion.div
@@ -81,7 +99,6 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             transition={{ type: "spring", stiffness: 500, damping: 18 }}
             className="w-9 h-9 rounded-xl overflow-hidden flex-shrink-0 shadow-md"
             style={{
-              ring: "2px",
               boxShadow: scrolled
                 ? "0 0 0 2px rgba(29,78,216,0.2), 0 2px 8px rgba(29,78,216,0.15)"
                 : "0 0 0 2px rgba(255,255,255,0.35), 0 2px 8px rgba(0,0,0,0.15)"
@@ -92,7 +109,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
           {!isAuth && (
             <div className="hidden sm:flex flex-col leading-[1.15]">
-              <span className={`font-black text-[17px] tracking-tight ${scrolled ? "text-blue-800" : "text-white"}`}>
+              <span className={`brand-name text-[17px] tracking-tight ${scrolled ? "text-blue-800" : "text-white"}`}>
                 Daily Fit
               </span>
               <span
@@ -106,7 +123,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
         </RouterLink>
       </NavbarBrand>
 
-      {/* ════════ SEARCH BAR ════════ */}
+      {/* ════ SEARCH ════ */}
       {!isAuth && (
         <NavbarContent className="hidden md:flex flex-1 max-w-[480px] mx-6" justify="center">
           <form onSubmit={submitSearch} className="w-full">
@@ -126,10 +143,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                   : `1.5px solid ${searchFocus ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)"}`,
               }}
             >
-              <Search
-                size={14}
-                style={{ color: scrolled ? (searchFocus ? "#2563EB" : "#94A3B8") : "rgba(255,255,255,0.7)", flexShrink: 0 }}
-              />
+              <Search size={14} style={{ color: scrolled ? (searchFocus ? "#2563EB" : "#94A3B8") : "rgba(255,255,255,0.7)", flexShrink: 0 }} />
               <input
                 type="search"
                 placeholder="Tìm sản phẩm, thương hiệu…"
@@ -137,12 +151,13 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 onChange={(e) => setSearchQ(e.target.value)}
                 onFocus={() => setSearchFocus(true)}
                 onBlur={() => setSearchFocus(false)}
-                className="flex-1 bg-transparent border-none outline-none text-sm min-w-0"
-                style={{
-                  color: scrolled ? "#1E293B" : "#ffffff",
-                }}
+                className="flex-1 bg-transparent border-none outline-none text-sm min-w-0 font-semibold"
+                style={{ color: scrolled ? "#1E293B" : "#ffffff", fontFamily: "'Quicksand', sans-serif" }}
               />
-              <style>{`input::placeholder { color: ${scrolled ? "#94A3B8" : "rgba(255,255,255,0.55)"}; }`}</style>
+              <style>{`
+                input[type="search"]::placeholder { color: ${scrolled ? "#94A3B8" : "rgba(255,255,255,0.55)"}; font-family: 'Quicksand', sans-serif; }
+                input[type="search"]::-webkit-search-cancel-button { display: none; }
+              `}</style>
               <AnimatePresence>
                 {searchQ && (
                   <motion.button
@@ -159,41 +174,36 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                   </motion.button>
                 )}
               </AnimatePresence>
-              {/* Hidden submit */}
               <button type="submit" className="sr-only">Tìm</button>
             </div>
           </form>
         </NavbarContent>
       )}
 
-      {/* ════════ RIGHT ACTIONS ════════ */}
+      {/* ════ RIGHT ACTIONS ════ */}
       <NavbarContent justify="end" className="gap-1 flex-shrink-0">
 
-        {/* ── GUEST ── */}
+        {/* GUEST */}
         {!isAuth && !user && (
           <>
             <NavbarItem className="md:hidden">
-              <motion.button
-                whileTap={{ scale: 0.92 }}
+              <motion.button whileTap={{ scale: 0.92 }}
                 className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${scrolled ? "hover:bg-blue-50 text-blue-700" : "hover:bg-white/15 text-white"}`}
-                aria-label="Tìm kiếm"
-                onClick={() => setMenuOpen(true)}
-              >
+                onClick={() => setMenuOpen(true)}>
                 <Search size={18} />
               </motion.button>
             </NavbarItem>
 
             <NavbarItem className="hidden sm:flex">
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <RouterLink
-                  to="/register"
+                <RouterLink to="/register"
                   className="inline-flex items-center gap-1.5 h-8 px-4 rounded-full text-xs font-bold transition-all duration-200 no-underline"
                   style={{
                     border: scrolled ? "1.5px solid #BFDBFE" : "1.5px solid rgba(255,255,255,0.5)",
                     color: scrolled ? "#1D4ED8" : "#ffffff",
                     background: scrolled ? "#EFF6FF" : "rgba(255,255,255,0.12)",
-                  }}
-                >
+                    fontFamily: "'Quicksand', sans-serif",
+                  }}>
                   <UserPlus size={13} />
                   Đăng ký
                 </RouterLink>
@@ -202,14 +212,12 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
             <NavbarItem>
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <RouterLink
-                  to="/login"
+                <RouterLink to="/login"
                   className="inline-flex items-center gap-1.5 h-8 px-4 rounded-full text-xs font-bold transition-all duration-200 no-underline shadow-sm"
                   style={scrolled
-                    ? { background: "linear-gradient(135deg, #1D4ED8, #2563EB)", color: "#ffffff", boxShadow: "0 2px 10px rgba(29,78,216,0.3)" }
-                    : { background: "#ffffff", color: "#1D4ED8", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }
-                  }
-                >
+                    ? { background: "linear-gradient(135deg, #1D4ED8, #2563EB)", color: "#ffffff", boxShadow: "0 2px 10px rgba(29,78,216,0.3)", fontFamily: "'Quicksand', sans-serif" }
+                    : { background: "#ffffff", color: "#1D4ED8", boxShadow: "0 2px 8px rgba(0,0,0,0.1)", fontFamily: "'Quicksand', sans-serif" }
+                  }>
                   <LogIn size={13} />
                   Đăng nhập
                 </RouterLink>
@@ -217,24 +225,18 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             </NavbarItem>
 
             <NavbarItem className="sm:hidden">
-              <NavbarMenuToggle
-                aria-label={menuOpen ? "Đóng menu" : "Mở menu"}
-                className={iconCls}
-              />
+              <NavbarMenuToggle aria-label={menuOpen ? "Đóng menu" : "Mở menu"} className={iconCls} />
             </NavbarItem>
           </>
         )}
 
-        {/* ── LOGGED IN ── */}
+        {/* LOGGED IN */}
         {!isAuth && user && (
           <>
-            {/* Mobile search trigger */}
             <NavbarItem className="md:hidden">
-              <motion.button
-                whileTap={{ scale: 0.92 }}
+              <motion.button whileTap={{ scale: 0.92 }}
                 className={`w-9 h-9 flex items-center justify-center rounded-full ${scrolled ? "hover:bg-blue-50 text-blue-700" : "hover:bg-white/15 text-white"}`}
-                onClick={() => setMenuOpen(true)}
-              >
+                onClick={() => setMenuOpen(true)}>
                 <Search size={18} />
               </motion.button>
             </NavbarItem>
@@ -242,24 +244,16 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             {/* Cart */}
             <NavbarItem>
               <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }}>
-                <RouterLink
-                  id="cartIcon"
-                  to="/cart"
-                  className="relative w-9 h-9 flex items-center justify-center rounded-full transition-colors no-underline"
-                  style={{ color: iconColor }}
-                  aria-label="Giỏ hàng"
-                >
-                  <div
-                    className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
-                    style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}
-                  >
+                <RouterLink to="/cart"
+                  className="relative w-9 h-9 flex items-center justify-center rounded-full no-underline"
+                  style={{ color: iconColor }}>
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
+                    style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}>
                     <ShoppingCart size={20} />
                   </div>
                   {!!cartCount && (
-                    <span
-                      className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
-                      style={{ background: "#EF4444", boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8") }}
-                    >
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
+                      style={{ background: "#EF4444", boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8"), fontFamily: "'Quicksand', sans-serif" }}>
                       {cartCount > 99 ? "99+" : cartCount}
                     </span>
                   )}
@@ -270,23 +264,16 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             {/* Notifications */}
             <NavbarItem className="hidden sm:flex">
               <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }}>
-                <RouterLink
-                  to="/notifications"
-                  className="relative w-9 h-9 flex items-center justify-center rounded-full transition-colors no-underline"
-                  style={{ color: iconColor }}
-                  aria-label="Thông báo"
-                >
-                  <div
-                    className="w-9 h-9 flex items-center justify-center rounded-full"
-                    style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}
-                  >
+                <RouterLink to="/notifications"
+                  className="relative w-9 h-9 flex items-center justify-center rounded-full no-underline"
+                  style={{ color: iconColor }}>
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full"
+                    style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}>
                     <Bell size={19} />
                   </div>
                   {!!notifyCount && (
-                    <span
-                      className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
-                      style={{ background: "#EF4444", boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8") }}
-                    >
+                    <span className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
+                      style={{ background: "#EF4444", boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8") }}>
                       {notifyCount > 99 ? "99+" : notifyCount}
                     </span>
                   )}
@@ -298,20 +285,14 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             <NavbarItem>
               <Dropdown placement="bottom-end" backdrop="blur">
                 <DropdownTrigger>
-                  <motion.button
-                    whileHover={{ scale: 1.06 }}
-                    whileTap={{ scale: 0.95 }}
+                  <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 500, damping: 20 }}
-                    className="outline-none focus:outline-none"
-                    aria-label="Tài khoản"
-                  >
+                    className="outline-none focus:outline-none">
                     <Avatar
                       size="sm"
                       name={(user?.name || user?.email || "U").charAt(0).toUpperCase()}
                       src={user?.avatar_url || undefined}
-                      classNames={{
-                        base: "cursor-pointer font-black text-sm bg-gradient-to-br from-blue-400 to-blue-700 text-white",
-                      }}
+                      classNames={{ base: "cursor-pointer font-black text-sm bg-gradient-to-br from-blue-400 to-blue-700 text-white" }}
                       style={{
                         boxShadow: scrolled
                           ? "0 0 0 2.5px #BFDBFE, 0 2px 8px rgba(29,78,216,0.2)"
@@ -324,40 +305,33 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 <DropdownMenu
                   aria-label="Tài khoản"
                   className="w-64 p-1"
+                  style={{ fontFamily: "'Quicksand', sans-serif" }}
                   itemClasses={{ base: "rounded-xl gap-2.5 data-[hover=true]:bg-blue-50" }}
                 >
-                  {/* Identity card */}
                   <DropdownSection showDivider>
                     <DropdownItem key="identity" isReadOnly className="cursor-default py-3 opacity-100">
                       <div className="flex items-center gap-3">
-                        <Avatar
-                          size="sm"
+                        <Avatar size="sm"
                           name={(user?.name || "U").charAt(0).toUpperCase()}
                           src={user?.avatar_url || undefined}
                           classNames={{ base: "bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black flex-shrink-0" }}
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="font-black text-sm text-gray-900 truncate leading-tight">
-                            {user?.name || "Tài khoản"}
-                          </p>
-                          {user?.email && (
-                            <p className="text-[11px] text-blue-400 truncate leading-tight mt-0.5">{user.email}</p>
-                          )}
+                          <p className="font-black text-sm text-gray-900 truncate leading-tight">{user?.name || "Tài khoản"}</p>
+                          {user?.email && <p className="text-[11px] text-blue-400 truncate leading-tight mt-0.5">{user.email}</p>}
                         </div>
                       </div>
                     </DropdownItem>
                   </DropdownSection>
 
-                  {/* Nav links */}
                   <DropdownSection showDivider>
                     {[
-                      { key: "profile",  icon: User,    label: "Hồ sơ cá nhân",       desc: "Thông tin, địa chỉ, mật khẩu", path: "/profile" },
-                      { key: "orders",   icon: Receipt,  label: "Đơn hàng của tôi",    desc: "Theo dõi & quản lý đơn hàng",  path: "/orders" },
-                      { key: "wishlist", icon: Heart,   label: "Sản phẩm yêu thích",  path: "/wishlist" },
-                      { key: "wallet",   icon: Wallet,  label: "Ví DFS",               path: "/wallet" },
+                      { key: "profile",  icon: User,    label: "Hồ sơ cá nhân",      desc: "Thông tin, địa chỉ, mật khẩu", path: "/profile" },
+                      { key: "orders",   icon: Receipt, label: "Đơn hàng của tôi",   desc: "Theo dõi & quản lý đơn hàng",  path: "/orders" },
+                      { key: "wishlist", icon: Heart,   label: "Sản phẩm yêu thích", path: "/wishlist" },
+                      { key: "wallet",   icon: Wallet,  label: "Ví DFS",              path: "/wallet" },
                     ].map(({ key, icon: Icon, label, desc, path }) => (
-                      <DropdownItem
-                        key={key}
+                      <DropdownItem key={key}
                         startContent={
                           <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                             <Icon size={14} className="text-blue-600" />
@@ -371,48 +345,28 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                     ))}
                   </DropdownSection>
 
-                  {/* Seller section */}
                   <DropdownSection showDivider>
                     {user?.role_name === "shop_owner" ? (
-                      <DropdownItem
-                        key="manage-shop"
-                        startContent={
-                          <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                            <Store size={14} className="text-emerald-600" />
-                          </div>
-                        }
+                      <DropdownItem key="manage-shop"
+                        startContent={<div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0"><Store size={14} className="text-emerald-600" /></div>}
                         description="Quản lý sản phẩm & đơn hàng"
-                        onPress={() => navigate("/shop/dashboard")}
-                      >
+                        onPress={() => navigate("/shop/dashboard")}>
                         <span className="font-semibold text-sm text-gray-800">Quản lý shop</span>
                       </DropdownItem>
                     ) : (
-                      <DropdownItem
-                        key="register-shop"
-                        startContent={
-                          <div className="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-                            <Store size={14} className="text-amber-600" />
-                          </div>
-                        }
+                      <DropdownItem key="register-shop"
+                        startContent={<div className="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0"><Store size={14} className="text-amber-600" /></div>}
                         description="Mở shop và bắt đầu bán hàng"
-                        onPress={() => navigate("/register-shop")}
-                      >
+                        onPress={() => navigate("/register-shop")}>
                         <span className="font-semibold text-sm text-gray-800">Đăng ký bán hàng</span>
                       </DropdownItem>
                     )}
                   </DropdownSection>
 
                   <DropdownSection>
-                    <DropdownItem
-                      key="logout"
-                      color="danger"
-                      startContent={
-                        <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
-                          <LogOut size={14} className="text-red-500" />
-                        </div>
-                      }
-                      onPress={onLogout}
-                    >
+                    <DropdownItem key="logout" color="danger"
+                      startContent={<div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0"><LogOut size={14} className="text-red-500" /></div>}
+                      onPress={onLogout}>
                       <span className="font-semibold text-sm">Đăng xuất</span>
                     </DropdownItem>
                   </DropdownSection>
@@ -421,16 +375,13 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             </NavbarItem>
 
             <NavbarItem className="sm:hidden">
-              <NavbarMenuToggle
-                aria-label={menuOpen ? "Đóng menu" : "Mở menu"}
-                className={iconCls}
-              />
+              <NavbarMenuToggle aria-label={menuOpen ? "Đóng menu" : "Mở menu"} className={iconCls} />
             </NavbarItem>
           </>
         )}
       </NavbarContent>
 
-      {/* ════════ MOBILE MENU ════════ */}
+      {/* ════ MOBILE MENU ════ */}
       <NavbarMenu
         className="top-[64px] pt-0 pb-6 px-0 gap-0 overflow-y-auto"
         style={{
@@ -438,20 +389,16 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
           borderTop: "2px solid #DBEAFE",
           boxShadow: "0 8px 32px rgba(29,78,216,0.12)",
           maxHeight: "85dvh",
+          fontFamily: "'Quicksand', sans-serif",
         }}
       >
-        {/* Blue accent top bar */}
-        <div
-          className="w-full h-1 mb-3 flex-shrink-0"
-          style={{ background: "linear-gradient(90deg, #1D4ED8, #3B82F6, #60A5FA)" }}
-        />
+        <div className="w-full h-1 mb-3 flex-shrink-0"
+          style={{ background: "linear-gradient(90deg, #1D4ED8, #3B82F6, #60A5FA)" }} />
 
         {/* Mobile search */}
         <NavbarMenuItem className="px-4 mb-3">
-          <div
-            className="flex items-center gap-2 h-10 rounded-xl px-3 border-2 transition-all"
-            style={{ background: "#F8FAFF", borderColor: "#BFDBFE" }}
-          >
+          <div className="flex items-center gap-2 h-10 rounded-xl px-3 border-2 transition-all"
+            style={{ background: "#F8FAFF", borderColor: "#BFDBFE" }}>
             <Search size={15} className="text-blue-400 flex-shrink-0" />
             <form onSubmit={submitSearch} className="flex-1 flex items-center gap-1">
               <input
@@ -460,27 +407,20 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 placeholder="Tìm sản phẩm, thương hiệu…"
                 value={searchQ}
                 onChange={(e) => setSearchQ(e.target.value)}
-                className="flex-1 bg-transparent border-none outline-none text-sm text-gray-800 placeholder-blue-300"
+                className="flex-1 bg-transparent border-none outline-none text-sm text-gray-800 placeholder-blue-300 font-semibold"
+                style={{ fontFamily: "'Quicksand', sans-serif" }}
               />
-              {searchQ && (
-                <button type="button" onClick={() => setSearchQ("")}>
-                  <X size={13} className="text-gray-400" />
-                </button>
-              )}
+              {searchQ && <button type="button" onClick={() => setSearchQ("")}><X size={13} className="text-gray-400" /></button>}
             </form>
           </div>
         </NavbarMenuItem>
 
         {user ? (
           <>
-            {/* User identity */}
             <NavbarMenuItem className="px-4 mb-2">
-              <div
-                className="flex items-center gap-3 p-3 rounded-2xl"
-                style={{ background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)", border: "1.5px solid #BFDBFE" }}
-              >
-                <Avatar
-                  size="sm"
+              <div className="flex items-center gap-3 p-3 rounded-2xl"
+                style={{ background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)", border: "1.5px solid #BFDBFE" }}>
+                <Avatar size="sm"
                   name={(user?.name || "U").charAt(0).toUpperCase()}
                   src={user?.avatar_url || undefined}
                   classNames={{ base: "bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black flex-shrink-0" }}
@@ -492,20 +432,18 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               </div>
             </NavbarMenuItem>
 
-            {/* Nav links */}
             <div className="px-3">
               {[
-                { icon: User,    label: "Hồ sơ cá nhân",       path: "/profile" },
-                { icon: Receipt, label: "Đơn hàng của tôi",    path: "/orders" },
-                { icon: Heart,   label: "Sản phẩm yêu thích",  path: "/wishlist" },
-                { icon: Wallet,  label: "Ví DFS",               path: "/wallet" },
-                { icon: Bell,    label: "Thông báo",            path: "/notifications", badge: notifyCount },
+                { icon: User,    label: "Hồ sơ cá nhân",      path: "/profile" },
+                { icon: Receipt, label: "Đơn hàng của tôi",   path: "/orders" },
+                { icon: Heart,   label: "Sản phẩm yêu thích", path: "/wishlist" },
+                { icon: Wallet,  label: "Ví DFS",              path: "/wallet" },
+                { icon: Bell,    label: "Thông báo",           path: "/notifications", badge: notifyCount },
               ].map(({ icon: Icon, label, path, badge }) => (
                 <NavbarMenuItem key={path}>
-                  <RouterLink
-                    to={path}
+                  <RouterLink to={path}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold text-[14px] transition-colors no-underline group"
-                  >
+                    style={{ fontFamily: "'Quicksand', sans-serif" }}>
                     <div className="w-8 h-8 rounded-xl bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors">
                       <Icon size={15} className="text-blue-600" />
                     </div>
@@ -521,14 +459,12 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               ))}
             </div>
 
-            {/* Divider */}
             <div className="mx-4 my-2 h-px bg-blue-50" />
 
             <NavbarMenuItem className="px-3">
-              <button
-                onClick={onLogout}
+              <button onClick={onLogout}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-red-500 font-semibold text-[14px] transition-colors w-full"
-              >
+                style={{ fontFamily: "'Quicksand', sans-serif" }}>
                 <div className="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
                   <LogOut size={15} className="text-red-500" />
                 </div>
@@ -538,23 +474,22 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
           </>
         ) : (
           <div className="px-4 mt-1 flex flex-col gap-2">
-            <p className="text-xs font-bold text-blue-400 uppercase tracking-widest px-1 mb-1">Tài khoản</p>
+            <p className="text-xs font-bold text-blue-400 uppercase tracking-widest px-1 mb-1"
+              style={{ fontFamily: "'Quicksand', sans-serif" }}>
+              Tài khoản
+            </p>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-              <RouterLink
-                to="/login"
+              <RouterLink to="/login"
                 className="flex items-center justify-center gap-2 h-11 rounded-2xl text-sm font-black text-white no-underline shadow-md"
-                style={{ background: "linear-gradient(135deg, #1E40AF, #2563EB)", boxShadow: "0 4px 14px rgba(29,78,216,0.35)" }}
-              >
+                style={{ background: "linear-gradient(135deg, #1E40AF, #2563EB)", boxShadow: "0 4px 14px rgba(29,78,216,0.35)", fontFamily: "'Quicksand', sans-serif" }}>
                 <LogIn size={15} />
                 Đăng nhập
               </RouterLink>
             </motion.div>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-              <RouterLink
-                to="/register"
+              <RouterLink to="/register"
                 className="flex items-center justify-center gap-2 h-11 rounded-2xl text-sm font-bold no-underline"
-                style={{ border: "2px solid #BFDBFE", color: "#1D4ED8", background: "#EFF6FF" }}
-              >
+                style={{ border: "2px solid #BFDBFE", color: "#1D4ED8", background: "#EFF6FF", fontFamily: "'Quicksand', sans-serif" }}>
                 <UserPlus size={15} />
                 Tạo tài khoản
               </RouterLink>

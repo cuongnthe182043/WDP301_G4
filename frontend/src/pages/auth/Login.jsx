@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
-import {
-  Card, CardBody, Input, Button, Checkbox, Divider, Chip,
-} from "@heroui/react";
+import { Input, Button, Checkbox, Divider, Chip } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, ShieldCheck, Zap, Users, TrendingUp } from "lucide-react";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
@@ -19,9 +17,8 @@ const validateIdentifier = (v) => {
   if (!v.trim()) return "Vui lòng nhập email, username hoặc số điện thoại";
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRe = /^(0|\+84)[3-9]\d{8}$/;
-  // allow username (≥3 chars, no spaces) OR email OR phone
   if (v.includes("@") && !emailRe.test(v)) return "Địa chỉ email không hợp lệ";
-  if (/^\+?0?[0-9]{9,12}$/.test(v.replace(/\s/g,"")) && !phoneRe.test(v.replace(/\s/g,""))) 
+  if (/^\+?0?[0-9]{9,12}$/.test(v.replace(/\s/g,"")) && !phoneRe.test(v.replace(/\s/g,"")))
     return "Số điện thoại không hợp lệ (VD: 0912345678)";
   if (v.trim().length < 3) return "Tối thiểu 3 ký tự";
   return null;
@@ -33,25 +30,24 @@ const validatePassword = (v) => {
   return null;
 };
 
-/* ─── decorative stat card ─── */
+/* ─── Decorative dot ─── */
+const Dot = ({ style }) => (
+  <div className="absolute rounded-full" style={{ opacity: 0.18, ...style }} />
+);
+
+/* ─── Stat card ─── */
 const StatCard = ({ icon: Icon, label, value, color }) => (
-  <div
-    className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-    style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.1)" }}
-  >
-    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: color + "22" }}>
+  <div className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+    style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.12)" }}>
+    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+      style={{ background: color + "30" }}>
       <Icon size={16} style={{ color }} />
     </div>
     <div>
       <p className="text-white font-bold text-sm leading-none">{value}</p>
-      <p className="text-white/50 text-xs mt-0.5">{label}</p>
+      <p className="text-blue-200 text-xs mt-0.5" style={{ opacity: 0.7 }}>{label}</p>
     </div>
   </div>
-);
-
-/* ─── floating dot decoration ─── */
-const Dot = ({ style }) => (
-  <div className="absolute rounded-full" style={{ opacity: 0.15, ...style }} />
 );
 
 export default function Login() {
@@ -64,7 +60,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
-  /* derived validation */
   const errors = {
     identifier: touched.identifier ? validateIdentifier(form.identifier) : null,
     password:   touched.password   ? validatePassword(form.password)     : null,
@@ -84,23 +79,18 @@ export default function Login() {
     e.preventDefault();
     setTouched({ identifier: true, password: true });
     if (!formValid) return;
-    setMessage("");
-    setLoading(true);
-    clearAuthStorage();
+    setMessage(""); setLoading(true); clearAuthStorage();
     try {
       const res = await authService.login(form);
       const { accessToken, user } = res.data.data || {};
       if (remember) localStorage.setItem("dfs_remember", "1");
       else          localStorage.removeItem("dfs_remember");
       login(user, accessToken);
-      setIsError(false);
-      setMessage("Đăng nhập thành công!");
+      setIsError(false); setMessage("Đăng nhập thành công!");
     } catch (err) {
       setIsError(true);
       setMessage(err?.response?.data?.message || err.message || "Đăng nhập thất bại");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   useEffect(() => {
@@ -121,19 +111,15 @@ export default function Login() {
 
   const handleGoogleCallback = async (response) => {
     try {
-      setLoading(true);
-      clearAuthStorage();
+      setLoading(true); clearAuthStorage();
       const res = await authService.googleLogin({ token: response.credential });
       const { accessToken, user } = res.data.data || {};
       login(user, accessToken);
-      setIsError(false);
-      setMessage("Đăng nhập Google thành công!");
+      setIsError(false); setMessage("Đăng nhập Google thành công!");
     } catch (err) {
       setIsError(true);
       setMessage("Lỗi Google Login: " + (err?.response?.data?.message || err.message));
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const promptGoogle = () => {
@@ -142,78 +128,73 @@ export default function Login() {
   };
 
   return (
-    <div
-      className="min-h-dvh flex items-stretch"
-      style={{ fontFamily: "'DM Sans', sans-serif" }}
-    >
+    <div className="min-h-dvh flex items-stretch">
+
       {/* ── LEFT PANEL ── */}
       <div
-        className="hidden lg:flex flex-col justify-between w-[48%] relative overflow-hidden p-10"
-        style={{
-          background: "linear-gradient(145deg, #0f172a 0%, #1e1b4b 50%, #0f2027 100%)",
-        }}
+        className="hidden lg:flex flex-col justify-between w-[46%] relative overflow-hidden p-10"
+        style={{ background: "linear-gradient(145deg, #0f1f5c 0%, #1E3A8A 45%, #1E40AF 80%, #1D4ED8 100%)" }}
       >
-        {/* decorative blobs */}
-        <Dot style={{ width: 320, height: 320, background: "radial-gradient(circle, #6366f1, transparent)", top: -80, left: -80 }} />
-        <Dot style={{ width: 240, height: 240, background: "radial-gradient(circle, #10b981, transparent)", bottom: 40, right: -60 }} />
-        <Dot style={{ width: 180, height: 180, background: "radial-gradient(circle, #818cf8, transparent)", top: "45%", right: "20%" }} />
+        {/* Blobs */}
+        <Dot style={{ width: 340, height: 340, background: "radial-gradient(circle, #3B82F6, transparent)", top: -100, left: -100 }} />
+        <Dot style={{ width: 260, height: 260, background: "radial-gradient(circle, #60A5FA, transparent)", bottom: 20, right: -80 }} />
+        <Dot style={{ width: 200, height: 200, background: "radial-gradient(circle, #93C5FD, transparent)", top: "42%", right: "18%" }} />
 
-        {/* grid overlay */}
+        {/* Grid overlay */}
         <div className="absolute inset-0" style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }} />
 
-        {/* content */}
+        {/* Logo */}
         <div className="relative z-10">
           <RouterLink to="/" className="inline-flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl overflow-hidden ring-2 ring-white/20 group-hover:ring-white/40 transition-all">
+            <div className="w-11 h-11 rounded-2xl overflow-hidden ring-2 ring-white/25 group-hover:ring-white/50 transition-all shadow-lg">
               <img src={dfsLogo} alt="DFS" className="w-full h-full object-cover scale-125" />
             </div>
-            <span className="text-white font-black text-xl tracking-tight">DFS Platform</span>
+            <span className="text-white font-black text-xl tracking-tight" style={{ fontFamily: "'Baloo 2', cursive" }}>
+              Daily Fit
+            </span>
           </RouterLink>
         </div>
 
+        {/* Center content */}
         <div className="relative z-10 flex-1 flex flex-col justify-center gap-6 my-10">
           <div>
-            <Chip
-              size="sm"
-              variant="flat"
-              style={{ background: "rgba(99,102,241,.25)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,.4)" }}
-              className="mb-4"
-            >
+            <Chip size="sm" variant="flat"
+              style={{ background: "rgba(96,165,250,.25)", color: "#BFDBFE", border: "1px solid rgba(96,165,250,.4)" }}
+              className="mb-4">
               ✦ Nền tảng số #1 Việt Nam
             </Chip>
-            <h2 className="text-white font-black text-4xl leading-tight tracking-tight">
+            <h2 className="text-white font-black text-4xl leading-tight tracking-tight"
+              style={{ fontFamily: "'Baloo 2', cursive" }}>
               Trải nghiệm<br />
-              <span style={{ background: "linear-gradient(90deg,#a5b4fc,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span style={{ background: "linear-gradient(90deg, #93C5FD, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 vượt trội
               </span>
               <br />cùng DFS
             </h2>
-            <p className="text-white/50 text-sm mt-3 leading-relaxed max-w-xs">
+            <p className="text-blue-200 text-sm mt-3 leading-relaxed max-w-xs" style={{ opacity: 0.8 }}>
               Quản lý, kết nối và phát triển mọi hoạt động của bạn trong một nền tảng thông minh.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-3 max-w-xs">
-            <StatCard icon={Users}      label="Người dùng đang hoạt động" value="12,400+"  color="#a5b4fc" />
+            <StatCard icon={Users}      label="Người dùng đang hoạt động" value="12,400+"  color="#93C5FD" />
             <StatCard icon={TrendingUp} label="Giao dịch hôm nay"          value="3,850"    color="#34d399" />
-            <StatCard icon={Zap}        label="Tốc độ xử lý trung bình"    value="< 200ms"  color="#fbbf24" />
+            <StatCard icon={Zap}        label="Tốc độ xử lý trung bình"    value="< 200ms"  color="#FCD34D" />
           </div>
         </div>
 
+        {/* Bottom */}
         <div className="relative z-10 flex items-center gap-2">
-          <ShieldCheck size={14} className="text-emerald-400" />
-          <p className="text-white/40 text-xs">Bảo mật SSL · Mã hóa đầu cuối · Tuân thủ PDPA</p>
+          <ShieldCheck size={14} className="text-blue-300" />
+          <p className="text-blue-300 text-xs" style={{ opacity: 0.6 }}>Bảo mật SSL · Mã hóa đầu cuối · Tuân thủ PDPA</p>
         </div>
       </div>
 
       {/* ── RIGHT PANEL ── */}
-      <div
-        className="flex-1 flex items-center justify-center p-6 sm:p-10"
-        style={{ background: "#fafafa" }}
-      >
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-10" style={{ background: "#f8faff" }}>
         <div className="w-full max-w-[420px]">
 
           {/* Mobile logo */}
@@ -221,14 +202,16 @@ export default function Login() {
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow">
               <img src={dfsLogo} alt="DFS" className="w-full h-full object-cover scale-125" />
             </div>
-            <span className="font-black text-lg text-default-900">DFS Platform</span>
+            <span className="font-black text-lg text-default-900" style={{ fontFamily: "'Baloo 2', cursive" }}>Daily Fit</span>
           </div>
 
           <div className="mb-8">
-            <h1 className="text-3xl font-black text-default-900 tracking-tight">Đăng nhập</h1>
+            <h1 className="text-3xl font-black text-default-900 tracking-tight" style={{ fontFamily: "'Baloo 2', cursive" }}>
+              Đăng nhập
+            </h1>
             <p className="text-default-500 text-sm mt-1.5">
               Chưa có tài khoản?{" "}
-              <RouterLink to="/register" className="text-primary font-semibold hover:underline">
+              <RouterLink to="/register" className="font-bold hover:underline" style={{ color: "#1D4ED8" }}>
                 Tạo miễn phí
               </RouterLink>
             </p>
@@ -236,10 +219,8 @@ export default function Login() {
 
           {/* Alert */}
           {message && (
-            <div className={`mb-5 px-4 py-3 rounded-2xl text-sm font-medium flex items-center gap-2 ${
-              isError
-                ? "bg-danger-50 text-danger border border-danger-200"
-                : "bg-success-50 text-success border border-success-200"
+            <div className={`mb-5 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 ${
+              isError ? "bg-danger-50 text-danger border border-danger-200" : "bg-success-50 text-success border border-success-200"
             }`}>
               <span>{isError ? "⚠" : "✓"}</span>
               {message}
@@ -247,7 +228,6 @@ export default function Login() {
           )}
 
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
-            {/* Identifier */}
             <Input
               autoFocus
               label="Email / Username / SĐT"
@@ -255,20 +235,15 @@ export default function Login() {
               value={form.identifier}
               onChange={handleChange}
               onBlur={() => handleBlur("identifier")}
-              variant="bordered"
-              radius="lg"
+              variant="bordered" radius="lg"
               isInvalid={!!errors.identifier}
               errorMessage={errors.identifier}
               color={errors.identifier ? "danger" : touched.identifier && form.identifier ? "success" : "default"}
               startContent={<Mail size={16} className="text-default-400 flex-shrink-0" />}
-              classNames={{
-                inputWrapper: "h-12 shadow-sm",
-                label: "text-default-500 text-sm",
-              }}
+              classNames={{ inputWrapper: "h-12 shadow-sm border-blue-100 hover:border-blue-300" }}
               description={!errors.identifier && !touched.identifier ? "Email, tên đăng nhập hoặc số điện thoại" : undefined}
             />
 
-            {/* Password */}
             <Input
               label="Mật khẩu"
               name="password"
@@ -276,41 +251,28 @@ export default function Login() {
               value={form.password}
               onChange={handleChange}
               onBlur={() => handleBlur("password")}
-              variant="bordered"
-              radius="lg"
+              variant="bordered" radius="lg"
               isInvalid={!!errors.password}
               errorMessage={errors.password}
               color={errors.password ? "danger" : touched.password && form.password ? "success" : "default"}
               startContent={<Lock size={16} className="text-default-400 flex-shrink-0" />}
-              classNames={{
-                inputWrapper: "h-12 shadow-sm",
-                label: "text-default-500 text-sm",
-              }}
+              classNames={{ inputWrapper: "h-12 shadow-sm border-blue-100 hover:border-blue-300" }}
               endContent={
-                <button
-                  type="button"
-                  onClick={() => setShowPwd(s => !s)}
-                  className="text-default-400 hover:text-default-600 transition-colors"
-                  aria-label={showPwd ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
-                >
+                <button type="button" onClick={() => setShowPwd(s => !s)}
+                  className="text-default-400 hover:text-default-600 transition-colors">
                   {showPwd ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
               }
             />
 
-            {/* Password strength hint */}
+            {/* Password strength */}
             {form.password && (
               <div className="flex gap-1.5 -mt-2 px-1">
                 {[6, 8, 12].map((n, i) => (
-                  <div
-                    key={i}
-                    className="h-1 flex-1 rounded-full transition-all duration-300"
-                    style={{
-                      background: form.password.length >= n
-                        ? i === 0 ? "#f97316" : i === 1 ? "#eab308" : "#22c55e"
-                        : "#e4e4e7"
-                    }}
-                  />
+                  <div key={i} className="h-1 flex-1 rounded-full transition-all duration-300"
+                    style={{ background: form.password.length >= n
+                      ? i === 0 ? "#f97316" : i === 1 ? "#eab308" : "#22c55e"
+                      : "#e4e4e7" }} />
                 ))}
                 <span className="text-xs text-default-400 ml-1 self-center">
                   {form.password.length < 6 ? "Yếu" : form.password.length < 8 ? "Trung bình" : form.password.length < 12 ? "Khá" : "Mạnh"}
@@ -318,51 +280,35 @@ export default function Login() {
               </div>
             )}
 
-            {/* Remember + Forgot */}
             <div className="flex items-center justify-between">
               <Checkbox isSelected={remember} onValueChange={setRemember} size="sm" radius="sm">
                 <span className="text-sm text-default-600">Ghi nhớ đăng nhập</span>
               </Checkbox>
-              <RouterLink to="/forgot-password" className="text-sm text-primary hover:underline font-medium">
+              <RouterLink to="/forgot-password" className="text-sm font-semibold hover:underline" style={{ color: "#1D4ED8" }}>
                 Quên mật khẩu?
               </RouterLink>
             </div>
 
-            {/* Submit */}
             <Button
-              type="submit"
-              color="primary"
-              isLoading={loading}
-              isDisabled={loading}
-              radius="lg"
-              size="lg"
-              className="w-full font-bold text-base h-12 shadow-md"
-              style={{
-                background: formValid
-                  ? "linear-gradient(135deg, #6366f1, #4f46e5)"
-                  : undefined,
-              }}
+              type="submit" color="primary" isLoading={loading} isDisabled={loading}
+              radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md"
+              style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}
             >
               {loading ? "Đang đăng nhập…" : "Đăng nhập →"}
             </Button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center gap-3 my-5">
             <Divider className="flex-1" />
             <span className="text-xs text-default-400 font-medium px-1">hoặc tiếp tục với</span>
             <Divider className="flex-1" />
           </div>
 
-          {/* Google login */}
           <div className="flex flex-col items-center gap-3">
             <div id="googleLoginDiv" className="w-full flex justify-center" />
             <Button
-              variant="bordered"
-              onPress={promptGoogle}
-              radius="lg"
-              size="lg"
-              className="w-full font-semibold border-default-200 hover:border-default-400 h-12"
+              variant="bordered" onPress={promptGoogle} radius="lg" size="lg"
+              className="w-full font-semibold h-12 border-blue-200 hover:border-blue-400"
               startContent={
                 <svg viewBox="0 0 24 24" className="w-5 h-5 flex-shrink-0">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
