@@ -14,8 +14,6 @@ export const authService = {
   resetPassword: (data) =>
     apiClient.post("/auth/forgot-password/verify", data),
 
-  changePassword: (data, token) =>
-    apiClient.post("/auth/change-password", data, {
-      headers: { Authorization: `Bearer ${token}` },
-    }),
+  changePassword: (data) =>
+    apiClient.post("/auth/change-password", data),
 };

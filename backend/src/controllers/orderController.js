@@ -311,13 +311,11 @@ exports.sendReviewReminder = async (req, res, next) => {
     const pushToken = user?.push_token;
 
     if (email) {
-      await notification.sendEmail({
-        to: email,
-        subject: `Đánh giá đơn hàng ${ord.order_code}`,
-        html: `<p>Chào bạn,</p>
-               <p>Đơn <b>${ord.order_code}</b> đã hoàn thành. Mời bạn để lại đánh giá sản phẩm để nhận ưu đãi.</p>
-               <p><a href="${process.env.FRONTEND_URL}/orders/${ord._id}">Mở đơn hàng</a></p>`,
-      });
+      await notification.sendEmail(
+        email,
+        `Đánh giá đơn hàng ${ord.order_code}`,
+        `Đơn ${ord.order_code} đã hoàn thành. Mời bạn để lại đánh giá: ${process.env.FRONTEND_URL}/orders/${ord._id}`
+      );
     }
 
     if (pushToken) {

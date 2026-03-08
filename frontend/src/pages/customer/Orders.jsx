@@ -45,7 +45,7 @@ const STATUS_LABEL = {
 
 export default function Orders() {
   const nav = useNavigate();
-  const [tab, setTab]   = useState("all");
+  const [tab, setTab]   = useState("Tất cả");
   const [data, setData] = useState({ items: [], total: 0, page: 1, limit: 10 });
   const [q, setQ]       = useState("");
   const [loading, setLoading] = useState(false);
