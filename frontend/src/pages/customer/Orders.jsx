@@ -11,53 +11,60 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 
 const STATUS_TABS = [
-  { key: "",                 label: "Tất cả" },
-  { key: "pending",          label: "Chờ xác nhận" },
-  { key: "confirmed",        label: "Đang xử lý" },
-  { key: "shipping",         label: "Đang giao" },
-  { key: "delivered",        label: "Hoàn thành" },
-  { key: "canceled",         label: "Đã hủy" },
-  { key: "refund_pending",   label: "Hoàn/Đổi (chờ)" },
+  { key: "", label: "Tất cả" },
+  { key: "pending", label: "Chờ xác nhận" },
+  { key: "confirmed", label: "Đang xử lý" },
+  { key: "shipping", label: "Đang giao" },
+  { key: "delivered", label: "Hoàn thành" },
+  { key: "canceled", label: "Đã hủy" },
+  { key: "refund_pending", label: "Hoàn/Đổi (chờ)" },
   { key: "refund_completed", label: "Hoàn/Đổi xong" },
 ];
 
 const STATUS_COLOR = {
-  pending:          "warning",
-  confirmed:        "primary",
-  processing:       "primary",
-  shipping:         "secondary",
-  delivered:        "success",
-  canceled:         "default",
-  refund_pending:   "warning",
+  pending: "warning",
+  confirmed: "primary",
+  processing: "primary",
+  shipping: "secondary",
+  delivered: "success",
+  canceled_by_customer: "default",
+  canceled_by_shop: "default",
+  refund_pending: "warning",
   refund_completed: "success",
 };
 
 const STATUS_LABEL = {
-  pending:          "Chờ xác nhận",
-  confirmed:        "Đang xử lý",
-  processing:       "Đang xử lý",
-  shipping:         "Đang giao",
-  delivered:        "Hoàn thành",
-  canceled:         "Đã hủy",
-  refund_pending:   "Chờ hoàn/đổi",
+  pending: "Chờ xác nhận",
+  confirmed: "Đang xử lý",
+  processing: "Đang xử lý",
+  shipping: "Đang giao",
+  delivered: "Hoàn thành",
+  canceled_by_customer: "Đã hủy (khách)",
+  canceled_by_shop: "Đã hủy (cửa hàng)",
+  refund_pending: "Chờ hoàn/đổi",
   refund_completed: "Đã hoàn/đổi",
 };
 
 export default function Orders() {
   const nav = useNavigate();
-  const [tab, setTab]   = useState("Tất cả");
+  const [tab, setTab] = useState("Tất cả");
   const [data, setData] = useState({ items: [], total: 0, page: 1, limit: 10 });
-  const [q, setQ]       = useState("");
+  const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
 
   const load = async (page = 1) => {
     setLoading(true);
     try {
       const tabKey = STATUS_TABS.find(t => t.label === tab)?.key ?? "";
-      const status = tabKey || undefined;
+      let status;
+      if (tabKey === "canceled") {
+        status = ["canceled_by_customer", "canceled_by_shop"];
+      } else {
+        status = tabKey || undefined;
+      }
       const res = await orderService.list({ status, page, limit: 10, q: q || undefined });
       setData(res);
-    } catch {}
+    } catch { }
     finally { setLoading(false); }
   };
 
