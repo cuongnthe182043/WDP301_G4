@@ -8,6 +8,7 @@ const shippingSvc = require("../services/shippingService");
 const invoiceSvc = require("../services/invoiceService");
 const { v4: uuidv4 } = require("uuid");
 const notification = require("../services/notificationService");
+const notif        = require("../services/dbNotificationService");
 const User = require("../models/User");
 
 const SAFE_FIELDS =
@@ -108,6 +109,8 @@ exports.cancel = async (req, res, next) => {
       ord.payment_status = "refund_pending";
     }
     await ord.save();
+
+    notif.orderCancelled(userId, ord.order_code).catch(() => {});
 
     res.json({
       status: "success",

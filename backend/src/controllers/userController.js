@@ -1,4 +1,5 @@
 const svc = require("../services/userService");
+const UserBodyProfile = require("../models/UserBodyProfile");
 const ok  = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb="Bad request") => res.status(e?.status||400).json({ status:"fail", message:e?.message||fb, errors:e?.errors });
 const nf  = (res, msg) => res.status(404).json({ status:"fail", message: msg });
@@ -71,6 +72,33 @@ exports.removeFromWishlist = async (req, res) => {
     if (!user) return nf(res, "User not found");
     ok(res, { message: "Removed from wishlist" });
   } catch (e) { bad(res, e, "Cannot remove from wishlist"); }
+};
+
+exports.getBodyProfile = async (req, res) => {
+  try {
+    const profile = await UserBodyProfile.findOne({ user_id: req.user._id }).lean();
+    ok(res, { body_profile: profile || null });
+  } catch (e) { bad(res, e, "Cannot get body profile"); }
+};
+
+exports.upsertBodyProfile = async (req, res) => {
+  try {
+    const ALLOWED = ["height", "weight", "chest", "waist", "hip", "shoulder", "leg_length", "body_length"];
+    const update = {};
+    for (const key of ALLOWED) {
+      const v = req.body[key];
+      if (v != null) {
+        const n = Number(v);
+        if (!isNaN(n) && n > 0) update[key] = n;
+      }
+    }
+    const profile = await UserBodyProfile.findOneAndUpdate(
+      { user_id: req.user._id },
+      { $set: update },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    ok(res, { body_profile: profile });
+  } catch (e) { bad(res, e, "Cannot save body profile"); }
 };
 
 exports.uploadAvatar = async (req, res) => {

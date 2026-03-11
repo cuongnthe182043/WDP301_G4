@@ -13,6 +13,7 @@ import TermsAndPolicy from "../pages/support/TermsAndPolicy";
 import HomePage from "../pages/customer/HomePage";
 import ProductDetail from "../pages/customer/ProductDetail";
 import AllProductsPages from "../pages/customer/AllProductsPages";
+import SearchPage from "../pages/customer/SearchPage";
 import CategoryProductsPage from "../pages/customer/CategoryProductsPage";
 import ProfilePage from "../pages/customer/Profile";
 import Cart from "../pages/customer/Cart";
@@ -22,6 +23,7 @@ import OrderDetail from "../pages/customer/OrderDetail";
 import Orders from "../pages/customer/Orders";
 import Wishlist from "../pages/customer/Wishlist";
 import Wallet from "../pages/customer/Wallet";
+import NotificationsPage from "../pages/customer/NotificationsPage";
 
 /* ===== Support / Ticket Pages (customer-facing) ===== */
 import Tickets from "../pages/support/Tickets";
@@ -101,7 +103,7 @@ export default function AppRouter() {
       <Route path="/product/:idOrSlug"  element={<ProductDetail />} />
       <Route path="/products/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products"           element={<AllProductsPages />} />
-      <Route path="/search"             element={<AllProductsPages />} />
+      <Route path="/search"             element={<SearchPage />} />
       <Route path="/categories/:slug"   element={<CategoryProductsPage />} />
       <Route path="/shops/:shopSlug"    element={<ShopPage />} />
 
@@ -115,6 +117,7 @@ export default function AppRouter() {
       <Route path="/orders/:id"     element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
       <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
       <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
+      <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
 
       {/* ===== Customer Support / Tickets ===== */}
       <Route path="/tickets"     element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
