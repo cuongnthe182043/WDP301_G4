@@ -1,6 +1,7 @@
 const { getRevenueByCategory } = require("../services/orderService");
 
 const Order = require("../models/Order");
+const Role = require("../models/Role");
 const Cart = require("../models/Cart");
 const Refund = require("../models/Refund");
 const Ticket = require("../models/Ticket");
@@ -104,11 +105,27 @@ exports.cancel = async (req, res, next) => {
       });
     }
 
-    ord.status = "canceled";
-    if (ord.payment_status === "paid") {
-      ord.payment_status = "refund_pending";
+    const user = await User.findById(userId).populate('role_id').lean();
+
+    if (!user) {
+      return res.status(404).json({ status: "fail", message: "Không tìm thấy người dùng" });
+    } else {
+      const role_id = user.role_id;
+      const role = await Role.findById(role_id).lean();
+      if (role.name === "shop_owner") {
+        ord.status = "canceled_by_shop";
+        if (ord.payment_status === "paid") {
+          ord.payment_status = "refund_pending";
+        }
+        await ord.save();
+      } else if (role.name === "customer") {
+        ord.status = "canceled_by_customer";
+        if (ord.payment_status === "paid") {
+          ord.payment_status = "refund_pending";
+        }
+        await ord.save();
+      }
     }
-    await ord.save();
 
     notif.orderCancelled(userId, ord.order_code).catch(() => {});
 
