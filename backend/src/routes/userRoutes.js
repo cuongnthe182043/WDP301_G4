@@ -19,4 +19,8 @@ router.get("/wishlist", verifyToken, ctrl.getWishlist);
 router.post("/wishlist", verifyToken, ctrl.addToWishlist);
 router.delete("/wishlist/:product_id", verifyToken, ctrl.removeFromWishlist);
 
+// Body profile (AI size recommendation)
+router.get("/body-profile", verifyToken, ctrl.getBodyProfile);
+router.put("/body-profile", verifyToken, ctrl.upsertBodyProfile);
+
 module.exports = router;

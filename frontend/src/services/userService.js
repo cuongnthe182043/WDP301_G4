@@ -17,4 +17,8 @@ export const userService = {
   getWishlist:       ()          => apiClient.get("/users/wishlist").then(r => r.data.data.wishlist),
   addToWishlist:     (product_id) => apiClient.post("/users/wishlist", { product_id }).then(r => r.data.data),
   removeFromWishlist:(product_id) => apiClient.delete(`/users/wishlist/${product_id}`).then(r => r.data.data),
+
+  // Body profile (AI size recommendation)
+  getBodyProfile:    () => apiClient.get("/users/body-profile").then(r => r.data.data.body_profile),
+  saveBodyProfile:   (payload) => apiClient.put("/users/body-profile", payload).then(r => r.data.data.body_profile),
 };

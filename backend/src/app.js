@@ -32,6 +32,7 @@ const vendorShopRoutes = require("./routes/vendorShopRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const notificationRoutes  = require("./routes/notificationRoutes");
 // const adminRoutes = require("./routes/adminRoutes");
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
@@ -40,8 +41,29 @@ const FE_ORIGIN = process.env.FE_ORIGIN || "http://localhost:5173";
 
 const app = express();
 
+
+
+/* ==== FIX 1: COOP Header ============================================
+   "same-origin" (helmet default) chặn window.postMessage của Google
+   OAuth popup → lỗi "Cross-Origin-Opener-Policy would block postMessage"
+   Phải set "same-origin-allow-popups" cho route auth, còn lại giữ
+   "same-origin" để bảo mật.
+================================================================== */
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/auth")) {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  } else {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  }
+  next();
+});
+
 /* ==== Security & CORS ==== */
-app.use(helmet({ contentSecurityPolicy: false }));
+// FIX: crossOriginOpenerPolicy: false vì ta tự set thủ công ở trên
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginOpenerPolicy: false, // tắt để không bị helmet ghi đè
+}));
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(
   cors({
@@ -62,8 +84,10 @@ app.use("/api", (req, res, next) => {
 });
 
 /* ==== Parsers & Performance ==== */
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
+// FIX 2: Tăng limit json lên 10mb để chứa Google ID token (~2KB) và
+// các payload lớn khác, tránh bị reject trước khi xử lý
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(compression());
 app.use(morgan("dev"));
 app.use(
@@ -99,6 +123,7 @@ app.use("/api/vendor/shops", vendorShopRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/notifications", notificationRoutes);
 // app.use("/api/admin", adminRoutes);
 
 app.use("/static/invoices", express.static(path.join(__dirname, "../public/invoices")));

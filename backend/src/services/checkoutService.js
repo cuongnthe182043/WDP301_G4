@@ -1,4 +1,5 @@
 // services/checkoutService.js
+const notif = require("./dbNotificationService");
 const Cart = require("../models/Cart");
 const Voucher = require("../models/Voucher");
 const Order = require("../models/Order");
@@ -292,6 +293,11 @@ exports.confirm = async ({
     } catch (err) {
       console.error("CART_CLEAR_ERROR:", err.message);
     }
+  }
+
+  // Fire order-placed notifications (non-fatal, one per shop order)
+  for (const ord of createdOrders) {
+    notif.orderPlaced(userId, ord.order_code).catch(() => {});
   }
 
   // Return the first order for single-shop compatibility, plus full array

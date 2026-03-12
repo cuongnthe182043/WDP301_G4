@@ -5,6 +5,7 @@ const redis = require("../config/redis");
 const User = require("../models/User");
 const Role = require("../models/Role");
 const { sendEmail } = require("./notificationService");
+const dbNotif = require("./dbNotificationService");
 const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -161,6 +162,7 @@ exports.resetPassword = async (email, otp, newPassword) => {
   user.password_hash = await bcrypt.hash(newPassword, salt);
   await user.save();
   await redis.del(`otp:forgot:${email}`);
+  dbNotif.passwordReset(user._id).catch(() => {});
 
   return { message: "Mật khẩu đã được đặt lại" };
 };
@@ -179,6 +181,7 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
   user.password_hash = await bcrypt.hash(newPassword, salt);
   user.refresh_token = undefined;  // invalidate existing session
   await user.save();
+  dbNotif.passwordChanged(userId).catch(() => {});
 
   return { message: "Đổi mật khẩu thành công" };
 };

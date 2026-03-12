@@ -122,6 +122,19 @@ exports.vnpayReturn = async (req, res) => {
   try {
     const result = vnpaySvc.verifyReturnUrl(req.query);
 
+    // Extra display params from VNPAY (hash-verified, safe to surface)
+    const rawAmount  = Number(req.query.vnp_Amount  || 0);
+    const amount     = rawAmount ? rawAmount / 100 : 0;  // VNPAY sends VND × 100
+    const payDate    = req.query.vnp_PayDate   || "";    // YYYYMMDDHHmmss
+    const txnNo      = req.query.vnp_TransactionNo || "";
+    const bank       = req.query.vnp_BankCode  || "";
+
+    const extraParams =
+      (amount  ? `&amount=${amount}`                      : "") +
+      (txnNo   ? `&txn_no=${encodeURIComponent(txnNo)}`   : "") +
+      (bank    ? `&bank=${encodeURIComponent(bank)}`       : "") +
+      (payDate ? `&pay_date=${encodeURIComponent(payDate)}` : "");
+
     if (!result.isValid) {
       console.warn("[VNPAY Return] Rejected: invalid secure hash");
       return res.redirect(`${frontendUrl}/payment/return?status=fail&reason=invalid_signature`);
@@ -131,7 +144,9 @@ exports.vnpayReturn = async (req, res) => {
       // Settle as fallback — no-op if IPN already settled it
       await vnpaySvc.settleVNPayOrder(result.orderCode, result.transactionNo, result.bankCode);
       return res.redirect(
-        `${frontendUrl}/payment/return?status=success&order_code=${encodeURIComponent(result.orderCode)}`
+        `${frontendUrl}/payment/return?status=success` +
+        `&order_code=${encodeURIComponent(result.orderCode)}` +
+        extraParams
       );
     }
 
@@ -140,7 +155,8 @@ exports.vnpayReturn = async (req, res) => {
     return res.redirect(
       `${frontendUrl}/payment/return?status=fail` +
       `&order_code=${encodeURIComponent(result.orderCode)}` +
-      `&code=${result.responseCode}`
+      `&code=${result.responseCode}` +
+      extraParams
     );
   } catch (e) {
     console.error("[VNPAY Return] Error:", e.message, e.stack);

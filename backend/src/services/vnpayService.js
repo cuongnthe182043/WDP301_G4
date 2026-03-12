@@ -22,6 +22,7 @@
 const crypto   = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 const vnpayCfg    = require("../config/vnpay");
+const notif       = require("./dbNotificationService");
 const Order       = require("../models/Order");
 const Payment     = require("../models/Payment");
 const Wallet      = require("../models/Wallet");
@@ -168,6 +169,9 @@ async function createVNPayUrl(orderId, ipAddr) {
   );
 
   console.log(`[VNPAY] URL created | order: ${order.order_code} | txnRef: ${txnRef}`);
+  console.log(`[VNPAY] TMN Code: ${vnpayCfg.tmnCode} | Amount: ${params.vnp_Amount} | CreateDate: ${createDate}`);
+  console.log(`[VNPAY] SecureHash: ${secureHash.slice(0, 20)}...`);
+  console.log(`[VNPAY] PayURL: ${payUrl.slice(0, 120)}...`);
   return { payUrl, txnRef };
 }
 
@@ -314,6 +318,7 @@ async function settleVNPayOrder(orderCode, transactionNo, bankCode) {
     metadata:          { orderCode, transactionNo, bankCode, amount: order.total_price },
   });
 
+  notif.paymentSuccess(order.user_id, orderCode, order.total_price).catch(() => {});
   console.log(`[VNPAY] Settled: ${orderCode} | txn: ${transactionNo} | bank: ${bankCode}`);
   return order;
 }
@@ -346,6 +351,7 @@ async function failVNPayOrder(orderCode, responseCode) {
     metadata:          { orderCode, responseCode },
   });
 
+  notif.paymentFailed(order.user_id, orderCode).catch(() => {});
   console.log(`[VNPAY] Failed: ${orderCode} | responseCode: ${responseCode}`);
 }
 

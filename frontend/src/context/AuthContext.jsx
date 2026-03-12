@@ -147,10 +147,18 @@ export const AuthProvider = ({ children }) => {
     navigate("/login", { replace: true });
   };
 
+  const updateUser = (partial) => {
+    setUser(prev => {
+      const next = { ...(prev || {}), ...partial };
+      localStorage.setItem(USER_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
   const isAuthenticated = useMemo(() => Boolean(token) && !isExpired(token), [token]);
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated, authReady, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isAuthenticated, authReady, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
