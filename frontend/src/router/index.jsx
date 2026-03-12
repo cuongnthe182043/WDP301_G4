@@ -28,6 +28,8 @@ import NotificationsPage from "../pages/customer/NotificationsPage";
 /* ===== Support / Ticket Pages (customer-facing) ===== */
 import Tickets from "../pages/support/Tickets";
 import TicketDetail from "../pages/support/TicketDetail";
+import PrivacyPolicy from "../pages/support/PrivacyPolicy";
+import TermsOfService from "../pages/support/TermsOfService";
 
 /* ===== Shop (Seller) Pages ===== */
 import ShopLayout from "../pages/shop/ShopLayout";
@@ -93,8 +95,8 @@ export default function AppRouter() {
       <Route path="/login"           element={<Login />} />
       <Route path="/register"        element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/legal/privacy"   element={<TermsAndPolicy />} />
-
+      <Route path="/privacy"   element={<PrivacyPolicy />} />
+      <Route path="/terms"     element={<TermsOfService />} />
       {/* ===== Auth Required ===== */}
       <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
