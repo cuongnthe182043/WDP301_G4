@@ -27,6 +27,10 @@ const realtime = require("./sockets/realtime")(io);
 // Cho controller lấy ra broadcast: req.app.get("realtime")
 app.set("realtime", realtime);
 
+// Wire socketManager so any service can emit user events
+const socketManager = require("./config/socketManager");
+socketManager.init(realtime.emitToUser);
+
 // Kết nối DB + start
 const { connectDB } = require("./config/db");
 (async () => {

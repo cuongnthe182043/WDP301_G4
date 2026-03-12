@@ -1,22 +1,38 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { cartService } from "../services/cartService";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const { isAuthenticated } = useAuth();
+  const [cartData, setCartData] = useState(null); // full cart from API
+  const [loading, setLoading] = useState(false);
 
-  const addToCart = (item) => {
-    setCart((prev) => [...prev, item]);
-  };
+  const refresh = useCallback(async () => {
+    if (!isAuthenticated) { setCartData(null); return; }
+    try {
+      setLoading(true);
+      const data = await cartService.get();
+      setCartData(data);
+    } catch {
+      setCartData(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
 
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((i) => i._id !== id));
-  };
+  useEffect(() => { refresh(); }, [refresh]);
 
-  const clearCart = () => setCart([]);
+  const itemCount = (cartData?.items || []).reduce((sum, it) => sum + (it.qty || 1), 0);
+
+  // Legacy helpers kept for backward compat with any existing code
+  const addToCart  = () => refresh();
+  const removeFromCart = () => refresh();
+  const clearCart  = () => refresh();
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart: cartData, itemCount, loading, refresh, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

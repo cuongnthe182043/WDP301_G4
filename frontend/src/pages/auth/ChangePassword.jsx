@@ -62,9 +62,22 @@ export default function ChangePassword() {
     try {
       setLoading(true);
       await authService.changePassword({ oldPassword: form.oldPassword, newPassword: form.newPassword });
-      setDone(true); showMsg("Đổi mật khẩu thành công!", false);
-    } catch (err) { showMsg(err?.response?.data?.message || err.message); }
-    finally { setLoading(false); }
+      setDone(true);
+      showMsg("Đổi mật khẩu thành công!", false);
+
+      // FIX: Sau khi đổi mật khẩu thành công, revoke Google session
+      // Bắt buộc user phải login lại thủ công, tránh Google dùng cached credential cũ
+      // mà không biết mật khẩu đã thay đổi → gây lỗi khi login Google lần sau
+      try {
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.disableAutoSelect();
+        }
+      } catch {}
+    } catch (err) {
+      showMsg(err?.response?.data?.message || err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -164,6 +177,10 @@ export default function ChangePassword() {
                   Đổi mật khẩu thành công!
                 </p>
                 <p className="text-default-500 text-sm mt-1">Mật khẩu mới đã được cập nhật.</p>
+                {/* FIX: Thông báo user nên đăng nhập lại bằng Google để reset session */}
+                <p className="text-warning text-xs mt-2 px-4">
+                  Nếu bạn dùng đăng nhập Google, vui lòng đăng xuất và đăng nhập lại để đồng bộ phiên mới.
+                </p>
               </div>
               <RouterLink to="/profile"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline"

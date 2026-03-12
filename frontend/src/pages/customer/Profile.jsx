@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { userService } from "../../services/userService";
+import { useAuth } from "../../context/AuthContext";
 import PersonalInfoForm from "../../components/PersonalInfoForm";
 import AddressManager from "../../components/AddressManager";
 import BankAccountsManager from "../../components/BankAccountsManager";
@@ -144,6 +145,7 @@ function ProfileSkeleton() {
 }
 
 export default function ProfilePage() {
+  const { updateUser } = useAuth();
   const [me,        setMe]        = useState(null);
   const [activeTab, setActiveTab] = useState("personal");
   const [loading,   setLoading]   = useState(true);
@@ -365,7 +367,7 @@ export default function ProfilePage() {
                   exit={{ opacity: 0, y: -10, scale: 0.99 }}
                   transition={{ duration: 0.28, ease: "easeOut" }}
                 >
-                  {activeTab === "personal"  && <PersonalInfoForm me={me} onUpdated={setMe} />}
+                  {activeTab === "personal"  && <PersonalInfoForm me={me} onUpdated={(u) => { setMe(u); updateUser(u); }} />}
                   {activeTab === "addresses" && <AddressManager />}
                   {activeTab === "banks"     && <BankAccountsManager />}
                   {activeTab === "password"  && <ChangePasswordForm />}

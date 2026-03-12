@@ -5,13 +5,15 @@ import dfsLogo from "../../assets/icons/DFS-NonBG.png";
 import {
   Navbar, NavbarBrand, NavbarContent, NavbarItem,
   NavbarMenuToggle, NavbarMenu, NavbarMenuItem,
-  Button, Input, Badge, Avatar,
+  Button, Avatar,
   Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection,
 } from "@heroui/react";
 import {
   Search, ShoppingCart, Bell, User, UserPlus, LogIn,
-  Receipt, LogOut, Heart, Wallet, X, Menu, ChevronRight, Store,
+  Receipt, LogOut, Heart, Wallet, X, ChevronRight, Store,
+  Package, CreditCard, Tag, Settings, Check, Trash2, ExternalLink,
 } from "lucide-react";
+import { useNotifications } from "../../context/NotificationContext";
 
 /* ── font helper injected once ── */
 if (typeof document !== "undefined" && !document.getElementById("header-font-override")) {
@@ -45,6 +47,214 @@ function useScrolled(threshold = 12) {
   return scrolled;
 }
 
+/* ── Notification type → icon + colour ── */
+const NOTIF_META = {
+  "order.placed":    { Icon: Package,    color: "#2563EB", bg: "#EFF6FF" },
+  "order.confirmed": { Icon: Package,    color: "#7C3AED", bg: "#EDE9FE" },
+  "order.shipped":   { Icon: Package,    color: "#0284C7", bg: "#E0F2FE" },
+  "order.delivered": { Icon: Package,    color: "#16A34A", bg: "#DCFCE7" },
+  "order.cancelled": { Icon: Package,    color: "#DC2626", bg: "#FEE2E2" },
+  "payment.success": { Icon: CreditCard, color: "#16A34A", bg: "#DCFCE7" },
+  "payment.failed":  { Icon: CreditCard, color: "#DC2626", bg: "#FEE2E2" },
+  "system.password": { Icon: Settings,   color: "#D97706", bg: "#FEF3C7" },
+  "system.security": { Icon: Settings,   color: "#DC2626", bg: "#FEE2E2" },
+  "promotion":       { Icon: Tag,        color: "#DB2777", bg: "#FCE7F3" },
+  order:             { Icon: Package,    color: "#2563EB", bg: "#EFF6FF" },
+  payment:           { Icon: CreditCard, color: "#16A34A", bg: "#DCFCE7" },
+  system:            { Icon: Settings,   color: "#D97706", bg: "#FEF3C7" },
+  promotion:         { Icon: Tag,        color: "#DB2777", bg: "#FCE7F3" },
+};
+
+function getNotifMeta(n) {
+  return NOTIF_META[n.subtype] || NOTIF_META[n.type] || NOTIF_META.system;
+}
+
+function timeAgo(date) {
+  try {
+    const diff = Date.now() - new Date(date).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return "vừa xong";
+    if (m < 60) return `${m} phút trước`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h} giờ trước`;
+    const d = Math.floor(h / 24);
+    if (d < 7) return `${d} ngày trước`;
+    return new Date(date).toLocaleDateString("vi-VN");
+  } catch { return ""; }
+}
+
+/* ── Notification dropdown panel ── */
+function NotificationDropdown({ scrolled }) {
+  const navigate = useNavigate();
+  const { notifications, unreadCount, markRead, markAllRead, deleteNotif } = useNotifications();
+  const iconColor = scrolled ? "#1D4ED8" : "#ffffff";
+
+  const preview = notifications.slice(0, 6);
+
+  return (
+    <Dropdown placement="bottom-end" backdrop="transparent">
+      <DropdownTrigger>
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
+          className="relative w-9 h-9 flex items-center justify-center rounded-full outline-none focus:outline-none"
+          style={{ color: iconColor }}
+        >
+          <div
+            className="w-9 h-9 flex items-center justify-center rounded-full"
+            style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}
+          >
+            <Bell size={19} />
+          </div>
+          <AnimatePresence>
+            {unreadCount > 0 && (
+              <motion.span
+                key="badge"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
+                style={{
+                  background: "#EF4444",
+                  boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8"),
+                  fontFamily: "'Quicksand', sans-serif",
+                }}
+              >
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </DropdownTrigger>
+
+      <DropdownMenu
+        aria-label="Thông báo"
+        className="p-0 overflow-hidden"
+        style={{
+          width: 360,
+          maxHeight: "calc(100vh - 80px)",
+          fontFamily: "'Quicksand', sans-serif",
+          borderRadius: 20,
+          boxShadow: "0 8px 40px rgba(29,78,216,0.16), 0 2px 12px rgba(0,0,0,0.08)",
+          border: "1.5px solid #DBEAFE",
+          background: "#fff",
+        }}
+      >
+        {/* Header row */}
+        <DropdownItem
+          key="header"
+          isReadOnly
+          className="cursor-default px-4 py-3 opacity-100 rounded-none border-b border-blue-50"
+          style={{ background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)" }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Bell size={15} className="text-blue-600" />
+              <span className="font-black text-blue-900 text-sm">Thông báo</span>
+              {unreadCount > 0 && (
+                <span className="bg-red-500 text-white text-[10px] font-black rounded-full px-1.5 py-0.5 leading-none">
+                  {unreadCount}
+                </span>
+              )}
+            </div>
+            {unreadCount > 0 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); markAllRead(); }}
+                className="flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                <Check size={11} />
+                Đọc tất cả
+              </button>
+            )}
+          </div>
+        </DropdownItem>
+
+        {/* Notification items */}
+        {preview.length === 0 ? (
+          <DropdownItem key="empty" isReadOnly className="cursor-default py-10 text-center opacity-100">
+            <div className="flex flex-col items-center gap-2">
+              <Bell size={28} className="text-blue-200" />
+              <p className="text-sm text-gray-400 font-semibold">Không có thông báo</p>
+            </div>
+          </DropdownItem>
+        ) : (
+          preview.map((n) => {
+            const { Icon, color, bg } = getNotifMeta(n);
+            return (
+              <DropdownItem
+                key={n._id}
+                isReadOnly
+                className="cursor-pointer px-0 py-0 opacity-100 rounded-none"
+              >
+                <div
+                  onClick={() => {
+                    if (!n.isRead) markRead(n._id);
+                    if (n.link) navigate(n.link);
+                  }}
+                  className="flex gap-3 px-4 py-3 transition-colors hover:bg-blue-50 cursor-pointer"
+                  style={{ background: n.isRead ? "transparent" : "#F0F7FF" }}
+                >
+                  {/* Icon */}
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: bg }}
+                  >
+                    <Icon size={16} style={{ color }} />
+                  </div>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-1">
+                      <p className={`text-xs leading-tight ${n.isRead ? "font-semibold text-gray-700" : "font-black text-gray-900"}`}>
+                        {n.title}
+                      </p>
+                      {!n.isRead && (
+                        <span className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: "#2563EB" }} />
+                      )}
+                    </div>
+                    <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                      {n.message}
+                    </p>
+                    <p className="text-[10px] text-blue-400 mt-1 font-semibold">
+                      {timeAgo(n.createdAt)}
+                    </p>
+                  </div>
+
+                  {/* Delete */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteNotif(n._id); }}
+                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 hover:opacity-100 p-1 rounded-lg hover:bg-red-50 transition-all"
+                    title="Xoá"
+                  >
+                    <Trash2 size={12} className="text-red-400" />
+                  </button>
+                </div>
+              </DropdownItem>
+            );
+          })
+        )}
+
+        {/* Footer */}
+        <DropdownItem
+          key="view-all"
+          isReadOnly
+          className="cursor-pointer opacity-100 rounded-none border-t border-blue-50 px-4 py-2.5"
+          style={{ background: "#F8FBFF" }}
+        >
+          <button
+            onClick={() => navigate("/notifications")}
+            className="w-full flex items-center justify-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            <ExternalLink size={12} />
+            Xem tất cả thông báo
+          </button>
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
+}
+
 const AUTH_PATHS = ["/login", "/register", "/forgot-password", "/change-password"];
 
 const NAV_BLUE = {
@@ -72,7 +282,9 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
   const submitSearch = (e) => {
     e?.preventDefault();
     const kw = searchQ.trim();
-    if (kw) { onSearch?.(kw); setMenuOpen(false); }
+    if (!kw) return;
+    setMenuOpen(false);
+    navigate(`/search?q=${encodeURIComponent(kw)}`);
   };
 
   const iconColor = scrolled ? "#1D4ED8" : "#ffffff";
@@ -261,24 +473,9 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               </motion.div>
             </NavbarItem>
 
-            {/* Notifications */}
+            {/* Notification Bell Dropdown */}
             <NavbarItem className="hidden sm:flex">
-              <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }}>
-                <RouterLink to="/notifications"
-                  className="relative w-9 h-9 flex items-center justify-center rounded-full no-underline"
-                  style={{ color: iconColor }}>
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full"
-                    style={scrolled ? {} : { background: "rgba(255,255,255,0.12)" }}>
-                    <Bell size={19} />
-                  </div>
-                  {!!notifyCount && (
-                    <span className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] rounded-full flex items-center justify-center text-[9px] font-black text-white px-0.5"
-                      style={{ background: "#EF4444", boxShadow: "0 0 0 2px " + (scrolled ? "#fff" : "#1D4ED8") }}>
-                      {notifyCount > 99 ? "99+" : notifyCount}
-                    </span>
-                  )}
-                </RouterLink>
-              </motion.div>
+              <NotificationDropdown scrolled={scrolled} />
             </NavbarItem>
 
             {/* Profile dropdown */}
