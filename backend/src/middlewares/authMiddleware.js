@@ -12,6 +12,18 @@ exports.verifyToken = async (req, res, next) => {
     if (scheme !== "Bearer" || !token) {
       return res.status(401).json({ message: "Token không hợp lệ" });
     }
+    try {
+      const [headerB64] = token.split(".");
+      const header = JSON.parse(Buffer.from(headerB64, "base64").toString());
+      if (header?.alg === "RS256" && header?.kid) {
+        // Đây là Google ID token, không phải token nội bộ
+        return res.status(401).json({
+          message: "Token không hợp lệ: vui lòng đăng nhập lại",
+        });
+      }
+    } catch {
+
+    }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -31,8 +43,6 @@ exports.verifyToken = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    // 401 = not authenticated (expired / tampered token)
-    // 403 = authenticated but forbidden — wrong semantic here
     const msg = err.name === "TokenExpiredError"
       ? "Token đã hết hạn, vui lòng đăng nhập lại"
       : "Token không hợp lệ";

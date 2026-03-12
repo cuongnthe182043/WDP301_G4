@@ -7,6 +7,8 @@ import { HeroUIProvider } from "@heroui/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import { NotificationProvider } from "./context/NotificationContext";
 import { ToastProvider } from "./components/common/ToastProvider";
 
 /* ── Global font import for the entire app ── */
@@ -33,7 +35,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ToastProvider>
         <BrowserRouter>
           <AuthProvider>
-            <App />
+            <CartProvider>
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
+            </CartProvider>
           </AuthProvider>
         </BrowserRouter>
       </ToastProvider>

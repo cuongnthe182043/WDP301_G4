@@ -315,9 +315,9 @@ const BANNER_SLIDES = [
     bg: "linear-gradient(135deg, #020818 0%, #0a1628 30%, #0d2257 60%, #1a3a8f 100%)",
     accent: "#60a5fa",
     accentLight: "#bfdbfe",
-    tag: "✦ NEW SEASON 2025",
+    tag: "✦ NEW SEASON 2026",
     titleLine1: "Xuân Hè",
-    titleLine2: "2025",
+    titleLine2: "2026",
     sub: "Phong cách tươi mới — Trẻ trung & Hiện đại",
     cta: "Khám phá ngay",
     orb1: "rgba(59,130,246,0.4)",
@@ -545,7 +545,7 @@ function BannerCarousel({ banners }) {
 
   useEffect(() => {
     if (total <= 1) return;
-    const t = setInterval(() => setActiveIdx(i => (i + 1) % total), 6000);
+    const t = setInterval(() => setActiveIdx(i => (i + 1) % total), 10000);
     return () => clearInterval(t);
   }, [total]);
 

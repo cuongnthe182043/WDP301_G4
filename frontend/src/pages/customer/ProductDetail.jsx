@@ -3,15 +3,16 @@ import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
-  Button, Input, Chip, Skeleton, Divider,
+  Button, Input, Chip, Skeleton, Divider, Progress,
 } from "@heroui/react";
 import {
   ShoppingCart, Zap, Star, ChevronLeft, ChevronRight, Ruler, Package,
-  AlertCircle, CheckCircle2, Heart,
+  AlertCircle, CheckCircle2, Heart, Sparkles, Save, RefreshCw,
 } from "lucide-react";
 import { productService } from "../../services/productService";
 import { cartService } from "../../services/cartService";
 import { userService } from "../../services/userService";
+import { useCart } from "../../context/CartContext";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { useToast } from "../../components/common/ToastProvider";
 import ProductCard from "../../components/home/ProductCard.jsx";
@@ -155,6 +156,10 @@ function refineByMeasurements(rows = [], baseLabel, extras = {}) {
   return best?.label || baseLabel;
 }
 
+function fitLabelVi(fit) {
+  return { perfect: "Rất phù hợp", good: "Phù hợp", acceptable: "Tạm ổn", poor: "Không phù hợp" }[fit] || fit;
+}
+
 /* ─────────────────────── Star component ─────────────────────── */
 function Stars({ value = 0, size = 16 }) {
   const v = Number(value || 0);
@@ -204,6 +209,7 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
+  const { refresh: refreshCartBadge } = useCart();
   const mainImgRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
@@ -225,7 +231,11 @@ export default function ProductDetail() {
   const [hip, setHip] = useState("");
   const [shoulder, setShoulder] = useState("");
   const [sizeSuggest, setSizeSuggest] = useState(null);
+  const [sizeScores, setSizeScores] = useState([]);
+  const [sizeResultFit, setSizeResultFit] = useState(null);
   const [sizeLoading, setSizeLoading] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileSaving, setProfileSaving] = useState(false);
   const [rvStar, setRvStar] = useState("all");
   const [rvPage, setRvPage] = useState(1);
   const RV_LIMIT = 6;
@@ -343,23 +353,66 @@ export default function ProductDetail() {
 
   const canSuggest = Number(height) > 0 && Number(weight) > 0 && Array.isArray(sizeChart?.rows) && sizeChart.rows.length > 0;
 
+  // Load saved body profile when modal opens
+  useEffect(() => {
+    if (!sizeOpen) return;
+    if (!localStorage.getItem(TOKEN_KEY)) return;
+    setProfileLoading(true);
+    userService.getBodyProfile().then((profile) => {
+      if (!profile) return;
+      if (profile.height && !height) setHeight(String(profile.height));
+      if (profile.weight && !weight) setWeight(String(profile.weight));
+      if (profile.chest  && !chest)  setChest(String(profile.chest));
+      if (profile.waist  && !waist)  setWaist(String(profile.waist));
+      if (profile.hip    && !hip)    setHip(String(profile.hip));
+      if (profile.shoulder && !shoulder) setShoulder(String(profile.shoulder));
+    }).catch(() => {}).finally(() => setProfileLoading(false));
+  }, [sizeOpen]);
+
+  const saveProfile = async () => {
+    if (!localStorage.getItem(TOKEN_KEY)) return;
+    setProfileSaving(true);
+    try {
+      await userService.saveBodyProfile({
+        height:   Number(height)   || undefined,
+        weight:   Number(weight)   || undefined,
+        chest:    Number(chest)    || undefined,
+        waist:    Number(waist)    || undefined,
+        hip:      Number(hip)      || undefined,
+        shoulder: Number(shoulder) || undefined,
+      });
+      toast.success("Đã lưu số đo cơ thể!");
+    } catch {
+      toast.error("Không lưu được số đo");
+    } finally { setProfileSaving(false); }
+  };
+
   const runSuggest = async () => {
     if (!canSuggest) return;
     setSizeLoading(true);
     try {
-      // Try server-side AI scoring first
       const result = await productService.sizeMatch(p._id, {
-        height: Number(height) || undefined,
-        weight: Number(weight) || undefined,
-        chest:  Number(chest)  || undefined,
-        waist:  Number(waist)  || undefined,
-        hip:    Number(hip)    || undefined,
+        height:   Number(height)   || undefined,
+        weight:   Number(weight)   || undefined,
+        chest:    Number(chest)    || undefined,
+        waist:    Number(waist)    || undefined,
+        hip:      Number(hip)      || undefined,
         shoulder: Number(shoulder) || undefined,
       });
       const label = result?.recommended_size || null;
       setSizeSuggest(label);
+      setSizeScores(result?.all_sizes || []);
+      setSizeResultFit(result?.fit || null);
       if (label && (p.variant_dimensions || []).map(norm).includes("size")) {
         setSelectedAttrs((prev) => ({ ...prev, size: label }));
+      }
+      // Auto-save profile after successful recommendation
+      if (localStorage.getItem(TOKEN_KEY)) {
+        userService.saveBodyProfile({
+          height: Number(height) || undefined, weight: Number(weight) || undefined,
+          chest:  Number(chest)  || undefined, waist:  Number(waist)  || undefined,
+          hip:    Number(hip)    || undefined, shoulder: Number(shoulder) || undefined,
+        }).catch(() => {});
       }
     } catch {
       // Fallback to local computation when API unavailable
@@ -369,12 +422,13 @@ export default function ProductDetail() {
         hip: Number(hip) || 0, shoulder: Number(shoulder) || 0,
       });
       setSizeSuggest(label || null);
+      setSizeScores([]);
+      setSizeResultFit(null);
       if (label && (p.variant_dimensions || []).map(norm).includes("size")) {
         setSelectedAttrs((prev) => ({ ...prev, size: label }));
       }
     } finally {
       setSizeLoading(false);
-      setSizeOpen(false);
     }
   };
 
@@ -411,6 +465,7 @@ export default function ProductDetail() {
       await cartService.add({ product_id: p._id, variant_id: selectedVar._id || selectedVar.id, qty });
       flyToCart();
       toast.success("Đã thêm vào giỏ hàng!");
+      refreshCartBadge();
     } catch (e) {
       const msg = e?.response?.data?.message || e.message || "Không thêm được vào giỏ";
       if ([401, 403].includes(e?.response?.status)) {
@@ -687,7 +742,7 @@ export default function ProductDetail() {
             onClick={() => setSizeOpen(true)}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:opacity-75 transition-opacity self-start"
           >
-            <Ruler size={15} /> Hướng dẫn chọn size
+            <Sparkles size={15} /> AI gợi ý size
             {sizeSuggest && (
               <Chip size="sm" color="success" variant="flat" className="ml-1">
                 Đề xuất: {sizeSuggest}
@@ -777,24 +832,49 @@ export default function ProductDetail() {
 
       {/* ══ SIZE ADVISOR + SIZE CHART ══ */}
       <section id="size-section" className="mb-8">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5 flex items-center justify-between gap-4">
-          <div>
-            <p className="font-bold text-default-800 flex items-center gap-2">
-              <Ruler size={16} className="text-primary" /> Hướng dẫn chọn size
-            </p>
-            <p className="text-sm text-default-500 mt-0.5">
-              {sizeSuggest ? <>Size phù hợp với bạn: <b className="text-primary">{sizeSuggest}</b></> : "Nhập số đo để nhận gợi ý size phù hợp"}
-            </p>
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="font-bold text-default-800 flex items-center gap-2">
+                <Sparkles size={16} className="text-primary" /> Gợi ý size bằng AI
+              </p>
+              <p className="text-sm text-default-500 mt-0.5">
+                {sizeSuggest
+                  ? <>Size phù hợp nhất: <b className="text-primary">{sizeSuggest}</b> {sizeResultFit && <span className="text-xs text-default-400">({fitLabelVi(sizeResultFit)})</span>}</>
+                  : "Nhập số đo để AI gợi ý size phù hợp chính xác nhất"}
+              </p>
+            </div>
+            <Button size="sm" color="primary" variant="flat" radius="lg" onPress={() => setSizeOpen(true)}
+              startContent={<Ruler size={14} />}>
+              {sizeSuggest ? "Cập nhật số đo" : "Nhập số đo →"}
+            </Button>
           </div>
-          <Button
-            size="sm"
-            color="primary"
-            variant="flat"
-            radius="lg"
-            onPress={() => setSizeOpen(true)}
-          >
-            Nhập số đo →
-          </Button>
+
+          {/* Size score bars (shown after recommendation) */}
+          {sizeScores.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              {sizeScores.map((s) => {
+                const score = s.fit_score ?? 0;
+                const isBest = s.label === sizeSuggest;
+                const color = score >= 80 ? "success" : score >= 60 ? "warning" : "danger";
+                return (
+                  <div
+                    key={s.label}
+                    className={`rounded-xl p-3 border transition-all ${isBest ? "border-primary bg-white shadow-md" : "border-blue-100 bg-white/60"}`}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className={`text-sm font-black ${isBest ? "text-primary" : "text-default-700"}`}>
+                        {s.label}
+                        {isBest && <span className="ml-1 text-[10px] font-bold text-primary">✓ Tốt nhất</span>}
+                      </span>
+                      <span className={`text-xs font-bold text-${color}`}>{score}%</span>
+                    </div>
+                    <Progress value={score} color={color} size="sm" radius="full" />
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {Array.isArray(sizeChart?.rows) && sizeChart.rows.length > 0 && (
@@ -954,43 +1034,126 @@ export default function ProductDetail() {
       )}
 
       {/* ══ SIZE ADVISOR MODAL ══ */}
-      <Modal isOpen={sizeOpen} onOpenChange={setSizeOpen} radius="2xl" size="lg" backdrop="blur">
+      <Modal isOpen={sizeOpen} onOpenChange={(open) => { setSizeOpen(open); }} radius="2xl" size="lg" backdrop="blur" scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-black text-default-900">
+              <ModalHeader>
                 <div className="flex items-center gap-2">
-                  <Ruler size={18} className="text-primary" />
-                  Nhập số đo cơ thể
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #1D4ED8, #3B82F6)" }}>
+                    <Sparkles size={15} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="font-black text-default-900 leading-tight">AI Gợi ý size</p>
+                    <p className="text-xs text-default-400 font-normal">Nhập số đo để nhận gợi ý chính xác</p>
+                  </div>
                 </div>
               </ModalHeader>
               <ModalBody>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    ["Chiều cao (cm) *", height, setHeight],
-                    ["Cân nặng (kg) *", weight, setWeight],
-                    ["Vòng ngực (cm)", chest, setChest],
-                    ["Vòng eo (cm)", waist, setWaist],
-                    ["Vòng mông (cm)", hip, setHip],
-                    ["Ngang vai (cm)", shoulder, setShoulder],
-                  ].map(([label, val, setter]) => (
-                    <Input
-                      key={label}
-                      label={label}
-                      type="number"
-                      min="0"
-                      value={val}
-                      onValueChange={setter}
-                      size="sm"
-                      radius="lg"
-                    />
-                  ))}
-                </div>
-                <p className="text-xs text-default-400 mt-2">* Bắt buộc. Số đo khác là tuỳ chọn để gợi ý chính xác hơn.</p>
+                {profileLoading ? (
+                  <div className="space-y-3">
+                    {[1,2,3].map(i => <Skeleton key={i} className="h-12 rounded-xl" />)}
+                  </div>
+                ) : (
+                  <>
+                    {/* Measurement inputs */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { label: "Chiều cao (cm)", placeholder: "VD: 165", val: height, setter: setHeight, required: true },
+                        { label: "Cân nặng (kg)",  placeholder: "VD: 55",  val: weight, setter: setWeight, required: true },
+                        { label: "Vòng ngực (cm)", placeholder: "VD: 86",  val: chest,  setter: setChest },
+                        { label: "Vòng eo (cm)",   placeholder: "VD: 68",  val: waist,  setter: setWaist },
+                        { label: "Vòng mông (cm)", placeholder: "VD: 90",  val: hip,    setter: setHip },
+                        { label: "Ngang vai (cm)", placeholder: "VD: 38",  val: shoulder, setter: setShoulder },
+                      ].map(({ label, placeholder, val, setter, required }) => (
+                        <Input
+                          key={label}
+                          label={label + (required ? " *" : "")}
+                          placeholder={placeholder}
+                          type="number"
+                          min="0"
+                          value={val}
+                          onValueChange={setter}
+                          size="sm"
+                          radius="lg"
+                          variant="bordered"
+                          color={required && !Number(val) ? "default" : "primary"}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs text-default-400">* Bắt buộc. Số đo khác giúp AI gợi ý chính xác hơn.</p>
+
+                    {/* Result — shown after scoring */}
+                    {sizeSuggest && sizeScores.length > 0 && (
+                      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
+                        <Divider className="my-3" />
+                        <div className="flex items-center gap-2 mb-3">
+                          <CheckCircle2 size={16} className="text-success" />
+                          <p className="font-bold text-sm text-default-800">
+                            Đề xuất cho bạn: <span className="text-primary">{sizeSuggest}</span>
+                            {sizeResultFit && (
+                              <Chip size="sm" color={sizeResultFit === "perfect" ? "success" : sizeResultFit === "good" ? "primary" : "warning"} variant="flat" className="ml-2 text-xs">
+                                {fitLabelVi(sizeResultFit)}
+                              </Chip>
+                            )}
+                          </p>
+                        </div>
+                        <div className="space-y-2.5">
+                          {sizeScores.map((s) => {
+                            const score = s.fit_score ?? 0;
+                            const isBest = s.label === sizeSuggest;
+                            const color = score >= 80 ? "success" : score >= 60 ? "warning" : "danger";
+                            return (
+                              <div key={s.label} className={`flex items-center gap-3 px-3 py-2 rounded-xl ${isBest ? "bg-primary/5 border border-primary/20" : ""}`}>
+                                <span className={`w-10 text-sm font-black flex-shrink-0 ${isBest ? "text-primary" : "text-default-600"}`}>
+                                  {s.label}
+                                </span>
+                                <div className="flex-1">
+                                  <Progress value={score} color={color} size="sm" radius="full" />
+                                </div>
+                                <span className={`text-xs font-bold w-10 text-right text-${color}`}>{score}%</span>
+                                {isBest && <CheckCircle2 size={13} className="text-primary flex-shrink-0" />}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* No chart available */}
+                    {!Array.isArray(sizeChart?.rows) || sizeChart.rows.length === 0 ? (
+                      <div className="text-center py-4 text-default-400 text-sm">
+                        <Ruler size={28} className="mx-auto mb-2 opacity-30" />
+                        <p>Sản phẩm này chưa có bảng size để gợi ý.</p>
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </ModalBody>
-              <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Huỷ</Button>
-                <Button color="primary" radius="lg" onPress={runSuggest} isDisabled={!canSuggest || sizeLoading} isLoading={sizeLoading}>
+              <ModalFooter className="flex gap-2 flex-wrap">
+                <Button
+                  variant="flat"
+                  radius="lg"
+                  size="sm"
+                  startContent={<Save size={13} />}
+                  isLoading={profileSaving}
+                  isDisabled={!Number(height) && !Number(weight)}
+                  onPress={saveProfile}
+                  className="font-bold"
+                >
+                  Lưu số đo
+                </Button>
+                <div className="flex-1" />
+                <Button variant="light" radius="lg" onPress={onClose}>Đóng</Button>
+                <Button
+                  color="primary"
+                  radius="lg"
+                  startContent={<Sparkles size={14} />}
+                  onPress={runSuggest}
+                  isDisabled={!canSuggest || sizeLoading}
+                  isLoading={sizeLoading}
+                  className="font-bold"
+                >
                   Gợi ý size
                 </Button>
               </ModalFooter>

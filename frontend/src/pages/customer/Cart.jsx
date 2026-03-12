@@ -6,6 +6,7 @@ import {
 } from "@heroui/react";
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, AlertTriangle, ImageOff, ChevronDown, Check } from "lucide-react";
 import { cartService } from "../../services/cartService";
+import { useCart } from "../../context/CartContext";
 import { formatCurrency } from "../../utils/formatCurrency";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 
@@ -92,6 +93,7 @@ function CartSkeleton() {
 /* ═══════════════════════════ PAGE ═══════════════════════════ */
 export default function CartPage() {
   const navigate = useNavigate();
+  const { refresh: refreshCartBadge } = useCart();
   const [data, setData]       = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr]         = useState("");
@@ -128,7 +130,7 @@ export default function CartPage() {
 
   const handleQty = async (item, nextQty) => {
     const qty = Math.max(1, Number(nextQty) || 1);
-    try { const res = await cartService.updateItem(item._id, { qty }); setData(res); }
+    try { const res = await cartService.updateItem(item._id, { qty }); setData(res); refreshCartBadge(); }
     catch (e) { alert(e?.response?.data?.message || e.message); }
   };
 
@@ -147,6 +149,7 @@ export default function CartPage() {
       const res = await cartService.removeItem(item._id);
       setData(res);
       setChecked(prev => { const s = new Set(prev); s.delete(item._id); return s; });
+      refreshCartBadge();
     } catch (e) { alert(e?.response?.data?.message || e.message); }
   };
 
@@ -158,12 +161,13 @@ export default function CartPage() {
       for (const id of checked) res = await cartService.removeItem(id);
       if (res) setData(res);
       setChecked(new Set());
+      refreshCartBadge();
     } catch (e) { alert(e?.response?.data?.message || e.message); }
   };
 
   const clearCart = async () => {
     if (!confirm("Xoá toàn bộ giỏ hàng?")) return;
-    try { const res = await cartService.clear(); setData(res); setChecked(new Set()); }
+    try { const res = await cartService.clear(); setData(res); setChecked(new Set()); refreshCartBadge(); }
     catch (e) { alert(e?.response?.data?.message || e.message); }
   };
 

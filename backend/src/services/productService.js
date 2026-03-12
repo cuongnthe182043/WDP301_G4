@@ -270,7 +270,7 @@ async function deleteProductById(id){
  * Supports: q, category (slug or id), brand (slug or id), sort, min_price, max_price,
  *           tag, page, limit, status
  */
-async function getProducts({ q, category, brand, sort = "created_at", min_price, max_price, tag, page = 1, limit = 20, status = "active" } = {}) {
+async function getProducts({ q, category, brand, sort = "created_at", min_price, max_price, tag, page = 1, limit = 20, status = "active", rating_min, in_stock } = {}) {
   const filter = {};
 
   // Status
@@ -326,6 +326,16 @@ async function getProducts({ q, category, brand, sort = "created_at", min_price,
     filter.base_price = {};
     if (min_price != null) filter.base_price.$gte = Number(min_price);
     if (max_price != null) filter.base_price.$lte = Number(max_price);
+  }
+
+  // Rating minimum
+  if (rating_min != null && Number(rating_min) > 0) {
+    filter.rating_avg = { $gte: Number(rating_min) };
+  }
+
+  // In-stock only
+  if (in_stock === "1" || in_stock === true || in_stock === 1) {
+    filter.stock_total = { $gt: 0 };
   }
 
   // Sort
