@@ -972,9 +972,18 @@ export default function ProductDetail() {
                   className="bg-white border border-default-100 rounded-2xl p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <div>
-                      <p className="font-bold text-sm text-default-800">{r.author_name || "Người dùng"}</p>
-                      <Stars value={r.rating || 0} size={13} />
+                    <div className="flex items-center gap-2">
+                      {r.author_avatar ? (
+                        <img src={r.author_avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
+                          {(r.author_name || "U").charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-bold text-sm text-default-800">{r.author_name || "Người dùng"}</p>
+                        <Stars value={r.rating || 0} size={13} />
+                      </div>
                     </div>
                     {r.createdAt && (
                       <span className="text-xs text-default-400 flex-shrink-0">
@@ -982,7 +991,23 @@ export default function ProductDetail() {
                       </span>
                     )}
                   </div>
-                  {r.content && <p className="text-sm text-default-600 leading-relaxed">{r.content}</p>}
+                  {(r.comment || r.content) && (
+                    <p className="text-sm text-default-600 leading-relaxed mt-1">{r.comment || r.content}</p>
+                  )}
+                  {r.images?.length > 0 && (
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {r.images.map((img, i) => (
+                        <div key={i} className="w-20 h-20 rounded-lg overflow-hidden border border-default-200">
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {r.size_feedback && r.size_feedback !== "unknown" && (
+                    <Chip size="sm" variant="flat" color="secondary" className="mt-2">
+                      {r.size_feedback === "fit" ? "Vừa vặn" : r.size_feedback === "tight" ? "Chật" : "Rộng"}
+                    </Chip>
+                  )}
                 </motion.div>
               ))}
             </div>

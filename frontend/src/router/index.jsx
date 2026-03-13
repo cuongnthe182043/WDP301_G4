@@ -7,7 +7,6 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ChangePassword from "../pages/auth/ChangePassword";
-import TermsAndPolicy from "../pages/support/TermsAndPolicy";
 
 /* ===== Customer Pages ===== */
 import HomePage from "../pages/customer/HomePage";
@@ -24,6 +23,7 @@ import Orders from "../pages/customer/Orders";
 import Wishlist from "../pages/customer/Wishlist";
 import Wallet from "../pages/customer/Wallet";
 import NotificationsPage from "../pages/customer/NotificationsPage";
+import MyReviews from "../pages/customer/MyReviews";
 
 /* ===== Support / Ticket Pages (customer-facing) ===== */
 import Tickets from "../pages/support/Tickets";
@@ -120,6 +120,7 @@ export default function AppRouter() {
       <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
       <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
       <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+      <Route path="/my-reviews"     element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
 
       {/* ===== Customer Support / Tickets ===== */}
       <Route path="/tickets"     element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
