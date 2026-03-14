@@ -36,13 +36,53 @@ const OrderSchema = new mongoose.Schema(
     tracking_code: { type: String },
     expected_delivery: { type: Date },
 
+    // GHN integration fields
+    ghn_order_code: { type: String, default: null },
+    cancel_reason:  { type: String, default: "" },
+
+    // Audit trail for status changes
+    status_history: [
+      {
+        status: { type: String },
+        at:     { type: Date, default: Date.now },
+        by:     { type: String, default: "system" },
+        note:   { type: String, default: "" },
+      },
+    ],
+
     total_price: { type: Number, required: true },
     note: { type: String },
 
     status: {
       type: String,
-      enum: ["processing", "pending", "confirmed", "shipping", "delivered", "canceled_by_customer", "canceled_by_shop", "refund_pending", "refund_completed"],
-      default: "pending",
+      enum: [
+        // New statuses
+        "order_created",
+        "payment_pending",
+        "payment_failed",
+        "payment_confirmed",
+        "processing",
+        "packed",
+        "picking",
+        "in_transit",
+        "out_for_delivery",
+        "delivered",
+        "delivery_failed",
+        "cancelled_by_customer",
+        "cancelled_by_shop",
+        "return_requested",
+        "return_approved",
+        "return_rejected",
+        "refund_pending",
+        "refund_completed",
+        // Legacy statuses (backward compat)
+        "pending",
+        "confirmed",
+        "shipping",
+        "canceled_by_customer",
+        "canceled_by_shop",
+      ],
+      default: "order_created",
     },
 
     // Snapshot of the delivery address at order time.
@@ -63,7 +103,6 @@ OrderSchema.pre("save", function (next) {
   }
   next();
 });
-
 
 
 // doanh thu theo danh muc san pham
