@@ -5,7 +5,7 @@ import {
   Button, Select, SelectItem, Tabs, Tab,
 } from "@heroui/react";
 import { useToast } from "./common/ToastProvider";
-import { MapPin, User, Phone, Home, AlertCircle, Info } from "lucide-react";
+import { MapPin, User, Phone, Home, AlertCircle, Info, Wand2 } from "lucide-react";
 
 /* ── Helpers ── */
 const prettyJoin = (parts = []) => {
@@ -14,6 +14,40 @@ const prettyJoin = (parts = []) => {
 };
 const strip = (s = "") => s.normalize?.("NFD").replace(/\p{Diacritic}/gu, "").replace(/\./g, "").trim().toLowerCase() || s;
 const rmPrefix = (s = "") => s.replace(/^(tinh|thanh pho|tp|quan|huyen|thi xa|xa|phuong)\s+/i, "").trim();
+
+/** Normalize: strip diacritics first, then remove admin-unit prefix */
+const normalize = (s = "") => rmPrefix(strip(s));
+
+/**
+ * Fuzzy-match a user segment against a list of names.
+ * Tries exact normalized match first, then "includes" fallback for short input.
+ * Returns the matched item or null.
+ */
+function fuzzyFind(segment, list, getName) {
+  const norm = normalize(segment);
+  if (!norm) return null;
+  // 1. Exact match after normalization (e.g. "ha noi" === "ha noi")
+  const exact = list.find(item => normalize(getName(item)) === norm);
+  if (exact) return exact;
+  // 2. The item's normalized name ends with the user input (e.g. "thanh pho ha noi" ends with "ha noi")
+  //    — but only if the user input is at least 2 chars to avoid false positives
+  if (norm.length >= 2) {
+    const suffix = list.find(item => {
+      const n = normalize(getName(item));
+      return n.endsWith(norm) || n.endsWith(" " + norm);
+    });
+    if (suffix) return suffix;
+  }
+  // 3. Contains match — user input contains the core name or vice versa
+  if (norm.length >= 3) {
+    const partial = list.find(item => {
+      const n = normalize(getName(item));
+      return n.includes(norm) || norm.includes(n);
+    });
+    if (partial) return partial;
+  }
+  return null;
+}
 
 async function fetchTinh() {
   const r = await fetch("https://esgoo.net/api-tinhthanh/1/0.htm");
@@ -76,6 +110,110 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
   const [provCode,  setProvCode]  = useState("");
   const [wardCode,  setWardCode]  = useState("");
 
+  // Auto-fill
+  const [autoFillText, setAutoFillText] = useState("");
+  const [autoFilling, setAutoFilling] = useState(false);
+  const autoFillRef = React.useRef(false);
+
+  const handleAutoFill = async () => {
+    const input = autoFillText.trim();
+    if (!input) {
+      toast.error("Vui lòng nhập địa chỉ để tự động điền.");
+      return;
+    }
+    setAutoFilling(true);
+    autoFillRef.current = true;
+    try {
+      const segments = input.split(",").map(s => s.trim()).filter(Boolean);
+      const usedIndices = new Set();
+      let filled63 = false;
+      let filled34 = false;
+
+      /* ── Step 1: Find province (scan from right) ── */
+      let matchedTinh = null;
+      for (let i = segments.length - 1; i >= 0 && !matchedTinh; i--) {
+        const found = fuzzyFind(segments[i], tinhList, t => t.full_name);
+        if (found) { matchedTinh = found; usedIndices.add(i); }
+      }
+
+      if (matchedTinh) {
+        /* ── 63-province flow ── */
+        setTab("0");
+        setProvCode(""); setWardCode("");
+        setTinhId(matchedTinh.id);
+
+        // Step 2: Fetch districts, try to match a segment
+        const quans = await fetchQuan(matchedTinh.id);
+        setQuanList(quans);
+        let matchedQuan = null;
+        for (let i = segments.length - 1; i >= 0 && !matchedQuan; i--) {
+          if (usedIndices.has(i)) continue;
+          const found = fuzzyFind(segments[i], quans, q => q.full_name);
+          if (found) { matchedQuan = found; usedIndices.add(i); }
+        }
+
+        if (matchedQuan) {
+          setQuanId(matchedQuan.id);
+
+          // Step 3: Fetch wards, try to match a segment
+          const phuongs = await fetchPhuong(matchedQuan.id);
+          setPhuongList(phuongs);
+          let matchedPhuong = null;
+          for (let i = segments.length - 1; i >= 0 && !matchedPhuong; i--) {
+            if (usedIndices.has(i)) continue;
+            const found = fuzzyFind(segments[i], phuongs, p => p.full_name);
+            if (found) { matchedPhuong = found; usedIndices.add(i); }
+          }
+          if (matchedPhuong) setPhuongId(matchedPhuong.id);
+        }
+        filled63 = true;
+      }
+
+      if (!filled63) {
+        /* ── 34-province flow ── */
+        let matchedProv = null;
+        for (let i = segments.length - 1; i >= 0 && !matchedProv; i--) {
+          const found = fuzzyFind(segments[i], db34, p => p.FullName || p.Name || p.name || "");
+          if (found) { matchedProv = found; usedIndices.add(i); }
+        }
+
+        if (matchedProv) {
+          setTab("1");
+          setTinhId(""); setQuanId(""); setPhuongId("");
+          setProvCode(String(matchedProv.Code || matchedProv.code));
+
+          const wards = matchedProv.Wards || [];
+          let matchedWard = null;
+          for (let i = segments.length - 1; i >= 0 && !matchedWard; i--) {
+            if (usedIndices.has(i)) continue;
+            const found = fuzzyFind(segments[i], wards, w => w.FullName || w.Name || w.name || "");
+            if (found) { matchedWard = found; usedIndices.add(i); }
+          }
+          if (matchedWard) setWardCode(String(matchedWard.Code || matchedWard.code));
+          filled34 = true;
+        }
+      }
+
+      if (!filled63 && !filled34) {
+        toast.error("Không nhận diện được Tỉnh/TP. Vui lòng kiểm tra lại địa chỉ.");
+        return;
+      }
+
+      /* ── Step 4: Remaining segments → street ── */
+      const streetParts = segments.filter((_, i) => !usedIndices.has(i));
+      if (streetParts.length) setStreet(streetParts.join(", "));
+
+      const parts = [];
+      if (usedIndices.size < segments.length) parts.push("địa chỉ chi tiết");
+      toast.success(`Đã tự động điền ${filled63 ? "(63 tỉnh)" : "(34 tỉnh)"}!`);
+    } catch (e) {
+      toast.error("Lỗi khi tự động điền: " + (e.message || "Không xác định"));
+    } finally {
+      setAutoFilling(false);
+      autoFillRef.current = false;
+    }
+  };
+
   useEffect(() => {
     if (!open) return;
     setTab(initial?.source === "34" ? "1" : "0");
@@ -87,6 +225,7 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
       try { const data34 = await fetch34All(); setDb34(data34); } catch {}
     })();
     setTinhId(""); setQuanId(""); setPhuongId(""); setProvCode(""); setWardCode("");
+    setAutoFillText("");
   }, [open, initial]);
 
   useEffect(() => {
@@ -134,6 +273,7 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
   }, [open, initial, tinhList, db34]);
 
   useEffect(() => {
+    if (autoFillRef.current) return;
     if (!tinhId) { setQuanList([]); setQuanId(""); setPhuongList([]); setPhuongId(""); return; }
     (async () => {
       const quans = await fetchQuan(tinhId); setQuanList(quans); setQuanId(""); setPhuongList([]); setPhuongId("");
@@ -141,6 +281,7 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
   }, [tinhId]);
 
   useEffect(() => {
+    if (autoFillRef.current) return;
     if (!quanId) { setPhuongList([]); setPhuongId(""); return; }
     (async () => { const phuongs = await fetchPhuong(quanId); setPhuongList(phuongs); setPhuongId(""); })();
   }, [quanId]);
@@ -225,6 +366,39 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
         </ModalHeader>
 
         <ModalBody className="px-6 py-5 space-y-4">
+          {/* Auto-fill from full address */}
+          <div
+            className="p-4 rounded-xl space-y-2"
+            style={{ background: "linear-gradient(135deg, #F0FDF4, #ECFDF5)", border: "1.5px solid #BBF7D0" }}
+          >
+            <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1.5">
+              <Wand2 size={12} className="text-emerald-500" />
+              Tự động điền địa chỉ
+            </span>
+            <p className="text-xs text-emerald-600 leading-relaxed">
+              Nhập địa chỉ vào ô bên dưới, hệ thống sẽ tự nhận diện Tỉnh/TP, Quận/Huyện, Phường/Xã — không cần gõ đầy đủ "Thành phố", "Quận", "Phường".
+            </p>
+            <div className="flex gap-2">
+              <input
+                className="flex-1 h-10 px-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none border-2 border-emerald-200 bg-white text-gray-800 placeholder-emerald-300 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+                value={autoFillText}
+                onChange={e => setAutoFillText(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") handleAutoFill(); }}
+                placeholder="VD: 123 Nguyễn Huệ, Bến Nghé, Quận 1, Hồ Chí Minh"
+              />
+              <Button
+                isLoading={autoFilling}
+                onPress={handleAutoFill}
+                size="sm"
+                className="font-bold text-white rounded-xl px-4 h-10 min-w-fit"
+                style={{ background: "linear-gradient(135deg, #059669, #10B981)", boxShadow: "0 2px 8px rgba(5,150,105,0.3)" }}
+              >
+                <Wand2 size={14} />
+                Tự động điền
+              </Button>
+            </div>
+          </div>
+
           {/* Name + Phone */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
