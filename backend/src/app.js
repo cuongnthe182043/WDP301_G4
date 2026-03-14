@@ -33,6 +33,7 @@ const transactionRoutes = require("./routes/transactionRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const notificationRoutes  = require("./routes/notificationRoutes");
+const adminProductRoutes  = require("./routes/adminProductRoutes");
 // const adminRoutes = require("./routes/adminRoutes");
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
@@ -98,6 +99,9 @@ app.use(
   })
 );
 
+/* ==== Webhook routes (no auth — must be before auth middleware) ==== */
+app.post("/api/webhooks/ghn", require("./controllers/shopOrderController").handleGhnWebhook);
+
 /* ==== Routes ==== */
 app.use("/api", homeRoutes);
 app.use("/api/auth", authRoutes);
@@ -117,13 +121,14 @@ app.use("/api/flashsales", flashSaleRoutes);
 app.use("/api/wallets", walletRoutes);
 app.use("/api/refunds", refundRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/shop/admin", productAdminRoutes); // more specific — must be before /api/shop
 app.use("/api/shop", shopRoutes);
-app.use("/api/shop/admin", productAdminRoutes);
 app.use("/api/vendor/shops", vendorShopRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/admin/products", adminProductRoutes);
 // app.use("/api/admin", adminRoutes);
 
 app.use("/static/invoices", express.static(path.join(__dirname, "../public/invoices")));
