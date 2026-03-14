@@ -5,7 +5,7 @@ const dayjs = require("dayjs");
 const ExcelJS = require("exceljs");
 const PDFDocument = require("pdfkit");
 const { EventEmitter } = require("events");
-const { SLR } = require("ml-regression-simple-linear"); // dự báo đơn giản
+const forecastSvc = require("./forecastService");
 
 // Realtime emitter (dùng tạm nếu chưa tích hợp socket.io)
 const emitter = new EventEmitter();
@@ -22,12 +22,12 @@ exports.getOverview = async (shopId) => {
 
   const [todayRevenue, processingCount, totalOrders, totalCustomers] = await Promise.all([
     Order.aggregate([
-      { $match: { shop_id: shopId, createdAt: { $gte: from, $lte: to }, status: { $in: ["paid","confirmed","shipped","delivered"] } } },
-      { $group: { _id: null, sum: { $sum: "$total_amount" } } }
+      { $match: { shop_id: shopId, createdAt: { $gte: from, $lte: to }, status: { $in: ["confirmed","shipping","delivered"] } } },
+      { $group: { _id: null, sum: { $sum: "$total_price" } } }
     ]),
-    Order.countDocuments({ shop_id: shopId, status: { $in: ["pending","confirmed","packing","shipped"] } }),
+    Order.countDocuments({ shop_id: shopId, status: { $in: ["pending","confirmed","shipping"] } }),
     Order.countDocuments({ shop_id: shopId }),
-    User.countDocuments({ "last_order_shop_id": shopId }) // nếu có trường track, nếu không thì count theo orders distinct user_id
+    Order.distinct("user_id", { shop_id: shopId }).then(ids => ids.length)
   ]);
 
   return {
@@ -47,10 +47,10 @@ exports.getRevenueSeries = async (shopId, granularity="day", range=30) => {
              : "%Y";
 
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, createdAt: { $gte: start.toDate(), $lte: end.toDate() }, status: { $in: ["paid","confirmed","shipped","delivered"] } } },
+    { $match: { shop_id: shopId, createdAt: { $gte: start.toDate(), $lte: end.toDate() }, status: { $in: ["confirmed","shipping","delivered"] } } },
     { $group: {
         _id: { $dateToString: { format: fmt, date: "$createdAt" } },
-        revenue: { $sum: "$total_amount" },
+        revenue: { $sum: "$total_price" },
         count: { $sum: 1 }
     }},
     { $sort: { _id: 1 } }
@@ -78,14 +78,13 @@ exports.getStatusSummary = async (shopId) => {
 };
 
 exports.getTopProducts = async (shopId, limit=10) => {
-  // giả sử Order có mảng items: [{ product_id, qty, amount }]
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, status: { $in: ["paid","confirmed","shipped","delivered"] } } },
+    { $match: { shop_id: shopId, status: { $in: ["confirmed","shipping","delivered"] } } },
     { $unwind: "$items" },
     { $group: {
         _id: "$items.product_id",
         qty: { $sum: "$items.qty" },
-        revenue: { $sum: "$items.amount" }
+        revenue: { $sum: { $ifNull: ["$items.total", { $multiply: ["$items.price", "$items.qty"] }] } }
     }},
     { $sort: { qty: -1 } },
     { $limit: limit },
@@ -98,8 +97,8 @@ exports.getTopProducts = async (shopId, limit=10) => {
 
 exports.getTopCustomers = async (shopId, limit=10) => {
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, status: { $in: ["paid","confirmed","shipped","delivered"] } } },
-    { $group: { _id: "$customer_id", total_spent: { $sum: "$total_amount" }, orders: { $sum: 1 } } },
+    { $match: { shop_id: shopId, status: { $in: ["confirmed","shipping","delivered"] } } },
+    { $group: { _id: "$user_id", total_spent: { $sum: "$total_price" }, orders: { $sum: 1 } } },
     { $sort: { total_spent: -1 } },
     { $limit: limit },
     { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "u" } },
@@ -110,19 +109,12 @@ exports.getTopCustomers = async (shopId, limit=10) => {
 };
 
 exports.getForecast = async (shopId, granularity="day", range=90, future=14) => {
-  // Lấy series doanh thu
   const series = await exports.getRevenueSeries(shopId, granularity, range);
   if (series.length === 0) return { history: [], forecast: [] };
 
-  // Dự báo sơ bộ bằng hồi quy tuyến tính, để FE gắn nhãn “(preview)”
-  const xs = series.map((_, i) => i);
-  const ys = series.map(r => r.revenue);
-  const reg = new SLR(xs, ys);
-  const forecast = [];
-  for (let i=0; i<future; i++) {
-    const x = xs.length + i;
-    forecast.push({ x, revenue: Math.max(0, Math.round(reg.predict(x))) });
-  }
+  // Map to forecastService format: { ds, y }
+  const mapped = series.map(r => ({ ds: r.x, y: r.revenue }));
+  const forecast = forecastSvc.forecastRevenue({ series: mapped, horizon: Number(future) });
   return { history: series, forecast };
 };
 

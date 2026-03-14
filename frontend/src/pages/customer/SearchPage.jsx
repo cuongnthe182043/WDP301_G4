@@ -49,7 +49,6 @@ const PRICE_PRESETS = [
 const RATING_OPTIONS = [5, 4, 3, 2];
 const MAX_PRICE = 10_000_000;
 
-// ─── CSS ─────────────────────────────────────────────────────────────
 if (!document.getElementById("sp-css")) {
   const s = document.createElement("style");
   s.id = "sp-css";

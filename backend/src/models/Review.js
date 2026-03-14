@@ -19,9 +19,11 @@ const ReviewSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["visible", "hidden", "pending", "deleted"], // ✅ thêm visible
+      enum: ["visible", "hidden", "pending", "deleted"],
       default: "visible",
     },
+    reply: { type: String, default: null },
+    reply_at: { type: Date, default: null },
   },
   { timestamps: true }
 );

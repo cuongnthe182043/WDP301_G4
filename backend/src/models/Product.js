@@ -38,7 +38,12 @@ const ProductSchema = new mongoose.Schema(
     seo: { title: String, description: String, keywords: [String] },
 
     is_featured: { type: Boolean, default: false },
-    status: { type: String, enum: ["active", "inactive", "out_of_stock"], default: "active" },
+    status: {
+      type: String,
+      enum: ["pending", "active", "inactive", "out_of_stock"],
+      default: "pending",
+    },
+    rejection_reason: { type: String, default: "" },
 
     base_price: { type: Number, required: true },
     currency: { type: String, default: "VND" },
@@ -46,6 +51,7 @@ const ProductSchema = new mongoose.Schema(
     shop_id: { type: String, ref: "Shop", index: true },
 
     variant_dimensions: [{ type: String, enum: ["color", "size", "material_variant", "pattern", "fit"] }],
+    variant_values: { type: Map, of: [String], default: undefined },
 
     attributes: { type: Map, of: mongoose.Schema.Types.Mixed },
   },
