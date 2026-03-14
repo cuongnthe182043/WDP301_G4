@@ -1,0 +1,24 @@
+[{
+  "_id": "shop-594301f4-cf31-4666-87a2-4b7365b1e2f3",
+  "owner_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "shop_name": "Anh Việt Store",
+  "shop_slug": "anh-viet-store",
+  "shop_logo": "https://lh3.googleusercontent.com/a/ACg8ocK-pCG5QZSEJyjGirL6Ip0bqlIC-JYhdFfXgWvdwv-Oa3imqxBp=s96-c",
+  "banner_url": "",
+  "description": "Cửa hàng chính thức của Anh Việt – chuyên cung cấp các sản phẩm chất lượng.",
+  "address": "",
+  "phone": "",
+  "email": "anhdovietvp2003@gmail.com",
+  "status": "approved",
+  "rating_avg": 0,
+  "total_products": 0,
+  "total_orders": 0,
+  "followers": 0,
+  "rejection_reason": "",
+  "createdAt": {
+    "$date": "2026-02-19T13:05:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-19T13:05:00.000Z"
+  }
+}]

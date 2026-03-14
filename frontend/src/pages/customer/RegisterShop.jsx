@@ -28,6 +28,7 @@ const STATUS_CONFIG = {
     desc: "Shop của bạn đang bị tạm khóa. Vui lòng liên hệ admin để biết thêm chi tiết.",
   },
 };
+//datamock
 
 export default function RegisterShop() {
   const navigate = useNavigate();

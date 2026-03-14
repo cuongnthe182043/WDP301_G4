@@ -3,17 +3,21 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Button, Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
-  BarChart2, Key, BookOpen, LogOut, Shield,
+  BarChart2, Key, Shield, Package, Clock,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const NAV_ITEMS = [
-  { to: "/admin/shops",         label: "Quản lý Shop",    icon: Store },
-  { to: "/admin/audit-logs",    label: "Audit Logs",      icon: FileText },
-  { to: "/admin/reconciliation",label: "Đối soát",        icon: BarChart2 },
-  { to: "/admin/api-keys",      label: "API Keys",        icon: Key },
+  { to: "/admin/shops",            label: "Quản lý Shop",       icon: Store },
   { divider: true },
-  { to: "/admin/system-config", label: "Cấu hình hệ thống", icon: Settings },
+  { to: "/admin/products",         label: "Tất cả sản phẩm",    icon: Package },
+  { to: "/admin/products/pending", label: "Chờ duyệt",          icon: Clock },
+  { divider: true },
+  { to: "/admin/audit-logs",       label: "Audit Logs",         icon: FileText },
+  { to: "/admin/reconciliation",   label: "Đối soát",           icon: BarChart2 },
+  { to: "/admin/api-keys",         label: "API Keys",           icon: Key },
+  { divider: true },
+  { to: "/admin/system-config",    label: "Cấu hình hệ thống",  icon: Settings },
 ];
 
 export default function AdminLayout() {

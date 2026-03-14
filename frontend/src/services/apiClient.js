@@ -52,7 +52,7 @@ apiClient.interceptors.response.use(
       err?.message ||
       "Lỗi kết nối máy chủ.";
 
-    if (status === 401 || status === 403) {
+    if (status === 401) {
       clearAuthStorage();
       // Hard redirect để reset toàn bộ state
       window.location.replace("/login");

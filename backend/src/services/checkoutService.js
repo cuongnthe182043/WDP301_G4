@@ -271,7 +271,7 @@ exports.confirm = async ({
       payment_method: method,
       payment_status: "pending",
       note,
-      status: "pending",
+      status: method === "COD" ? "order_created" : "payment_pending",
     });
 
     createdOrders.push({
