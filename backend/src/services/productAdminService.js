@@ -37,13 +37,23 @@ exports.listProducts = async ({ shopId, q, page=1, limit=20, category_id, status
 };
 
 exports.createProduct = async (payload, shopId) => {
-  const doc = { ...payload, shop_id: shopId };
+  // Strip any status from payload — new products always start as pending
+  const { status: _ignored, rejection_reason: _ign2, ...rest } = payload;
+  const doc = { ...rest, shop_id: shopId, status: "pending", rejection_reason: "" };
   if (!doc.slug && doc.name) doc.slug = slugify(doc.name);
+  // Ensure slug uniqueness by appending random suffix if needed
+  const existing = await Product.findOne({ slug: doc.slug }).lean();
+  if (existing) doc.slug = `${doc.slug}-${Date.now()}`;
   if (doc.category_id) {
     const cat = await Category.findById(doc.category_id).lean();
     doc.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
   }
   return Product.create(doc);
+};
+
+exports.deleteProduct = async (id, shopId) => {
+  await ProductVariant.deleteMany({ product_id: id, shop_id: shopId });
+  return Product.findOneAndDelete({ _id: id, shop_id: shopId });
 };
 
 exports.updateProduct = async (id, payload, shopId) => {
@@ -105,6 +115,17 @@ exports.listBrands = () => Brand.find({ is_active: true }).lean();
 exports.createCategory = (payload) => Category.create({ ...payload, slug: payload.slug || undefined, is_active: true });
 exports.updateCategory = (id, payload) => Category.findByIdAndUpdate(id, { $set: payload }, { new: true });
 exports.deleteCategory = (id) => Category.findByIdAndDelete(id);
+
+exports.createAttribute = (payload) => Attribute.create({ ...payload, is_active: true });
+exports.updateAttribute = (id, payload) => Attribute.findByIdAndUpdate(id, { $set: payload }, { new: true });
+exports.deleteAttribute = (id) => Attribute.findByIdAndDelete(id);
+
+exports.createBrand = (payload) => {
+  const slug = payload.slug || String(payload.name || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + "-" + Date.now();
+  return Brand.create({ ...payload, slug, is_active: true });
+};
+exports.updateBrand = (id, payload) => Brand.findByIdAndUpdate(id, { $set: payload }, { new: true });
+exports.deleteBrand = (id) => Brand.findByIdAndDelete(id);
 
 /* ===== Media & Import giữ nguyên ===== */
 exports.uploadImages = (files, shopId) => uploadImages(files, shopId);
