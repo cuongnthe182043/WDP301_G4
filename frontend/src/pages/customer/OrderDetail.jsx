@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { orderService } from "../../services/orderService";
+import { reviewService } from "../../services/reviewService";
 import {
   Card, CardBody, Button, Chip, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Skeleton,
 } from "@heroui/react";
-import { Truck, RefreshCw, ArrowLeft, CheckCircle2, Circle, Package } from "lucide-react";
+import { Truck, RefreshCw, ArrowLeft, CheckCircle2, Circle, Package, Star } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 import PageContainer from "../../components/ui/PageContainer.jsx";
+import ReviewModal from "../../components/common/ReviewModal.jsx";
 
 const STATUS_LABEL = {
   pending:          "Chờ xác nhận",
@@ -35,6 +37,11 @@ export default function OrderDetail() {
   const [openRefund, setOpenRefund] = useState(false);
   const [reason,     setReason]     = useState("");
 
+  // Review state — Map<product_id, reviewDoc> for edit support
+  const [reviewMap, setReviewMap] = useState(new Map());
+  const [reviewItem, setReviewItem] = useState(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
+
   const load = async () => {
     setLoading(true);
     try {
@@ -42,10 +49,30 @@ export default function OrderDetail() {
       setOrd(d);
       const t = await orderService.tracking(id).catch(() => null);
       setTrack(t);
+      // Load existing reviews for this order
+      if (d?.status === "delivered") {
+        try {
+          const rvData = await reviewService.getByOrder(id);
+          const list = rvData.reviews || rvData || [];
+          const map = new Map();
+          list.forEach((r) => map.set(r.product_id, r));
+          setReviewMap(map);
+        } catch {}
+      }
     } finally { setLoading(false); }
   };
 
   useEffect(() => { load(); }, [id]);
+
+  const openReviewModal = (item) => {
+    setReviewItem(item);
+    setReviewOpen(true);
+  };
+
+  const onReviewSuccess = () => {
+    // Reload reviews for this order to refresh the map
+    load();
+  };
 
   if (loading) return (
     <PageContainer wide={false}>
@@ -61,6 +88,8 @@ export default function OrderDetail() {
       <p className="text-default-400">Không tìm thấy đơn hàng.</p>
     </PageContainer>
   );
+
+  const isDelivered = ord.status === "delivered";
 
   return (
     <PageContainer wide={false}>
@@ -99,23 +128,55 @@ export default function OrderDetail() {
           <CardBody className="p-5">
             <h3 className="font-bold text-default-900 mb-4">Sản phẩm</h3>
             <div className="space-y-3">
-              {(ord.items || []).map((it, idx) => (
-                <div key={idx} className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-default-100 flex-shrink-0">
-                      {it.image_url && <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm text-default-900">{it.name}</p>
-                      {it.variant_text && <p className="text-xs text-default-400">{it.variant_text}</p>}
-                      <p className="text-xs text-default-400">SL: {it.qty}</p>
+              {(ord.items || []).map((it, idx) => {
+                const existingReview = reviewMap.get(it.product_id);
+                return (
+                  <div key={idx}>
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-default-100 flex-shrink-0">
+                          {it.image_url && <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-default-900">{it.name}</p>
+                          {it.variant_text && <p className="text-xs text-default-400">{it.variant_text}</p>}
+                          <p className="text-xs text-default-400">SL: {it.qty}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-sm text-default-800 whitespace-nowrap">
+                          {formatCurrency(it.total || it.price * it.qty)}
+                        </p>
+                        {isDelivered && (
+                          existingReview ? (
+                            <div className="flex items-center gap-1">
+                              <Chip size="sm" variant="flat" color="success" startContent={<CheckCircle2 size={12} />}>
+                                Đã đánh giá
+                              </Chip>
+                              <Button
+                                size="sm" variant="light" radius="lg" color="primary"
+                                onPress={() => openReviewModal(it)}
+                                className="font-medium min-w-0 px-2"
+                              >
+                                Sửa
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button
+                              size="sm" variant="bordered" radius="lg" color="warning"
+                              startContent={<Star size={14} />}
+                              onPress={() => openReviewModal(it)}
+                              className="font-medium"
+                            >
+                              Đánh giá
+                            </Button>
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <p className="font-bold text-sm text-default-800 whitespace-nowrap">
-                    {formatCurrency(it.total || it.price * it.qty)}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Divider className="my-4" />
             <div className="flex justify-end items-center gap-2">
@@ -253,6 +314,16 @@ export default function OrderDetail() {
           )}
         </ModalContent>
       </Modal>
+
+      {/* Review modal */}
+      <ReviewModal
+        isOpen={reviewOpen}
+        onOpenChange={setReviewOpen}
+        item={reviewItem}
+        orderId={id}
+        existingReview={reviewItem ? reviewMap.get(reviewItem.product_id) : undefined}
+        onSuccess={onReviewSuccess}
+      />
     </PageContainer>
   );
 }
