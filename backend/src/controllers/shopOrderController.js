@@ -119,16 +119,15 @@ exports.confirmOrder = async (req, res, next) => {
     if (!order) return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
 
     const CONFIRMABLE = new Set([
-      "order_created", "payment_pending", "payment_confirmed", "processing",
-      // legacy
-      "pending", "confirmed",
+      "order_created", "payment_pending", "payment_confirmed",
+      "pending", // legacy
     ]);
     if (!CONFIRMABLE.has(order.status)) {
       return res.status(400).json({ message: `Không thể xác nhận đơn ở trạng thái: ${order.status}` });
     }
 
-    pushStatusHistory(order, "processing", "shop", "Shop xác nhận đơn hàng");
-    order.status = "processing";
+    pushStatusHistory(order, "confirmed", "shop", "Shop xác nhận đơn hàng");
+    order.status = "confirmed";
     await order.save();
 
     notif.orderConfirmed(order.user_id, order.order_code).catch(() => {});
@@ -186,18 +185,30 @@ exports.pushToGhn = async (req, res, next) => {
     const order = await Order.findOne({ _id: req.params.id, shop_id: req.shop._id });
     if (!order) return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
 
-    if (!["processing", "packed"].includes(order.status)) {
-      return res.status(400).json({ message: "Chỉ có thể gửi GHN khi đơn ở trạng thái đang xử lý hoặc đã đóng gói" });
+    if (!["confirmed", "processing", "packed"].includes(order.status)) {
+      return res.status(400).json({ message: "Chỉ có thể gửi GHN khi đơn ở trạng thái đã xác nhận, đang xử lý hoặc đã đóng gói" });
     }
     if (order.ghn_order_code) {
       return res.status(400).json({ message: "Đơn đã được gửi tới GHN trước đó", ghn_order_code: order.ghn_order_code });
     }
 
     let ghnData;
-    try {
-      ghnData = await ghn.createShippingOrder(order);
-    } catch (e) {
-      return res.status(502).json({ message: `Không thể tạo đơn GHN: ${e.message}` });
+    const GHN_DEV_MODE = process.env.GHN_DEV_MODE === "true";
+
+    if (GHN_DEV_MODE) {
+      // Simulate GHN response for development/testing
+      const fakeCode = `GHN-DEV-${Date.now()}`;
+      ghnData = {
+        order_code:            fakeCode,
+        expected_delivery_time: Math.floor(Date.now() / 1000) + 3 * 24 * 3600,
+      };
+      console.log(`[GHN] DEV MODE — simulated order_code: ${fakeCode}`);
+    } else {
+      try {
+        ghnData = await ghn.createShippingOrder(order);
+      } catch (e) {
+        return res.status(502).json({ message: `Không thể tạo đơn GHN: ${e.message}` });
+      }
     }
 
     order.ghn_order_code  = ghnData.order_code;
@@ -277,13 +288,14 @@ exports.updateOrderStatus = async (req, res, next) => {
     const order = await Order.findOne({ _id: req.params.id, shop_id: req.shop._id });
     if (!order) return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
 
-    // Allowed transitions: processing↔packed
-    const VALID_FROM = new Set(["processing", "packed"]);
+    // confirmed → processing → packed (and processing ↔ packed)
+    const VALID_FROM = new Set(["confirmed", "processing", "packed"]);
     if (!VALID_FROM.has(order.status)) {
       return res.status(400).json({ message: `Không thể chuyển từ trạng thái: ${order.status}` });
     }
 
-    pushStatusHistory(order, status, "shop", `Manual update → ${status}`);
+    const NOTE_MAP = { processing: "Bắt đầu xử lý đơn hàng", packed: "Đã đóng gói, sẵn sàng giao" };
+    pushStatusHistory(order, status, "shop", NOTE_MAP[status] || `Cập nhật → ${status}`);
     order.status = status;
     await order.save();
     res.json({ success: true, data: { order_id: order._id, status: order.status } });

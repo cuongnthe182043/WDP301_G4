@@ -11,6 +11,7 @@ const { v4: uuidv4 } = require("uuid");
 const notification = require("../services/notificationService");
 const notif        = require("../services/dbNotificationService");
 const User = require("../models/User");
+const Shop = require("../models/Shop");
 
 const SAFE_FIELDS =
   "_id order_code items address_id voucher_id payment_method payment_status shipping_provider shipping_fee total_price note status inventory_adjusted createdAt updatedAt";
@@ -194,12 +195,21 @@ exports.reorder = async (req, res, next) => {
   }
 };
 
-// ================== REQUEST REFUND ==================
+// ================== REQUEST REFUND / RETURN / EXCHANGE ==================
 exports.requestRefund = async (req, res, next) => {
   try {
     const userId = req.userId || req.user?._id;
-    const id = req.params.id;
-    const { reason, items = [], images = [] } = req.body || {};
+    const id     = req.params.id;
+    const { reason, type = "refund", images = [] } = req.body || {};
+
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ status: "fail", message: "Vui lòng nêu rõ lý do." });
+    }
+
+    const VALID_TYPES = ["refund", "return", "exchange"];
+    if (!VALID_TYPES.includes(type)) {
+      return res.status(400).json({ status: "fail", message: "Loại yêu cầu không hợp lệ." });
+    }
 
     const ord = await Order.findOne({
       user_id: userId,
@@ -207,9 +217,7 @@ exports.requestRefund = async (req, res, next) => {
     });
 
     if (!ord)
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Không tìm thấy đơn" });
+      return res.status(404).json({ status: "fail", message: "Không tìm thấy đơn" });
 
     if (ord.status !== "delivered") {
       return res.status(400).json({
@@ -218,10 +226,8 @@ exports.requestRefund = async (req, res, next) => {
       });
     }
 
-    const now = Date.now();
-    const deliveredAt = new Date(ord.updatedAt).getTime();
-    const diffDays = (now - deliveredAt) / (1000 * 60 * 60 * 24);
-
+    // Check 3-day window
+    const diffDays = (Date.now() - new Date(ord.updatedAt).getTime()) / (1000 * 60 * 60 * 24);
     if (diffDays > 3) {
       return res.status(400).json({
         status: "fail",
@@ -229,19 +235,40 @@ exports.requestRefund = async (req, res, next) => {
       });
     }
 
-    const refund = await Refund.create({
-      _id: `rf-${uuidv4()}`,
+    // Prevent duplicate active request
+    const existing = await Refund.findOne({
       order_id: ord._id,
-      user_id: userId,
-      reason,
-      items,
+      status: { $in: ["pending", "approved"] },
+    }).lean();
+    if (existing) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Đơn hàng này đã có yêu cầu hoàn/đổi đang xử lý.",
+      });
+    }
+
+    const refund = await Refund.create({
+      order_id: ord._id,
+      user_id:  userId,
+      type,
+      reason:   reason.trim(),
       images,
-      status: "refund_pending",
-      method: "bank_transfer",
+      amount:   ord.total_price,
+      status:   "pending",
     });
 
-    ord.status = "refund_pending";
+    ord.status = "return_requested";
+    if (!ord.status_history) ord.status_history = [];
+    ord.status_history.push({ status: "return_requested", at: new Date(), by: "customer", note: `${type}: ${reason.trim()}` });
     await ord.save();
+
+    // Notify shop owner
+    if (ord.shop_id) {
+      const shop = await Shop.findById(ord.shop_id).lean();
+      if (shop?.owner_id) {
+        notif.refundRequested(shop.owner_id, ord.order_code).catch(() => {});
+      }
+    }
 
     res.json({
       status: "success",
@@ -253,6 +280,31 @@ exports.requestRefund = async (req, res, next) => {
 };
 
 // ================== TRACKING ==================
+const TRACKING_LABELS = {
+  order_created:         "Đặt hàng thành công",
+  pending:               "Đặt hàng thành công",
+  payment_pending:       "Chờ thanh toán",
+  payment_confirmed:     "Thanh toán thành công",
+  payment_failed:        "Thanh toán thất bại",
+  confirmed:             "Shop đã xác nhận đơn hàng",
+  processing:            "Shop đang chuẩn bị hàng",
+  packed:                "Đã đóng gói, sẵn sàng giao",
+  picking:               "Shipper đang lấy hàng",
+  in_transit:            "Đang vận chuyển",
+  out_for_delivery:      "Đang giao đến bạn",
+  delivered:             "Giao hàng thành công",
+  delivery_failed:       "Giao hàng thất bại",
+  cancelled_by_customer: "Khách hàng đã hủy đơn",
+  cancelled_by_shop:     "Shop đã hủy đơn",
+  canceled_by_customer:  "Khách hàng đã hủy đơn",
+  canceled_by_shop:      "Shop đã hủy đơn",
+  return_requested:      "Yêu cầu hoàn/đổi hàng",
+  return_approved:       "Đã duyệt hoàn/đổi hàng",
+  return_rejected:       "Từ chối hoàn/đổi hàng",
+  refund_pending:        "Đang xử lý hoàn tiền",
+  refund_completed:      "Đã hoàn tiền thành công",
+};
+
 exports.tracking = async (req, res, next) => {
   try {
     const userId = req.userId || req.user?._id;
@@ -264,16 +316,64 @@ exports.tracking = async (req, res, next) => {
     }).lean();
 
     if (!ord)
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Không tìm thấy đơn" });
+      return res.status(404).json({ status: "fail", message: "Không tìm thấy đơn" });
 
-    const t = await shippingSvc.getTracking(
-      ord.shipping_provider,
-      ord.order_code
-    );
+    // Build steps from status_history (real audit trail)
+    let steps = [];
+    if (ord.status_history && ord.status_history.length > 0) {
+      steps = ord.status_history.map((h) => ({
+        code: h.status,
+        text: TRACKING_LABELS[h.status] || h.status,
+        at:   h.at,
+        note: h.note || "",
+      }));
+    } else {
+      // Fallback: single step from current status
+      steps = [{
+        code: ord.status,
+        text: TRACKING_LABELS[ord.status] || ord.status,
+        at:   ord.updatedAt || ord.createdAt,
+      }];
+    }
 
-    res.json({ status: "success", data: t });
+    // Try to fetch real GHN tracking logs
+    let ghn_logs  = [];
+    let ghn_status = null;
+    if (ord.ghn_order_code) {
+      try {
+        const ghnSvc = require("../services/ghnService");
+        const ghnDetail = await ghnSvc.getOrderDetail(ord.ghn_order_code);
+        ghn_logs  = ghnDetail?.log || [];
+        ghn_status = ghnDetail?.status || null;
+        // Merge GHN logs as additional steps if they exist
+        if (ghn_logs.length) {
+          const ghnSteps = ghn_logs.map((l) => ({
+            code: (l.status || "").toLowerCase(),
+            text: l.status || "GHN update",
+            at:   l.updated_date ? new Date(l.updated_date) : new Date(),
+            note: l.location || "",
+            source: "ghn",
+          }));
+          // Append and sort all steps chronologically
+          steps = [...steps, ...ghnSteps].sort((a, b) => new Date(a.at) - new Date(b.at));
+        }
+      } catch (e) {
+        console.warn("[Tracking] GHN fetch failed:", e.message);
+      }
+    }
+
+    res.json({
+      status: "success",
+      data: {
+        provider:          ord.shipping_provider || "NONE",
+        order_code:        ord.order_code,
+        ghn_order_code:    ord.ghn_order_code || null,
+        ghn_status,
+        steps,
+        current:           ord.status,
+        expected_delivery: ord.expected_delivery || null,
+      },
+    });
   } catch (e) {
     next(e);
   }

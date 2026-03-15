@@ -6,10 +6,11 @@ exports.preview = async (req, res, next) => {
     const r = await checkoutSvc.preview({
       userId:            req.userId || req.user?._id,
       selected_item_ids: req.body.selected_item_ids,
-      buy_now_items:     req.body.buy_now_items,      // ← Buy Now flow
+      buy_now_items:     req.body.buy_now_items,
       address_id:        req.body.address_id,
       ship_provider:     req.body.shipping_provider,
       voucher_code:      req.body.voucher_code,
+      credits_to_use:    req.body.credits_to_use,   // { [shopId]: amount }
     });
     res.json({ status: "success", data: r });
   } catch (e) {
@@ -24,11 +25,12 @@ exports.confirm = async (req, res, next) => {
       userId:            req.userId || req.user?._id,
       shopId:            req.body.shop_id,
       selected_item_ids: req.body.selected_item_ids,
-      buy_now_items:     req.body.buy_now_items,      // ← Buy Now flow
+      buy_now_items:     req.body.buy_now_items,
       address_id:        req.body.address_id,
       note:              req.body.note,
       ship_provider:     req.body.shipping_provider,
       voucher_code:      req.body.voucher_code,
+      credits_to_use:    req.body.credits_to_use,   // { [shopId]: amount }
       payment_method:    req.body.payment_method,
     });
     res.json({ status: "success", data: r });
