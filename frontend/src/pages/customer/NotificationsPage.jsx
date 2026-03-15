@@ -7,16 +7,7 @@ import {
   Check, CheckCheck, Trash2, ChevronRight, Filter,
 } from "lucide-react";
 import { useNotifications } from "../../context/NotificationContext";
-
-// ─── helpers ──────────────────────────────────────────────────────────────────
-
-const TYPE_FILTERS = [
-  { key: "all",       label: "Tất cả" },
-  { key: "order",     label: "Đơn hàng" },
-  { key: "payment",   label: "Thanh toán" },
-  { key: "promotion", label: "Khuyến mãi" },
-  { key: "system",    label: "Hệ thống" },
-];
+import { useTranslation } from "react-i18next";
 
 const NOTIF_META = {
   "order.placed":    { Icon: Package,    color: "#2563EB", bg: "#EFF6FF",  label: "Đơn hàng" },
@@ -38,18 +29,21 @@ function getMeta(n) {
   return NOTIF_META[n.subtype] || NOTIF_META[n.type] || NOTIF_META.system;
 }
 
-function timeAgo(date) {
-  try {
-    const diff = Date.now() - new Date(date).getTime();
-    const m = Math.floor(diff / 60000);
-    if (m < 1) return "vừa xong";
-    if (m < 60) return `${m} phút trước`;
-    const h = Math.floor(m / 60);
-    if (h < 24) return `${h} giờ trước`;
-    const d = Math.floor(h / 24);
-    if (d < 7) return `${d} ngày trước`;
-    return new Date(date).toLocaleDateString("vi-VN");
-  } catch { return ""; }
+function useTimeAgo() {
+  const { t } = useTranslation();
+  return (date) => {
+    try {
+      const diff = Date.now() - new Date(date).getTime();
+      const m = Math.floor(diff / 60000);
+      if (m < 1) return t("notification.just_now");
+      if (m < 60) return t("notification.minutes_ago", { count: m });
+      const h = Math.floor(m / 60);
+      if (h < 24) return t("notification.hours_ago", { count: h });
+      const d = Math.floor(h / 24);
+      if (d < 7) return t("notification.days_ago", { count: d });
+      return new Date(date).toLocaleDateString();
+    } catch { return ""; }
+  };
 }
 
 function formatDate(date) {
@@ -83,8 +77,10 @@ function NotifSkeleton() {
 
 // ─── Single notification card ─────────────────────────────────────────────────
 function NotifCard({ n, onMarkRead, onDelete, onNavigate }) {
-  const { Icon, color, bg, label } = getMeta(n);
+  const { Icon, color, bg } = getMeta(n);
   const [hovered, setHovered] = useState(false);
+  const { t } = useTranslation();
+  const timeAgo = useTimeAgo();
 
   return (
     <motion.div
@@ -201,10 +197,19 @@ function NotifCard({ n, onMarkRead, onDelete, onNavigate }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function NotificationsPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     notifications, unreadCount, loading, hasMore,
     markRead, markAllRead, deleteNotif, loadMore,
   } = useNotifications();
+
+  const TYPE_FILTERS = [
+    { key: "all",       label: t("order.filter_all") },
+    { key: "order",     label: t("nav.orders") },
+    { key: "payment",   label: t("checkout.payment_method") },
+    { key: "promotion", label: t("admin.moderation") },
+    { key: "system",    label: t("admin.system_config") },
+  ];
 
   const [filter, setFilter] = useState("all");
 
@@ -238,9 +243,9 @@ export default function NotificationsPage() {
                 <Bell size={18} className="text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-black text-blue-900 leading-tight">Thông báo</h1>
+                <h1 className="text-xl font-black text-blue-900 leading-tight">{t("notification.title")}</h1>
                 <p className="text-xs text-blue-400 font-semibold mt-0.5">
-                  {unreadCount > 0 ? `${unreadCount} chưa đọc` : "Tất cả đã đọc"}
+                  {unreadCount > 0 ? `${unreadCount} ${t("notification.mark_all_read")}` : t("notification.mark_all_read")}
                 </p>
               </div>
             </div>
@@ -255,7 +260,7 @@ export default function NotificationsPage() {
                 onPress={markAllRead}
                 className="font-bold text-xs"
               >
-                Đọc tất cả
+                {t("notification.mark_all_read")}
               </Button>
             )}
           </div>
@@ -316,9 +321,9 @@ export default function NotificationsPage() {
               <Bell size={36} className="text-blue-300" />
             </motion.div>
             <div className="text-center">
-              <p className="font-black text-gray-600 text-base">Không có thông báo</p>
+              <p className="font-black text-gray-600 text-base">{t("notification.empty")}</p>
               <p className="text-sm text-gray-400 mt-1">
-                {filter === "all" ? "Bạn chưa có thông báo nào." : "Không có thông báo loại này."}
+                {t("notification.empty")}
               </p>
             </div>
           </motion.div>

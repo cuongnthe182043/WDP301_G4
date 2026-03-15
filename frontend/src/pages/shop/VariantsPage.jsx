@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { variantService } from "../../services/variantService";
-import { productService } from "../../services/productService";
+import { productAdminService as svc } from "../../services/productAdminService";
 import { Card, CardBody, Button, Input } from "@heroui/react";
 
 function genSku(slug, c, s) {
@@ -18,9 +17,9 @@ export default function VariantsPage() {
   const [size,    setSize]    = useState("S,M,L,XL");
 
   async function load() {
-    const p = await productService.get(id);
+    const p = await svc.get(id);
     setProduct(p);
-    const v = await variantService.list(id);
+    const v = await svc.listVariants(id);
     setRows(v);
   }
   useEffect(() => { load(); }, [id]);
@@ -32,7 +31,7 @@ export default function VariantsPage() {
     for (const c of colors) for (const s of sizes) {
       items.push({ sku: genSku(product?.slug, c, s), price: product?.base_price || 0, stock: 0, variant_attributes: { color: c, size: s } });
     }
-    await variantService.bulk(id, items);
+    await svc.createVariantsBulk(id, items);
     await load();
   };
 
@@ -75,7 +74,7 @@ export default function VariantsPage() {
                     <td className="px-4 py-3">{v.stock}</td>
                     <td className="px-4 py-3">
                       <Button size="sm" color="danger" variant="light" radius="lg"
-                        onPress={async () => { await variantService.remove(v._id); await load(); }}>
+                        onPress={async () => { await svc.removeVariant(v._id); await load(); }}>
                         Xoá
                       </Button>
                     </td>

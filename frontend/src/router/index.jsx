@@ -24,6 +24,7 @@ import Wishlist from "../pages/customer/Wishlist";
 import Wallet from "../pages/customer/Wallet";
 import NotificationsPage from "../pages/customer/NotificationsPage";
 import MyReviews from "../pages/customer/MyReviews";
+import VouchersPage from "../pages/customer/VouchersPage";
 
 /* ===== Support / Ticket Pages (customer-facing) ===== */
 import Tickets from "../pages/support/Tickets";
@@ -50,6 +51,8 @@ import ManageMarketing from "../pages/shop/ManageMarketing";
 import ManageVoucher from "../pages/shop/ManageVoucher";
 import ManageFlashsale from "../pages/shop/ManageFlashsale";
 import ManageBanner from "../pages/shop/ManageBanner";
+import ManageCampaigns from "../pages/shop/ManageCampaigns";
+import ManageCredits from "../pages/shop/ManageCredits";
 
 /* ===== New Vendor / Admin Pages ===== */
 import RegisterShop from "../pages/customer/RegisterShop";
@@ -58,6 +61,7 @@ import ShopSettings from "../pages/shop/ShopSettings";
 import AdminShops from "../pages/admin/AdminShops";
 import AdminProducts from "../pages/admin/AdminProducts";
 import AdminPendingProducts from "../pages/admin/AdminPendingProducts";
+import AdminReviews from "../pages/admin/AdminReviews";
 
 /* ===== Admin Pages ===== */
 import AdminLayout from "../pages/admin/AdminLayout";
@@ -131,6 +135,7 @@ export default function AppRouter() {
       <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
       <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
       <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+      <Route path="/vouchers"       element={<ProtectedRoute><VouchersPage /></ProtectedRoute>} />
       <Route path="/my-reviews"     element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
 
       {/* ===== Customer Support / Tickets ===== */}
@@ -166,6 +171,8 @@ export default function AppRouter() {
         <Route path="marketing/vouchers"          element={<ManageVoucher />} />
         <Route path="marketing/flashsale"         element={<ManageFlashsale />} />
         <Route path="marketing/banners"           element={<ManageBanner />} />
+        <Route path="marketing/campaigns"         element={<ManageCampaigns />} />
+        <Route path="marketing/credits"           element={<ManageCredits />} />
 
         {/* Finance */}
         <Route path="wallet"                      element={<ShopWallet />} />
@@ -188,6 +195,7 @@ export default function AppRouter() {
         <Route path="shops"            element={<AdminShops />} />
         <Route path="products"         element={<AdminProducts />} />
         <Route path="products/pending" element={<AdminPendingProducts />} />
+        <Route path="reviews"        element={<AdminReviews />} />
         <Route path="system-config"  element={<SystemConfig />} />
         <Route path="audit-logs"     element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />

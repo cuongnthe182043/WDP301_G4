@@ -66,12 +66,13 @@ function StatusChip({ status, size = "sm" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 const CANCELLABLE = new Set([
   "order_created", "payment_pending", "payment_failed", "payment_confirmed",
-  "processing", "packed", "pending", "confirmed",
+  "confirmed", "processing", "packed", "pending",
 ]);
 const CONFIRMABLE = new Set([
-  "order_created", "payment_confirmed", "payment_pending", "pending", "processing", "confirmed",
+  "order_created", "payment_confirmed", "payment_pending", "pending",
 ]);
-const GHN_PUSHABLE = new Set(["processing", "packed"]);
+const START_PROCESSING = new Set(["confirmed"]);
+const GHN_PUSHABLE = new Set(["confirmed", "processing", "packed"]);
 const IN_SHIPPING  = new Set(["picking", "in_transit", "out_for_delivery", "shipping"]);
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -79,7 +80,8 @@ const IN_SHIPPING  = new Set(["picking", "in_transit", "out_for_delivery", "ship
 // ─────────────────────────────────────────────────────────────────────────────
 const TIMELINE_STEPS = [
   { status: "order_created",     label: "Đặt hàng" },
-  { status: "processing",        label: "Xác nhận" },
+  { status: "confirmed",         label: "Xác nhận" },
+  { status: "processing",        label: "Xử lý" },
   { status: "packed",            label: "Đóng gói" },
   { status: "picking",           label: "Lấy hàng" },
   { status: "in_transit",        label: "Vận chuyển" },
@@ -407,10 +409,19 @@ export default function ManageOrders() {
                         </Tooltip>
 
                         {CONFIRMABLE.has(o.status) && (
-                          <Tooltip content="Xác nhận">
+                          <Tooltip content="Xác nhận đơn">
                             <Button isIconOnly size="sm" variant="light" color="primary"
                               onPress={() => handleConfirm(o._id)} isDisabled={actionLoading}>
                               <CheckCircle size={14} />
+                            </Button>
+                          </Tooltip>
+                        )}
+
+                        {START_PROCESSING.has(o.status) && (
+                          <Tooltip content="Bắt đầu xử lý">
+                            <Button isIconOnly size="sm" variant="light" color="primary"
+                              onPress={() => handleUpdateStatus(o._id, "processing")} isDisabled={actionLoading}>
+                              <Package size={14} />
                             </Button>
                           </Tooltip>
                         )}
@@ -636,6 +647,12 @@ export default function ManageOrders() {
                       <Button size="sm" color="primary" radius="lg" isDisabled={actionLoading}
                         onPress={() => handleConfirm(detail._id)}>
                         <CheckCircle size={14} /> Xác nhận đơn
+                      </Button>
+                    )}
+                    {detail.status === "confirmed" && (
+                      <Button size="sm" color="primary" variant="bordered" radius="lg" isDisabled={actionLoading}
+                        onPress={() => handleUpdateStatus(detail._id, "processing")}>
+                        <Package size={14} /> Bắt đầu xử lý
                       </Button>
                     )}
                     {detail.status === "processing" && (

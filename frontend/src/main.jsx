@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./i18n"; // must be imported before App so translations are ready
 
 import { HeroUIProvider } from "@heroui/react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -10,6 +11,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { ToastProvider } from "./components/common/ToastProvider";
+import { ThemeProvider } from "./context/ThemeContext";
+import { LanguageProvider } from "./context/LanguageContext";
 
 /* ── Global font import for the entire app ── */
 const fontLink = document.createElement("link");
@@ -31,18 +34,22 @@ document.head.appendChild(globalStyle);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HeroUIProvider>
-      <ToastProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <CartProvider>
-              <NotificationProvider>
-                <App />
-              </NotificationProvider>
-            </CartProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </ToastProvider>
-    </HeroUIProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+      <HeroUIProvider>
+        <ToastProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <CartProvider>
+                <NotificationProvider>
+                  <App />
+                </NotificationProvider>
+              </CartProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </ToastProvider>
+      </HeroUIProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );

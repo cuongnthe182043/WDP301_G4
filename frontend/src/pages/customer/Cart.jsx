@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Checkbox, Divider, Input, Chip, Popover, PopoverTrigger, PopoverContent,
 } from "@heroui/react";
@@ -93,6 +94,7 @@ function CartSkeleton() {
 /* ═══════════════════════════ PAGE ═══════════════════════════ */
 export default function CartPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { refresh: refreshCartBadge } = useCart();
   const [data, setData]       = useState(null);
   const [loading, setLoading] = useState(true);
@@ -205,7 +207,7 @@ export default function CartPage() {
               startContent={<ArrowLeft size={16} />}
               className="text-default-600"
             >
-              Tiếp tục mua sắm
+              {t("cart.continue_shopping")}
             </Button>
           </div>
 
@@ -214,8 +216,8 @@ export default function CartPage() {
               {/* Header row */}
               <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
                 <div>
-                  <h2 className="font-black text-default-900">Giỏ hàng</h2>
-                  <p className="text-sm text-default-500">{items.length} sản phẩm</p>
+                  <h2 className="font-black text-default-900">{t("cart.title")}</h2>
+                  <p className="text-sm text-default-500">{items.length} {t("cart.items")}</p>
                 </div>
                 <Checkbox
                   isSelected={checked.size === items.length && items.length > 0}
@@ -223,7 +225,7 @@ export default function CartPage() {
                   onValueChange={toggleAll}
                   size="sm"
                 >
-                  <span className="text-sm font-medium">Chọn tất cả</span>
+                  <span className="text-sm font-medium">{t("cart.select_all")}</span>
                 </Checkbox>
               </div>
 
@@ -243,8 +245,8 @@ export default function CartPage() {
                   >
                     <ShoppingCart size={36} className="text-default-300" strokeWidth={1.5} />
                   </motion.div>
-                  <p className="font-bold text-default-700 mb-1">Giỏ hàng trống</p>
-                  <p className="text-sm text-default-400 mb-5">Khám phá sản phẩm và thêm vào giỏ của bạn.</p>
+                  <p className="font-bold text-default-700 mb-1">{t("cart.empty")}</p>
+                  <p className="text-sm text-default-400 mb-5">{t("cart.empty_cta")}</p>
                   <Button as={RouterLink} to="/" color="primary" radius="full" className="font-semibold px-7">
                     Mua sắm ngay
                   </Button>
@@ -446,7 +448,7 @@ export default function CartPage() {
                   <Chip size="sm" variant="flat" color="primary">{selectedSummary.count}</Chip>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-default-500">Tạm tính</span>
+                  <span className="text-default-500">{t("cart.subtotal")}</span>
                   <span className="font-bold">{formatCurrency(selectedSummary.total)}</span>
                 </div>
 
@@ -455,7 +457,7 @@ export default function CartPage() {
                 {/* Voucher */}
                 <div className="flex gap-2">
                   <Input
-                    placeholder="Mã voucher"
+                    placeholder={t("cart.voucher")}
                     size="sm"
                     radius="lg"
                     value={voucherInput}
@@ -464,19 +466,19 @@ export default function CartPage() {
                     maxLength={32}
                   />
                   <Button size="sm" color="primary" radius="lg" variant="flat" className="px-4 font-semibold">
-                    Áp dụng
+                    {t("cart.apply_voucher")}
                   </Button>
                 </div>
 
                 <div className="flex justify-between text-sm">
-                  <span className="text-default-500">Phí vận chuyển</span>
-                  <span className="text-success font-semibold">Miễn phí</span>
+                  <span className="text-default-500">{t("cart.shipping")}</span>
+                  <span className="text-success font-semibold">{t("common.free")}</span>
                 </div>
 
                 <Divider />
 
                 <div className="flex justify-between">
-                  <span className="font-bold text-default-800">Tổng thanh toán</span>
+                  <span className="font-bold text-default-800">{t("cart.total")}</span>
                   <span className="font-black text-xl text-primary">{formatCurrency(selectedSummary.total)}</span>
                 </div>
                 <p className="text-xs text-default-400">Đã bao gồm VAT (nếu có)</p>
@@ -492,7 +494,7 @@ export default function CartPage() {
                     onPress={() => navigate("/checkout", { state: { selected_item_ids: Array.from(checked) } })}
                     className="font-black mt-1 shadow-md"
                   >
-                    THANH TOÁN ({selectedSummary.count})
+                    {t("cart.checkout")} ({selectedSummary.count})
                   </Button>
                 </motion.div>
               </div>

@@ -1008,6 +1008,28 @@ export default function ProductDetail() {
                       {r.size_feedback === "fit" ? "Vừa vặn" : r.size_feedback === "tight" ? "Chật" : "Rộng"}
                     </Chip>
                   )}
+
+                  {/* Shop reply */}
+                  {r.reply && (
+                    <div className="mt-3 ml-2 border-l-2 border-primary/30 pl-3 space-y-2">
+                      <div className="bg-primary/5 rounded-xl p-3">
+                        <p className="text-xs font-bold text-primary mb-1">Phản hồi của shop</p>
+                        <p className="text-sm text-default-700">{r.reply}</p>
+                        {r.reply_at && (
+                          <p className="text-xs text-default-400 mt-1">{new Date(r.reply_at).toLocaleDateString("vi-VN")}</p>
+                        )}
+                      </div>
+
+                      {/* Thread replies after shop reply */}
+                      {(r.thread || []).filter(t => t.from === "customer").map((t, i) => (
+                        <div key={i} className="bg-default-50 rounded-xl p-3">
+                          <p className="text-xs font-bold text-default-600 mb-1">Người mua phản hồi</p>
+                          <p className="text-sm text-default-700">{t.text}</p>
+                          <p className="text-xs text-default-400 mt-1">{new Date(t.at).toLocaleDateString("vi-VN")}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </div>
