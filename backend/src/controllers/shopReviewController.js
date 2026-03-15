@@ -4,11 +4,12 @@ const Review = require("../models/Review");
 exports.listReviews = async (req, res, next) => {
   try {
     const shopId = req.shop._id;
-    const { page = 1, limit = 20, status, rating } = req.query;
+    const { page = 1, limit = 20, status, rating, product_id } = req.query;
 
     const cond = { shop_id: shopId };
-    if (status) cond.status = status;
-    if (rating) cond.rating = Number(rating);
+    if (status)     cond.status     = status;
+    if (rating)     cond.rating     = Number(rating);
+    if (product_id) cond.product_id = product_id;
 
     const skip = (Number(page) - 1) * Number(limit);
     const [items, total] = await Promise.all([
@@ -26,7 +27,7 @@ exports.listReviews = async (req, res, next) => {
   } catch (e) { next(e); }
 };
 
-// POST /api/shop/reviews/:id/reply
+// POST /api/shop/reviews/:id/reply  — create or update shop reply
 exports.replyToReview = async (req, res, next) => {
   try {
     const { reply } = req.body || {};
@@ -36,10 +37,28 @@ exports.replyToReview = async (req, res, next) => {
     const review = await Review.findOne({ _id: req.params.id, shop_id: req.shop._id });
     if (!review) return res.status(404).json({ message: "Không tìm thấy đánh giá" });
 
-    review.reply = reply.trim();
-    review.reply_at = new Date();
-    await review.save();
+    const isUpdate = !!review.reply;
 
+    // Update the main reply field (backward compat + customer display)
+    review.reply    = reply.trim();
+    review.reply_at = new Date();
+
+    // Also push/update in thread
+    review.thread = review.thread || [];
+    if (isUpdate) {
+      // Update the last shop entry in the thread
+      const lastShopIdx = [...review.thread].reverse().findIndex((t) => t.from === "shop");
+      if (lastShopIdx >= 0) {
+        review.thread[review.thread.length - 1 - lastShopIdx].text = reply.trim();
+        review.thread[review.thread.length - 1 - lastShopIdx].at   = new Date();
+      } else {
+        review.thread.push({ from: "shop", text: reply.trim(), at: new Date() });
+      }
+    } else {
+      review.thread.push({ from: "shop", text: reply.trim(), at: new Date() });
+    }
+
+    await review.save();
     res.json({ success: true, data: review });
   } catch (e) { next(e); }
 };

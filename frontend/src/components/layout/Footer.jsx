@@ -5,10 +5,12 @@ import {
   Send, MapPin, Phone, Mail, Facebook, Instagram, Youtube,
   ChevronRight, Shield, RefreshCw, Truck, CreditCard,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -73,13 +75,13 @@ export default function Footer() {
           </div>
 
           <p className="text-blue-200 text-sm leading-relaxed mb-6 max-w-[280px]" style={{ fontWeight: 500 }}>
-            Thương hiệu thời trang chính hãng — chất lượng & trải nghiệm là ưu tiên số 1 của chúng tôi.
+            {t("footer.tagline")}
           </p>
 
           {/* Newsletter */}
           <div className="mb-6">
             <p className="text-white text-[13px] font-bold mb-2.5 uppercase tracking-wider">
-              Nhận ưu đãi độc quyền
+              {t("footer.newsletter_title")}
             </p>
             {subscribed ? (
               <motion.div
@@ -103,7 +105,7 @@ export default function Footer() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email của bạn…"
+                    placeholder={t("footer.newsletter_placeholder")}
                     className="flex-1 bg-transparent border-none outline-none text-sm text-white placeholder-blue-300 min-w-0 font-semibold"
                     style={{ fontFamily: "'Quicksand', sans-serif" }}
                     required
@@ -149,7 +151,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Sản phẩm */}
+        {/* Products */}
         <div className="lg:col-span-2">
           <h4
             className="text-[11px] font-black uppercase tracking-[0.18em] mb-4 pb-2"
@@ -160,7 +162,7 @@ export default function Footer() {
               letterSpacing: "0.18em",
             }}
           >
-            Sản phẩm
+            {t("nav.products")}
           </h4>
           <ul className="space-y-2.5">
             {[
@@ -255,7 +257,7 @@ export default function Footer() {
           <div>
             <p className="text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-2.5"
               style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Phương thức thanh toán
+              {t("footer.payment_methods")}
             </p>
             <div className="flex flex-wrap gap-2">
               {["VISA", "MasterCard", "PayPal", "COD"].map((method) => (
@@ -281,13 +283,13 @@ export default function Footer() {
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.15)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-blue-300 text-xs font-semibold">
-            © {new Date().getFullYear()} Daily Fit. All rights reserved.
+            © {new Date().getFullYear()} Daily Fit. {t("footer.rights")}
           </p>
           <div className="flex items-center gap-1">
             {[
-              ["/terms",   "Điều khoản"],
-              ["/privacy", "Bảo mật"],
-              ["/cookies", "Cookies"],
+              ["/terms",   t("footer.terms")],
+              ["/privacy", t("footer.privacy")],
+              ["/cookies", t("footer.cookies")],
             ].map(([to, label], i, arr) => (
               <React.Fragment key={to}>
                 <RouterLink

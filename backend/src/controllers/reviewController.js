@@ -43,3 +43,11 @@ exports.uploadImages = async (req, res) => {
     ok(res, { images });
   } catch (e) { bad(res, e, "Cannot upload images"); }
 };
+
+exports.addThreadReply = async (req, res) => {
+  try {
+    const { text } = req.body || {};
+    const review = await svc.addCustomerThreadReply(req.user._id, req.params.id, text);
+    ok(res, { review });
+  } catch (e) { bad(res, e, "Cannot add reply"); }
+};

@@ -28,6 +28,7 @@ export function useCheckout() {
   const [addressId,      setAddressId]     = useState("");
   const [shipper,        setShipper]       = useState("GHN");
   const [voucherCode,    setVoucherCode]   = useState("");
+  const [creditsToUse,   setCreditsToUse]  = useState({});  // { [shopId]: amount }
   const [note,           setNote]          = useState("");
   const [method,         setMethod]        = useState("COD");
   const [preview,        setPreview]       = useState(null);
@@ -35,6 +36,9 @@ export function useCheckout() {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [paypalKey,      setPaypalKey]     = useState(0);
   const [loadingVNPay,   setLoadingVNPay]  = useState(false);
+
+  const setShopCredits = (shopId, amount) =>
+    setCreditsToUse(prev => ({ ...prev, [shopId]: amount }));
 
   // ── Items payload (backend accepts either key) ─────────────────────────────
   const itemsPayload = isBuyNow
@@ -68,6 +72,7 @@ export function useCheckout() {
         address_id:        addressId,
         shipping_provider: shipper,
         voucher_code:      voucherCode || undefined,
+        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
       });
       setPreview(p);
       setPaypalKey(k => k + 1);
@@ -77,11 +82,11 @@ export function useCheckout() {
     } finally {
       setLoadingPreview(false);
     }
-  }, [addressId, shipper, voucherCode, isBuyNow, selectedIds, buyNowItems]);
+  }, [addressId, shipper, voucherCode, creditsToUse, isBuyNow, selectedIds, buyNowItems]);
 
   // ── Init ───────────────────────────────────────────────────────────────────
   useEffect(() => { loadAddresses(); }, [loadAddresses]);
-  useEffect(() => { if (addressId) runPreview(); }, [addressId, shipper, voucherCode]);
+  useEffect(() => { if (addressId) runPreview(); }, [addressId, shipper, voucherCode, creditsToUse]);
 
   // ── Place COD order ────────────────────────────────────────────────────────
   const onPlaceCOD = async () => {
@@ -95,6 +100,7 @@ export function useCheckout() {
         note,
         shipping_provider: shipper,
         voucher_code:      voucherCode || undefined,
+        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
         payment_method:    "COD",
       });
       toast.success("Đặt hàng thành công!");
@@ -119,6 +125,7 @@ export function useCheckout() {
         note,
         shipping_provider: shipper,
         voucher_code:      voucherCode || undefined,
+        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
         payment_method:    "VNPAY",
       });
       // Step 2: get VNPAY payment URL from backend
@@ -139,6 +146,7 @@ export function useCheckout() {
     note,
     shipping_provider: shipper,
     voucher_code:      voucherCode || undefined,
+    credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
   };
 
   return {
@@ -154,6 +162,7 @@ export function useCheckout() {
     // options
     shipper,       setShipper,
     voucherCode,   setVoucherCode,
+    creditsToUse,  setShopCredits,
     note,          setNote,
     method,        setMethod,
     // preview

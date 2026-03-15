@@ -12,20 +12,47 @@ import PageContainer from "../../components/ui/PageContainer.jsx";
 import ReviewModal from "../../components/common/ReviewModal.jsx";
 
 const STATUS_LABEL = {
-  pending:          "Chờ xác nhận",
-  confirmed:        "Đang xử lý",
-  processing:       "Đang xử lý",
-  shipping:         "Đang giao",
-  delivered:        "Hoàn thành",
-  canceled:         "Đã hủy",
-  refund_pending:   "Chờ hoàn/đổi",
-  refund_completed: "Đã hoàn/đổi",
+  order_created:         "Chờ xác nhận",
+  pending:               "Chờ xác nhận",
+  payment_pending:       "Chờ thanh toán",
+  payment_confirmed:     "Đã thanh toán",
+  payment_failed:        "Thanh toán thất bại",
+  confirmed:             "Đã xác nhận",
+  processing:            "Đang chuẩn bị",
+  packed:                "Đã đóng gói",
+  picking:               "Shipper đang lấy",
+  in_transit:            "Đang vận chuyển",
+  out_for_delivery:      "Đang giao hàng",
+  shipping:              "Đang giao hàng",
+  delivered:             "Hoàn thành",
+  delivery_failed:       "Giao thất bại",
+  cancelled_by_customer: "Đã hủy",
+  cancelled_by_shop:     "Shop đã hủy",
+  canceled_by_customer:  "Đã hủy",
+  canceled_by_shop:      "Shop đã hủy",
+  canceled:              "Đã hủy",
+  return_requested:      "Yêu cầu hoàn/đổi",
+  return_approved:       "Đã duyệt hoàn/đổi",
+  return_rejected:       "Từ chối hoàn/đổi",
+  refund_pending:        "Chờ hoàn tiền",
+  refund_completed:      "Đã hoàn tiền",
 };
 
 const STATUS_COLOR = {
-  pending: "warning", confirmed: "primary", processing: "primary",
-  shipping: "secondary", delivered: "success", canceled: "default",
-  refund_pending: "warning", refund_completed: "success",
+  order_created: "warning",    pending: "warning",
+  payment_pending: "warning",  payment_confirmed: "success",
+  payment_failed: "danger",
+  confirmed: "primary",        processing: "primary",
+  packed: "primary",           picking: "secondary",
+  in_transit: "secondary",     out_for_delivery: "secondary",
+  shipping: "secondary",       delivered: "success",
+  delivery_failed: "danger",
+  cancelled_by_customer: "default", cancelled_by_shop: "default",
+  canceled_by_customer: "default",  canceled_by_shop: "default",
+  canceled: "default",
+  return_requested: "warning",  return_approved: "primary",
+  return_rejected: "danger",    refund_pending: "warning",
+  refund_completed: "success",
 };
 
 export default function OrderDetail() {
@@ -34,8 +61,9 @@ export default function OrderDetail() {
   const [ord,        setOrd]        = useState(null);
   const [track,      setTrack]      = useState(null);
   const [loading,    setLoading]    = useState(true);
-  const [openRefund, setOpenRefund] = useState(false);
-  const [reason,     setReason]     = useState("");
+  const [openRefund,  setOpenRefund]  = useState(false);
+  const [reason,      setReason]      = useState("");
+  const [refundType,  setRefundType]  = useState("refund");
 
   // Review state — Map<product_id, reviewDoc> for edit support
   const [reviewMap, setReviewMap] = useState(new Map());
@@ -199,17 +227,37 @@ export default function OrderDetail() {
               )}
             </div>
 
-            {/* Tracking timeline */}
+            {/* GHN code + expected delivery */}
+            {(track?.ghn_order_code || track?.expected_delivery) && (
+              <div className="flex flex-wrap gap-3 mb-4 text-sm">
+                {track.ghn_order_code && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-default-400">Mã vận đơn:</span>
+                    <Chip size="sm" color="secondary" variant="flat">{track.ghn_order_code}</Chip>
+                  </div>
+                )}
+                {track.expected_delivery && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-default-400">Dự kiến giao:</span>
+                    <span className="font-medium text-default-700">
+                      {new Date(track.expected_delivery).toLocaleDateString("vi-VN")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Tracking timeline — newest first */}
             {track?.steps?.length ? (
               <div className="space-y-0">
-                {track.steps.map((s, idx) => {
+                {[...track.steps].reverse().map((s, idx) => {
                   const isFirst = idx === 0;
                   return (
                     <motion.div
                       key={idx}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.07 }}
+                      transition={{ delay: idx * 0.05 }}
                       className="flex gap-3"
                     >
                       {/* Timeline line + dot */}
@@ -225,12 +273,14 @@ export default function OrderDetail() {
                       </div>
                       {/* Step content */}
                       <div className={`pb-4 flex-1 ${idx === track.steps.length - 1 ? "pb-0" : ""}`}>
-                        <p className={`text-sm font-semibold ${isFirst ? "text-primary" : "text-default-700"}`}>
+                        <p className={`text-sm font-semibold ${isFirst ? "text-primary" : "text-default-600"}`}>
                           {s.text}
                         </p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          {s.code && <Chip size="sm" variant="flat" className="text-xs">{s.code}</Chip>}
-                          <span className="text-xs text-default-400">{new Date(s.at).toLocaleString("vi-VN")}</span>
+                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                          <span className="text-xs text-default-400">
+                            {s.at ? new Date(s.at).toLocaleString("vi-VN") : ""}
+                          </span>
+                          {s.note && <span className="text-xs text-default-400">· {s.note}</span>}
                         </div>
                       </div>
                     </motion.div>
@@ -253,7 +303,7 @@ export default function OrderDetail() {
         transition={{ delay: 0.15 }}
         className="flex gap-2 flex-wrap"
       >
-        {["pending", "confirmed", "processing"].includes(ord.status) && (
+        {["order_created", "pending", "payment_pending", "confirmed", "processing"].includes(ord.status) && (
           <Button
             color="danger" variant="bordered" radius="lg" size="sm"
             onPress={async () => {
@@ -266,8 +316,14 @@ export default function OrderDetail() {
           </Button>
         )}
         {ord.status === "delivered" && (
-          <Button variant="bordered" radius="lg" size="sm" onPress={() => setOpenRefund(true)}>
+          <Button variant="bordered" radius="lg" size="sm" onPress={() => { setRefundType("refund"); setReason(""); setOpenRefund(true); }}>
             Yêu cầu hoàn/đổi
+          </Button>
+        )}
+        {ord.status === "return_rejected" && (
+          <Button variant="bordered" radius="lg" size="sm" color="warning"
+            onPress={() => { setRefundType("refund"); setReason(""); setOpenRefund(true); }}>
+            Gửi lại yêu cầu
           </Button>
         )}
         <Button
@@ -280,21 +336,63 @@ export default function OrderDetail() {
         </Button>
       </motion.div>
 
-      {/* Refund modal */}
-      <Modal isOpen={openRefund} onOpenChange={setOpenRefund} radius="2xl" backdrop="blur">
+      {/* Refund / Return / Exchange modal */}
+      <Modal isOpen={openRefund} onOpenChange={setOpenRefund} radius="2xl" backdrop="blur" size="md">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="font-black text-default-900">Yêu cầu hoàn/đổi</ModalHeader>
-              <ModalBody>
-                <p className="text-sm text-default-500 mb-3">Yêu cầu trong 3 ngày kể từ khi giao thành công.</p>
-                <textarea
-                  rows={4}
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  placeholder="Nêu rõ lý do hoàn/đổi hàng…"
-                  className="w-full border border-default-300 rounded-2xl px-4 py-3 text-sm outline-none focus:border-primary resize-none transition-colors"
-                />
+              <ModalBody className="space-y-4">
+                <p className="text-xs text-default-400">Yêu cầu trong vòng 3 ngày kể từ khi giao thành công.</p>
+
+                {/* Type selector */}
+                <div>
+                  <p className="text-sm font-semibold text-default-700 mb-2">Loại yêu cầu</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {[
+                      { key: "refund",   label: "Hoàn tiền",  desc: "Nhận lại tiền" },
+                      { key: "return",   label: "Trả hàng",   desc: "Trả hàng & hoàn tiền" },
+                      { key: "exchange", label: "Đổi hàng",   desc: "Đổi sang sản phẩm khác" },
+                    ].map((t) => (
+                      <button
+                        key={t.key}
+                        type="button"
+                        onClick={() => setRefundType(t.key)}
+                        className={`flex-1 min-w-[100px] rounded-xl border-2 px-3 py-2 text-left transition-all ${
+                          refundType === t.key
+                            ? "border-primary bg-primary/5"
+                            : "border-default-200 hover:border-default-300"
+                        }`}
+                      >
+                        <p className={`text-sm font-bold ${refundType === t.key ? "text-primary" : "text-default-700"}`}>{t.label}</p>
+                        <p className="text-xs text-default-400">{t.desc}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Reason */}
+                <div>
+                  <p className="text-sm font-semibold text-default-700 mb-2">Lý do</p>
+                  <textarea
+                    rows={4}
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    placeholder="Nêu rõ lý do để shop xem xét nhanh hơn…"
+                    className="w-full border border-default-300 rounded-2xl px-4 py-3 text-sm outline-none focus:border-primary resize-none transition-colors"
+                  />
+                </div>
+
+                {refundType === "return" && (
+                  <p className="text-xs text-warning-600 bg-warning-50 rounded-xl px-3 py-2">
+                    Shop sẽ cung cấp địa chỉ trả hàng sau khi duyệt yêu cầu.
+                  </p>
+                )}
+                {refundType === "exchange" && (
+                  <p className="text-xs text-primary-600 bg-primary-50 rounded-xl px-3 py-2">
+                    Mô tả sản phẩm bạn muốn đổi sang trong phần lý do.
+                  </p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button variant="light" radius="lg" onPress={onClose}>Đóng</Button>
@@ -302,7 +400,7 @@ export default function OrderDetail() {
                   color="primary" radius="lg"
                   isDisabled={!reason.trim()}
                   onPress={async () => {
-                    await orderService.refund(id, { reason });
+                    await orderService.refund(id, { reason, type: refundType });
                     onClose();
                     await load();
                   }}

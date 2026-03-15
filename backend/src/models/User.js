@@ -34,6 +34,16 @@ const UserSchema = new mongoose.Schema(
     wishlist: [{ type: String, ref: "Product" }],
     recently_viewed: [{ type: String, ref: "Product" }],
     last_login: Date,
+
+    // ── Moderation ────────────────────────────────────────────────────────
+    warning_count: { type: Number, default: 0 },
+    ban_until: { type: Date, default: null }, // null = permanent when status=banned
+    violation_history: [{
+      _id: false,
+      reason:    { type: String },
+      review_id: { type: String },
+      at:        { type: Date, default: Date.now },
+    }],
   },
   { timestamps: true, versionKey: false, collection: "users" }
 );

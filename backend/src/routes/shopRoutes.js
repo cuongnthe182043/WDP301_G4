@@ -9,6 +9,7 @@ const refundCtrl    = require("../controllers/shopRefundController");
 const customerCtrl  = require("../controllers/shopCustomerController");
 const reviewCtrl    = require("../controllers/shopReviewController");
 const walletCtrl    = require("../controllers/shopWalletController");
+const marketingRoutes = require("./shopMarketingRoutes");
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.get("/refunds",               refundCtrl.listRefunds);
 router.get("/refunds/:id",           refundCtrl.getRefund);
 router.post("/refunds/:id/approve",  refundCtrl.approveRefund);
 router.post("/refunds/:id/reject",   refundCtrl.rejectRefund);
+router.post("/refunds/:id/complete", refundCtrl.completeRefund);
 
 // ── Customers ──────────────────────────────────────────────────────────────
 router.get("/customers",      customerCtrl.listCustomers);
@@ -40,11 +42,13 @@ router.get("/customers/:id",  customerCtrl.getCustomer);
 // ── Reviews ────────────────────────────────────────────────────────────────
 router.get("/reviews",                  reviewCtrl.listReviews);
 router.post("/reviews/:id/reply",       reviewCtrl.replyToReview);
-router.patch("/reviews/:id/hide",       reviewCtrl.toggleHideReview);
 
 // ── Wallet ─────────────────────────────────────────────────────────────────
 router.get("/wallet",               walletCtrl.getWallet);
 router.get("/wallet/transactions",  walletCtrl.getTransactions);
 router.post("/wallet/withdraw",     walletCtrl.requestWithdraw);
+
+// ── Marketing (campaigns, voucher distribution, credits) ───────────────────
+router.use("/marketing", marketingRoutes);
 
 module.exports = router;

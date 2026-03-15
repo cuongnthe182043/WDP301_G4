@@ -22,4 +22,7 @@ router.put("/:id", verifyToken, ctrl.updateReview);
 // DELETE /api/reviews/:id — soft-delete a review
 router.delete("/:id", verifyToken, ctrl.deleteReview);
 
+// POST /api/reviews/:id/thread — customer replies to shop's reply
+router.post("/:id/thread", verifyToken, ctrl.addThreadReply);
+
 module.exports = router;

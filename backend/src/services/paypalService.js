@@ -29,7 +29,7 @@ async function createPayPalOrder(orderId) {
   if (order.payment_status === "paid") {
     throw Object.assign(new Error("Order already paid"), { status: 400 });
   }
-  if (order.status !== "pending") {
+  if (order.payment_status !== "pending") {
     throw Object.assign(
       new Error("Only pending orders can be paid"),
       { status: 400 }
