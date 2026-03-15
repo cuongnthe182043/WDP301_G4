@@ -1,13 +1,21 @@
 const express = require("express");
-const router = express.Router();
-const { verifyToken } = require("../middlewares/authMiddleware");
-const voucherCtrl = require("../controllers/voucherController");
+const router  = express.Router();
+const { verifyToken }      = require("../middlewares/authMiddleware");
+const { requireShopOwner } = require("../middlewares/shopMiddleware");
+const ctrl = require("../controllers/voucherController");
 
-// Định nghĩa routes
-router.get("/", verifyToken, voucherCtrl.getAllVouchers);
-router.get("/:id", verifyToken, voucherCtrl.getVoucherById);
-router.post("/", verifyToken, voucherCtrl.createVoucher);
-router.put("/:id", verifyToken, voucherCtrl.updateVoucher);
-router.delete("/:id", verifyToken, voucherCtrl.deleteVoucher);
+// ── Public (no auth needed) — MUST come before /:id ──────────────────────────
+router.get("/public",   ctrl.listPublicVouchers);
+
+// ── Customer (auth required) ──────────────────────────────────────────────────
+router.post("/validate", verifyToken, ctrl.validateVoucherCode);
+
+// ── Shop owner CRUD (auth + approved shop) ────────────────────────────────────
+router.get(   "/",           verifyToken, requireShopOwner, ctrl.getAllVouchers);
+router.post(  "/",           verifyToken, requireShopOwner, ctrl.createVoucher);
+router.get(   "/:id",        verifyToken, requireShopOwner, ctrl.getVoucherById);
+router.put(   "/:id",        verifyToken, requireShopOwner, ctrl.updateVoucher);
+router.patch( "/:id/toggle", verifyToken, requireShopOwner, ctrl.toggleVoucher);
+router.delete("/:id",        verifyToken, requireShopOwner, ctrl.deleteVoucher);
 
 module.exports = router;
