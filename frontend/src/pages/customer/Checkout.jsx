@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Card, CardBody, Button, Divider, Input, Radio, RadioGroup, Chip, Spinner,
 } from "@heroui/react";
-import { ArrowLeft, User, MapPin, Star, Truck, Home, CreditCard, Banknote } from "lucide-react";
+import { ArrowLeft, User, MapPin, Star, Truck, Home, CreditCard, Banknote, Gift } from "lucide-react";
 import { addressService }  from "../../services/addressService";
 import { formatCurrency }  from "../../utils/formatCurrency";
 import { useToast }        from "../../components/common/ToastProvider";
@@ -53,11 +53,12 @@ export default function Checkout() {
   const {
     isBuyNow,
     addresses, addressId, setAddressId, loadAddresses,
-    shipper,     setShipper,
-    voucherCode, setVoucherCode,
-    note,        setNote,
-    method,      setMethod,
-    preview,     loadingPreview, runPreview,
+    shipper,       setShipper,
+    voucherCode,   setVoucherCode,
+    creditsToUse,  setShopCredits,
+    note,          setNote,
+    method,        setMethod,
+    preview,       loadingPreview, runPreview,
     loadingPay,    onPlaceCOD,
     loadingVNPay,  onPlaceVNPAY,
     paypalPayload, paypalKey,
@@ -203,18 +204,31 @@ export default function Checkout() {
                   <h4 className="font-bold text-sm text-default-800 mb-2">Mã giảm giá</h4>
                   <div className="flex gap-2">
                     <Input
-                      size="sm" placeholder="Nhập mã voucher"
+                      size="sm" placeholder="Nhập mã voucher (VD: SALE20)"
                       value={voucherCode} onValueChange={setVoucherCode}
                       radius="lg" className="flex-1"
                       onKeyDown={(e) => { if (e.key === "Enter") runPreview(); }}
+                      isInvalid={!!preview?.voucher_error}
+                      color={preview?.voucher_error ? "danger" : preview?.discount > 0 ? "success" : "default"}
+                      endContent={
+                        voucherCode ? (
+                          <button
+                            className="text-default-400 hover:text-default-600 text-xs shrink-0"
+                            onClick={() => { setVoucherCode(""); }}
+                          >✕</button>
+                        ) : null
+                      }
                     />
                     <Button size="sm" variant="bordered" radius="lg" isLoading={loadingPreview} onPress={runPreview}>
                       Áp dụng
                     </Button>
                   </div>
-                  {preview?.discount > 0 && (
+                  {preview?.voucher_error && (
+                    <p className="text-xs text-danger mt-1.5">{preview.voucher_error}</p>
+                  )}
+                  {!preview?.voucher_error && preview?.discount > 0 && (
                     <p className="text-xs text-success mt-1.5 font-medium">
-                      Giảm: {formatCurrency(preview.discount)}
+                      ✓ Áp dụng thành công — Giảm {formatCurrency(preview.discount)}
                     </p>
                   )}
                 </div>
@@ -235,8 +249,50 @@ export default function Checkout() {
           </Card>
         </motion.div>
 
+        {/* ── Shop Credits ── */}
+        {preview?.shop_groups?.some(g => (g.available_credits || 0) > 0) && (
+          <motion.div custom={3} variants={sectionVariants} initial="hidden" animate="show">
+            <Card radius="xl" shadow="sm" className="mb-4 border border-default-100">
+              <CardBody className="p-5">
+                <h3 className="font-bold text-default-900 mb-3 flex items-center gap-2">
+                  <Gift size={16} className="text-warning" /> Tín dụng cửa hàng
+                </h3>
+                <div className="space-y-2">
+                  {preview.shop_groups.map(g => {
+                    if (!g.available_credits) return null;
+                    const isUsing = !!creditsToUse[g.shop_id];
+                    const deduct  = Math.min(g.available_credits, g.subtotal || 0);
+                    return (
+                      <div key={g.shop_id} className="flex items-center justify-between p-3 border border-default-200 rounded-xl">
+                        <div>
+                          <p className="text-sm font-semibold">{g.shop_name || "Cửa hàng"}</p>
+                          <p className="text-xs text-default-400">Số dư: {formatCurrency(g.available_credits)}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {isUsing && deduct > 0 && (
+                            <span className="text-xs text-success font-medium">-{formatCurrency(deduct)}</span>
+                          )}
+                          <Button
+                            size="sm"
+                            variant={isUsing ? "solid" : "bordered"}
+                            color={isUsing ? "warning" : "default"}
+                            radius="lg"
+                            onPress={() => setShopCredits(g.shop_id, isUsing ? 0 : g.available_credits)}
+                          >
+                            {isUsing ? "Đang dùng" : "Dùng"}
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardBody>
+            </Card>
+          </motion.div>
+        )}
+
         {/* ── Payment + Summary ── */}
-        <motion.div custom={3} variants={sectionVariants} initial="hidden" animate="show">
+        <motion.div custom={4} variants={sectionVariants} initial="hidden" animate="show">
           <div className="flex flex-col lg:flex-row gap-4">
             <PaymentMethodPanel value={method} onChange={setMethod} disabled={!preview} />
 
@@ -247,7 +303,8 @@ export default function Checkout() {
                   {[
                     ["Tạm tính",       preview ? formatCurrency(preview.subtotal) : "—"],
                     ["Phí vận chuyển", preview ? formatCurrency(preview.shipping_fee) : "—"],
-                    ["Giảm giá",       preview && preview.discount > 0 ? `- ${formatCurrency(preview.discount)}` : "—"],
+                    ["Voucher",        preview && preview.discount > 0 ? `- ${formatCurrency(preview.discount)}` : "—"],
+                    ["Tín dụng",       preview && preview.credits_discount > 0 ? `- ${formatCurrency(preview.credits_discount)}` : "—"],
                   ].map(([label, val]) => (
                     <div key={label} className="flex justify-between">
                       <span className="text-default-500">{label}</span>

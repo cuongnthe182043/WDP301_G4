@@ -272,7 +272,9 @@ async function settleVNPayOrder(orderCode, transactionNo, bankCode) {
   }
 
   order.payment_status = "paid";
-  order.status         = "confirmed";
+  order.status         = "processing";
+  if (!order.status_history) order.status_history = [];
+  order.status_history.push({ status: "processing", at: new Date(), by: "system", note: `VNPAY payment confirmed — txn: ${transactionNo}` });
   await order.save();
 
   await Payment.findOneAndUpdate(

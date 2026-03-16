@@ -15,8 +15,10 @@ export const productService = {
     const res = await apiClient.get(`/products/${idOrSlug}`, { params: withNoCache() });
     return res.data.data;
   },
-  async getReviews(idOrSlug, page = 1, limit = 10) {
-    const res = await apiClient.get(`/products/${idOrSlug}/reviews`, { params: withNoCache({ page, limit }) });
+  async getReviews(idOrSlug, page = 1, limit = 10, star) {
+    const params = withNoCache({ page, limit });
+    if (star !== undefined && star !== null) params.star = star;
+    const res = await apiClient.get(`/products/${idOrSlug}/reviews`, { params });
     return res.data.data;
   },
   async getRatingsSummary(idOrSlug) {

@@ -2,29 +2,37 @@ import apiClient from "./apiClient";
 
 export const productAdminService = {
     // products
-    list: (params) => apiClient.get("/shop/admin/products", { params }).then(r => r.data.data),
-    get: (id) => apiClient.get(`/shop/admin/products/${id}`).then(r => r.data.data),
-    create: (data) => apiClient.post("/shop/admin/products", data).then(r => r.data.data),
+    list:   (params) => apiClient.get("/shop/admin/products", { params }).then(r => r.data.data),
+    get:    (id)     => apiClient.get(`/shop/admin/products/${id}`).then(r => r.data.data),
+    create: (data)   => apiClient.post("/shop/admin/products", data).then(r => r.data.data),
     update: (id, data) => apiClient.put(`/shop/admin/products/${id}`, data).then(r => r.data.data),
-    remove: (id) => apiClient.delete(`/shop/admin/products/${id}`).then(r => r.data.data),
+    remove: (id)     => apiClient.delete(`/shop/admin/products/${id}`).then(r => r.data.data),
 
     // variants
-    listVariants: (pid) => apiClient.get(`/shop/admin/products/${pid}/variants`).then(r => r.data.data),
-    createVariant: (pid, data) => apiClient.post(`/shop/admin/products/${pid}/variants`, data).then(r => r.data.data),
-    updateVariant: (vid, data) => apiClient.put(`/shop/admin/variants/${vid}`, data).then(r => r.data.data),
-    removeVariant: (vid) => apiClient.delete(`/shop/admin/variants/${vid}`).then(r => r.data.data),
+    listVariants:      (pid)       => apiClient.get(`/shop/admin/products/${pid}/variants`).then(r => r.data.data),
+    createVariant:     (pid, data) => apiClient.post(`/shop/admin/products/${pid}/variants`, data).then(r => r.data.data),
+    updateVariant:     (vid, data) => apiClient.put(`/shop/admin/variants/${vid}`, data).then(r => r.data.data),
+    removeVariant:     (vid)       => apiClient.delete(`/shop/admin/variants/${vid}`).then(r => r.data.data),
+    createVariantsBulk:(pid, rows) => apiClient.post(`/shop/admin/products/${pid}/variants/bulk`, { rows }).then(r => r.data.data),
 
-    // master
-    listCategories: () => apiClient.get("/shop/admin/categories").then(r => r.data.data),
-    listAttributes: () => apiClient.get("/shop/admin/attributes").then(r => r.data.data),
-    listBrands: () => apiClient.get("/shop/admin/brands").then(r => r.data.data),
-    createCategory: (d) => apiClient.post("/shop/admin/categories", d).then(r => r.data.data),
-    updateCategory: (id, d) => apiClient.put(`/shop/admin/categories/${id}`, d).then(r => r.data.data),
-    deleteCategory: (id) => apiClient.delete(`/shop/admin/categories/${id}`).then(r => r.data.data),
-    categoryTree: (depth = 3) =>
-        apiClient.get("/shop/admin/categories/tree", { params: { depth } }).then(r => r.data.data),
-    createVariantsBulk: (pid, rows) =>
-        apiClient.post(`/shop/admin/products/${pid}/variants/bulk`, { rows }).then(r => r.data.data),
+    // catalog — categories
+    listCategories:  ()       => apiClient.get("/shop/admin/categories").then(r => r.data.data),
+    createCategory:  (d)      => apiClient.post("/shop/admin/categories", d).then(r => r.data.data),
+    updateCategory:  (id, d)  => apiClient.put(`/shop/admin/categories/${id}`, d).then(r => r.data.data),
+    deleteCategory:  (id)     => apiClient.delete(`/shop/admin/categories/${id}`).then(r => r.data.data),
+    categoryTree:    (depth = 3) => apiClient.get("/shop/admin/categories/tree", { params: { depth } }).then(r => r.data.data),
+
+    // catalog — attributes
+    listAttributes:  ()       => apiClient.get("/shop/admin/attributes").then(r => r.data.data),
+    createAttribute: (d)      => apiClient.post("/shop/admin/attributes", d).then(r => r.data.data),
+    updateAttribute: (id, d)  => apiClient.put(`/shop/admin/attributes/${id}`, d).then(r => r.data.data),
+    deleteAttribute: (id)     => apiClient.delete(`/shop/admin/attributes/${id}`).then(r => r.data.data),
+
+    // catalog — brands
+    listBrands:  ()       => apiClient.get("/shop/admin/brands").then(r => r.data.data),
+    createBrand: (d)      => apiClient.post("/shop/admin/brands", d).then(r => r.data.data),
+    updateBrand: (id, d)  => apiClient.put(`/shop/admin/brands/${id}`, d).then(r => r.data.data),
+    deleteBrand: (id)     => apiClient.delete(`/shop/admin/brands/${id}`).then(r => r.data.data),
 
     // media
     uploadImages: async (files) => {
@@ -45,7 +53,10 @@ export const productAdminService = {
         const res = await apiClient.post("/shop/admin/products/import", fd, { headers: { "Content-Type": "multipart/form-data" } });
         return res.data.data;
     },
+    downloadTemplate: () =>
+        apiClient.get("/shop/admin/products/import/template", { responseType: "blob" }).then(r => r.data),
 
+    // inventory
     lowStock: (threshold = 5) =>
         apiClient.get("/shop/admin/inventory/low-stock", { params: { threshold } }).then(r => r.data.data),
 };

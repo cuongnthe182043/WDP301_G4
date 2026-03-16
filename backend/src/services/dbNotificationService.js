@@ -172,6 +172,111 @@ const helpers = {
       subtype: "system.security",
       link:    `/profile`,
     }),
+
+  // ── Refund / Return / Exchange ───────────────────────────────────────────
+
+  refundRequested: (shopOwnerId, orderCode) =>
+    create(shopOwnerId, {
+      title:   "Yêu cầu hoàn/đổi mới",
+      message: `Đơn hàng #${orderCode} có yêu cầu hoàn/đổi từ khách hàng. Vui lòng xem xét.`,
+      type:    "refund",
+      subtype: "refund.requested",
+      link:    `/shop/refunds`,
+    }),
+
+  refundApproved: (userId, orderCode) =>
+    create(userId, {
+      title:   "Yêu cầu hoàn/đổi được duyệt",
+      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã được shop chấp nhận.`,
+      type:    "refund",
+      subtype: "refund.approved",
+      link:    `/orders`,
+    }),
+
+  refundRejected: (userId, orderCode, shopNote) =>
+    create(userId, {
+      title:   "Yêu cầu hoàn/đổi bị từ chối",
+      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã bị từ chối${shopNote ? `: ${shopNote}` : "."}`,
+      type:    "refund",
+      subtype: "refund.rejected",
+      link:    `/orders`,
+    }),
+
+  refundCompleted: (userId, orderCode) =>
+    create(userId, {
+      title:   "Hoàn tiền/đổi hàng hoàn tất",
+      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã được xử lý hoàn tất.`,
+      type:    "refund",
+      subtype: "refund.completed",
+      link:    `/orders`,
+    }),
+
+  // ── Review Moderation ────────────────────────────────────────────────────
+
+  reviewFlagged: (userId) =>
+    create(userId, {
+      title:   "Đánh giá của bạn đang chờ kiểm duyệt",
+      message: "Đánh giá của bạn chứa nội dung cần xem xét. Vui lòng chỉnh sửa hoặc chờ admin duyệt.",
+      type:    "system",
+      subtype: "review.flagged",
+      link:    `/reviews`,
+    }),
+
+  reviewApproved: (userId) =>
+    create(userId, {
+      title:   "Đánh giá đã được duyệt",
+      message: "Đánh giá của bạn đã được kiểm duyệt và hiển thị công khai.",
+      type:    "system",
+      subtype: "review.approved",
+      link:    `/reviews`,
+    }),
+
+  userWarned: (userId, warningCount) =>
+    create(userId, {
+      title:   "Cảnh báo tài khoản",
+      message: `Tài khoản của bạn đã nhận ${warningCount} cảnh báo do vi phạm nội dung. Tiếp tục vi phạm có thể dẫn đến khóa tài khoản.`,
+      type:    "system",
+      subtype: "account.warned",
+      link:    `/profile`,
+    }),
+
+  userBanned: (userId, duration) =>
+    create(userId, {
+      title:   "Tài khoản bị khóa",
+      message: `Tài khoản của bạn đã bị khóa ${duration} do vi phạm chính sách nội dung.`,
+      type:    "system",
+      subtype: "account.banned",
+      link:    `/profile`,
+    }),
+
+  // ── Shop Marketing ────────────────────────────────────────────────────────
+
+  voucherReceived: (userId, shopName, voucherCode, discountLabel) =>
+    create(userId, {
+      title:   `🎁 Bạn nhận được voucher từ ${shopName}`,
+      message: `Shop ${shopName} gửi tặng bạn voucher "${voucherCode}" — Giảm ${discountLabel}. Áp dụng ngay khi đặt hàng!`,
+      type:    "promotion",
+      subtype: "voucher.received",
+      link:    `/vouchers`,
+    }),
+
+  creditsReceived: (userId, shopName, amount, newBalance) =>
+    create(userId, {
+      title:   `💰 Bạn nhận được ${amount.toLocaleString("vi-VN")}₫ tín dụng từ ${shopName}`,
+      message: `Shop ${shopName} đã tặng ${amount.toLocaleString("vi-VN")}₫ tín dụng cửa hàng cho bạn. Số dư hiện tại: ${newBalance.toLocaleString("vi-VN")}₫.`,
+      type:    "promotion",
+      subtype: "credits.received",
+      link:    `/profile`,
+    }),
+
+  shopAnnouncement: (userId, shopName, title, message) =>
+    create(userId, {
+      title:   `📢 ${shopName}: ${title}`,
+      message,
+      type:    "promotion",
+      subtype: "shop.announcement",
+      link:    `/`,
+    }),
 };
 
 // Safe wrappers (non-fatal)

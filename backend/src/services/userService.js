@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const ProductVariant = require("../models/ProductVariant");
 const cloudinary = require("../config/cloudinary");
 
 exports.getById = async (id) => {
@@ -64,9 +65,45 @@ exports.getRecentlyViewed = async (userId) => {
 
 /* ── Wishlist ── */
 exports.getWishlist = async (id) => {
-  const u = await User.findById(id).populate("wishlist", "_id name slug images base_price rating_avg rating_count sold_count status").lean();
+  const u = await User.findById(id)
+    .populate("wishlist", "_id name slug images base_price rating_avg rating_count sold_count status is_featured")
+    .lean();
   if (!u) return null;
-  return (u.wishlist || []).filter(p => p && p.status === "active");
+  const products = (u.wishlist || []).filter(p => p && p.status === "active");
+  if (products.length === 0) return products;
+
+  // Fetch lowest-price variant per product (for compare_at_price / discount)
+  const productIds = products.map(p => p._id);
+  const variants = await ProductVariant.aggregate([
+    { $match: { product_id: { $in: productIds }, is_active: true } },
+    { $sort: { price: 1 } },
+    {
+      $group: {
+        _id: "$product_id",
+        min_price: { $first: "$price" },
+        compare_at_price: { $first: "$compare_at_price" },
+        variant_id: { $first: "$_id" },
+      },
+    },
+  ]);
+  const variantMap = {};
+  for (const v of variants) variantMap[v._id] = v;
+
+  return products.map(p => {
+    const v = variantMap[p._id];
+    const price = v?.min_price ?? p.base_price;
+    const oldPrice = v?.compare_at_price || null;
+    const discount = oldPrice && oldPrice > price
+      ? Math.round(((oldPrice - price) / oldPrice) * 100)
+      : 0;
+    return {
+      ...p,
+      price,
+      compare_at_price: oldPrice,
+      discount_percent: discount,
+      default_variant_id: v?.variant_id || null,
+    };
+  });
 };
 
 exports.addToWishlist = async (userId, productId) => {

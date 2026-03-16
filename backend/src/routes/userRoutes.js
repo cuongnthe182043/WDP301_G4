@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { verifyToken } = require("../middlewares/authMiddleware"); // giữ nguyên auth của anh (named export)
 const { uploadAvatar } = require("../middlewares/uploadMiddleware");
-const ctrl = require("../controllers/userController");
+const ctrl         = require("../controllers/userController");
+const marketingCtrl = require("../controllers/shopMarketingController");
 
 // /api/users
 router.get("/", verifyToken, ctrl.getProfile);
@@ -22,5 +23,8 @@ router.delete("/wishlist/:product_id", verifyToken, ctrl.removeFromWishlist);
 // Body profile (AI size recommendation)
 router.get("/body-profile", verifyToken, ctrl.getBodyProfile);
 router.put("/body-profile", verifyToken, ctrl.upsertBodyProfile);
+
+// Shop credits (customer view)
+router.get("/shop-credits", verifyToken, marketingCtrl.getMyCredits);
 
 module.exports = router;

@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export const TOKEN_KEY = "DFS_TOKEN"; // 🔒 chỉ dùng 1 key duy nhất
+export const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/+$/, "");
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // ví dụ: http://localhost:5000/api
@@ -51,7 +52,7 @@ apiClient.interceptors.response.use(
       err?.message ||
       "Lỗi kết nối máy chủ.";
 
-    if (status === 401 || status === 403) {
+    if (status === 401) {
       clearAuthStorage();
       // Hard redirect để reset toàn bộ state
       window.location.replace("/login");

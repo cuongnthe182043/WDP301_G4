@@ -7,7 +7,6 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ChangePassword from "../pages/auth/ChangePassword";
-import TermsAndPolicy from "../pages/support/TermsAndPolicy";
 
 /* ===== Customer Pages ===== */
 import HomePage from "../pages/customer/HomePage";
@@ -24,10 +23,14 @@ import Orders from "../pages/customer/Orders";
 import Wishlist from "../pages/customer/Wishlist";
 import Wallet from "../pages/customer/Wallet";
 import NotificationsPage from "../pages/customer/NotificationsPage";
+import MyReviews from "../pages/customer/MyReviews";
+import VouchersPage from "../pages/customer/VouchersPage";
 
 /* ===== Support / Ticket Pages (customer-facing) ===== */
 import Tickets from "../pages/support/Tickets";
 import TicketDetail from "../pages/support/TicketDetail";
+import PrivacyPolicy from "../pages/support/PrivacyPolicy";
+import TermsOfService from "../pages/support/TermsOfService";
 
 /* ===== Shop (Seller) Pages ===== */
 import ShopLayout from "../pages/shop/ShopLayout";
@@ -39,12 +42,26 @@ import CategoriesPage from "../pages/shop/CategoriesPage";
 import AttributesPage from "../pages/shop/AttributesPage";
 import BrandsPage from "../pages/shop/BrandsPage";
 import VariantsPage from "../pages/shop/VariantsPage";
+import ManageOrders from "../pages/shop/ManageOrders";
+import ManageRefunds from "../pages/shop/ManageRefunds";
+import ManageCustomers from "../pages/shop/ManageCustomers";
+import ManageReviews from "../pages/shop/ManageReviews";
+import ShopWallet from "../pages/shop/ShopWallet";
+import ManageMarketing from "../pages/shop/ManageMarketing";
+import ManageVoucher from "../pages/shop/ManageVoucher";
+import ManageFlashsale from "../pages/shop/ManageFlashsale";
+import ManageBanner from "../pages/shop/ManageBanner";
+import ManageCampaigns from "../pages/shop/ManageCampaigns";
+import ManageCredits from "../pages/shop/ManageCredits";
 
 /* ===== New Vendor / Admin Pages ===== */
 import RegisterShop from "../pages/customer/RegisterShop";
 import ShopPage from "../pages/customer/ShopPage";
 import ShopSettings from "../pages/shop/ShopSettings";
 import AdminShops from "../pages/admin/AdminShops";
+import AdminProducts from "../pages/admin/AdminProducts";
+import AdminPendingProducts from "../pages/admin/AdminPendingProducts";
+import AdminReviews from "../pages/admin/AdminReviews";
 
 /* ===== Admin Pages ===== */
 import AdminLayout from "../pages/admin/AdminLayout";
@@ -93,8 +110,8 @@ export default function AppRouter() {
       <Route path="/login"           element={<Login />} />
       <Route path="/register"        element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/legal/privacy"   element={<TermsAndPolicy />} />
-
+      <Route path="/privacy"   element={<PrivacyPolicy />} />
+      <Route path="/terms"     element={<TermsOfService />} />
       {/* ===== Auth Required ===== */}
       <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
@@ -118,25 +135,49 @@ export default function AppRouter() {
       <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
       <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
       <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+      <Route path="/vouchers"       element={<ProtectedRoute><VouchersPage /></ProtectedRoute>} />
+      <Route path="/my-reviews"     element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
 
       {/* ===== Customer Support / Tickets ===== */}
-      <Route path="/tickets"     element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
-      <Route path="/tickets/:id" element={<ProtectedRoute><TicketDetail /></ProtectedRoute>} />
-      {/* Legacy support route — redirect customers to /tickets */}
+      <Route path="/tickets"         element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+      <Route path="/tickets/:id"     element={<ProtectedRoute><TicketDetail /></ProtectedRoute>} />
       <Route path="/support/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
 
       {/* ===== SHOP AREA ===== */}
       <Route path="/shop" element={<ShopGuard><ShopLayout /></ShopGuard>}>
         <Route index                              element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard"                   element={<Dashboard />} />
+
+        {/* Orders */}
+        <Route path="orders"                      element={<ManageOrders />} />
+        <Route path="refunds"                     element={<ManageRefunds />} />
+        <Route path="customers"                   element={<ManageCustomers />} />
+
+        {/* Products */}
         <Route path="admin/products"              element={<ManageProducts />} />
         <Route path="admin/products/new"          element={<AddProduct />} />
         <Route path="admin/products/:id"          element={<AddProduct mode="edit" />} />
         <Route path="admin/products/:id/variants" element={<VariantsPage />} />
         <Route path="inventory/low-stock"         element={<LowStockPage />} />
+
+        {/* Catalog */}
         <Route path="catalog/categories"          element={<CategoriesPage />} />
         <Route path="catalog/attributes"          element={<AttributesPage />} />
         <Route path="catalog/brands"              element={<BrandsPage />} />
+
+        {/* Reviews & Marketing */}
+        <Route path="reviews"                     element={<ManageReviews />} />
+        <Route path="marketing"                   element={<ManageMarketing />} />
+        <Route path="marketing/vouchers"          element={<ManageVoucher />} />
+        <Route path="marketing/flashsale"         element={<ManageFlashsale />} />
+        <Route path="marketing/banners"           element={<ManageBanner />} />
+        <Route path="marketing/campaigns"         element={<ManageCampaigns />} />
+        <Route path="marketing/credits"           element={<ManageCredits />} />
+
+        {/* Finance */}
+        <Route path="wallet"                      element={<ShopWallet />} />
+
+        {/* Settings */}
         <Route path="settings"                    element={<ShopSettings />} />
       </Route>
 
@@ -151,7 +192,10 @@ export default function AppRouter() {
       {/* ===== Admin ===== */}
       <Route path="/admin" element={<RoleRoute roles={["system_admin"]}><AdminLayout /></RoleRoute>}>
         <Route index element={<Navigate to="/admin/shops" replace />} />
-        <Route path="shops"          element={<AdminShops />} />
+        <Route path="shops"            element={<AdminShops />} />
+        <Route path="products"         element={<AdminProducts />} />
+        <Route path="products/pending" element={<AdminPendingProducts />} />
+        <Route path="reviews"        element={<AdminReviews />} />
         <Route path="system-config"  element={<SystemConfig />} />
         <Route path="audit-logs"     element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />

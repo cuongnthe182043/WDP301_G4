@@ -137,16 +137,36 @@ async function getProductDetail(idOrSlug) {
   };
 }
 
-async function getProductReviews(idOrSlug, page = 1, limit = 10) {
+async function getProductReviews(idOrSlug, page = 1, limit = 10, star) {
   if (!Review) return { total: 0, items: [] };
   const prod = await findProductByIdOrSlug(idOrSlug);
   if (!prod) return { total: 0, items: [] };
 
-  const query = { product_id: prod._id, status: 'approved' };
-  const [total, items] = await Promise.all([
+  const query = { product_id: prod._id, status: 'visible' };
+  if (star && Number(star) >= 1 && Number(star) <= 5) {
+    query.rating = Number(star);
+  }
+  const [total, rawItems] = await Promise.all([
     Review.countDocuments(query),
-    Review.find(query).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+    Review.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("user_id", "name avatar_url")
+      .lean(),
   ]);
+
+  // Map populated user info into author_name / author_avatar for the frontend
+  const items = rawItems.map((r) => {
+    const user = r.user_id && typeof r.user_id === "object" ? r.user_id : null;
+    return {
+      ...r,
+      author_name: r.is_anonymous ? "Ẩn danh" : (user?.name || "Người dùng"),
+      author_avatar: r.is_anonymous ? null : (user?.avatar_url || null),
+      user_id: user?._id || r.user_id, // keep only the id string
+    };
+  });
+
   return { total, items };
 }
 
@@ -156,7 +176,7 @@ async function getRatingsSummary(idOrSlug) {
   if (!prod) return { average: 0, count: 0, histogram: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
 
   const rows = await Review.aggregate([
-    { $match: { product_id: prod._id, status: 'approved' } },
+    { $match: { product_id: prod._id, status: 'visible' } },
     { $group: { _id: '$rating', c: { $sum: 1 } } },
   ]);
 

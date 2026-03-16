@@ -1,5 +1,6 @@
 const svc = require("../services/productAdminService");
 const categorySvc = require("../services/categoryService");
+const { generateTemplate } = require("../services/importService");
 
 // Resolve the shopId from req.shop (set by shopMiddleware) with fallback to req.user._id
 // for backward-compat during migration (when shop was not yet created).
@@ -75,6 +76,17 @@ exports.uploadVideo = async (req, res, next) => {
         res.json({ success: true, data: await svc.uploadVideo(req.file, getShopId(req)) });
     }
     catch (e) { next(e); }
+};
+
+/* Import — download template */
+exports.downloadTemplate = async (req, res, next) => {
+    try {
+        const wb = await generateTemplate();
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.setHeader("Content-Disposition", 'attachment; filename="product_import_template.xlsx"');
+        await wb.xlsx.write(res);
+        res.end();
+    } catch (e) { next(e); }
 };
 
 /* Import */
