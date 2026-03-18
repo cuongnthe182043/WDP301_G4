@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
 import { Input, Button } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, KeyRound, ShieldCheck, ChevronLeft, CheckCircle2, RefreshCw } from "lucide-react";
@@ -20,47 +21,41 @@ const getPasswordStrength = (pwd) => {
   if (/[^A-Za-z0-9]/.test(pwd)) s++;
   return s;
 };
-const strengthLabel = (s) => ["", "Rất yếu", "Yếu", "Trung bình", "Mạnh", "Rất mạnh"][s] || "";
 const strengthColor = (s) => ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"][s] || "#e4e4e7";
 
-const validateEmail    = (v) => (!v?.trim() ? "Vui lòng nhập email" : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "Email không hợp lệ" : null);
-const validatePassword = (v) => (!v ? "Vui lòng nhập mật khẩu mới" : v.length < 8 ? "Tối thiểu 8 ký tự" : !/[A-Z]/.test(v) ? "Cần ít nhất 1 chữ hoa" : !/[0-9]/.test(v) ? "Cần ít nhất 1 chữ số" : !/[^A-Za-z0-9]/.test(v) ? "Cần ít nhất 1 ký tự đặc biệt" : null);
-
 /* ─── Step bar ─── */
-const StepBar = ({ step }) => {
-  const steps = ["Nhập email", "Mã OTP", "Mật khẩu mới"];
-  return (
-    <div className="flex items-center gap-0 mb-8">
-      {steps.map((label, i) => {
-        const n = i + 1; const done = step > n; const active = step === n;
-        return (
-          <React.Fragment key={n}>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
-                style={{
-                  background: done || active ? "linear-gradient(135deg, #1E40AF, #2563EB)" : "#f4f4f5",
-                  color: done || active ? "#fff" : "#a1a1aa",
-                  boxShadow: active ? "0 0 0 4px rgba(29,78,216,.18)" : "none",
-                }}>
-                {done ? <CheckCircle2 size={15} /> : n}
-              </div>
-              <span className="text-xs font-semibold hidden sm:block"
-                style={{ color: done || active ? "#1D4ED8" : "#a1a1aa" }}>
-                {label}
-              </span>
+const StepBar = ({ step, labels }) => (
+  <div className="flex items-center gap-0 mb-8">
+    {labels.map((label, i) => {
+      const n = i + 1; const done = step > n; const active = step === n;
+      return (
+        <React.Fragment key={n}>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
+              style={{
+                background: done || active ? "linear-gradient(135deg, #1E40AF, #2563EB)" : "#f4f4f5",
+                color: done || active ? "#fff" : "#a1a1aa",
+                boxShadow: active ? "0 0 0 4px rgba(29,78,216,.18)" : "none",
+              }}>
+              {done ? <CheckCircle2 size={15} /> : n}
             </div>
-            {i < steps.length - 1 && (
-              <div className="flex-1 mx-2 h-0.5 rounded-full"
-                style={{ background: step > n ? "#1D4ED8" : "#e4e4e7", minWidth: 20 }} />
-            )}
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
-};
+            <span className="text-xs font-semibold hidden sm:block"
+              style={{ color: done || active ? "#1D4ED8" : "#a1a1aa" }}>
+              {label}
+            </span>
+          </div>
+          {i < labels.length - 1 && (
+            <div className="flex-1 mx-2 h-0.5 rounded-full"
+              style={{ background: step > n ? "#1D4ED8" : "#e4e4e7", minWidth: 20 }} />
+          )}
+        </React.Fragment>
+      );
+    })}
+  </div>
+);
 
 export default function ForgotPassword() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [step, setStep]         = useState(1);
   const [showPwd, setShowPwd]   = useState(false);
@@ -73,25 +68,40 @@ export default function ForgotPassword() {
   const [otpDigits, setOtpDigits] = useState(["","","","","",""]);
   const otpValue = otpDigits.join("");
 
+  const strengthLabel = (s) => [
+    "", t("auth.pwd_strength_very_weak"), t("auth.pwd_strength_weak"),
+    t("auth.pwd_strength_medium"), t("auth.pwd_strength_strong"), t("auth.pwd_strength_very_strong")
+  ][s] || "";
+
+  const validateEmail    = (v) => (!v?.trim() ? t("auth.email_required") : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? t("auth.err_email") : null);
+  const validatePassword = (v) => (
+    !v ? t("auth.new_password_required")
+    : v.length < 8 ? t("auth.err_min_length", { count: 8 })
+    : !/[A-Z]/.test(v) ? t("auth.pwd_require_uppercase")
+    : !/[0-9]/.test(v) ? t("auth.pwd_require_number")
+    : !/[^A-Za-z0-9]/.test(v) ? t("auth.pwd_require_special")
+    : null
+  );
+
   useEffect(() => {
     if (!resendCooldown) return;
-    const t = setTimeout(() => setResendCooldown(c => c - 1), 1000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setResendCooldown(c => c - 1), 1000);
+    return () => clearTimeout(timer);
   }, [resendCooldown]);
 
   useEffect(() => {
     if (!message.text) return;
-    const t = setTimeout(() => setMessage({ text: "", error: true }), 5000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setMessage({ text: "", error: true }), 5000);
+    return () => clearTimeout(timer);
   }, [message.text]);
 
   const showMsg = (text, error = true) => setMessage({ text, error });
-  const handleBlur = (f) => setTouched(t => ({ ...t, [f]: true }));
+  const handleBlur = (f) => setTouched(prev => ({ ...prev, [f]: true }));
 
   const emailError   = touched.email    ? validateEmail(form.email)           : null;
   const pwdError     = touched.newPassword ? validatePassword(form.newPassword) : null;
   const confirmError = touched.confirmPassword
-    ? (!form.confirmPassword ? "Vui lòng xác nhận mật khẩu" : form.newPassword !== form.confirmPassword ? "Mật khẩu không khớp" : null)
+    ? (!form.confirmPassword ? t("auth.confirm_password_required") : form.newPassword !== form.confirmPassword ? t("auth.err_password_match") : null)
     : null;
 
   const handleOtpChange = (i, val) => {
@@ -113,12 +123,12 @@ export default function ForgotPassword() {
 
   const handleSend = async (e) => {
     e?.preventDefault?.();
-    setTouched(t => ({ ...t, email: true }));
+    setTouched(prev => ({ ...prev, email: true }));
     if (validateEmail(form.email)) return;
     try {
       setLoading(true);
       await authService.requestResetOTP({ email: form.email.trim().toLowerCase() });
-      showMsg("Đã gửi OTP tới email của bạn.", false);
+      showMsg(t("auth.otp_sent"), false);
       setStep(2); setResendCooldown(60);
     } catch (err) { showMsg(err?.response?.data?.message || err.message); }
     finally { setLoading(false); }
@@ -126,18 +136,18 @@ export default function ForgotPassword() {
 
   const handleVerifyOtp = (e) => {
     e?.preventDefault?.();
-    if (otpValue.length < 6) { showMsg("Vui lòng nhập đủ 6 số OTP."); return; }
+    if (otpValue.length < 6) { showMsg(t("auth.otp_required")); return; }
     setStep(3); setMessage({ text: "", error: true });
   };
 
   const handleReset = async (e) => {
     e?.preventDefault?.();
-    setTouched(t => ({ ...t, newPassword: true, confirmPassword: true }));
+    setTouched(prev => ({ ...prev, newPassword: true, confirmPassword: true }));
     if (validatePassword(form.newPassword) || form.newPassword !== form.confirmPassword) return;
     try {
       setLoading(true);
       await authService.resetPassword({ email: form.email, otp: otpValue, newPassword: form.newPassword });
-      showMsg("Mật khẩu đã được đặt lại thành công!", false);
+      showMsg(t("auth.reset_done"), false);
       setTimeout(() => navigate("/login", { replace: true }), 1800);
     } catch (err) { showMsg(err?.response?.data?.message || err.message); }
     finally { setLoading(false); }
@@ -148,32 +158,33 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
       await authService.requestResetOTP({ email: form.email });
-      showMsg("Đã gửi lại OTP.", false);
+      showMsg(t("auth.otp_resent"), false);
       setResendCooldown(60); setOtpDigits(["","","","","",""]);
     } catch (err) { showMsg(err?.response?.data?.message || err.message); }
     finally { setLoading(false); }
   };
 
   const pwdStrength = getPasswordStrength(form.newPassword);
+  const stepLabels = [t("auth.step_enter_email"), t("auth.step_verify_otp"), t("auth.step_new_password")];
 
   const panelContent = [
     {
-      badge: "🔐 Bảo mật tài khoản",
-      title: <>Khôi phục<br /><span style={{ background: "linear-gradient(90deg, #93C5FD, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>mật khẩu</span><br />an toàn</>,
-      desc: "Nhập email đã đăng ký. Chúng tôi sẽ gửi mã OTP để xác minh danh tính của bạn.",
-      tips: ["Kiểm tra cả hòm thư Spam / Junk", "OTP có hiệu lực trong 10 phút", "Không chia sẻ OTP với bất kỳ ai"],
+      badge: "🔐 " + t("auth.security_badge").replace("🔒 ", ""),
+      title: <>{t("auth.recover_title")}</>,
+      desc: t("auth.email_used_for_account") + ".",
+      tips: [t("auth.pwd_tip_min8"), t("auth.pwd_tip_uppercase"), t("auth.pwd_tip_no_reuse")],
     },
     {
-      badge: "📬 Kiểm tra email",
-      title: <>Nhập mã<br /><span style={{ background: "linear-gradient(90deg, #93C5FD, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>xác thực</span><br />OTP</>,
-      desc: `Mã 6 chữ số đã được gửi đến ${form.email || "email của bạn"}.`,
-      tips: ["Bạn có thể paste toàn bộ 6 số", "Gửi lại sau 60 giây nếu không nhận được", "Kiểm tra thư mục Spam nếu cần"],
+      badge: "📬 " + t("auth.check_inbox"),
+      title: <>{t("auth.enter_otp")}</>,
+      desc: `${t("auth.otp_sent_to")} ${form.email || "email"}.`,
+      tips: [t("auth.otp_valid_minutes"), t("auth.not_received")],
     },
     {
-      badge: "🔑 Tạo mật khẩu mới",
-      title: <>Đặt lại<br /><span style={{ background: "linear-gradient(90deg, #93C5FD, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>mật khẩu</span><br />mạnh hơn</>,
-      desc: "Tạo mật khẩu mạnh để bảo vệ tài khoản của bạn tốt hơn.",
-      tips: ["Tối thiểu 8 ký tự", "Kết hợp chữ hoa, thường, số và ký tự đặc biệt", "Không dùng lại mật khẩu cũ"],
+      badge: "🔑 " + t("auth.new_password"),
+      title: <>{t("auth.reset_password")}</>,
+      desc: t("auth.change_pwd_desc"),
+      tips: [t("auth.pwd_tip_min8"), t("auth.pwd_tip_uppercase"), t("auth.pwd_tip_no_reuse")],
     },
   ][step - 1];
 
@@ -227,7 +238,7 @@ export default function ForgotPassword() {
           </ul>
 
           <div className="flex flex-col gap-2 mt-2">
-            {["Nhập email", "Xác thực OTP", "Đặt mật khẩu mới"].map((label, i) => {
+            {stepLabels.map((label, i) => {
               const n = i + 1; const active = step === n; const done = step > n;
               return (
                 <div key={n} className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all"
@@ -251,7 +262,7 @@ export default function ForgotPassword() {
 
         <div className="relative z-10 flex items-center gap-2">
           <ShieldCheck size={14} className="text-blue-300" />
-          <p className="text-blue-300 text-xs" style={{ opacity: 0.6 }}>Bảo mật SSL · Mã hóa đầu cuối · Tuân thủ PDPA</p>
+          <p className="text-blue-300 text-xs" style={{ opacity: 0.6 }}>{t("common.secure_ssl")}</p>
         </div>
       </div>
 
@@ -268,17 +279,17 @@ export default function ForgotPassword() {
 
           <div className="mb-6">
             <h1 className="text-3xl font-black text-default-900 tracking-tight" style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Quên mật khẩu
+              {t("auth.recover_title")}
             </h1>
             <p className="text-default-500 text-sm mt-1.5">
-              Nhớ lại rồi?{" "}
+              {t("auth.remember_password")}{" "}
               <RouterLink to="/login" className="font-semibold hover:underline" style={{ color: "#1D4ED8" }}>
-                Đăng nhập
+                {t("common.login")}
               </RouterLink>
             </p>
           </div>
 
-          <StepBar step={step} />
+          <StepBar step={step} labels={stepLabels} />
 
           {message.text && (
             <div className={`mb-5 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 ${
@@ -292,7 +303,7 @@ export default function ForgotPassword() {
           {/* STEP 1 */}
           {step === 1 && (
             <form onSubmit={handleSend} noValidate className="flex flex-col gap-4">
-              <Input autoFocus label="Địa chỉ Email" name="email" type="email"
+              <Input autoFocus label={t("auth.email")} name="email" type="email"
                 value={form.email} onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
                 onBlur={() => handleBlur("email")}
                 variant="bordered" radius="lg"
@@ -300,18 +311,18 @@ export default function ForgotPassword() {
                 color={emailError ? "danger" : touched.email && form.email && !validateEmail(form.email) ? "success" : "default"}
                 startContent={<Mail size={15} className="text-default-400 flex-shrink-0" />}
                 classNames={{ inputWrapper: "h-12 shadow-sm border-blue-100 hover:border-blue-300" }}
-                description={!emailError && !touched.email ? "Email bạn đã dùng để đăng ký tài khoản" : undefined}
+                description={!emailError && !touched.email ? t("auth.email_used_for_account") : undefined}
               />
               <Button type="submit" color="primary" isLoading={loading} isDisabled={loading}
                 radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}>
-                {loading ? "Đang gửi OTP…" : "Gửi mã OTP →"}
+                {loading ? t("auth.sending_otp") : t("auth.send_otp")}
               </Button>
               <div className="flex justify-center">
                 <RouterLink to="/login"
                   className="inline-flex items-center gap-1.5 text-sm text-default-500 hover:text-default-800 transition-colors">
                   <ChevronLeft size={15} />
-                  Quay lại đăng nhập
+                  {t("common.back_to_login")}
                 </RouterLink>
               </div>
             </form>
@@ -324,9 +335,9 @@ export default function ForgotPassword() {
                 style={{ background: "rgba(29,78,216,.06)", border: "1px solid rgba(29,78,216,.15)" }}>
                 <Mail size={18} style={{ color: "#1D4ED8" }} className="flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-semibold text-default-800">Kiểm tra hộp thư của bạn</p>
+                  <p className="text-sm font-semibold text-default-800">{t("auth.check_inbox")}</p>
                   <p className="text-xs text-default-500 mt-0.5">
-                    Mã OTP đã được gửi đến{" "}
+                    {t("auth.otp_sent_to")}{" "}
                     <span className="font-semibold" style={{ color: "#1D4ED8" }}>{form.email}</span>
                   </p>
                 </div>
@@ -335,7 +346,7 @@ export default function ForgotPassword() {
               <div className="flex flex-col items-center gap-3">
                 <label className="text-sm font-semibold text-default-700 self-start flex items-center gap-1.5">
                   <KeyRound size={14} style={{ color: "#1D4ED8" }} />
-                  Nhập mã OTP (6 chữ số)
+                  {t("auth.enter_otp")}
                 </label>
                 <div className="flex gap-2 justify-center" onPaste={handleOtpPaste}>
                   {otpDigits.map((d, i) => (
@@ -356,13 +367,13 @@ export default function ForgotPassword() {
                 <div className="flex items-center gap-1.5 text-xs text-default-400">
                   <RefreshCw size={12} />
                   {resendCooldown > 0 ? (
-                    <span>Gửi lại sau <span className="font-bold" style={{ color: "#1D4ED8" }}>{resendCooldown}s</span></span>
+                    <span>{t("auth.resend_after")} <span className="font-bold" style={{ color: "#1D4ED8" }}>{resendCooldown}s</span></span>
                   ) : (
                     <>
-                      Không nhận được?{" "}
+                      {t("auth.not_received")}{" "}
                       <button type="button" onClick={handleResend} disabled={loading}
                         className="font-semibold hover:underline disabled:opacity-50" style={{ color: "#1D4ED8" }}>
-                        Gửi lại OTP
+                        {t("auth.resend_otp")}
                       </button>
                     </>
                   )}
@@ -372,13 +383,13 @@ export default function ForgotPassword() {
               <Button type="submit" color="primary" isDisabled={otpValue.length < 6}
                 radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}>
-                Xác nhận OTP →
+                {t("auth.confirm_otp")}
               </Button>
 
               <button type="button" onClick={() => { setStep(1); setOtpDigits(["","","","","",""]); }}
                 className="flex items-center gap-1.5 text-sm text-default-500 hover:text-default-800 transition-colors mx-auto">
                 <ChevronLeft size={15} />
-                Đổi email khác
+                {t("auth.change_email")}
               </button>
             </form>
           )}
@@ -390,12 +401,12 @@ export default function ForgotPassword() {
                 style={{ background: "rgba(34,197,94,.07)", border: "1px solid rgba(34,197,94,.2)" }}>
                 <CheckCircle2 size={17} className="text-emerald-500 flex-shrink-0" />
                 <p className="text-sm font-medium text-default-700">
-                  Email <span className="font-semibold" style={{ color: "#1D4ED8" }}>{form.email}</span> đã xác thực
+                  {t("auth.email")} <span className="font-semibold" style={{ color: "#1D4ED8" }}>{form.email}</span> {t("auth.email_verified")}
                 </p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Input autoFocus label="Mật khẩu mới" name="newPassword"
+                <Input autoFocus label={t("auth.new_password")} name="newPassword"
                   type={showPwd ? "text" : "password"}
                   value={form.newPassword} onChange={(e) => setForm(f => ({ ...f, newPassword: e.target.value }))}
                   onBlur={() => handleBlur("newPassword")}
@@ -423,7 +434,7 @@ export default function ForgotPassword() {
                 )}
               </div>
 
-              <Input label="Xác nhận mật khẩu mới" name="confirmPassword"
+              <Input label={t("auth.confirm_password")} name="confirmPassword"
                 type={showPwd2 ? "text" : "password"}
                 value={form.confirmPassword} onChange={(e) => setForm(f => ({ ...f, confirmPassword: e.target.value }))}
                 onBlur={() => handleBlur("confirmPassword")}
@@ -442,21 +453,21 @@ export default function ForgotPassword() {
               <Button type="submit" color="primary" isLoading={loading} isDisabled={loading}
                 radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md mt-1"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}>
-                {loading ? "Đang đặt lại…" : "Đặt lại mật khẩu ✓"}
+                {loading ? t("auth.resetting") : t("auth.reset_password_done")}
               </Button>
 
               <button type="button" onClick={() => setStep(2)}
                 className="flex items-center gap-1.5 text-sm text-default-500 hover:text-default-800 transition-colors mx-auto">
                 <ChevronLeft size={15} />
-                Quay lại nhập OTP
+                {t("auth.back_to_otp")}
               </button>
             </form>
           )}
 
           <p className="text-center text-xs text-default-400 mt-8 leading-relaxed">
-            <RouterLink to="/terms" className="underline hover:text-default-600">Điều khoản dịch vụ</RouterLink>
+            <RouterLink to="/terms" className="underline hover:text-default-600">{t("common.terms_of_service")}</RouterLink>
             {" · "}
-            <RouterLink to="/privacy" className="underline hover:text-default-600">Chính sách bảo mật</RouterLink>
+            <RouterLink to="/privacy" className="underline hover:text-default-600">{t("common.privacy_policy")}</RouterLink>
           </p>
         </div>
       </div>

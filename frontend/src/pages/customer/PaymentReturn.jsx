@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link as RouterLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, Chip, Divider } from "@heroui/react";
 import {
@@ -14,10 +15,6 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-/**
- * Parse VNPAY YYYYMMDDHHmmss → locale string.
- * Returns empty string if input is invalid.
- */
 function parseVNDate(s) {
   if (!s || s.length < 14) return "";
   try {
@@ -43,7 +40,6 @@ function formatVND(amount) {
   return Number(amount).toLocaleString("vi-VN") + " ₫";
 }
 
-/** One labelled row in the details table */
 function DetailRow({ icon: Icon, label, value, highlight }) {
   if (!value) return null;
   return (
@@ -65,26 +61,27 @@ function DetailRow({ icon: Icon, label, value, highlight }) {
   );
 }
 
-const VNPAY_RESPONSE_CODES = {
-  "00": "Giao dịch thành công",
-  "07": "Trừ tiền thành công, nghi ngờ gian lận",
-  "09": "Thẻ / tài khoản chưa đăng ký dịch vụ InternetBanking",
-  "10": "Xác thực thông tin thẻ / tài khoản quá 3 lần",
-  "11": "Hết hạn chờ thanh toán",
-  "12": "Thẻ / tài khoản bị khoá",
-  "13": "Sai mật khẩu OTP",
-  "24": "Giao dịch bị hủy",
-  "51": "Tài khoản không đủ số dư",
-  "65": "Vượt hạn mức giao dịch trong ngày",
-  "75": "Ngân hàng thanh toán đang bảo trì",
-  "79": "Nhập sai mật khẩu thanh toán quá số lần quy định",
-  "99": "Lỗi không xác định",
-};
-
 export default function PaymentReturn() {
+  const { t } = useTranslation();
   const nav = useNavigate();
   const { search } = useLocation();
   const params = useMemo(() => new URLSearchParams(search), [search]);
+
+  const VNPAY_RESPONSE_CODES = {
+    "00": t("payment.vnpay_00"),
+    "07": t("payment.vnpay_07"),
+    "09": t("payment.vnpay_09"),
+    "10": t("payment.vnpay_10"),
+    "11": t("payment.vnpay_11"),
+    "12": t("payment.vnpay_12"),
+    "13": t("payment.vnpay_13"),
+    "24": t("payment.vnpay_24"),
+    "51": t("payment.vnpay_51"),
+    "65": t("payment.vnpay_65"),
+    "75": t("payment.vnpay_75"),
+    "79": t("payment.vnpay_79"),
+    "99": t("payment.vnpay_99"),
+  };
 
   const status    = params.get("status")     || "fail";
   const orderCode = params.get("order_code") || params.get("orderId") || "";
@@ -97,12 +94,12 @@ export default function PaymentReturn() {
 
   const isSuccess  = status === "success";
   const payDateStr = parseVNDate(payDate);
-  const errorMsg   = code ? (VNPAY_RESPONSE_CODES[code] || `Mã lỗi: ${code}`) : "";
+  const errorMsg   = code ? (VNPAY_RESPONSE_CODES[code] || `${t("common.error")}: ${code}`) : "";
 
   const [count, setCount] = useState(isSuccess ? 8 : 15);
   useEffect(() => {
-    const t = setInterval(() => setCount((c) => Math.max(0, c - 1)), 1000);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setCount((c) => Math.max(0, c - 1)), 1000);
+    return () => clearInterval(timer);
   }, []);
   useEffect(() => {
     if (count === 0) nav(isSuccess ? "/orders" : "/");
@@ -119,7 +116,6 @@ export default function PaymentReturn() {
           : "linear-gradient(160deg, #fff1f2 0%, #fef2f2 40%, #fff 100%)",
       }}
     >
-      {/* Ambient blob */}
       <div
         className="fixed inset-0 pointer-events-none overflow-hidden"
         style={{ zIndex: 0 }}
@@ -153,7 +149,6 @@ export default function PaymentReturn() {
             border: `1.5px solid ${isSuccess ? "#bbf7d0" : "#fecaca"}`,
           }}
         >
-          {/* Coloured top strip */}
           <div
             style={{
               height: 5,
@@ -199,7 +194,7 @@ export default function PaymentReturn() {
                 className="text-2xl font-black"
                 style={{ color: isSuccess ? "#15803d" : "#b91c1c" }}
               >
-                {isSuccess ? "Thanh toán thành công!" : "Thanh toán thất bại"}
+                {isSuccess ? t("payment.success_title") : t("payment.failed_title")}
               </h2>
 
               {!!orderCode && (
@@ -209,7 +204,7 @@ export default function PaymentReturn() {
                   size="sm"
                   startContent={<Hash size={11} />}
                 >
-                  Đơn hàng: {orderCode}
+                  {t("payment.order_label")} {orderCode}
                 </Chip>
               )}
 
@@ -224,10 +219,10 @@ export default function PaymentReturn() {
               )}
 
               {!isSuccess && reason === "invalid_signature" && (
-                <p className="text-xs text-danger-500">Chữ ký xác thực không hợp lệ</p>
+                <p className="text-xs text-danger-500">{t("payment.invalid_signature")}</p>
               )}
               {!isSuccess && reason === "server_error" && (
-                <p className="text-xs text-danger-500">Lỗi máy chủ khi xử lý giao dịch</p>
+                <p className="text-xs text-danger-500">{t("payment.server_error")}</p>
               )}
             </motion.div>
 
@@ -239,9 +234,7 @@ export default function PaymentReturn() {
               className="text-sm leading-relaxed"
               style={{ color: "#6b7280" }}
             >
-              {isSuccess
-                ? "Cảm ơn bạn đã mua hàng tại Daily Fit! Đơn hàng của bạn đang được xử lý và sẽ sớm được giao đến bạn."
-                : "Giao dịch không thành công. Đơn hàng vẫn được giữ — bạn có thể thử lại hoặc chọn hình thức thanh toán khác."}
+              {isSuccess ? t("payment.success_msg") : t("payment.failed_msg")}
             </motion.p>
 
             {/* Detail table */}
@@ -259,15 +252,15 @@ export default function PaymentReturn() {
                   }}
                 >
                   {amount && (
-                    <DetailRow icon={Banknote} label="Số tiền" value={formatVND(amount)} highlight />
+                    <DetailRow icon={Banknote} label={t("payment.amount_label")} value={formatVND(amount)} highlight />
                   )}
                   {amount && (orderCode || txnNo || bank || payDateStr) && (
                     <Divider className="my-0.5" />
                   )}
-                  <DetailRow icon={Hash}       label="Mã đơn hàng"    value={orderCode} />
-                  <DetailRow icon={CreditCard} label="Mã giao dịch"   value={txnNo} />
-                  <DetailRow icon={Banknote}   label="Ngân hàng"       value={bank} />
-                  <DetailRow icon={Calendar}   label="Thời gian"       value={payDateStr} />
+                  <DetailRow icon={Hash}       label={t("payment.order_code_label")} value={orderCode} />
+                  <DetailRow icon={CreditCard} label={t("payment.txn_label")}        value={txnNo} />
+                  <DetailRow icon={Banknote}   label={t("payment.bank_label")}       value={bank} />
+                  <DetailRow icon={Calendar}   label={t("payment.time_label")}       value={payDateStr} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -280,11 +273,11 @@ export default function PaymentReturn() {
               className="text-xs"
               style={{ color: "#9ca3af" }}
             >
-              Tự động chuyển đến{" "}
+              {t("payment.redirect_to")}{" "}
               <span className="font-semibold" style={{ color: isSuccess ? "#16a34a" : "#6b7280" }}>
-                {isSuccess ? "đơn hàng" : "trang chủ"}
+                {isSuccess ? t("payment.my_orders") : t("payment.home")}
               </span>{" "}
-              sau <span className="font-bold">{count}s</span>
+              {t("payment.redirect_after")} <span className="font-bold">{count}s</span>
             </motion.p>
 
             {/* Action buttons */}
@@ -302,7 +295,7 @@ export default function PaymentReturn() {
                 startContent={<Home size={15} />}
                 className="font-semibold flex-1"
               >
-                Trang chủ
+                {t("payment.go_home")}
               </Button>
               <Button
                 as={RouterLink}
@@ -312,7 +305,7 @@ export default function PaymentReturn() {
                 startContent={<Receipt size={15} />}
                 className="font-bold flex-1 shadow-md text-white"
               >
-                Xem đơn hàng
+                {t("payment.view_orders")}
               </Button>
             </motion.div>
           </div>

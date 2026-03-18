@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Avatar, Button, Chip, Input, Select, SelectItem, Skeleton,
@@ -8,7 +9,6 @@ import {
 import { Star, Package, Users, Search, Store, ShoppingBag } from "lucide-react";
 import { getShopBySlug, getShopProducts } from "../../services/shopService";
 import ProductCard, { cardVariants } from "../../components/home/ProductCard";
-import { formatCurrency } from "../../utils/formatCurrency";
 
 function ShopBannerSkeleton() {
   return (
@@ -28,16 +28,17 @@ function StatItem({ icon: Icon, label, value }) {
   );
 }
 
-const SORT_OPTIONS = [
-  { key: "newest",    label: "Mới nhất" },
-  { key: "popular",  label: "Phổ biến" },
-  { key: "price_asc",label: "Giá thấp nhất" },
-  { key: "price_desc",label: "Giá cao nhất" },
-  { key: "rating",   label: "Đánh giá cao" },
-];
-
 export default function ShopPage() {
+  const { t } = useTranslation();
   const { shopSlug } = useParams();
+
+  const SORT_OPTIONS = [
+    { key: "newest",     label: t("product.sort_newest") },
+    { key: "popular",   label: t("product.sort_popular") },
+    { key: "price_asc", label: t("product.sort_price_asc") },
+    { key: "price_desc",label: t("product.sort_price_desc") },
+    { key: "rating",    label: t("product.sort_rating") },
+  ];
 
   const [shop, setShop] = useState(null);
   const [products, setProducts] = useState([]);
@@ -84,8 +85,8 @@ export default function ShopPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-gray-500">
         <Store size={48} className="text-gray-300" />
-        <p className="text-lg font-semibold">Shop không tồn tại</p>
-        <Link to="/" className="text-blue-500 hover:underline text-sm">Về trang chủ</Link>
+        <p className="text-lg font-semibold">{t("product.shop_not_found")}</p>
+        <Link to="/" className="text-blue-500 hover:underline text-sm">{t("product.go_home")}</Link>
       </div>
     );
   }
@@ -121,10 +122,10 @@ export default function ShopPage() {
                     <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{shop.description}</p>
                   )}
                   <div className="flex flex-wrap items-center gap-4 mt-2">
-                    <StatItem icon={Star} label="đánh giá" value={(shop?.rating_avg || 0).toFixed(1)} />
-                    <StatItem icon={Package} label="sản phẩm" value={total} />
-                    <StatItem icon={ShoppingBag} label="đơn hàng" value={shop?.total_orders || 0} />
-                    <StatItem icon={Users} label="theo dõi" value={shop?.followers || 0} />
+                    <StatItem icon={Star} label={t("shop.shop_ratings")} value={(shop?.rating_avg || 0).toFixed(1)} />
+                    <StatItem icon={Package} label={t("shop.shop_products")} value={total} />
+                    <StatItem icon={ShoppingBag} label={t("shop.shop_orders")} value={shop?.total_orders || 0} />
+                    <StatItem icon={Users} label={t("shop.shop_followers")} value={shop?.followers || 0} />
                   </div>
                 </div>
               </div>
@@ -137,7 +138,7 @@ export default function ShopPage() {
       <div className="max-w-6xl mx-auto px-4 pt-5 pb-3">
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
-            placeholder="Tìm sản phẩm trong shop..."
+            placeholder={t("product.search_in_shop")}
             value={q}
             onValueChange={(v) => setQ(v)}
             startContent={<Search size={16} className="text-gray-400" />}
@@ -151,7 +152,7 @@ export default function ShopPage() {
             radius="lg"
             variant="bordered"
             className="w-48"
-            aria-label="Sắp xếp"
+            aria-label={t("common.sort")}
           >
             {SORT_OPTIONS.map((o) => (
               <SelectItem key={o.key}>{o.label}</SelectItem>
@@ -159,7 +160,7 @@ export default function ShopPage() {
           </Select>
         </div>
         <p className="text-sm text-gray-500 mt-2">
-          {total} sản phẩm
+          {total} {t("product.products_count")}
         </p>
       </div>
 
@@ -194,7 +195,7 @@ export default function ShopPage() {
               className="flex flex-col items-center justify-center gap-3 py-20 text-gray-400"
             >
               <Package size={48} className="text-gray-200" />
-              <p className="text-sm">Chưa có sản phẩm nào</p>
+              <p className="text-sm">{t("shop.shop_no_products")}</p>
             </motion.div>
           ) : (
             <motion.div
@@ -230,7 +231,7 @@ export default function ShopPage() {
                   .catch(() => {});
               }}
             >
-              Xem thêm ({total - products.length} sản phẩm)
+              {t("shop.shop_load_more", { count: total - products.length })}
             </Button>
           </div>
         )}

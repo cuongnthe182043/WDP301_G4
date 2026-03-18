@@ -12,6 +12,7 @@
  *   - Set default address
  */
 import React, { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, Chip, Skeleton } from "@heroui/react";
 import { MapPin, Plus, Pencil, Trash2, Star, User, Phone, AlertCircle } from "lucide-react";
@@ -27,6 +28,7 @@ const prettyJoin = (parts = []) =>
     .join(", ");
 
 export default function AddressManager() {
+  const { t } = useTranslation();
   const toast   = useToast();
   const confirm = useConfirm();
 
@@ -42,7 +44,7 @@ export default function AddressManager() {
       const list = await addressService.list();
       setAddresses(Array.isArray(list) ? list : []);
     } catch (e) {
-      toast.error(e?.response?.data?.message || e.message || "Không tải được danh sách địa chỉ");
+      toast.error(e?.response?.data?.message || e.message || t("profile.address_load_failed"));
     } finally {
       setLoading(false);
     }
@@ -57,10 +59,10 @@ export default function AddressManager() {
     try {
       if (editTarget) {
         await addressService.update(editTarget._id, payload);
-        toast.success("Đã cập nhật địa chỉ");
+        toast.success(t("profile.address_updated"));
       } else {
         await addressService.create(payload);
-        toast.success("Đã thêm địa chỉ mới");
+        toast.success(t("profile.address_added"));
       }
       setDialogOpen(false);
       setEditTarget(null);
@@ -72,19 +74,19 @@ export default function AddressManager() {
 
   const handleDelete = async (a) => {
     const ok = await confirm({
-      title:       "Xoá địa chỉ",
-      description: `Bạn có chắc muốn xoá địa chỉ "${a.name}" — ${prettyJoin([a.street, a.city])}?`,
-      confirmText: "Xoá",
+      title:       t("profile.delete_address_title"),
+      description: `${t("profile.delete_address_confirm_named", { name: a.name })} — ${prettyJoin([a.street, a.city])}?`,
+      confirmText: t("common.delete"),
       danger:      true,
     });
     if (!ok) return;
     setActionId(a._id);
     try {
       await addressService.remove(a._id);
-      toast.success("Đã xoá địa chỉ");
+      toast.success(t("profile.address_deleted"));
       await load();
     } catch (e) {
-      toast.error(e?.response?.data?.message || e.message || "Xoá địa chỉ thất bại");
+      toast.error(e?.response?.data?.message || e.message || t("profile.address_delete_failed"));
     } finally {
       setActionId(null);
     }
@@ -94,10 +96,10 @@ export default function AddressManager() {
     setActionId(a._id);
     try {
       await addressService.setDefault(a._id);
-      toast.success(`"${a.name}" đã được đặt làm địa chỉ mặc định`);
+      toast.success(t("profile.address_set_default_success", { name: a.name }));
       await load();
     } catch (e) {
-      toast.error(e?.response?.data?.message || e.message || "Đặt mặc định thất bại");
+      toast.error(e?.response?.data?.message || e.message || t("profile.set_default_failed"));
     } finally {
       setActionId(null);
     }
@@ -109,9 +111,9 @@ export default function AddressManager() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="font-black text-default-900 text-base">Địa chỉ nhận hàng</h3>
+          <h3 className="font-black text-default-900 text-base">{t("profile.delivery_addresses")}</h3>
           <p className="text-xs text-default-400 mt-0.5">
-            Địa chỉ mặc định sẽ được tự động chọn khi thanh toán
+            {t("profile.default_address_hint")}
           </p>
         </div>
         <Button
@@ -122,7 +124,7 @@ export default function AddressManager() {
           onPress={openCreate}
           className="font-semibold"
         >
-          Thêm địa chỉ
+          {t("profile.add_address_btn")}
         </Button>
       </div>
 
@@ -142,8 +144,8 @@ export default function AddressManager() {
           <div className="w-14 h-14 rounded-2xl bg-default-100 flex items-center justify-center mb-3">
             <MapPin size={24} className="text-default-300" strokeWidth={1.5} />
           </div>
-          <p className="font-semibold text-default-600 mb-1">Chưa có địa chỉ</p>
-          <p className="text-sm text-default-400 mb-4">Thêm địa chỉ để thanh toán nhanh hơn.</p>
+          <p className="font-semibold text-default-600 mb-1">{t("profile.no_addresses")}</p>
+          <p className="text-sm text-default-400 mb-4">{t("profile.add_address_cta")}</p>
           <Button
             color="primary"
             size="sm"
@@ -152,7 +154,7 @@ export default function AddressManager() {
             startContent={<Plus size={14} />}
             onPress={openCreate}
           >
-            Thêm địa chỉ đầu tiên
+            {t("profile.add_first_address")}
           </Button>
         </motion.div>
       ) : (
@@ -191,7 +193,7 @@ export default function AddressManager() {
                           variant="flat"
                           startContent={<Star size={11} />}
                         >
-                          Mặc định
+                          {t("profile.default_address")}
                         </Chip>
                       )}
                     </div>
@@ -202,7 +204,7 @@ export default function AddressManager() {
                         size="sm"
                         variant="light"
                         isIconOnly
-                        aria-label="Sửa"
+                        aria-label={t("common.edit")}
                         onPress={() => openEdit(a)}
                         isDisabled={busy}
                       >
@@ -213,7 +215,7 @@ export default function AddressManager() {
                           size="sm"
                           variant="light"
                           isIconOnly
-                          aria-label="Đặt mặc định"
+                          aria-label={t("profile.set_default")}
                           onPress={() => handleSetDefault(a)}
                           isLoading={busy}
                         >
@@ -225,7 +227,7 @@ export default function AddressManager() {
                         variant="light"
                         color="danger"
                         isIconOnly
-                        aria-label="Xoá"
+                        aria-label={t("common.delete")}
                         onPress={() => handleDelete(a)}
                         isDisabled={busy}
                       >
@@ -247,7 +249,7 @@ export default function AddressManager() {
                       onClick={() => handleSetDefault(a)}
                       className="mt-2 text-xs text-primary font-semibold hover:underline disabled:opacity-50"
                     >
-                      Đặt làm mặc định
+                      {t("profile.set_as_default")}
                     </button>
                   )}
                 </motion.div>
@@ -261,7 +263,7 @@ export default function AddressManager() {
       {!loading && addresses.length > 0 && !addresses.some((a) => a.is_default) && (
         <div className="mt-3 flex items-center gap-2 text-xs text-warning bg-warning-50 border border-warning-200 rounded-xl px-3 py-2">
           <AlertCircle size={13} className="flex-shrink-0" />
-          Chưa có địa chỉ mặc định. Hãy đặt một địa chỉ làm mặc định để thanh toán nhanh hơn.
+          {t("profile.no_default_warning")}
         </div>
       )}
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
 import { Input, Button } from "@heroui/react";
 import { Eye, EyeOff, Lock, ShieldCheck, CheckCircle2, ChevronLeft } from "lucide-react";
@@ -19,10 +20,10 @@ const getPasswordStrength = (pwd) => {
   if (/[^A-Za-z0-9]/.test(pwd)) s++;
   return s;
 };
-const strengthLabel = (s) => ["", "Rất yếu", "Yếu", "Trung bình", "Mạnh", "Rất mạnh"][s] || "";
 const strengthColor = (s) => ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"][s] || "#e4e4e7";
 
 export default function ChangePassword() {
+  const { t } = useTranslation();
   const [form, setForm]       = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
@@ -32,21 +33,26 @@ export default function ChangePassword() {
   const [message, setMessage] = useState({ text: "", error: true });
   const [done, setDone]       = useState(false);
 
+  const strengthLabel = (s) => [
+    "", t("auth.pwd_strength_very_weak"), t("auth.pwd_strength_weak"),
+    t("auth.pwd_strength_medium"), t("auth.pwd_strength_strong"), t("auth.pwd_strength_very_strong")
+  ][s] || "";
+
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleBlur   = (f) => setTouched(t => ({ ...t, [f]: true }));
+  const handleBlur   = (f) => setTouched(prev => ({ ...prev, [f]: true }));
   const showMsg = (text, error = true) => setMessage({ text, error });
 
-  const oldErr = touched.oldPassword && !form.oldPassword ? "Vui lòng nhập mật khẩu cũ" : null;
+  const oldErr = touched.oldPassword && !form.oldPassword ? t("auth.old_password_required") : null;
   const newErr = touched.newPassword
-    ? (!form.newPassword ? "Vui lòng nhập mật khẩu mới"
-      : form.newPassword.length < 8 ? "Tối thiểu 8 ký tự"
-      : !/[A-Z]/.test(form.newPassword) ? "Cần ít nhất 1 chữ hoa"
-      : !/[0-9]/.test(form.newPassword) ? "Cần ít nhất 1 chữ số"
+    ? (!form.newPassword ? t("auth.new_password_required")
+      : form.newPassword.length < 8 ? t("auth.err_min_length", { count: 8 })
+      : !/[A-Z]/.test(form.newPassword) ? t("auth.pwd_require_uppercase")
+      : !/[0-9]/.test(form.newPassword) ? t("auth.pwd_require_number")
       : null)
     : null;
   const cfmErr = touched.confirmPassword
-    ? (!form.confirmPassword ? "Vui lòng xác nhận mật khẩu mới"
-      : form.newPassword !== form.confirmPassword ? "Mật khẩu không khớp" : null)
+    ? (!form.confirmPassword ? t("auth.confirm_password_required")
+      : form.newPassword !== form.confirmPassword ? t("auth.err_password_match") : null)
     : null;
 
   const formValid = form.oldPassword && form.newPassword.length >= 8
@@ -63,11 +69,8 @@ export default function ChangePassword() {
       setLoading(true);
       await authService.changePassword({ oldPassword: form.oldPassword, newPassword: form.newPassword });
       setDone(true);
-      showMsg("Đổi mật khẩu thành công!", false);
+      showMsg(t("auth.change_done"), false);
 
-      // FIX: Sau khi đổi mật khẩu thành công, revoke Google session
-      // Bắt buộc user phải login lại thủ công, tránh Google dùng cached credential cũ
-      // mà không biết mật khẩu đã thay đổi → gây lỗi khi login Google lần sau
       try {
         if (window.google?.accounts?.id) {
           window.google.accounts.id.disableAutoSelect();
@@ -79,6 +82,13 @@ export default function ChangePassword() {
       setLoading(false);
     }
   };
+
+  const tips = [
+    t("auth.pwd_tip_min8"),
+    t("auth.pwd_tip_uppercase"),
+    t("auth.pwd_tip_no_reuse"),
+    t("auth.pwd_tip_no_share"),
+  ];
 
   return (
     <div className="min-h-dvh flex items-stretch">
@@ -109,22 +119,22 @@ export default function ChangePassword() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5"
               style={{ background: "rgba(96,165,250,.2)", color: "#BFDBFE", border: "1px solid rgba(96,165,250,.35)" }}>
-              🔒 Bảo mật tài khoản
+              {t("auth.security_badge")}
             </div>
             <h2 className="text-white font-black text-[2.1rem] leading-tight tracking-tight"
               style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Đổi<br />
+              {t("auth.change_pwd_hero")}<br />
               <span style={{ background: "linear-gradient(90deg, #93C5FD, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                mật khẩu
+                {t("auth.change_pwd_hero2")}
               </span><br />
-              an toàn
+              {t("auth.change_pwd_hero3")}
             </h2>
             <p className="text-blue-200 text-sm mt-3 leading-relaxed max-w-[260px]" style={{ opacity: 0.8 }}>
-              Cập nhật mật khẩu định kỳ giúp tài khoản của bạn luôn được bảo vệ tốt nhất.
+              {t("auth.change_pwd_desc")}
             </p>
           </div>
           <ul className="flex flex-col gap-3">
-            {["Tối thiểu 8 ký tự", "Kết hợp chữ hoa, thường, số", "Không dùng lại mật khẩu cũ", "Không chia sẻ mật khẩu với ai"].map((tip, i) => (
+            {tips.map((tip, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-blue-100" style={{ opacity: 0.75 }}>
                 <CheckCircle2 size={15} className="text-blue-300 flex-shrink-0 mt-0.5" />
                 {tip}
@@ -135,7 +145,7 @@ export default function ChangePassword() {
 
         <div className="relative z-10 flex items-center gap-2">
           <ShieldCheck size={14} className="text-blue-300" />
-          <p className="text-blue-300 text-xs" style={{ opacity: 0.6 }}>Bảo mật SSL · Mã hóa đầu cuối · Tuân thủ PDPA</p>
+          <p className="text-blue-300 text-xs" style={{ opacity: 0.6 }}>{t("common.secure_ssl")}</p>
         </div>
       </div>
 
@@ -152,9 +162,9 @@ export default function ChangePassword() {
 
           <div className="mb-8">
             <h1 className="text-3xl font-black text-default-900 tracking-tight" style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Đổi mật khẩu
+              {t("auth.change_password")}
             </h1>
-            <p className="text-default-500 text-sm mt-1.5">Cập nhật mật khẩu để bảo vệ tài khoản của bạn.</p>
+            <p className="text-default-500 text-sm mt-1.5">{t("auth.change_pwd_subtitle")}</p>
           </div>
 
           {message.text && (
@@ -174,24 +184,23 @@ export default function ChangePassword() {
               </div>
               <div>
                 <p className="text-xl font-black text-default-900" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                  Đổi mật khẩu thành công!
+                  {t("auth.change_pwd_success")}
                 </p>
-                <p className="text-default-500 text-sm mt-1">Mật khẩu mới đã được cập nhật.</p>
-                {/* FIX: Thông báo user nên đăng nhập lại bằng Google để reset session */}
+                <p className="text-default-500 text-sm mt-1">{t("auth.change_pwd_new_saved")}</p>
                 <p className="text-warning text-xs mt-2 px-4">
-                  Nếu bạn dùng đăng nhập Google, vui lòng đăng xuất và đăng nhập lại để đồng bộ phiên mới.
+                  {t("auth.change_pwd_google_hint")}
                 </p>
               </div>
               <RouterLink to="/profile"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline"
                 style={{ color: "#1D4ED8" }}>
                 <ChevronLeft size={15} />
-                Quay lại hồ sơ
+                {t("common.back_to_profile")}
               </RouterLink>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
-              <Input autoFocus label="Mật khẩu hiện tại" name="oldPassword"
+              <Input autoFocus label={t("auth.current_password")} name="oldPassword"
                 type={showOld ? "text" : "password"}
                 value={form.oldPassword} onChange={handleChange} onBlur={() => handleBlur("oldPassword")}
                 variant="bordered" radius="lg"
@@ -207,7 +216,7 @@ export default function ChangePassword() {
               />
 
               <div className="flex flex-col gap-1.5">
-                <Input label="Mật khẩu mới" name="newPassword"
+                <Input label={t("auth.new_password")} name="newPassword"
                   type={showNew ? "text" : "password"}
                   value={form.newPassword} onChange={handleChange} onBlur={() => handleBlur("newPassword")}
                   variant="bordered" radius="lg" autoComplete="new-password"
@@ -234,7 +243,7 @@ export default function ChangePassword() {
                 )}
               </div>
 
-              <Input label="Xác nhận mật khẩu mới" name="confirmPassword"
+              <Input label={t("auth.confirm_password")} name="confirmPassword"
                 type={showCfm ? "text" : "password"}
                 value={form.confirmPassword} onChange={handleChange} onBlur={() => handleBlur("confirmPassword")}
                 variant="bordered" radius="lg" autoComplete="new-password"
@@ -252,23 +261,23 @@ export default function ChangePassword() {
               <Button type="submit" color="primary" isLoading={loading} isDisabled={loading}
                 radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md mt-1"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}>
-                {loading ? "Đang cập nhật…" : "Cập nhật mật khẩu →"}
+                {loading ? t("auth.updating") : t("auth.update_password")}
               </Button>
 
               <div className="flex justify-center">
                 <RouterLink to="/profile"
                   className="inline-flex items-center gap-1.5 text-sm text-default-500 hover:text-default-800 transition-colors">
                   <ChevronLeft size={15} />
-                  Quay lại hồ sơ
+                  {t("common.back_to_profile")}
                 </RouterLink>
               </div>
             </form>
           )}
 
           <p className="text-center text-xs text-default-400 mt-8 leading-relaxed">
-            <RouterLink to="/terms" className="underline hover:text-default-600">Điều khoản dịch vụ</RouterLink>
+            <RouterLink to="/terms" className="underline hover:text-default-600">{t("common.terms_of_service")}</RouterLink>
             {" · "}
-            <RouterLink to="/privacy" className="underline hover:text-default-600">Chính sách bảo mật</RouterLink>
+            <RouterLink to="/privacy" className="underline hover:text-default-600">{t("common.privacy_policy")}</RouterLink>
           </p>
         </div>
       </div>

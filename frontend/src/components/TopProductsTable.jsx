@@ -1,18 +1,20 @@
 import React from "react";
 import { Card, CardBody } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 
 export default function TopProductsTable({ rows = [] }) {
+  const { t } = useTranslation();
   return (
     <Card radius="xl" shadow="sm">
       <CardBody>
-        <h3 className="text-base font-bold mb-3">Top sản phẩm bán chạy</h3>
+        <h3 className="text-base font-bold mb-3">{t("shop.top_products")}</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-default-100 text-default-500 text-left">
-                <th className="pb-2 pr-3">Sản phẩm</th>
-                <th className="pb-2 pr-3 text-right">Số lượng</th>
-                <th className="pb-2 text-right">Doanh thu</th>
+                <th className="pb-2 pr-3">{t("product.product")}</th>
+                <th className="pb-2 pr-3 text-right">{t("common.quantity")}</th>
+                <th className="pb-2 text-right">{t("shop.revenue")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-default-100">
@@ -29,7 +31,7 @@ export default function TopProductsTable({ rows = [] }) {
                     </div>
                   </td>
                   <td className="py-2 pr-3 text-right">{r.qty}</td>
-                  <td className="py-2 text-right">{r.revenue.toLocaleString("vi-VN")} ₫</td>
+                  <td className="py-2 text-right">{r.revenue.toLocaleString()} ₫</td>
                 </tr>
               ))}
             </tbody>

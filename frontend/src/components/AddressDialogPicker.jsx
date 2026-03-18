@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Button, Chip
@@ -24,6 +25,7 @@ export default function AddressDialogPicker({
   onSetDefault,
   onRefresh,
 }) {
+  const { t } = useTranslation();
   const toast = useToast();
   const [localSel, setLocalSel] = useState(selectedId || "");
   const [confirmId, setConfirmId] = useState("");
@@ -44,7 +46,7 @@ export default function AddressDialogPicker({
       await (addressService.remove
         ? addressService.remove(confirmId)
         : addressService.delete(confirmId));
-      toast.success("Đã xoá địa chỉ");
+      toast.success(t("profile.address_deleted"));
       setConfirmId("");
       await onRefresh?.();
       if (localSel === confirmId) {
@@ -52,7 +54,7 @@ export default function AddressDialogPicker({
         setLocalSel(first ? first._id : "");
       }
     } catch (e) {
-      toast.error(e?.response?.data?.message || e.message || "Xoá địa chỉ thất bại");
+      toast.error(e?.response?.data?.message || e.message || t("profile.address_delete_failed"));
     }
   };
 
@@ -60,14 +62,14 @@ export default function AddressDialogPicker({
     <>
       <Modal isOpen={open} onClose={onClose} size="lg" scrollBehavior="inside">
         <ModalContent>
-          <ModalHeader>Chọn địa chỉ nhận hàng</ModalHeader>
+          <ModalHeader>{t("profile.select_delivery_address")}</ModalHeader>
           <ModalBody
             className="space-y-2 pb-2"
             style={{ background: "linear-gradient(180deg, #f6fbff 0%, #ffffff 100%)" }}
           >
             {!addresses || addresses.length === 0 ? (
               <p className="text-sm text-default-500">
-                Bạn chưa có địa chỉ. Nhấn <b>Thêm địa chỉ</b> để tạo mới.
+                {t("profile.no_address_prompt")}
               </p>
             ) : (
               <div className="space-y-3">
@@ -99,7 +101,7 @@ export default function AddressDialogPicker({
                           <Chip size="sm" variant="flat">{a.phone}</Chip>
                           {a.is_default && (
                             <Chip size="sm" color="warning" startContent={<Star size={12} />}>
-                              Mặc định
+                              {t("profile.default_address")}
                             </Chip>
                           )}
                         </div>
@@ -115,7 +117,7 @@ export default function AddressDialogPicker({
                             startContent={<Pencil size={13} />}
                             onPress={() => onEdit?.(a)}
                           >
-                            Sửa
+                            {t("common.edit")}
                           </Button>
                           {!a.is_default && (
                             <Button
@@ -124,7 +126,7 @@ export default function AddressDialogPicker({
                               startContent={<Star size={13} />}
                               onPress={async () => { await onSetDefault?.(a._id); }}
                             >
-                              Đặt mặc định
+                              {t("profile.set_default")}
                             </Button>
                           )}
                           <Button
@@ -134,7 +136,7 @@ export default function AddressDialogPicker({
                             startContent={<Trash2 size={13} />}
                             onPress={() => setConfirmId(a._id)}
                           >
-                            Xoá
+                            {t("common.delete")}
                           </Button>
                         </div>
                       </div>
@@ -152,12 +154,12 @@ export default function AddressDialogPicker({
           </ModalBody>
           <ModalFooter className="justify-between">
             <Button variant="light" startContent={<Plus size={15} />} onPress={() => onAddNew?.()}>
-              Thêm địa chỉ
+              {t("profile.add_address_btn")}
             </Button>
             <div className="flex gap-2">
-              <Button variant="light" onPress={onClose}>Đóng</Button>
+              <Button variant="light" onPress={onClose}>{t("common.close")}</Button>
               <Button color="primary" isDisabled={!localSel} onPress={choose}>
-                Dùng địa chỉ này
+                {t("profile.use_this_address")}
               </Button>
             </div>
           </ModalFooter>
@@ -167,15 +169,15 @@ export default function AddressDialogPicker({
       {/* Confirm delete */}
       <Modal isOpen={!!confirmId} onClose={() => setConfirmId("")} size="sm">
         <ModalContent>
-          <ModalHeader>Xoá địa chỉ</ModalHeader>
+          <ModalHeader>{t("profile.delete_address_title")}</ModalHeader>
           <ModalBody>
             <p className="text-sm text-default-600">
-              Bạn có chắc chắn muốn xoá địa chỉ này? Hành động này không thể hoàn tác.
+              {t("profile.delete_address_confirm")}
             </p>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={() => setConfirmId("")}>Huỷ</Button>
-            <Button color="danger" onPress={doDelete}>Xoá</Button>
+            <Button variant="light" onPress={() => setConfirmId("")}>{t("common.cancel")}</Button>
+            <Button color="danger" onPress={doDelete}>{t("common.delete")}</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -128,8 +128,13 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/notifications", notificationRoutes);
-app.use("/api/admin/products", adminProductRoutes);
-app.use("/api/admin/moderation", require("./routes/adminModerationRoutes"));
+app.use("/api/size-charts",  require("./routes/sizeChartRoutes"));
+app.use("/api/admin/products",      adminProductRoutes);
+app.use("/api/admin/moderation",    require("./routes/adminModerationRoutes"));
+app.use("/api/admin/users",         require("./routes/adminUserRoutes"));
+app.use("/api/admin/audit-logs",    require("./routes/auditLogRoutes"));
+app.use("/api/admin/api-keys",      require("./routes/apiKeyRoutes"));
+app.use("/api/admin/system-config", require("./routes/systemConfigRoutes"));
 // app.use("/api/admin", adminRoutes);
 
 app.use("/static/invoices", express.static(path.join(__dirname, "../public/invoices")));

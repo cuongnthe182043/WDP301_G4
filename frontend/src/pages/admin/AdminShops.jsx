@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,
@@ -16,11 +17,7 @@ import {
 import { useToast } from "../../components/common/ToastProvider";
 import { formatCurrency } from "../../utils/formatCurrency";
 
-const STATUS_CONFIG = {
-  pending:   { label: "Chờ duyệt",     color: "warning" },
-  approved:  { label: "Hoạt động",     color: "success" },
-  suspended: { label: "Tạm khóa",      color: "danger" },
-};
+// STATUS_CONFIG is built inside the component using t()
 
 function StatCard({ icon: Icon, label, value, color = "blue" }) {
   const colors = {
@@ -45,7 +42,14 @@ function StatCard({ icon: Icon, label, value, color = "blue" }) {
 }
 
 export default function AdminShops() {
+  const { t } = useTranslation();
   const { toast } = useToast();
+
+  const STATUS_CONFIG = {
+    pending:   { label: t("admin.shop_filter_pending"),   color: "warning" },
+    approved:  { label: t("admin.shop_filter_approved"),  color: "success" },
+    suspended: { label: t("admin.shop_filter_suspended"), color: "danger" },
+  };
 
   const [shops, setShops] = useState([]);
   const [total, setTotal] = useState(0);
@@ -69,7 +73,7 @@ export default function AdminShops() {
       setShops(data.items);
       setTotal(data.total);
     } catch {
-      toast.error("Không thể tải danh sách shops");
+      toast.error(t("admin.load_failed"));
     } finally {
       setLoading(false);
     }
@@ -85,7 +89,7 @@ export default function AdminShops() {
       const data = await adminGetShopStats(shop._id);
       setStatsData(data);
     } catch {
-      toast.error("Không thể tải thống kê");
+      toast.error(t("admin.load_failed"));
     } finally {
       setStatsLoading(false);
     }
@@ -94,10 +98,10 @@ export default function AdminShops() {
   const handleApprove = async (shop) => {
     try {
       await adminApproveShop(shop._id);
-      toast.success(`Đã duyệt shop "${shop.shop_name}"`);
+      toast.success(`${t("admin.approve_shop")}: "${shop.shop_name}"`);
       load();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Thao tác thất bại");
+      toast.error(err.response?.data?.message || t("admin.action_failed"));
     }
   };
 
@@ -107,16 +111,16 @@ export default function AdminShops() {
     try {
       if (actionModal.action === "suspend") {
         await adminSuspendShop(actionModal.shop._id, reason);
-        toast.success("Đã tạm khóa shop");
+        toast.success(t("admin.suspend_shop"));
       } else if (actionModal.action === "reject") {
         await adminRejectShop(actionModal.shop._id, reason);
-        toast.success("Đã từ chối shop");
+        toast.success(t("admin.reject_shop"));
       }
       setActionModal(null);
       setReason("");
       load();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Thao tác thất bại");
+      toast.error(err.response?.data?.message || t("admin.action_failed"));
     } finally {
       setActionLoading(false);
     }
@@ -132,7 +136,7 @@ export default function AdminShops() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-gray-900">Quản lý Shop</h1>
+        <h1 className="text-xl font-black text-gray-900">{t("admin.manage_shops")}</h1>
         <Button
           variant="bordered"
           radius="lg"
@@ -140,22 +144,22 @@ export default function AdminShops() {
           startContent={<RefreshCw size={14} />}
           onPress={load}
         >
-          Làm mới
+          {t("common.reset")}
         </Button>
       </div>
 
       {/* Stats row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Store}    label="Tổng shops"   value={total}          color="blue" />
-        <StatCard icon={Package}  label="Chờ duyệt"    value={counts.pending} color="amber" />
-        <StatCard icon={CheckCircle} label="Hoạt động" value={counts.approved} color="green" />
-        <StatCard icon={XCircle}  label="Tạm khóa"     value={counts.suspended} color="red" />
+        <StatCard icon={Store}    label={t("admin.total_shops")}  value={total}            color="blue" />
+        <StatCard icon={Package}  label={t("admin.pending_shops")} value={counts.pending}   color="amber" />
+        <StatCard icon={CheckCircle} label={t("admin.active_shops")} value={counts.approved} color="green" />
+        <StatCard icon={XCircle}  label={t("admin.shop_filter_suspended")} value={counts.suspended} color="red" />
       </div>
 
       {/* Filter */}
       <div className="flex flex-col sm:flex-row gap-3">
         <Input
-          placeholder="Tìm theo tên shop..."
+          placeholder={t("common.search") + "…"}
           value={q}
           onValueChange={(v) => { setQ(v); setPage(1); }}
           startContent={<Search size={16} className="text-gray-400" />}
@@ -169,31 +173,31 @@ export default function AdminShops() {
           radius="lg"
           variant="bordered"
           className="w-48"
-          aria-label="Lọc trạng thái"
-          placeholder="Tất cả trạng thái"
+          aria-label={t("admin.shop_status")}
+          placeholder={t("admin.shop_filter_all")}
         >
-          <SelectItem key="">Tất cả</SelectItem>
-          <SelectItem key="pending">Chờ duyệt</SelectItem>
-          <SelectItem key="approved">Hoạt động</SelectItem>
-          <SelectItem key="suspended">Tạm khóa</SelectItem>
+          <SelectItem key="">{t("common.all")}</SelectItem>
+          <SelectItem key="pending">{t("admin.shop_filter_pending")}</SelectItem>
+          <SelectItem key="approved">{t("admin.shop_filter_approved")}</SelectItem>
+          <SelectItem key="suspended">{t("admin.shop_filter_suspended")}</SelectItem>
         </Select>
       </div>
 
       {/* Table */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <Table
-          aria-label="Danh sách shops"
+          aria-label={t("admin.shops_list")}
           radius="xl"
           shadow="sm"
           classNames={{ th: "bg-gray-50 text-gray-600 font-semibold text-xs uppercase" }}
         >
           <TableHeader>
             <TableColumn>Shop</TableColumn>
-            <TableColumn>Chủ sở hữu</TableColumn>
-            <TableColumn>Liên hệ</TableColumn>
-            <TableColumn>Trạng thái</TableColumn>
-            <TableColumn>Ngày đăng ký</TableColumn>
-            <TableColumn>Hành động</TableColumn>
+            <TableColumn>{t("common.name")}</TableColumn>
+            <TableColumn>{t("common.phone")}</TableColumn>
+            <TableColumn>{t("common.status")}</TableColumn>
+            <TableColumn>{t("order.date")}</TableColumn>
+            <TableColumn>{t("common.actions")}</TableColumn>
           </TableHeader>
           <TableBody
             isLoading={loading}
@@ -205,7 +209,7 @@ export default function AdminShops() {
             emptyContent={
               <div className="flex flex-col items-center gap-2 py-10 text-gray-400">
                 <Store size={32} className="text-gray-200" />
-                <p className="text-sm">Không có shop nào</p>
+                <p className="text-sm">{t("common.no_data")}</p>
               </div>
             }
           >
@@ -250,19 +254,19 @@ export default function AdminShops() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
-                      <Tooltip content="Xem thống kê">
+                      <Tooltip content={t("admin.view_stats")}>
                         <Button isIconOnly size="sm" variant="light" radius="lg" onPress={() => openStats(shop)}>
                           <Eye size={15} className="text-blue-500" />
                         </Button>
                       </Tooltip>
                       {shop.status === "pending" && (
                         <>
-                          <Tooltip content="Duyệt shop">
+                          <Tooltip content={t("admin.approve_shop")}>
                             <Button isIconOnly size="sm" variant="light" radius="lg" onPress={() => handleApprove(shop)}>
                               <CheckCircle size={15} className="text-emerald-500" />
                             </Button>
                           </Tooltip>
-                          <Tooltip content="Từ chối">
+                          <Tooltip content={t("admin.reject_shop")}>
                             <Button isIconOnly size="sm" variant="light" radius="lg" onPress={() => { setActionModal({ shop, action: "reject" }); setReason(""); }}>
                               <XCircle size={15} className="text-red-500" />
                             </Button>
@@ -270,14 +274,14 @@ export default function AdminShops() {
                         </>
                       )}
                       {shop.status === "approved" && (
-                        <Tooltip content="Tạm khóa">
+                        <Tooltip content={t("admin.suspend_shop")}>
                           <Button isIconOnly size="sm" variant="light" radius="lg" onPress={() => { setActionModal({ shop, action: "suspend" }); setReason(""); }}>
                             <PauseCircle size={15} className="text-amber-500" />
                           </Button>
                         </Tooltip>
                       )}
                       {shop.status === "suspended" && (
-                        <Tooltip content="Duyệt lại">
+                        <Tooltip content={t("admin.approve_shop")}>
                           <Button isIconOnly size="sm" variant="light" radius="lg" onPress={() => handleApprove(shop)}>
                             <CheckCircle size={15} className="text-emerald-500" />
                           </Button>
@@ -295,8 +299,8 @@ export default function AdminShops() {
       {/* Pagination */}
       {total > 20 && (
         <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage((p) => p - 1)}>Trước</Button>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page * 20 >= total} onPress={() => setPage((p) => p + 1)}>Sau</Button>
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage((p) => p - 1)}>&lsaquo; {t("common.back")}</Button>
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page * 20 >= total} onPress={() => setPage((p) => p + 1)}>{t("common.show_more")} &rsaquo;</Button>
         </div>
       )}
 
@@ -304,7 +308,7 @@ export default function AdminShops() {
       <Modal isOpen={!!statsModal} onClose={() => setStatsModal(null)} radius="xl" size="lg">
         <ModalContent>
           <ModalHeader className="font-black text-gray-900">
-            Thống kê: {statsModal?.shop_name}
+            {t("admin.shop_stats")}: {statsModal?.shop_name}
           </ModalHeader>
           <ModalBody className="pb-6">
             {statsLoading ? (
@@ -313,13 +317,13 @@ export default function AdminShops() {
               </div>
             ) : statsData ? (
               <div className="grid grid-cols-2 gap-4">
-                <StatCard icon={Package}    label="Sản phẩm"    value={statsData.total_products}  color="blue" />
-                <StatCard icon={Store}      label="Đơn hàng"    value={statsData.total_orders}    color="amber" />
-                <StatCard icon={DollarSign} label="Doanh thu"   value={formatCurrency(statsData.total_revenue)} color="green" />
-                <StatCard icon={Users}      label="Theo dõi"    value={statsData.followers || 0}  color="blue" />
+                <StatCard icon={Package}    label={t("admin.stats_products")} value={statsData.total_products}  color="blue" />
+                <StatCard icon={Store}      label={t("admin.stats_orders")}   value={statsData.total_orders}    color="amber" />
+                <StatCard icon={DollarSign} label={t("admin.stats_revenue")}  value={formatCurrency(statsData.total_revenue)} color="green" />
+                <StatCard icon={Users}      label={t("admin.stats_customers")} value={statsData.followers || 0} color="blue" />
               </div>
             ) : (
-              <p className="text-center text-gray-400 py-4">Không có dữ liệu</p>
+              <p className="text-center text-gray-400 py-4">{t("common.no_data")}</p>
             )}
           </ModalBody>
         </ModalContent>
@@ -329,15 +333,15 @@ export default function AdminShops() {
       <Modal isOpen={!!actionModal} onClose={() => setActionModal(null)} radius="xl">
         <ModalContent>
           <ModalHeader className="font-black text-gray-900">
-            {actionModal?.action === "suspend" ? "Tạm khóa shop" : "Từ chối đăng ký"}
+            {actionModal?.action === "suspend" ? t("admin.suspend_shop") : t("admin.reject_shop")}
           </ModalHeader>
           <ModalBody>
             <p className="text-sm text-gray-600 mb-3">
-              Bạn đang {actionModal?.action === "suspend" ? "tạm khóa" : "từ chối"} shop <strong>{actionModal?.shop?.shop_name}</strong>.
+              {actionModal?.action === "suspend" ? t("admin.action_suspend") : t("admin.action_reject")}: <strong>{actionModal?.shop?.shop_name}</strong>.
             </p>
             <Textarea
-              label="Lý do (tùy chọn)"
-              placeholder="Nhập lý do..."
+              label={`${t("common.reason")} (${t("common.optional")})`}
+              placeholder={t("admin.reason_placeholder")}
               value={reason}
               onValueChange={setReason}
               variant="bordered"
@@ -346,14 +350,14 @@ export default function AdminShops() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="bordered" radius="lg" onPress={() => setActionModal(null)}>Hủy</Button>
+            <Button variant="bordered" radius="lg" onPress={() => setActionModal(null)}>{t("common.cancel")}</Button>
             <Button
               color={actionModal?.action === "suspend" ? "warning" : "danger"}
               radius="lg"
               isLoading={actionLoading}
               onPress={handleAction}
             >
-              {actionModal?.action === "suspend" ? "Tạm khóa" : "Từ chối"}
+              {actionModal?.action === "suspend" ? t("admin.action_suspend") : t("admin.action_reject")}
             </Button>
           </ModalFooter>
         </ModalContent>

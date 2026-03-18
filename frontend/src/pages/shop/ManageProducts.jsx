@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { productAdminService as svc } from "../../services/productAdminService";
 import {
   Card, CardBody, Button, Input, Chip, Select, SelectItem,
@@ -14,24 +15,25 @@ const STATUS_COLOR = {
   out_of_stock: "danger",
 };
 
-const STATUS_LABEL = {
-  active:       "Đang bán",
-  pending:      "Chờ duyệt",
-  inactive:     "Ẩn / Từ chối",
-  out_of_stock: "Hết hàng",
-};
-
-const STATUS_OPTS = [
-  { key: "all",          label: "Tất cả" },
-  { key: "active",       label: "Đang bán" },
-  { key: "pending",      label: "Chờ duyệt" },
-  { key: "inactive",     label: "Ẩn / Từ chối" },
-  { key: "out_of_stock", label: "Hết hàng" },
-];
-
 export default function ManageProducts() {
+  const { t } = useTranslation();
   const navigate   = useNavigate();
   const importRef  = useRef(null);
+
+  const STATUS_LABEL = {
+    active:       t("shop.product_status_active"),
+    pending:      t("shop.product_status_pending"),
+    inactive:     t("shop.product_status_inactive"),
+    out_of_stock: t("shop.product_status_out_of_stock"),
+  };
+
+  const STATUS_OPTS = [
+    { key: "all",          label: t("shop.product_status_all") },
+    { key: "active",       label: t("shop.product_status_active") },
+    { key: "pending",      label: t("shop.product_status_pending") },
+    { key: "inactive",     label: t("shop.product_status_inactive") },
+    { key: "out_of_stock", label: t("shop.product_status_out_of_stock") },
+  ];
 
   const [loading,       setLoading]       = useState(true);
   const [products,      setProducts]      = useState([]);
@@ -66,8 +68,8 @@ export default function ManageProducts() {
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   useEffect(() => {
-    const t = setTimeout(() => { setPage(1); fetchProducts(); }, 400);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => { setPage(1); fetchProducts(); }, 400);
+    return () => clearTimeout(timer);
   }, [query]);
 
   const handleDelete = async () => {
@@ -101,7 +103,7 @@ export default function ManageProducts() {
     e.target.value = ""; // reset so same file can be re-selected
 
     if (!file.name.endsWith(".xlsx") && !file.name.endsWith(".xls")) {
-      setImportResult({ error: "Chỉ chấp nhận file .xlsx hoặc .xls" });
+      setImportResult({ error: t("common.error") });
       setShowImport(true);
       return;
     }
@@ -114,7 +116,7 @@ export default function ManageProducts() {
       setImportResult(result);
       fetchProducts();
     } catch (err) {
-      setImportResult({ error: err?.response?.data?.message || err.message || "Import thất bại" });
+      setImportResult({ error: err?.response?.data?.message || err.message || t("common.error") });
     } finally {
       setImporting(false);
     }
@@ -126,9 +128,9 @@ export default function ManageProducts() {
     <div className="space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-default-900">Quản lý sản phẩm</h1>
+          <h1 className="text-xl font-black text-default-900">{t("shop.manage_products")}</h1>
           <p className="text-sm text-default-400">
-            {total} sản phẩm · Xem và quản lý toàn bộ sản phẩm trong kho
+            {total} {t("shop.product_count_desc")}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -136,12 +138,12 @@ export default function ManageProducts() {
             size="sm" radius="lg" className="w-40"
             selectedKeys={new Set([statusFilter])}
             onSelectionChange={(k) => { setStatusFilter(Array.from(k)[0] || "all"); setPage(1); }}
-            aria-label="Lọc trạng thái"
+            aria-label={t("shop.product_status_filter")}
           >
             {STATUS_OPTS.map((o) => <SelectItem key={o.key}>{o.label}</SelectItem>)}
           </Select>
           <Input
-            size="sm" placeholder="Tìm kiếm sản phẩm..." value={query}
+            size="sm" placeholder={t("product.search_products")} value={query}
             onValueChange={(v) => { setQuery(v); setPage(1); }}
             radius="lg" className="w-56"
             startContent={<Search size={14} className="text-default-400" />}
@@ -152,7 +154,7 @@ export default function ManageProducts() {
             size="sm" variant="bordered" radius="lg"
             startContent={<Download size={14} />}
             onPress={handleDownloadTemplate}
-            title="Tải template Excel"
+            title={t("shop.product_download_template")}
           >
             Template
           </Button>
@@ -163,7 +165,7 @@ export default function ManageProducts() {
             className="cursor-pointer"
             isDisabled={importing}
           >
-            {importing ? "Đang nhập..." : "Nhập Excel"}
+            {importing ? t("shop.product_importing") : t("shop.product_import_excel")}
             <input ref={importRef} hidden accept=".xlsx,.xls" type="file" onChange={handleImportFile} />
           </Button>
           <Button
@@ -171,7 +173,7 @@ export default function ManageProducts() {
             startContent={<Plus size={14} />}
             onPress={() => navigate("/shop/admin/products/new")}
           >
-            Thêm sản phẩm
+            {t("shop.product_add_new")}
           </Button>
         </div>
       </div>
@@ -182,20 +184,20 @@ export default function ManageProducts() {
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : products.length === 0 ? (
             <div className="text-center py-16 text-default-400">
-              Không tìm thấy sản phẩm phù hợp
+              {t("shop.product_no_match")}
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-default-50 border-b border-default-100">
+              <thead className="bg-default-50 dark:bg-zinc-800 border-b border-default-100 dark:border-zinc-700">
                 <tr>
-                  {["Ảnh", "Tên sản phẩm", "Giá", "Tồn kho", "Trạng thái", ""].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
+                  {[t("shop.product_col_image"), t("shop.product_col_name"), t("shop.product_col_price"), t("shop.product_col_stock"), t("shop.product_col_status"), ""].map((h) => (
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-default-100">
+              <tbody className="divide-y divide-default-100 dark:divide-zinc-700">
                 {products.map((p) => (
-                  <tr key={p._id} className="hover:bg-default-50 transition-colors">
+                  <tr key={p._id} className="hover:bg-default-50 dark:hover:bg-zinc-800 transition-colors">
                     <td className="px-4 py-3">
                       <img
                         src={p.images?.[0] || "/no-image.jpg"} alt={p.name}
@@ -203,11 +205,11 @@ export default function ManageProducts() {
                       />
                     </td>
                     <td className="px-4 py-3 max-w-xs">
-                      <p className="font-semibold text-default-900 truncate">{p.name}</p>
+                      <p className="font-semibold text-default-900 dark:text-zinc-100 truncate">{p.name}</p>
                       <p className="text-xs text-default-400 truncate">{p.category_name || "—"}</p>
                       {p.rejection_reason && (
                         <p className="text-xs text-danger mt-0.5 truncate">
-                          Lý do từ chối: {p.rejection_reason}
+                          {t("shop.product_rejection_reason")} {p.rejection_reason}
                         </p>
                       )}
                     </td>
@@ -227,21 +229,21 @@ export default function ManageProducts() {
                           startContent={<Layers size={13} />}
                           onPress={() => navigate(`/shop/admin/products/${p._id}/variants`)}
                         >
-                          Biến thể
+                          {t("shop.product_variants")}
                         </Button>
                         <Button
                           size="sm" variant="bordered" radius="lg"
                           startContent={<Pencil size={13} />}
                           onPress={() => navigate(`/shop/admin/products/${p._id}`)}
                         >
-                          Sửa
+                          {t("shop.product_edit")}
                         </Button>
                         <Button
                           size="sm" color="danger" variant="bordered" radius="lg"
                           startContent={<Trash2 size={13} />}
                           onPress={() => setDeleteTarget(p)}
                         >
-                          Xóa
+                          {t("shop.product_delete")}
                         </Button>
                       </div>
                     </td>
@@ -257,11 +259,11 @@ export default function ManageProducts() {
       {totalPages > 1 && (
         <div className="flex justify-center gap-2">
           <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-            ← Trước
+            {t("shop.product_prev")}
           </Button>
-          <span className="text-sm text-default-500 self-center">Trang {page}/{totalPages}</span>
+          <span className="text-sm text-default-500 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
           <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-            Sau →
+            {t("shop.product_next")}
           </Button>
         </div>
       )}
@@ -271,17 +273,15 @@ export default function ManageProducts() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Xác nhận xóa sản phẩm</ModalHeader>
+              <ModalHeader>{t("shop.product_delete_title")}</ModalHeader>
               <ModalBody>
-                <p className="text-sm text-default-500">
-                  Bạn có chắc chắn muốn xóa sản phẩm{" "}
-                  "<strong className="text-default-900">{deleteTarget?.name}</strong>"?
-                  Tất cả biến thể cũng sẽ bị xóa.
-                </p>
+                <p className="text-sm text-default-500"
+                  dangerouslySetInnerHTML={{ __html: t("shop.product_delete_body", { name: deleteTarget?.name }) }}
+                />
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Hủy</Button>
-                <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>Xóa</Button>
+                <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>{t("common.delete")}</Button>
               </ModalFooter>
             </>
           )}
@@ -295,19 +295,19 @@ export default function ManageProducts() {
             <>
               <ModalHeader className="flex items-center gap-2">
                 <FileSpreadsheet size={18} className="text-secondary" />
-                Kết quả nhập Excel
+                {t("shop.product_import_title")}
               </ModalHeader>
               <ModalBody>
                 {importing ? (
                   <div className="flex flex-col items-center gap-3 py-6">
                     <Spinner size="lg" />
-                    <p className="text-sm text-default-500">Đang xử lý file...</p>
+                    <p className="text-sm text-default-500">{t("shop.product_importing_file")}</p>
                   </div>
                 ) : importResult?.error ? (
                   <div className="flex items-start gap-3 p-4 bg-danger-50 border border-danger-200 rounded-xl">
                     <AlertCircle size={18} className="text-danger flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm font-semibold text-danger">Lỗi import</p>
+                      <p className="text-sm font-semibold text-danger">{t("shop.product_import_error_title")}</p>
                       <p className="text-xs text-danger-600 mt-0.5">{importResult.error}</p>
                     </div>
                   </div>
@@ -316,16 +316,16 @@ export default function ManageProducts() {
                     <div className="flex items-start gap-3 p-4 bg-success-50 border border-success-200 rounded-xl">
                       <CheckCircle size={18} className="text-success-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm font-semibold text-success-700">Import thành công</p>
+                        <p className="text-sm font-semibold text-success-700">{t("shop.product_import_success_title")}</p>
                         <p className="text-xs text-success-600 mt-0.5">
-                          Đã tạo <strong>{importResult.inserted}</strong> sản phẩm mới (trạng thái: Chờ duyệt)
+                          {t("shop.product_import_success_desc", { count: importResult.inserted })}
                         </p>
                       </div>
                     </div>
                     {importResult.errors?.length > 0 && (
                       <div className="space-y-1">
                         <p className="text-xs font-semibold text-warning-700">
-                          {importResult.errors.length} dòng bị bỏ qua:
+                          {t("shop.product_import_skip_count", { count: importResult.errors.length })}
                         </p>
                         <div className="max-h-40 overflow-y-auto space-y-1">
                           {importResult.errors.map((e, i) => (
@@ -341,7 +341,7 @@ export default function ManageProducts() {
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" radius="lg" onPress={onClose} isDisabled={importing}>
-                  {importing ? "Đang xử lý..." : "Đóng"}
+                  {importing ? t("shop.product_importing") : t("common.close")}
                 </Button>
               </ModalFooter>
             </>

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { userService } from "../services/userService";
 import { useAuth } from "../context/AuthContext";
@@ -11,10 +12,10 @@ const inputWrapCls = (hasError) =>
     : "border-blue-100 bg-blue-50/50 focus-within:border-blue-400 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-100"
   }`;
 
-const STRENGTH_CONFIG = [
-  { label: "Quá yếu",   color: "#EF4444", bg: "#FEE2E2", width: "33%" },
-  { label: "Trung bình", color: "#F59E0B", bg: "#FEF3C7", width: "66%" },
-  { label: "Mạnh",      color: "#10B981", bg: "#D1FAE5", width: "100%" },
+const STRENGTH_CONFIG_KEYS = [
+  { labelKey: "auth.pwd_strength_very_weak", color: "#EF4444", bg: "#FEE2E2", width: "33%" },
+  { labelKey: "auth.pwd_strength_medium",    color: "#F59E0B", bg: "#FEF3C7", width: "66%" },
+  { labelKey: "auth.pwd_strength_strong",    color: "#10B981", bg: "#D1FAE5", width: "100%" },
 ];
 
 function PasswordField({ label, value, onChange, show, onToggleShow, error, autoComplete, hint }) {
@@ -69,6 +70,7 @@ function PasswordField({ label, value, onChange, show, onToggleShow, error, auto
 }
 
 export default function ChangePasswordForm() {
+  const { t } = useTranslation();
   const { logout } = useAuth();
   const [form, setForm] = useState({ current_password: "", new_password: "", confirm: "" });
   const [show, setShow] = useState({ current: false, next: false, confirm: false });
@@ -93,11 +95,11 @@ export default function ChangePasswordForm() {
 
   const validate = (p) => {
     const e = {};
-    if (!p.current_password?.trim()) e.current_password = "Vui lòng nhập mật khẩu hiện tại";
-    if (!p.new_password?.trim()) e.new_password = "Vui lòng nhập mật khẩu mới";
-    else if (p.new_password.length < 8) e.new_password = "Mật khẩu mới tối thiểu 8 ký tự";
-    if (!p.confirm?.trim()) e.confirm = "Vui lòng xác nhận lại mật khẩu";
-    else if (p.new_password && p.confirm && p.new_password !== p.confirm) e.confirm = "Mật khẩu xác nhận không khớp";
+    if (!p.current_password?.trim()) e.current_password = t("auth.old_password_required");
+    if (!p.new_password?.trim()) e.new_password = t("auth.new_password_required");
+    else if (p.new_password.length < 8) e.new_password = t("auth.err_min_length", { count: 8 });
+    if (!p.confirm?.trim()) e.confirm = t("auth.confirm_password_required");
+    else if (p.new_password && p.confirm && p.new_password !== p.confirm) e.confirm = t("auth.err_password_match");
     return e;
   };
 
@@ -109,19 +111,19 @@ export default function ChangePasswordForm() {
     setSaving(true);
     try {
       await userService.changePassword({ current_password: form.current_password, new_password: form.new_password });
-      setMsg({ type: "ok", text: "Đổi mật khẩu thành công! Đang đăng xuất…" });
+      setMsg({ type: "ok", text: t("auth.change_pwd_success_logout") });
       setForm({ current_password: "", new_password: "", confirm: "" });
       // Force logout so the old token is cleared and the user re-authenticates
       // with the new password. Delay gives the success message time to show.
       setTimeout(() => logout(), 1500);
     } catch (err) {
-      setMsg({ type: "err", text: err?.message || "Đổi mật khẩu thất bại" });
+      setMsg({ type: "err", text: err?.message || t("auth.change_password_failed") });
     } finally {
       setSaving(false);
     }
   };
 
-  const sConfig = form.new_password.length > 0 ? STRENGTH_CONFIG[Math.max(0, strength - 1)] : null;
+  const sConfig = form.new_password.length > 0 ? STRENGTH_CONFIG_KEYS[Math.max(0, strength - 1)] : null;
 
   return (
     <form onSubmit={submit} noValidate className="space-y-5">
@@ -135,14 +137,13 @@ export default function ChangePasswordForm() {
           <ShieldCheck size={16} className="text-blue-600" />
         </div>
         <p className="text-sm text-blue-700 font-medium leading-relaxed">
-          Để bảo mật tài khoản, vui lòng <strong>không chia sẻ mật khẩu</strong> cho người khác.
-          Mật khẩu mạnh nên có ít nhất 8 ký tự, gồm chữ hoa, thường và số.
+          {t("auth.change_pwd_security_hint")}
         </p>
       </div>
 
       {/* Current password */}
       <PasswordField
-        label="Mật khẩu hiện tại"
+        label={t("auth.current_password")}
         value={form.current_password}
         onChange={e => onChange("current_password", e.target.value)}
         show={show.current}
@@ -154,7 +155,7 @@ export default function ChangePasswordForm() {
       {/* New password */}
       <div>
         <PasswordField
-          label="Mật khẩu mới"
+          label={t("auth.new_password")}
           value={form.new_password}
           onChange={e => onChange("new_password", e.target.value)}
           show={show.next}
@@ -184,27 +185,27 @@ export default function ChangePasswordForm() {
               </div>
               <div className="flex items-center justify-between mt-1">
                 <span className="text-xs font-bold" style={{ color: sConfig.color }}>
-                  {sConfig.label}
+                  {t(sConfig.labelKey)}
                 </span>
-                <span className="text-[10px] text-blue-300">{form.new_password.length} ký tự</span>
+                <span className="text-[10px] text-blue-300">{form.new_password.length} {t("auth.pwd_chars")}</span>
               </div>
 
               {/* Checklist */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2">
                 {[
-                  { pass: form.new_password.length >= 8, label: "Ít nhất 8 ký tự" },
-                  { pass: /[A-Z]/.test(form.new_password), label: "Có chữ hoa (A–Z)" },
-                  { pass: /[a-z]/.test(form.new_password), label: "Có chữ thường (a–z)" },
-                  { pass: /[\d^A-Za-z]/.test(form.new_password), label: "Có số hoặc ký tự đặc biệt" },
-                ].map(({ pass, label }) => (
-                  <div key={label} className="flex items-center gap-1.5">
+                  { pass: form.new_password.length >= 8, labelKey: "auth.pwd_tip_min8" },
+                  { pass: /[A-Z]/.test(form.new_password), labelKey: "auth.pwd_check_uppercase" },
+                  { pass: /[a-z]/.test(form.new_password), labelKey: "auth.pwd_check_lowercase" },
+                  { pass: /[\d^A-Za-z]/.test(form.new_password), labelKey: "auth.pwd_check_number_special" },
+                ].map(({ pass, labelKey }) => (
+                  <div key={labelKey} className="flex items-center gap-1.5">
                     <div
                       className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-300"
                       style={{ background: pass ? "#D1FAE5" : "#F1F5F9" }}
                     >
                       <Check size={9} style={{ color: pass ? "#059669" : "#CBD5E1" }} />
                     </div>
-                    <span className="text-[11px]" style={{ color: pass ? "#059669" : "#94A3B8" }}>{label}</span>
+                    <span className="text-[11px]" style={{ color: pass ? "#059669" : "#94A3B8" }}>{t(labelKey)}</span>
                   </div>
                 ))}
               </div>
@@ -215,7 +216,7 @@ export default function ChangePasswordForm() {
 
       {/* Confirm password */}
       <PasswordField
-        label="Nhập lại mật khẩu"
+        label={t("auth.confirm_password")}
         value={form.confirm}
         onChange={e => onChange("confirm", e.target.value)}
         show={show.confirm}
@@ -244,9 +245,9 @@ export default function ChangePasswordForm() {
                 transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                 className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full inline-block"
               />
-              Đang đổi…
+              {t("auth.changing_password")}
             </span>
-          ) : "Đổi mật khẩu"}
+          ) : t("auth.change_password")}
         </motion.button>
 
         <AnimatePresence>

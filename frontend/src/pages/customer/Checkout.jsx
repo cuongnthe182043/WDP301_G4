@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Card, CardBody, Button, Divider, Input, Radio, RadioGroup, Chip, Spinner,
@@ -14,15 +15,16 @@ import PayPalCheckout      from "../../components/PayPalCheckout";
 import { useCheckout }     from "../../hooks/useCheckout";
 
 function PaymentMethodPanel({ value, onChange, disabled }) {
+  const { t } = useTranslation();
   const methods = [
-    { val: "COD",    label: "Thanh toán khi nhận hàng (COD)", icon: Banknote },
-    { val: "PAYPAL", label: "PayPal (Sandbox)",               icon: CreditCard },
-    { val: "VNPAY",  label: "VNPAY (Sandbox)",                icon: CreditCard },
+    { val: "COD",    label: t("checkout.pay_cod"),    icon: Banknote },
+    { val: "PAYPAL", label: t("checkout.pay_paypal"), icon: CreditCard },
+    { val: "VNPAY",  label: t("checkout.pay_vnpay"),  icon: CreditCard },
   ];
   return (
     <Card radius="xl" shadow="sm" className={`flex-1 border border-default-100 ${disabled ? "opacity-60" : ""}`}>
       <CardBody className="p-5">
-        <h3 className="font-bold text-default-900 mb-3">Phương thức thanh toán</h3>
+        <h3 className="font-bold text-default-900 mb-3">{t("checkout.payment_method")}</h3>
         <RadioGroup value={value} onValueChange={onChange} isDisabled={disabled}>
           {methods.map(({ val, label, icon: Icon }) => (
             <Radio key={val} value={val}>
@@ -47,6 +49,7 @@ const prettyJoin = (parts = []) =>
   parts.map(x => String(x || "").trim()).filter(x => x && x !== "-" && x !== "—").join(", ");
 
 export default function Checkout() {
+  const { t } = useTranslation();
   const toast = useToast();
   const nav   = useNavigate();
 
@@ -81,7 +84,7 @@ export default function Checkout() {
 
         {/* Header */}
         <div className="flex items-center justify-between mb-7">
-          <h1 className="text-xl font-black text-default-900">Thanh toán</h1>
+          <h1 className="text-xl font-black text-default-900">{t("checkout.title")}</h1>
           {isBuyNow ? (
             <Button
               variant="bordered" size="sm" radius="lg"
@@ -89,7 +92,7 @@ export default function Checkout() {
               className="text-default-600"
               onPress={() => nav(-1)}
             >
-              Quay lại
+              {t("common.back")}
             </Button>
           ) : (
             <Button
@@ -98,7 +101,7 @@ export default function Checkout() {
               startContent={<ArrowLeft size={15} />}
               className="text-default-600"
             >
-              Quay lại giỏ hàng
+              {t("cart.continue_shopping")}
             </Button>
           )}
         </div>
@@ -109,10 +112,10 @@ export default function Checkout() {
             <CardBody className="p-5">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-bold text-default-900 flex items-center gap-2">
-                  <Home size={16} className="text-primary" /> Địa chỉ nhận hàng
+                  <Home size={16} className="text-primary" /> {t("checkout.address")}
                 </h3>
                 <Button size="sm" variant="light" color="primary" radius="lg" onPress={() => setOpenPicker(true)}>
-                  Thay đổi
+                  {t("checkout.change_address")}
                 </Button>
               </div>
               {currentAddr ? (
@@ -122,7 +125,7 @@ export default function Checkout() {
                     <span className="font-semibold text-sm">{currentAddr.name}</span>
                     <Chip size="sm" variant="flat">{currentAddr.phone}</Chip>
                     {currentAddr.is_default && (
-                      <Chip size="sm" color="warning" startContent={<Star size={11} />}>Mặc định</Chip>
+                      <Chip size="sm" color="warning" startContent={<Star size={11} />}>{t("checkout.default_badge")}</Chip>
                     )}
                   </div>
                   <p className="text-sm text-default-500 mt-1 flex items-start gap-1">
@@ -132,9 +135,9 @@ export default function Checkout() {
                 </div>
               ) : (
                 <div className="border border-dashed border-default-300 rounded-xl p-4 text-center">
-                  <p className="text-sm text-default-500">Chưa có địa chỉ.</p>
+                  <p className="text-sm text-default-500">{t("checkout.no_address")}</p>
                   <Button size="sm" color="primary" variant="flat" radius="lg" className="mt-2" onPress={() => setOpenPicker(true)}>
-                    Thêm địa chỉ
+                    {t("checkout.add_address")}
                   </Button>
                 </div>
               )}
@@ -146,13 +149,13 @@ export default function Checkout() {
         <motion.div custom={1} variants={sectionVariants} initial="hidden" animate="show">
           <Card radius="xl" shadow="sm" className="mb-4 border border-default-100">
             <CardBody className="p-5">
-              <h3 className="font-bold text-default-900 mb-3">Sản phẩm đã chọn</h3>
+              <h3 className="font-bold text-default-900 mb-3">{t("checkout.selected_products")}</h3>
               {loadingPreview ? (
                 <div className="flex items-center gap-2 text-sm text-default-400 py-2">
-                  <Spinner size="sm" /> Đang tính tạm tính…
+                  <Spinner size="sm" /> {t("checkout.calculating")}
                 </div>
               ) : !preview?.items?.length ? (
-                <p className="text-sm text-default-400">Hãy chọn địa chỉ để tải tạm tính.</p>
+                <p className="text-sm text-default-400">{t("checkout.select_address_first")}</p>
               ) : (
                 <div className="space-y-3">
                   {preview.items.map((it) => (
@@ -164,11 +167,11 @@ export default function Checkout() {
                         <div>
                           <p className="font-semibold text-sm text-default-900">{it.name}</p>
                           {it.variant_text && <p className="text-xs text-default-400">{it.variant_text}</p>}
-                          <p className="text-xs text-default-400">SL: {it.qty}</p>
+                          <p className="text-xs text-default-400">{t("checkout.qty_short")} {it.qty}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-default-400">Đơn giá</p>
+                        <p className="text-xs text-default-400">{t("checkout.unit_price")}</p>
                         <p className="font-semibold text-sm">{formatCurrency(it.price)}</p>
                         <p className="font-black text-primary text-sm">{formatCurrency(it.total)}</p>
                       </div>
@@ -188,23 +191,23 @@ export default function Checkout() {
                 {/* Shipper */}
                 <div>
                   <h4 className="font-bold text-sm text-default-800 mb-2 flex items-center gap-1">
-                    <Truck size={14} className="text-primary" /> Đơn vị vận chuyển
+                    <Truck size={14} className="text-primary" /> {t("checkout.shipper")}
                   </h4>
                   <RadioGroup orientation="horizontal" value={shipper} onValueChange={setShipper}>
                     <Radio value="GHN"><span className="text-sm font-medium">GHN</span></Radio>
                     <Radio value="GHTK"><span className="text-sm font-medium">GHTK</span></Radio>
                   </RadioGroup>
                   <p className="text-xs text-default-400 mt-2">
-                    Phí ship: <b>{preview ? formatCurrency(preview.shipping_fee) : "—"}</b>
+                    {t("checkout.shipping_fee")} <b>{preview ? formatCurrency(preview.shipping_fee) : "—"}</b>
                   </p>
                 </div>
 
                 {/* Voucher */}
                 <div>
-                  <h4 className="font-bold text-sm text-default-800 mb-2">Mã giảm giá</h4>
+                  <h4 className="font-bold text-sm text-default-800 mb-2">{t("checkout.voucher_code")}</h4>
                   <div className="flex gap-2">
                     <Input
-                      size="sm" placeholder="Nhập mã voucher (VD: SALE20)"
+                      size="sm" placeholder={t("checkout.voucher_placeholder")}
                       value={voucherCode} onValueChange={setVoucherCode}
                       radius="lg" className="flex-1"
                       onKeyDown={(e) => { if (e.key === "Enter") runPreview(); }}
@@ -220,7 +223,7 @@ export default function Checkout() {
                       }
                     />
                     <Button size="sm" variant="bordered" radius="lg" isLoading={loadingPreview} onPress={runPreview}>
-                      Áp dụng
+                      {t("common.apply")}
                     </Button>
                   </div>
                   {preview?.voucher_error && (
@@ -228,17 +231,17 @@ export default function Checkout() {
                   )}
                   {!preview?.voucher_error && preview?.discount > 0 && (
                     <p className="text-xs text-success mt-1.5 font-medium">
-                      ✓ Áp dụng thành công — Giảm {formatCurrency(preview.discount)}
+                      {t("checkout.voucher_applied_msg")} {formatCurrency(preview.discount)}
                     </p>
                   )}
                 </div>
 
                 {/* Note */}
                 <div>
-                  <h4 className="font-bold text-sm text-default-800 mb-2">Lời nhắn</h4>
+                  <h4 className="font-bold text-sm text-default-800 mb-2">{t("checkout.message")}</h4>
                   <textarea
                     rows={3}
-                    placeholder="Giao giờ hành chính, gọi trước khi giao…"
+                    placeholder={t("checkout.message_placeholder")}
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     className="w-full text-sm border border-default-300 rounded-xl px-3 py-2 outline-none focus:border-primary resize-none transition-colors"
@@ -255,7 +258,7 @@ export default function Checkout() {
             <Card radius="xl" shadow="sm" className="mb-4 border border-default-100">
               <CardBody className="p-5">
                 <h3 className="font-bold text-default-900 mb-3 flex items-center gap-2">
-                  <Gift size={16} className="text-warning" /> Tín dụng cửa hàng
+                  <Gift size={16} className="text-warning" /> {t("checkout.shop_credits")}
                 </h3>
                 <div className="space-y-2">
                   {preview.shop_groups.map(g => {
@@ -265,8 +268,8 @@ export default function Checkout() {
                     return (
                       <div key={g.shop_id} className="flex items-center justify-between p-3 border border-default-200 rounded-xl">
                         <div>
-                          <p className="text-sm font-semibold">{g.shop_name || "Cửa hàng"}</p>
-                          <p className="text-xs text-default-400">Số dư: {formatCurrency(g.available_credits)}</p>
+                          <p className="text-sm font-semibold">{g.shop_name || t("checkout.shop_credits")}</p>
+                          <p className="text-xs text-default-400">{t("checkout.balance_label")} {formatCurrency(g.available_credits)}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           {isUsing && deduct > 0 && (
@@ -279,7 +282,7 @@ export default function Checkout() {
                             radius="lg"
                             onPress={() => setShopCredits(g.shop_id, isUsing ? 0 : g.available_credits)}
                           >
-                            {isUsing ? "Đang dùng" : "Dùng"}
+                            {isUsing ? t("checkout.credits_using") : t("checkout.credits_use")}
                           </Button>
                         </div>
                       </div>
@@ -298,13 +301,13 @@ export default function Checkout() {
 
             <Card radius="xl" shadow="sm" className="lg:w-96 border border-default-100">
               <CardBody className="p-5">
-                <h3 className="font-black text-default-900 mb-4">Tóm tắt đơn hàng</h3>
+                <h3 className="font-black text-default-900 mb-4">{t("checkout.order_summary")}</h3>
                 <div className="space-y-2 text-sm">
                   {[
-                    ["Tạm tính",       preview ? formatCurrency(preview.subtotal) : "—"],
-                    ["Phí vận chuyển", preview ? formatCurrency(preview.shipping_fee) : "—"],
-                    ["Voucher",        preview && preview.discount > 0 ? `- ${formatCurrency(preview.discount)}` : "—"],
-                    ["Tín dụng",       preview && preview.credits_discount > 0 ? `- ${formatCurrency(preview.credits_discount)}` : "—"],
+                    [t("checkout.subtotal_label"),      preview ? formatCurrency(preview.subtotal) : "—"],
+                    [t("checkout.shipping_fee_label"),  preview ? formatCurrency(preview.shipping_fee) : "—"],
+                    [t("checkout.voucher_label"),       preview && preview.discount > 0 ? `- ${formatCurrency(preview.discount)}` : "—"],
+                    [t("checkout.credits_label"),       preview && preview.credits_discount > 0 ? `- ${formatCurrency(preview.credits_discount)}` : "—"],
                   ].map(([label, val]) => (
                     <div key={label} className="flex justify-between">
                       <span className="text-default-500">{label}</span>
@@ -313,7 +316,7 @@ export default function Checkout() {
                   ))}
                   <Divider />
                   <div className="flex justify-between text-base">
-                    <span className="font-bold text-default-800">Tổng cộng</span>
+                    <span className="font-bold text-default-800">{t("checkout.total_label")}</span>
                     <span className="font-black text-primary text-lg">
                       {preview ? formatCurrency(preview.total) : "—"}
                     </span>
@@ -330,7 +333,7 @@ export default function Checkout() {
                         onPress={onPlaceCOD}
                         className="font-black shadow-md"
                       >
-                        Đặt hàng (COD)
+                        {t("checkout.place_cod")}
                       </Button>
                     </motion.div>
                   )}
@@ -344,7 +347,7 @@ export default function Checkout() {
                         onPress={onPlaceVNPAY}
                         className="font-black shadow-md"
                       >
-                        Thanh toán qua VNPAY
+                        {t("checkout.pay_vnpay")}
                       </Button>
                     </motion.div>
                   )}
@@ -360,15 +363,15 @@ export default function Checkout() {
                       </div>
                     ) : (
                       <Button fullWidth size="lg" radius="xl" isDisabled className="font-black">
-                        {!addressId ? "Chọn địa chỉ trước" : "Đang tính tạm tính…"}
+                        {!addressId ? t("checkout.select_address_btn") : t("checkout.calculating")}
                       </Button>
                     )
                   )}
                 </div>
                 <p className="text-xs text-default-400 mt-2 text-center">
-                  {method === "COD"   && "Thanh toán khi nhận hàng tại nhà."}
-                  {method === "VNPAY" && "Chuyển hướng đến cổng thanh toán VNPAY Sandbox."}
-                  {method === "PAYPAL" && "Thanh toán an toàn qua PayPal Sandbox."}
+                  {method === "COD"   && t("checkout.cod_desc")}
+                  {method === "VNPAY" && t("checkout.vnpay_desc")}
+                  {method === "PAYPAL" && t("checkout.paypal_desc")}
                 </p>
               </CardBody>
             </Card>
@@ -384,13 +387,13 @@ export default function Checkout() {
         onSubmit={async (payload) => {
           try {
             let res;
-            if (editAddr) { res = await addressService.update(editAddr._id, payload); toast.success("Đã cập nhật địa chỉ"); }
-            else          { res = await addressService.create(payload);               toast.success("Đã thêm địa chỉ"); }
+            if (editAddr) { res = await addressService.update(editAddr._id, payload); toast.success(t("checkout.address_updated")); }
+            else          { res = await addressService.create(payload);               toast.success(t("checkout.address_added")); }
             const newId = res?._id || res?.data?._id;
             await loadAddresses();
             if (newId) { setAddressId(newId); setOpenPicker(false); await runPreview(); }
             setOpenAddrForm(false); setEditAddr(null);
-          } catch (e) { toast.error(e?.response?.data?.message || e.message || "Lưu địa chỉ thất bại"); }
+          } catch (e) { toast.error(e?.response?.data?.message || e.message || t("checkout.address_save_fail")); }
         }}
       />
 
@@ -399,10 +402,10 @@ export default function Checkout() {
         onClose={() => setOpenPicker(false)}
         addresses={addresses}
         selectedId={addressId}
-        onSelect={(id) => { setAddressId(id); toast.success("Đã chọn địa chỉ"); }}
+        onSelect={(id) => { setAddressId(id); toast.success(t("checkout.address_selected")); }}
         onAddNew={() => { setOpenPicker(false); setEditAddr(null); setOpenAddrForm(true); }}
         onEdit={(a) => { setOpenPicker(false); setEditAddr(a); setOpenAddrForm(true); }}
-        onSetDefault={async (id) => { await addressService.setDefault(id); await loadAddresses(); setAddressId(id); toast.success("Đã đặt làm mặc định"); }}
+        onSetDefault={async (id) => { await addressService.setDefault(id); await loadAddresses(); setAddressId(id); toast.success(t("checkout.address_default")); }}
         onRefresh={async () => { await loadAddresses(); }}
       />
     </motion.div>

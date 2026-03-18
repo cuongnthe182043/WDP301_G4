@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { userService } from "../services/userService";
 import { Camera, Check, AlertCircle, User, Mail, Phone, Calendar, Ruler, Weight, Shirt } from "lucide-react";
@@ -55,6 +56,7 @@ function SectionLabel({ children }) {
 }
 
 export default function PersonalInfoForm({ me, onUpdated }) {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: me?.name || "",
     email: me?.email || "",
@@ -85,8 +87,8 @@ export default function PersonalInfoForm({ me, onUpdated }) {
     setErr("");
     const f = e.target.files?.[0];
     if (!f) return;
-    if (!/image\/(jpeg|png)/i.test(f.type)) return setErr("Chỉ hỗ trợ ảnh .JPG, .PNG");
-    if (f.size > 1024 * 1024) return setErr("Dung lượng tối đa 1 MB");
+    if (!/image\/(jpeg|png)/i.test(f.type)) return setErr(t("profile.avatar_type_error"));
+    if (f.size > 1024 * 1024) return setErr(t("profile.avatar_size_error"));
     const reader = new FileReader();
     reader.onload = () => {
       const dataUrl = String(reader.result || "");
@@ -107,7 +109,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
-      setErr(e?.message || "Có lỗi xảy ra");
+      setErr(e?.message || t("common.error"));
     } finally {
       setSaving(false);
     }
@@ -165,7 +167,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
                     style={{ background: "rgba(29,78,216,0.75)" }}
                   >
                     <Camera size={18} className="text-white" />
-                    <span className="text-white text-[10px] font-bold">Đổi ảnh</span>
+                    <span className="text-white text-[10px] font-bold">{t("profile.change_avatar")}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -186,30 +188,30 @@ export default function PersonalInfoForm({ me, onUpdated }) {
               color: "#2563EB",
             }}
           >
-            Chọn ảnh
+            {t("profile.pick_photo")}
           </motion.button>
           <p className="text-[10px] text-blue-300 text-center leading-relaxed">
-            JPG, PNG · Tối đa 1MB
+            {t("profile.avatar_hint")}
           </p>
         </div>
 
         {/* Right: form fields */}
         <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-4 min-w-0">
-          <Field label="Tên đăng nhập" icon={User} hint="Chỉ thay đổi được 1 lần">
+          <Field label={t("profile.username_label")} icon={User} hint={t("profile.username_hint")}>
             <input className={disabledInputCls} value={me?.username || ""} disabled />
           </Field>
 
-          <Field label="Họ và tên" icon={User}>
+          <Field label={t("profile.name")} icon={User}>
             <input
               className={inputCls(false)}
               value={form.name}
               onChange={e => setField("name", e.target.value)}
-              placeholder="Nhập họ và tên…"
+              placeholder={t("profile.name_placeholder")}
               required
             />
           </Field>
 
-          <Field label="Email" icon={Mail}>
+          <Field label={t("profile.email")} icon={Mail}>
             <input
               className={inputCls(false)}
               type="email"
@@ -220,7 +222,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
             />
           </Field>
 
-          <Field label="Số điện thoại" icon={Phone}>
+          <Field label={t("profile.phone")} icon={Phone}>
             <input
               className={inputCls(false)}
               value={form.phone || ""}
@@ -229,7 +231,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
             />
           </Field>
 
-          <Field label="Ngày sinh" icon={Calendar}>
+          <Field label={t("profile.birthday")} icon={Calendar}>
             <input
               className={inputCls(false)}
               type="date"
@@ -238,13 +240,13 @@ export default function PersonalInfoForm({ me, onUpdated }) {
             />
           </Field>
 
-          <Field label="Giới tính" full={false}>
+          <Field label={t("profile.gender")} full={false}>
             <div className="flex gap-2 mt-1">
               {[
-                { v: "male",   label: "Nam" },
-                { v: "female", label: "Nữ" },
-                { v: "other",  label: "Khác" },
-              ].map(({ v, label }) => (
+                { v: "male",   labelKey: "profile.gender_male" },
+                { v: "female", labelKey: "profile.gender_female" },
+                { v: "other",  labelKey: "profile.gender_other" },
+              ].map(({ v, labelKey }) => (
                 <motion.button
                   key={v}
                   type="button"
@@ -263,7 +265,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
                     color: "#3B82F6",
                   }}
                 >
-                  {label}
+                  {t(labelKey)}
                 </motion.button>
               ))}
             </div>
@@ -272,19 +274,19 @@ export default function PersonalInfoForm({ me, onUpdated }) {
       </div>
 
       {/* ── Body measurements ── */}
-      <SectionLabel>Số đo gợi ý size</SectionLabel>
+      <SectionLabel>{t("profile.measurements_section")}</SectionLabel>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { key: "height",      label: "Chiều cao",  icon: Ruler,  placeholder: "175", unit: "cm" },
-          { key: "weight",      label: "Cân nặng",   icon: Weight, placeholder: "65",  unit: "kg" },
-          { key: "size_top",    label: "Size áo",    icon: Shirt,  placeholder: "M" },
-          { key: "size_bottom", label: "Size quần",  icon: Shirt,  placeholder: "32" },
-        ].map(({ key, label, icon: Icon, placeholder, unit }) => (
+          { key: "height",      labelKey: "profile.height",      icon: Ruler,  placeholder: "175", unit: "cm" },
+          { key: "weight",      labelKey: "profile.weight",      icon: Weight, placeholder: "65",  unit: "kg" },
+          { key: "size_top",    labelKey: "profile.size_top",    icon: Shirt,  placeholder: "M" },
+          { key: "size_bottom", labelKey: "profile.size_bottom", icon: Shirt,  placeholder: "32" },
+        ].map(({ key, labelKey, icon: Icon, placeholder, unit }) => (
           <div key={key}>
             <span className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
               <Icon size={12} className="text-blue-400" />
-              {label}
+              {t(labelKey)}
             </span>
             <div className="relative">
               <input
@@ -324,9 +326,9 @@ export default function PersonalInfoForm({ me, onUpdated }) {
                 transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                 className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full inline-block"
               />
-              Đang lưu…
+              {t("common.saving")}
             </span>
-          ) : "Lưu thay đổi"}
+          ) : t("profile.save_changes")}
         </motion.button>
 
         <AnimatePresence>
@@ -340,7 +342,7 @@ export default function PersonalInfoForm({ me, onUpdated }) {
               <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
                 <Check size={12} className="text-green-600" />
               </div>
-              Đã lưu!
+              {t("profile.saved")}
             </motion.div>
           )}
           {err && (

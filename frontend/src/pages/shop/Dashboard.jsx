@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { analyticsService } from "../../services/analyticsService";
 import { Line, Doughnut, Bar } from "react-chartjs-2";
 import { saveAs } from "file-saver";
@@ -34,6 +35,7 @@ function formatVND(n) {
 }
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const [ov,     setOv]     = useState(null);
   const [series, setSeries] = useState([]);
   const [status, setStatus] = useState([]);
@@ -55,7 +57,7 @@ export default function Dashboard() {
 
   const lineData = {
     labels: series.map((r) => r.x),
-    datasets: [{ label: "Doanh thu (ngày)", data: series.map((r) => r.revenue), borderColor: "#0B74E5", tension: 0.4 }],
+    datasets: [{ label: t("shop.today_revenue"), data: series.map((r) => r.revenue), borderColor: "#0B74E5", tension: 0.4 }],
   };
   const doughnutData = {
     labels: status.map((s) => s.status),
@@ -63,7 +65,7 @@ export default function Dashboard() {
   };
   const topBar = {
     labels: topP.map((p) => p.product?.name || p._id),
-    datasets: [{ label: "SL bán", data: topP.map((p) => p.qty), backgroundColor: "#0B74E5" }],
+    datasets: [{ label: t("shop.qty_sold"), data: topP.map((p) => p.qty), backgroundColor: "#0B74E5" }],
   };
 
   const downloadExcel = async () => {
@@ -77,14 +79,14 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-5">
-      <h1 className="text-xl font-black text-default-900">Dashboard</h1>
+      <h1 className="text-xl font-black text-default-900">{t("shop.dashboard")}</h1>
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Doanh thu hôm nay" value={formatVND(ov?.today_revenue)} icon={DollarSign} />
-        <KpiCard title="Đơn đang xử lý"    value={ov?.processing_orders}         icon={ShoppingCart} />
-        <KpiCard title="Tổng đơn hàng"     value={ov?.total_orders}               icon={TrendingUp} />
-        <KpiCard title="Tổng khách hàng"   value={ov?.total_customers}            icon={Users} />
+        <KpiCard title={t("shop.today_revenue")}     value={formatVND(ov?.today_revenue)} icon={DollarSign} />
+        <KpiCard title={t("shop.processing_orders")} value={ov?.processing_orders}         icon={ShoppingCart} />
+        <KpiCard title={t("shop.total_orders")}      value={ov?.total_orders}               icon={TrendingUp} />
+        <KpiCard title={t("shop.total_customers")}   value={ov?.total_customers}            icon={Users} />
       </div>
 
       {/* Charts */}
@@ -95,7 +97,7 @@ export default function Dashboard() {
 
       <Card radius="xl" shadow="sm">
         <CardBody className="p-4">
-          <h3 className="font-bold text-default-900 mb-3">Top sản phẩm</h3>
+          <h3 className="font-bold text-default-900 mb-3">{t("shop.top_products")}</h3>
           <Bar data={topBar} />
         </CardBody>
       </Card>
@@ -103,22 +105,22 @@ export default function Dashboard() {
       {fc && (
         <Card radius="xl" shadow="sm">
           <CardBody className="p-4">
-            <h3 className="font-bold text-default-900 mb-3">Dự báo (preview)</h3>
+            <h3 className="font-bold text-default-900 mb-3">{t("shop.forecast_preview")}</h3>
             <Line data={{
               labels: [...(fc.history?.map((x) => x.x) || []), ...(fc.forecast?.map((_, i) => `F+${i + 1}`) || [])],
               datasets: [
-                { label: "Lịch sử", data: fc.history?.map((x) => x.revenue) || [], borderColor: "#0B74E5" },
-                { label: "Dự báo",  data: fc.forecast?.map((x) => x.revenue) || [], borderColor: "#f59e0b", borderDash: [4, 4] },
+                { label: t("shop.history"),  data: fc.history?.map((x) => x.revenue) || [], borderColor: "#0B74E5" },
+                { label: t("shop.forecast"), data: fc.forecast?.map((x) => x.revenue) || [], borderColor: "#f59e0b", borderDash: [4, 4] },
               ],
             }} />
-            <p className="text-xs text-default-400 mt-2">* Sơ bộ bằng hồi quy tuyến tính.</p>
+            <p className="text-xs text-default-400 mt-2">{t("shop.forecast_note")}</p>
           </CardBody>
         </Card>
       )}
 
       <div className="flex gap-3">
-        <Button startContent={<Download size={14} />} variant="bordered" radius="lg" onPress={downloadExcel}>Xuất Excel</Button>
-        <Button startContent={<Download size={14} />} variant="bordered" radius="lg" onPress={downloadPdf}>Xuất PDF</Button>
+        <Button startContent={<Download size={14} />} variant="bordered" radius="lg" onPress={downloadExcel}>{t("common.export_excel")}</Button>
+        <Button startContent={<Download size={14} />} variant="bordered" radius="lg" onPress={downloadPdf}>{t("common.export_pdf")}</Button>
       </div>
     </div>
   );

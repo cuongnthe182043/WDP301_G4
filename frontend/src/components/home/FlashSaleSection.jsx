@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ProductCard from "./ProductCard";
 import { formatCurrency } from "@/utils/formatCurrency";
 
 function useCountdown(start, end) {
+  const { t } = useTranslation();
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
@@ -29,8 +31,8 @@ function useCountdown(start, end) {
       endTs && now < endTs
         ? fmt(remaining)
         : upcomingIn
-        ? `Bắt đầu sau ${fmt(upcomingIn)}`
-        : "Kết thúc",
+        ? t("home.starts_in_fmt", { time: fmt(upcomingIn) })
+        : t("home.ended"),
   };
 }
 

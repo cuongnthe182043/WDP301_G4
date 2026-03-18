@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input, Button } from "@heroui/react";
 
 export default function VariantMatrix({ onGenerate }) {
-  const [opt1Name, setOpt1Name] = useState("Màu sắc");
-  const [opt1Values, setOpt1Values] = useState("Cam,Đỏ");
-  const [opt2Name, setOpt2Name] = useState("Size (Quốc tế)");
+  const { t } = useTranslation();
+  const [opt1Name, setOpt1Name] = useState(t("shop.default_color"));
+  const [opt1Values, setOpt1Values] = useState(t("shop.default_color_values"));
+  const [opt2Name, setOpt2Name] = useState(t("shop.default_size"));
   const [opt2Values, setOpt2Values] = useState("S,M,L");
   const [apply, setApply] = useState({ price: "", stock: "" });
 
@@ -23,16 +25,16 @@ export default function VariantMatrix({ onGenerate }) {
   return (
     <div className="space-y-2">
       <div className="flex flex-col md:flex-row gap-2">
-        <Input size="sm" label="Phân loại 1" value={opt1Name} onValueChange={setOpt1Name} />
-        <Input size="sm" label="Tùy chọn (phân tách bởi dấu ,)" value={opt1Values} onValueChange={setOpt1Values} />
+        <Input size="sm" label={t("shop.variant_type_1")} value={opt1Name} onValueChange={setOpt1Name} />
+        <Input size="sm" label={t("shop.options_comma_separated")} value={opt1Values} onValueChange={setOpt1Values} />
       </div>
       <div className="flex flex-col md:flex-row gap-2">
-        <Input size="sm" label="Phân loại 2" value={opt2Name} onValueChange={setOpt2Name} />
-        <Input size="sm" label="Tùy chọn (phân tách bởi dấu ,)" value={opt2Values} onValueChange={setOpt2Values} />
+        <Input size="sm" label={t("shop.variant_type_2")} value={opt2Name} onValueChange={setOpt2Name} />
+        <Input size="sm" label={t("shop.options_comma_separated")} value={opt2Values} onValueChange={setOpt2Values} />
       </div>
       <div className="flex flex-col md:flex-row gap-2 items-end">
-        <Input size="sm" label="Áp dụng Giá cho tất cả" value={apply.price} onValueChange={(v) => setApply(a => ({ ...a, price: v }))} />
-        <Input size="sm" label="Áp dụng Tồn kho cho tất cả" value={apply.stock} onValueChange={(v) => setApply(a => ({ ...a, stock: v }))} />
+        <Input size="sm" label={t("shop.apply_price_all")} value={apply.price} onValueChange={(v) => setApply(a => ({ ...a, price: v }))} />
+        <Input size="sm" label={t("shop.apply_stock_all")} value={apply.stock} onValueChange={(v) => setApply(a => ({ ...a, stock: v }))} />
         <Button
           color="primary"
           size="sm"
@@ -43,7 +45,7 @@ export default function VariantMatrix({ onGenerate }) {
             variant_attributes: r.attrs
           })))}
         >
-          Tạo biến thể
+          {t("shop.generate_variants")}
         </Button>
       </div>
 
@@ -53,8 +55,8 @@ export default function VariantMatrix({ onGenerate }) {
             <tr className="border-b border-default-100 text-default-500 text-left">
               <th className="pb-2 pr-3">{opt1Name}</th>
               <th className="pb-2 pr-3">{opt2Name}</th>
-              <th className="pb-2 pr-3">* Giá</th>
-              <th className="pb-2 pr-3">* Tồn kho</th>
+              <th className="pb-2 pr-3">* {t("shop.price_col")}</th>
+              <th className="pb-2 pr-3">* {t("shop.stock_col")}</th>
               <th className="pb-2">SKU</th>
             </tr>
           </thead>

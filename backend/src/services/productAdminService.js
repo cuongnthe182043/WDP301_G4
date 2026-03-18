@@ -57,15 +57,42 @@ exports.deleteProduct = async (id, shopId) => {
 };
 
 exports.updateProduct = async (id, payload, shopId) => {
-  // Strip virtual / non-schema fields that must not be $set directly
-  const { variants, _id, createdAt, updatedAt, __v, ...rest } = payload;
+  // Strip virtual / non-schema fields and computed / admin-only fields
+  const {
+    variants, _id, createdAt, updatedAt, __v,
+    status, rejection_reason,
+    rating_avg, rating_count, sold_count,
+    shop_id,
+    ...rest
+  } = payload;
+
   const patch = { ...rest };
-  if (!patch.slug && patch.name) patch.slug = slugify(patch.name);
+
+  // Allow shop owner to toggle active ↔ inactive only (not pending / out_of_stock)
+  if (status === "active" || status === "inactive") {
+    patch.status = status;
+  }
+
+  if (!patch.slug && patch.name) {
+    const newSlug = slugify(patch.name);
+    const conflict = await Product.findOne({ slug: newSlug, _id: { $ne: id } }).lean();
+    patch.slug = conflict ? `${newSlug}-${Date.now()}` : newSlug;
+  }
   if (patch.category_id) {
     const cat = await Category.findById(patch.category_id).lean();
     patch.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
   }
-  return Product.findOneAndUpdate({ _id: id, shop_id: shopId }, { $set: patch }, { new: true });
+
+  await Product.findOneAndUpdate({ _id: id, shop_id: shopId }, { $set: patch }, { new: true });
+
+  // If the product already has variants, recompute stock_total from them
+  // (ignore whatever stock_total the form sent — variants are the source of truth)
+  const variantCount = await ProductVariant.countDocuments({ product_id: id, shop_id: shopId });
+  if (variantCount > 0) {
+    await exports.recomputeStockTotal(id, shopId);
+  }
+
+  return Product.findOne({ _id: id, shop_id: shopId }).lean();
 };
 
 /* ===== Variants single ===== */

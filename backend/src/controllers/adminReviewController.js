@@ -1,10 +1,11 @@
 // controllers/adminReviewController.js
 // Admin moderation: flagged reviews, user warnings/bans
 
-const Review  = require("../models/Review");
-const User    = require("../models/User");
-const Product = require("../models/Product");
-const notif   = require("../services/dbNotificationService");
+const Review   = require("../models/Review");
+const User     = require("../models/User");
+const Product  = require("../models/Product");
+const notif    = require("../services/dbNotificationService");
+const auditLog = require("../services/auditLogService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // listReviews  GET /api/admin/reviews
@@ -58,6 +59,7 @@ exports.approveReview = async (req, res, next) => {
 
     // Notify reviewer
     notif.reviewApproved(review.user_id, review._id).catch(() => {});
+    auditLog.log({ actorId: req.user._id, action: "review.approve", targetCollection: "reviews", targetId: String(review._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) });
 
     res.json({ success: true, data: { status: review.status } });
   } catch (e) { next(e); }
@@ -135,6 +137,7 @@ exports.banUser = async (req, res, next) => {
 
     const duration = days ? `${days} ngày` : "vĩnh viễn";
     notif.userBanned(user._id, duration).catch(() => {});
+    auditLog.log({ actorId: req.user._id, action: "user.ban", targetCollection: "users", targetId: String(user._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { reason, duration } });
 
     res.json({ success: true, data: { status: user.status, ban_until: user.ban_until } });
   } catch (e) { next(e); }
@@ -171,6 +174,7 @@ exports.warnUser = async (req, res, next) => {
     await user.save();
 
     notif.userWarned(user._id, user.warning_count).catch(() => {});
+    auditLog.log({ actorId: req.user._id, action: "user.warn", targetCollection: "users", targetId: String(user._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { reason, warning_count: user.warning_count } });
     res.json({ success: true, data: { warning_count: user.warning_count } });
   } catch (e) { next(e); }
 };

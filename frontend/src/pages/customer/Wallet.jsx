@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Card, CardBody, Button, Chip, Skeleton } from "@heroui/react";
 import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Clock, TrendingUp, TrendingDown } from "lucide-react";
@@ -13,27 +14,33 @@ function txnIcon(type, direction) {
   return <TrendingDown size={16} className="text-danger" />;
 }
 
-function txnLabel(type) {
-  const map = { payment: "Thanh toán", refund: "Hoàn tiền", deposit: "Nạp tiền", withdraw: "Rút tiền", transfer: "Chuyển tiền" };
-  return map[type] || type;
-}
-
 export default function Wallet() {
+  const { t } = useTranslation();
   const isLoggedIn = !!localStorage.getItem(TOKEN_KEY);
   const [wallet, setWallet] = useState(null);
   const [txns, setTxns] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const TXN_LABELS = {
+    payment:  t("wallet.type_payment"),
+    refund:   t("wallet.type_refund"),
+    deposit:  t("wallet.type_deposit"),
+    withdraw: t("wallet.type_withdraw"),
+    transfer: t("wallet.type_transfer"),
+  };
+
+  const txnLabel = (type) => TXN_LABELS[type] || type;
+
   useEffect(() => {
     if (!isLoggedIn) { setLoading(false); return; }
     (async () => {
       try {
-        const [w, t] = await Promise.all([
+        const [w, tx] = await Promise.all([
           walletService.getWallet(),
           walletService.getTransactions(1, 20),
         ]);
         setWallet(w);
-        setTxns(t?.transactions || []);
+        setTxns(tx?.transactions || []);
       } catch { /* wallet may not exist yet */ }
       finally { setLoading(false); }
     })();
@@ -44,7 +51,7 @@ export default function Wallet() {
 
   return (
     <PageContainer wide={false}>
-      <h1 className="text-2xl font-black text-default-900 mb-7">Ví DFS</h1>
+      <h1 className="text-2xl font-black text-default-900 mb-7">{t("wallet.title")}</h1>
 
       <div className="space-y-5">
         {/* Balance card */}
@@ -61,7 +68,7 @@ export default function Wallet() {
             <CardBody className="p-7">
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <p className="text-white/70 text-sm font-medium mb-1">Số dư khả dụng</p>
+                  <p className="text-white/70 text-sm font-medium mb-1">{t("wallet.available")}</p>
                   <motion.div
                     animate={{ y: [0, -4, 0] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
@@ -71,7 +78,7 @@ export default function Wallet() {
                 </div>
                 {pending > 0 && (
                   <Chip size="sm" className="bg-white/20 text-white border-white/30 border font-semibold">
-                    Đang chờ: {formatCurrency(pending)}
+                    {t("wallet.pending")} {formatCurrency(pending)}
                   </Chip>
                 )}
               </div>
@@ -81,7 +88,7 @@ export default function Wallet() {
               ) : (
                 <p className="text-4xl font-black text-white tracking-tight">{formatCurrency(balance)}</p>
               )}
-              <p className="text-white/60 text-sm mt-2">Tính năng nạp/rút sẽ sớm ra mắt</p>
+              <p className="text-white/60 text-sm mt-2">{t("wallet.coming_soon")}</p>
 
               <div className="flex gap-3 mt-6">
                 <Button
@@ -89,14 +96,14 @@ export default function Wallet() {
                   className="flex-1 bg-white/20 text-white border border-white/30 font-semibold"
                   startContent={<ArrowUpRight size={16} />}
                 >
-                  Nạp tiền
+                  {t("wallet.deposit")}
                 </Button>
                 <Button
                   radius="xl" isDisabled
                   className="flex-1 bg-white/20 text-white border border-white/30 font-semibold"
                   startContent={<ArrowDownLeft size={16} />}
                 >
-                  Rút tiền
+                  {t("wallet.withdraw")}
                 </Button>
               </div>
             </CardBody>
@@ -113,7 +120,7 @@ export default function Wallet() {
             <CardBody className="p-5">
               <h3 className="font-bold text-default-900 mb-4 flex items-center gap-2">
                 <Clock size={16} className="text-default-400" />
-                Lịch sử giao dịch
+                {t("wallet.history")}
               </h3>
 
               {loading ? (
@@ -122,7 +129,7 @@ export default function Wallet() {
                 </div>
               ) : txns.length === 0 ? (
                 <div className="py-10 text-center">
-                  <p className="text-default-400 text-sm">Chưa có giao dịch nào.</p>
+                  <p className="text-default-400 text-sm">{t("wallet.no_transactions")}</p>
                 </div>
               ) : (
                 <div className="space-y-2">

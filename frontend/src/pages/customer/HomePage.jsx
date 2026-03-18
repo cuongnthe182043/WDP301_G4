@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Skeleton } from "@heroui/react";
 
@@ -218,13 +219,13 @@ function normalizeHomepage(raw) {
     flashSale: raw?.flashSale || raw?.flash_sale || null,
   };
 }
-function normalizeFlashItem(it) {
+function normalizeFlashItem(it, defaultName) {
   if (it.product) return it;
   return {
     ...it,
     product: {
       _id: it.product_id || it._id,
-      name: it.name || it.title || "Sản phẩm",
+      name: it.name || it.title || defaultName,
       images: it.images || (it.image ? [it.image] : []),
       base_price: it.original_price || it.base_price || it.price || 0,
     },
@@ -257,16 +258,18 @@ function useCarousel({ itemWidth, gap, perClick = 2 }) {
 }
 
 /* ─── Countdown ─── */
-function Countdown({ endTime, label = "Kết thúc sau" }) {
+function Countdown({ endTime, label }) {
+  const { t } = useTranslation();
+  const resolvedLabel = label ?? t("home.ends_in");
   const [now, setNow] = useState(Date.now());
-  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+  useEffect(() => { const timer = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(timer); }, []);
   const left = Math.max(0, new Date(endTime).getTime() - now);
   const hh = String(Math.floor(left / 3600000)).padStart(2, "0");
   const mm = String(Math.floor((left % 3600000) / 60000)).padStart(2, "0");
   const ss = String(Math.floor((left % 60000) / 1000)).padStart(2, "0");
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[11px] font-semibold text-white/60 whitespace-nowrap">{label}</span>
+      <span className="text-[11px] font-semibold text-white/60 whitespace-nowrap">{resolvedLabel}</span>
       <div className="flex items-center gap-1">
         {[hh, mm, ss].map((v, i) => (
           <React.Fragment key={i}>
@@ -296,11 +299,12 @@ function NavBtn({ onClick, disabled, direction, light = false }) {
 }
 
 function ViewAll({ to, light = false }) {
+  const { t } = useTranslation();
   return (
     <Link to={to} className={`inline-flex items-center gap-1.5 text-xs font-bold px-4 py-1.5 rounded-full transition-all duration-150
       ${light ? "border border-white/30 text-white/80 hover:bg-white/15"
              : "border border-blue-200 text-blue-500 bg-blue-50/80 hover:bg-blue-100 hover:border-blue-300"}`}>
-      Xem tất cả <FiArrowRight size={11} />
+      {t("common.view_all")} <FiArrowRight size={11} />
     </Link>
   );
 }
@@ -309,24 +313,24 @@ function ViewAll({ to, light = false }) {
    ✦ ULTRA BANNER — Immersive 3D product showcase
 ══════════════════════════════════════════════════════════ */
 
-const BANNER_SLIDES = [
+const BANNER_SLIDES_STATIC = [
   {
     id: 0,
     bg: "linear-gradient(135deg, #020818 0%, #0a1628 30%, #0d2257 60%, #1a3a8f 100%)",
     accent: "#60a5fa",
     accentLight: "#bfdbfe",
     tag: "✦ NEW SEASON 2026",
-    titleLine1: "Xuân Hè",
+    titleLine1Key: "home.slide1_title1",
     titleLine2: "2026",
-    sub: "Phong cách tươi mới — Trẻ trung & Hiện đại",
-    cta: "Khám phá ngay",
+    subKey: "home.slide1_sub",
+    ctaKey: "home.slide1_cta",
     orb1: "rgba(59,130,246,0.4)",
     orb2: "rgba(96,165,250,0.2)",
     orb3: "rgba(147,197,253,0.15)",
     products: [
-      { img: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&q=80", label: "Áo Oversized", price: "299.000đ", badge: "NEW", color: "#3b82f6", delay: 0 },
-      { img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80", label: "Sneaker Air", price: "890.000đ", badge: "HOT", color: "#60a5fa", delay: 0.15 },
-      { img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&q=80", label: "Bomber Jacket", price: "450.000đ", badge: "SALE", color: "#93c5fd", delay: 0.3 },
+      { img: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&q=80", label: "Oversized Tee", price: "299.000", badge: "NEW", color: "#3b82f6", delay: 0 },
+      { img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80", label: "Sneaker Air", price: "890.000", badge: "HOT", color: "#60a5fa", delay: 0.15 },
+      { img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&q=80", label: "Bomber Jacket", price: "450.000", badge: "SALE", color: "#93c5fd", delay: 0.3 },
     ],
   },
   {
@@ -335,17 +339,17 @@ const BANNER_SLIDES = [
     accent: "#38bdf8",
     accentLight: "#e0f2fe",
     tag: "⚡ FLASH DEAL",
-    titleLine1: "Giảm đến",
+    titleLine1Key: "home.slide2_title1",
     titleLine2: "70%",
-    sub: "Ưu đãi siêu hot — Số lượng cực hạn",
-    cta: "Mua ngay thôi",
+    subKey: "home.slide2_sub",
+    ctaKey: "home.slide2_cta",
     orb1: "rgba(14,165,233,0.4)",
     orb2: "rgba(56,189,248,0.25)",
     orb3: "rgba(125,211,252,0.15)",
     products: [
-      { img: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80", label: "Running Pro", price: "750.000đ", badge: "-30%", color: "#0ea5e9", delay: 0 },
-      { img: "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=300&q=80", label: "Áo Polo", price: "380.000đ", badge: "-50%", color: "#38bdf8", delay: 0.12 },
-      { img: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&q=80", label: "Skinny Jeans", price: "560.000đ", badge: "-40%", color: "#7dd3fc", delay: 0.25 },
+      { img: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80", label: "Running Pro", price: "750.000", badge: "-30%", color: "#0ea5e9", delay: 0 },
+      { img: "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=300&q=80", label: "Polo Shirt", price: "380.000", badge: "-50%", color: "#38bdf8", delay: 0.12 },
+      { img: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&q=80", label: "Skinny Jeans", price: "560.000", badge: "-40%", color: "#7dd3fc", delay: 0.25 },
     ],
   },
   {
@@ -354,17 +358,17 @@ const BANNER_SLIDES = [
     accent: "#a78bfa",
     accentLight: "#ede9fe",
     tag: "★ BESTSELLER",
-    titleLine1: "Hàng Chính",
-    titleLine2: "Hãng 100%",
-    sub: "Cam kết xác thực — Bảo hành toàn diện",
-    cta: "Xem bộ sưu tập",
+    titleLine1Key: "home.slide3_title1",
+    titleLine2Key: "home.slide3_title2",
+    subKey: "home.slide3_sub",
+    ctaKey: "home.slide3_cta",
     orb1: "rgba(139,92,246,0.4)",
     orb2: "rgba(167,139,250,0.25)",
     orb3: "rgba(196,181,253,0.15)",
     products: [
-      { img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&q=80", label: "Classic Tee", price: "199.000đ", badge: "TOP 1", color: "#8b5cf6", delay: 0 },
-      { img: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300&q=80", label: "Urban Shoe", price: "620.000đ", badge: "★4.9", color: "#a78bfa", delay: 0.15 },
-      { img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&q=80", label: "Slim Fit", price: "420.000đ", badge: "SALE", color: "#c4b5fd", delay: 0.28 },
+      { img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&q=80", label: "Classic Tee", price: "199.000", badge: "TOP 1", color: "#8b5cf6", delay: 0 },
+      { img: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300&q=80", label: "Urban Shoe", price: "620.000", badge: "★4.9", color: "#a78bfa", delay: 0.15 },
+      { img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300&q=80", label: "Slim Fit", price: "420.000", badge: "SALE", color: "#c4b5fd", delay: 0.28 },
     ],
   },
 ];
@@ -538,10 +542,11 @@ const slideVariants = {
 };
 
 function BannerCarousel({ banners }) {
+  const { t } = useTranslation();
   const apiList = [banners.homepage_top, banners.homepage_mid, banners.homepage_bottom].flat().filter(Boolean);
   const useApi = apiList.length > 0;
   const [activeIdx, setActiveIdx] = useState(0);
-  const total = useApi ? apiList.length : BANNER_SLIDES.length;
+  const total = useApi ? apiList.length : BANNER_SLIDES_STATIC.length;
 
   useEffect(() => {
     if (total <= 1) return;
@@ -579,7 +584,7 @@ function BannerCarousel({ banners }) {
               })()
             ) : (
               (() => {
-                const slide = BANNER_SLIDES[activeIdx];
+                const slide = BANNER_SLIDES_STATIC[activeIdx];
                 return (
                   <motion.div key={activeIdx} variants={slideVariants} initial="enter" animate="center" exit="exit"
                     transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -611,9 +616,9 @@ function BannerCarousel({ banners }) {
                           fontSize: "clamp(28px, 3.5vw, 52px)", fontWeight: 900,
                           textShadow: `0 0 60px ${slide.accent}40`,
                         }}>
-                          {slide.titleLine1}<br />
+                          {t(slide.titleLine1Key)}<br />
                           <span style={{ color: slide.accent, filter: `drop-shadow(0 0 20px ${slide.accent}80)` }}>
-                            {slide.titleLine2}
+                            {slide.titleLine2Key ? t(slide.titleLine2Key) : slide.titleLine2}
                           </span>
                         </h2>
                       </motion.div>
@@ -621,13 +626,13 @@ function BannerCarousel({ banners }) {
                       {/* Subtitle */}
                       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22, duration: 0.4 }}
                         style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 28, lineHeight: 1.6 }}>
-                        {slide.sub}
+                        {t(slide.subKey)}
                       </motion.p>
 
                       {/* Stats row */}
                       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.4 }}
                         style={{ display: "flex", gap: 20, marginBottom: 28 }}>
-                        {[["10K+", "Sản phẩm"], ["50K+", "Khách hàng"], ["4.9★", "Đánh giá"]].map(([v, l]) => (
+                        {[["10K+", t("home.stat_products")], ["50K+", t("home.stat_customers")], ["4.9★", t("home.stat_reviews")]].map(([v, l]) => (
                           <div key={l}>
                             <div className="syne" style={{ color: slide.accent, fontSize: 18, fontWeight: 900, lineHeight: 1 }}>{v}</div>
                             <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, marginTop: 3 }}>{l}</div>
@@ -638,7 +643,7 @@ function BannerCarousel({ banners }) {
                       {/* CTA */}
                       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.34, duration: 0.38 }}>
                         <Link to="/products" className="hp-banner-btn">
-                          {slide.cta} <FiArrowRight size={14} />
+                          {t(slide.ctaKey)} <FiArrowRight size={14} />
                         </Link>
                       </motion.div>
                     </div>
@@ -662,7 +667,7 @@ function BannerCarousel({ banners }) {
           {/* Slide index pills */}
           <div style={{ position: "absolute", left: "5%", bottom: 18, zIndex: 30, display: "flex", gap: 8, alignItems: "center" }}>
             {Array.from({ length: total }).map((_, i) => {
-              const slide = BANNER_SLIDES[i % BANNER_SLIDES.length];
+              const slide = BANNER_SLIDES_STATIC[i % BANNER_SLIDES_STATIC.length];
               return (
                 <button key={i} onClick={() => setActiveIdx(i)} style={{
                   width: i === activeIdx ? 28 : 6, height: 6, borderRadius: 50,
@@ -715,16 +720,16 @@ function BannerCarousel({ banners }) {
 /* ══════════════════════════════════
    ✦ FEATURE BADGES — Glass cards
 ══════════════════════════════════ */
-const FEATURE_BADGES = [
-  { icon: FiTruck,       title: "Freeship toàn quốc", description: "Đơn từ 299K",       color: "#2563eb", bg: "linear-gradient(135deg,#eff6ff,#dbeafe)" },
-  { icon: FiRefreshCw,   title: "Đổi trả 30 ngày",   description: "Hoàn trả dễ dàng",  color: "#059669", bg: "linear-gradient(135deg,#ecfdf5,#d1fae5)" },
-  { icon: FiShield,      title: "Chính hãng 100%",    description: "Cam kết xác thực",  color: "#4f46e5", bg: "linear-gradient(135deg,#eef2ff,#e0e7ff)" },
-  { icon: FiCreditCard,  title: "Thanh toán an toàn", description: "Mã hóa đầu cuối",   color: "#0284c7", bg: "linear-gradient(135deg,#f0f9ff,#e0f2fe)" },
-  { icon: FiLock,        title: "Bảo mật SSL",         description: "Kết nối mã hóa",    color: "#0369a1", bg: "linear-gradient(135deg,#f0f9ff,#bae6fd)" },
-  { icon: FiCheckCircle, title: "Bảo hành chính hãng",description: "Đầy đủ chứng từ",  color: "#3730a3", bg: "linear-gradient(135deg,#eef2ff,#c7d2fe)" },
-];
-
 function FeatureBadges() {
+  const { t } = useTranslation();
+  const FEATURE_BADGES = [
+    { icon: FiTruck,       title: t("home.feature_freeship_title"), description: t("home.feature_freeship_desc"),  color: "#2563eb", bg: "linear-gradient(135deg,#eff6ff,#dbeafe)" },
+    { icon: FiRefreshCw,   title: t("home.feature_return_title"),   description: t("home.feature_return_desc"),    color: "#059669", bg: "linear-gradient(135deg,#ecfdf5,#d1fae5)" },
+    { icon: FiShield,      title: t("home.feature_authentic_title"),description: t("home.feature_authentic_desc"), color: "#4f46e5", bg: "linear-gradient(135deg,#eef2ff,#e0e7ff)" },
+    { icon: FiCreditCard,  title: t("home.feature_payment_title"),  description: t("home.feature_payment_desc"),   color: "#0284c7", bg: "linear-gradient(135deg,#f0f9ff,#e0f2fe)" },
+    { icon: FiLock,        title: t("home.feature_ssl_title"),      description: t("home.feature_ssl_desc"),       color: "#0369a1", bg: "linear-gradient(135deg,#f0f9ff,#bae6fd)" },
+    { icon: FiCheckCircle, title: t("home.feature_warranty_title"), description: t("home.feature_warranty_desc"),  color: "#3730a3", bg: "linear-gradient(135deg,#eef2ff,#c7d2fe)" },
+  ];
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 12, marginBottom: 24 }}>
       {FEATURE_BADGES.map((b, i) => {
@@ -784,15 +789,16 @@ function BrandCard({ br }) {
 }
 
 function BrandsPanel({ brands }) {
+  const { t } = useTranslation();
   const { viewportRef, canPrev, canNext, scrollPrev, scrollNext } = useCarousel({ itemWidth: 100, gap: 14 });
   return (
-    <section style={{ marginBottom: 20 }} className="section-card" style={{ marginBottom: 20, borderRadius: 20, overflow: "hidden" }}>
+    <section className="section-card" style={{ marginBottom: 20, borderRadius: 20, overflow: "hidden" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px 16px", borderBottom: "1px solid rgba(219,234,254,0.6)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div className="glow-icon" style={{ width: 30, height: 30, borderRadius: 10, background: "linear-gradient(135deg,#2563eb,#1d4ed8)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <FiAward size={14} style={{ color: "white" }} />
           </div>
-          <h2 className="syne" style={{ fontSize: 15, fontWeight: 900, color: "#1e293b", letterSpacing: "-0.02em" }}>Thương hiệu nổi bật</h2>
+          <h2 className="syne" style={{ fontSize: 15, fontWeight: 900, color: "#1e293b", letterSpacing: "-0.02em" }}>{t("home.featured_brands")}</h2>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <ViewAll to="/products" />
@@ -821,6 +827,7 @@ function BrandsPanel({ brands }) {
    ✦ FLASH SALE — Red hot theme
 ══════════════════════════════════ */
 function FlashSaleSection({ flashSale }) {
+  const { t } = useTranslation();
   const { viewportRef, canPrev, canNext, scrollPrev, scrollNext } = useCarousel({ itemWidth: 200, gap: 12 });
   const isUpcoming = flashSale._upcoming;
   return (
@@ -849,7 +856,7 @@ function FlashSaleSection({ flashSale }) {
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
                 <h2 className="syne" style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "0.01em" }}>
-                  {isUpcoming ? "Flash Sale sắp diễn ra" : "Flash Sale"}
+                  {isUpcoming ? t("home.flash_sale_upcoming") : t("home.flash_sale_live")}
                 </h2>
                 {/* Blinking LIVE badge */}
                 <span style={{
@@ -862,12 +869,12 @@ function FlashSaleSection({ flashSale }) {
                   LIVE
                 </span>
               </div>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>Giá sốc — Số lượng cực hạn</p>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>{t("home.flash_sale_tagline")}</p>
             </div>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Countdown label={isUpcoming ? "Bắt đầu sau" : "Kết thúc sau"} endTime={isUpcoming ? flashSale.start_time : flashSale.end_time} />
+            <Countdown label={isUpcoming ? t("home.starts_in") : t("home.ends_in")} endTime={isUpcoming ? flashSale.start_time : flashSale.end_time} />
             <div style={{ display: "flex", gap: 6 }}>
               <NavBtn onClick={scrollPrev} disabled={!canPrev} direction="prev" light />
               <NavBtn onClick={scrollNext} disabled={!canNext} direction="next" light />
@@ -886,7 +893,7 @@ function FlashSaleSection({ flashSale }) {
               <div className="carousel-track" style={{ gap: 12 }}>
                 {flashSale.items.map((it, i) => (
                   <div key={`flash-${it._id || it.product_id || it.id || ""}-${i}`} style={{ width: 200, minWidth: 200 }}>
-                    <ProductCard item={normalizeFlashItem(it)} type="flash" index={i} />
+                    <ProductCard item={normalizeFlashItem(it, t("product.default_name"))} type="flash" index={i} />
                   </div>
                 ))}
               </div>
@@ -1007,6 +1014,7 @@ function HomePageSkeleton() {
 
 /* ════════════════════ PAGE ════════════════════ */
 export default function HomePage() {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1018,7 +1026,7 @@ export default function HomePage() {
         const payload = await homeService.fetchHomepage();
         setData(normalizeHomepage(payload));
       } catch (e) {
-        setError(e?.message || "Không tải được trang chủ");
+        setError(e?.message || t("home.load_error"));
       } finally {
         setLoading(false);
       }
@@ -1041,7 +1049,7 @@ export default function HomePage() {
           padding: "10px 28px", background: "linear-gradient(135deg,#2563eb,#1d4ed8)", color: "white",
           fontWeight: 800, borderRadius: 14, border: "none", cursor: "pointer", fontSize: 14,
         }}>
-          Thử lại
+          {t("home.retry")}
         </button>
       </div>
     </div>
@@ -1062,12 +1070,12 @@ export default function HomePage() {
       {!!flashSale?.items?.length && <FlashSaleSection flashSale={flashSale} />}
 
       {!!men.length && (
-        <SectionCarousel title="Thời trang Nam" Icon={FiUsers} accentColor="linear-gradient(135deg,#2563eb,#1d4ed8)"
+        <SectionCarousel title={t("home.section_men")} Icon={FiUsers} accentColor="linear-gradient(135deg,#2563eb,#1d4ed8)"
           viewAllHref="/categories/men" items={men}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />} itemWidth={200} gap={12} />
       )}
       {!!women.length && (
-        <SectionCarousel title="Thời trang Nữ" Icon={FiHeart} accentColor="linear-gradient(135deg,#0ea5e9,#0284c7)"
+        <SectionCarousel title={t("home.section_women")} Icon={FiHeart} accentColor="linear-gradient(135deg,#0ea5e9,#0284c7)"
           viewAllHref="/categories/women" items={women}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />} itemWidth={200} gap={12} />
       )}
@@ -1077,16 +1085,16 @@ export default function HomePage() {
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />} itemWidth={200} gap={12} />
       )}
       {!!men.length && (
-        <SectionCarousel title="Xu hướng nổi bật" Icon={FiTrendingUp} accentColor="linear-gradient(135deg,#0891b2,#0e7490)"
+        <SectionCarousel title={t("home.section_trending")} Icon={FiTrendingUp} accentColor="linear-gradient(135deg,#0891b2,#0e7490)"
           viewAllHref="/products?sort=popular" items={[...men, ...women].slice(0, 12)}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />} itemWidth={200} gap={12} />
       )}
       {!!(men.length || women.length) && (
-        <ProductGridSection title="Sản phẩm nổi bật" Icon={FiPackage} accentColor="linear-gradient(135deg,#2563eb,#1d4ed8)"
+        <ProductGridSection title={t("home.section_featured")} Icon={FiPackage} accentColor="linear-gradient(135deg,#2563eb,#1d4ed8)"
           viewAllHref="/products" items={[...men, ...women, ...(unisex || [])].slice(0, 12)} max={12} />
       )}
       {recentlyViewed.length > 0 && (
-        <SectionCarousel title="Đã xem gần đây" Icon={FiEye} accentColor="linear-gradient(135deg,#3b82f6,#2563eb)"
+        <SectionCarousel title={t("home.section_recently_viewed")} Icon={FiEye} accentColor="linear-gradient(135deg,#3b82f6,#2563eb)"
           viewAllHref="/products" items={recentlyViewed}
           renderItem={(p, i) => <ProductCard item={{ product: p }} index={i} />} itemWidth={200} gap={12} />
       )}

@@ -1,15 +1,17 @@
 import React from "react";
 import { Card, CardBody } from "@heroui/react";
 import { ShoppingCart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function SalesOrders() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-5">
-      <h1 className="text-xl font-black text-default-900">Đơn hàng (Sales)</h1>
+      <h1 className="text-xl font-black text-default-900">{t("admin.sales_orders")}</h1>
       <Card radius="xl" shadow="sm">
         <CardBody className="p-12 flex flex-col items-center gap-3 text-center">
           <ShoppingCart size={48} className="text-default-300" />
-          <p className="text-default-500">Chức năng đang phát triển.</p>
+          <p className="text-default-500">{t("common.coming_soon")}</p>
         </CardBody>
       </Card>
     </div>

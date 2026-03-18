@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { productService } from "../../services/productService";
 import { Card, CardBody, Input, Chip } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 
 export default function LowStockPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState([]);
   const [th,   setTh]   = useState(5);
   useEffect(() => { (async () => setRows(await productService.lowStock(th)))(); }, [th]);
@@ -10,8 +12,8 @@ export default function LowStockPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-4 flex-wrap">
-        <h1 className="text-xl font-black text-default-900">Tồn kho thấp</h1>
-        <Input size="sm" label="Ngưỡng" type="number" value={String(th)}
+        <h1 className="text-xl font-black text-default-900">{t("shop.low_stock_alert")}</h1>
+        <Input size="sm" label={t("common.filter")} type="number" value={String(th)}
           onValueChange={(v) => setTh(Number(v) || 5)} className="w-28" radius="lg" />
       </div>
       <Card radius="xl" shadow="sm">
@@ -19,14 +21,14 @@ export default function LowStockPage() {
           <table className="w-full text-sm">
             <thead className="bg-default-50 border-b border-default-100">
               <tr>
-                {["SKU", "Thuộc tính", "Tồn kho"].map((h) => (
+                {["SKU", t("product.category"), t("product.in_stock")].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-default-100">
               {rows.length === 0 ? (
-                <tr><td colSpan={3} className="text-center py-10 text-default-400">Không có sản phẩm nào dưới ngưỡng</td></tr>
+                <tr><td colSpan={3} className="text-center py-10 text-default-400">{t("common.no_data")}</td></tr>
               ) : rows.map((r) => (
                 <tr key={r._id} className="hover:bg-default-50">
                   <td className="px-4 py-3 font-mono text-sm">{r.sku}</td>

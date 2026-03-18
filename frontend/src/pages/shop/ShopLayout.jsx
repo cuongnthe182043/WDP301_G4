@@ -1,40 +1,43 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Divider } from "@heroui/react";
 import { useTheme } from "../../context/ThemeContext";
 import {
   LayoutDashboard, Package, PackagePlus, AlertTriangle,
   FolderTree, Tag, Award, ChevronLeft, ChevronRight, Store, Settings,
-  ShoppingCart, RefreshCw, Users, Star, Wallet, Megaphone,
+  ShoppingCart, RefreshCw, Users, Star, Wallet, Megaphone, Ruler,
 } from "lucide-react";
 
-const NAV_ITEMS = [
-  { to: "/shop/dashboard",           label: "Dashboard",       icon: LayoutDashboard, color: "#0ea5e9", bg: "rgba(14,165,233,0.1)",    exact: true },
-  { divider: true, label: "Đơn hàng" },
-  { to: "/shop/orders",              label: "Đơn hàng",        icon: ShoppingCart,    color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
-  { to: "/shop/refunds",             label: "Hoàn/Đổi trả",   icon: RefreshCw,       color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
-  { to: "/shop/customers",           label: "Khách hàng",      icon: Users,           color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
-  { divider: true, label: "Sản phẩm" },
-  { to: "/shop/admin/products",      label: "Sản phẩm",        icon: Package,         color: "#6366f1", bg: "rgba(99,102,241,0.1)",  exact: true },
-  { to: "/shop/admin/products/new",  label: "Thêm sản phẩm",  icon: PackagePlus,     color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
-  { to: "/shop/inventory/low-stock", label: "Hàng sắp hết",   icon: AlertTriangle,   color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
-  { divider: true, label: "Danh mục" },
-  { to: "/shop/catalog/categories",  label: "Danh mục",        icon: FolderTree,      color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
-  { to: "/shop/catalog/attributes",  label: "Thuộc tính",      icon: Tag,             color: "#eab308", bg: "rgba(234,179,8,0.1)"   },
-  { to: "/shop/catalog/brands",      label: "Thương hiệu",     icon: Award,           color: "#f43f5e", bg: "rgba(244,63,94,0.1)"   },
-  { divider: true, label: "Tương tác" },
-  { to: "/shop/reviews",             label: "Đánh giá",        icon: Star,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
-  { to: "/shop/marketing",           label: "Marketing",       icon: Megaphone,       color: "#d946ef", bg: "rgba(217,70,239,0.1)"  },
-  { divider: true, label: "Tài chính" },
-  { to: "/shop/wallet",              label: "Ví cửa hàng",     icon: Wallet,          color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
-  { divider: true },
-  { to: "/shop/settings",            label: "Cài đặt shop",    icon: Settings,        color: "#64748b", bg: "rgba(100,116,139,0.1)" },
-];
-
 export default function ShopLayout() {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const NAV_ITEMS = [
+    { to: "/shop/dashboard",           label: "Dashboard",                    icon: LayoutDashboard, color: "#0ea5e9", bg: "rgba(14,165,233,0.1)",    exact: true },
+    { divider: true, label: t("shop.section_orders") },
+    { to: "/shop/orders",              label: t("shop.nav_orders"),           icon: ShoppingCart,    color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
+    { to: "/shop/refunds",             label: t("shop.nav_returns"),          icon: RefreshCw,       color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
+    { to: "/shop/customers",           label: t("shop.nav_customers"),        icon: Users,           color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
+    { divider: true, label: t("shop.section_products") },
+    { to: "/shop/admin/products",      label: t("shop.nav_products"),         icon: Package,         color: "#6366f1", bg: "rgba(99,102,241,0.1)",  exact: true },
+    { to: "/shop/admin/products/new",  label: t("shop.nav_add_product"),      icon: PackagePlus,     color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
+    { to: "/shop/inventory/low-stock", label: t("shop.nav_low_stock"),        icon: AlertTriangle,   color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
+    { divider: true, label: t("shop.section_catalog") },
+    { to: "/shop/catalog/categories",  label: t("shop.nav_categories"),       icon: FolderTree,      color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
+    { to: "/shop/catalog/attributes",  label: t("shop.nav_attributes"),       icon: Tag,             color: "#eab308", bg: "rgba(234,179,8,0.1)"   },
+    { to: "/shop/catalog/brands",      label: t("shop.nav_brands"),           icon: Award,           color: "#f43f5e", bg: "rgba(244,63,94,0.1)"   },
+    { to: "/shop/size-charts",         label: t("shop.nav_size_charts"),      icon: Ruler,           color: "#0ea5e9", bg: "rgba(14,165,233,0.1)"  },
+    { divider: true, label: t("shop.section_engagement") },
+    { to: "/shop/reviews",             label: t("shop.nav_reviews"),          icon: Star,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+    { to: "/shop/marketing",           label: t("shop.nav_marketing"),        icon: Megaphone,       color: "#d946ef", bg: "rgba(217,70,239,0.1)"  },
+    { divider: true, label: t("shop.section_finance") },
+    { to: "/shop/wallet",              label: t("shop.nav_wallet"),           icon: Wallet,          color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
+    { divider: true },
+    { to: "/shop/settings",            label: t("shop.nav_settings"),         icon: Settings,        color: "#64748b", bg: "rgba(100,116,139,0.1)" },
+  ];
 
   const S = {
     sidebar:     isDark ? { background: "#18181b", borderRight: "1px solid #27272a", boxShadow: "2px 0 16px rgba(0,0,0,0.35)" }
@@ -83,7 +86,7 @@ export default function ShopLayout() {
               className="font-bold text-sm whitespace-nowrap transition-all duration-300 overflow-hidden"
               style={{ maxWidth: collapsed ? 0 : "120px", opacity: collapsed ? 0 : 1, color: S.brandText }}
             >
-              DFS Seller
+              {t("shop.seller_center")}
             </span>
           </div>
 
@@ -151,7 +154,6 @@ export default function ShopLayout() {
                       }
                     }}
                   >
-                    {/* Active left bar */}
                     {isActive && (
                       <span
                         className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full"
@@ -159,7 +161,6 @@ export default function ShopLayout() {
                       />
                     )}
 
-                    {/* Icon box */}
                     <span
                       className="flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0"
                       style={{ background: item.bg, color: item.color }}
@@ -167,7 +168,6 @@ export default function ShopLayout() {
                       <Icon size={15} />
                     </span>
 
-                    {/* Label */}
                     <span
                       className="text-[13px] font-medium whitespace-nowrap overflow-hidden transition-all duration-300"
                       style={{ maxWidth: collapsed ? 0 : "140px", opacity: collapsed ? 0 : 1 }}
@@ -188,8 +188,7 @@ export default function ShopLayout() {
         >
           <p
             className="text-[10px] whitespace-nowrap overflow-hidden text-center transition-all duration-300"
-            style={{ color: S.footerText }}
-            style={{ opacity: collapsed ? 0 : 1, maxHeight: collapsed ? 0 : "16px" }}
+            style={{ color: S.footerText, opacity: collapsed ? 0 : 1, maxHeight: collapsed ? 0 : "16px" }}
           >
             © 2025 DFS Seller
           </p>

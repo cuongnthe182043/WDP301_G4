@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Pagination, Chip, Select, SelectItem, Avatar, Textarea,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
@@ -21,10 +22,18 @@ function StarRating({ value }) {
 }
 
 const STATUS_COLOR = { visible: "success", hidden: "warning", pending: "danger", deleted: "default" };
-const STATUS_LABEL = { visible: "Hiển thị", hidden: "Đã ẩn", pending: "Chờ duyệt", deleted: "Đã xóa" };
 
 export default function ManageReviews() {
+  const { t } = useTranslation();
   const toast = useToast();
+
+  const STATUS_LABEL = {
+    visible: t("admin.review_status_visible"),
+    hidden:  t("admin.review_status_hidden"),
+    pending: t("admin.review_status_pending"),
+    deleted: t("admin.review_status_deleted"),
+  };
+
   const [reviews, setReviews]       = useState([]);
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState(1);
@@ -59,7 +68,7 @@ export default function ManageReviews() {
       setReviews(res.data?.items || []);
       setTotal(res.data?.total || 0);
       setTotalPages(Math.ceil((res.data?.total || 0) / LIMIT));
-    } catch (e) { toast.error(e?.message || "Lỗi tải dữ liệu"); }
+    } catch (e) { toast.error(e?.message || t("admin.refund_load_error")); }
     finally { setLoading(false); }
   }, [page, statusFilter, ratingFilter, productFilter]);
 
@@ -71,11 +80,11 @@ export default function ManageReviews() {
   };
 
   const handleReply = async () => {
-    if (!replyText.trim()) return toast.error("Nhập nội dung phản hồi");
+    if (!replyText.trim()) return toast.error(t("admin.review_reply_required"));
     setSaving(true);
     try {
       await shopReviewApi.reply(replyTarget.id, replyText);
-      toast.success(replyTarget.existing ? "Đã cập nhật phản hồi" : "Đã gửi phản hồi");
+      toast.success(replyTarget.existing ? t("admin.review_reply_updated") : t("admin.review_reply_success"));
       setReplyTarget(null);
       setReplyText("");
       load(page);
@@ -88,29 +97,29 @@ export default function ManageReviews() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-default-900">Quản lý đánh giá</h1>
-          <p className="text-sm text-default-400">Tổng {total} đánh giá</p>
+          <h1 className="text-xl font-black text-default-900">{t("admin.review_manage_title")}</h1>
+          <p className="text-sm text-default-400">{t("admin.review_total", { count: total })}</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           {/* Product filter */}
-          <Select size="sm" placeholder="Tất cả sản phẩm" className="w-52" radius="lg"
+          <Select size="sm" placeholder={t("admin.review_all_products")} className="w-52" radius="lg"
             selectedKeys={productFilter ? new Set([productFilter]) : new Set()}
             onSelectionChange={(k) => { setProduct(Array.from(k)[0] || ""); setPage(1); }}>
             {products.map((p) => (
               <SelectItem key={p._id}>{p.name}</SelectItem>
             ))}
           </Select>
-          <Select size="sm" placeholder="Trạng thái" className="w-36" radius="lg"
+          <Select size="sm" placeholder={t("common.status")} className="w-36" radius="lg"
             selectedKeys={statusFilter ? new Set([statusFilter]) : new Set()}
             onSelectionChange={(k) => { setStatus(Array.from(k)[0] || ""); setPage(1); }}>
-            <SelectItem key="visible">Hiển thị</SelectItem>
-            <SelectItem key="hidden">Đã ẩn</SelectItem>
-            <SelectItem key="pending">Chờ duyệt</SelectItem>
+            <SelectItem key="visible">{t("admin.review_status_visible")}</SelectItem>
+            <SelectItem key="hidden">{t("admin.review_status_hidden")}</SelectItem>
+            <SelectItem key="pending">{t("admin.review_status_pending")}</SelectItem>
           </Select>
-          <Select size="sm" placeholder="Số sao" className="w-32" radius="lg"
+          <Select size="sm" placeholder={t("admin.review_stars_label")} className="w-32" radius="lg"
             selectedKeys={ratingFilter ? new Set([ratingFilter]) : new Set()}
             onSelectionChange={(k) => { setRating(Array.from(k)[0] || ""); setPage(1); }}>
-            {[5, 4, 3, 2, 1].map((n) => <SelectItem key={String(n)}>{n} sao</SelectItem>)}
+            {[5, 4, 3, 2, 1].map((n) => <SelectItem key={String(n)}>{n} ★</SelectItem>)}
           </Select>
         </div>
       </div>
@@ -123,7 +132,7 @@ export default function ManageReviews() {
           ) : reviews.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-12">
               <Star size={40} className="text-default-300" />
-              <p className="text-default-400">Không có đánh giá nào</p>
+              <p className="text-default-400">{t("admin.review_no_reviews")}</p>
             </div>
           ) : (
             <div className="divide-y divide-default-100">
@@ -136,26 +145,26 @@ export default function ManageReviews() {
                         name={r.user_id?.username?.[0]?.toUpperCase()} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-sm">{r.user_id?.username || "Ẩn danh"}</span>
+                          <span className="font-semibold text-sm">{r.user_id?.username || t("admin.review_anonymous")}</span>
                           <StarRating value={r.rating} />
                           <Chip size="sm" color={STATUS_COLOR[r.status] || "default"} variant="flat">
                             {STATUS_LABEL[r.status] || r.status}
                           </Chip>
                           {r.status === "pending" && (
                             <Chip size="sm" color="danger" variant="dot" startContent={<AlertCircle size={10} />}>
-                              Chờ kiểm duyệt
+                              {t("admin.review_pending_chip")}
                             </Chip>
                           )}
                           <span className="text-xs text-default-400">{formatDate(r.createdAt)}</span>
                         </div>
                         <p className="text-sm text-default-700 mt-1">
-                          {r.comment || <span className="text-default-400 italic">Không có nhận xét</span>}
+                          {r.comment || <span className="text-default-400 italic">{t("admin.review_no_comment")}</span>}
                         </p>
                         {r.flagged_reason && (
                           <p className="text-xs text-danger mt-1">⚠ {r.flagged_reason}</p>
                         )}
                         {r.product_id && (
-                          <p className="text-xs text-default-400 mt-1">Sản phẩm: {r.product_id?.name}</p>
+                          <p className="text-xs text-default-400 mt-1">{t("admin.review_product_label")} {r.product_id?.name}</p>
                         )}
 
                         {/* Images */}
@@ -170,18 +179,18 @@ export default function ManageReviews() {
                         {/* Shop reply */}
                         {r.reply && (
                           <div className="mt-2 bg-primary/5 border border-primary/20 rounded-xl p-3">
-                            <p className="text-xs font-bold text-primary mb-1">Phản hồi của shop:</p>
+                            <p className="text-xs font-bold text-primary mb-1">{t("admin.review_reply_label")}</p>
                             <p className="text-sm text-default-700">{r.reply}</p>
                             {r.reply_at && <p className="text-xs text-default-400 mt-1">{formatDate(r.reply_at)}</p>}
                           </div>
                         )}
 
                         {/* Thread (customer back-replies) */}
-                        {(r.thread || []).filter(t => t.from === "customer").map((t, i) => (
+                        {(r.thread || []).filter(th => th.from === "customer").map((th, i) => (
                           <div key={i} className="mt-2 bg-default-50 border border-default-200 rounded-xl p-3">
-                            <p className="text-xs font-bold text-default-500 mb-1">Người mua phản hồi:</p>
-                            <p className="text-sm text-default-700">{t.text}</p>
-                            <p className="text-xs text-default-400 mt-1">{formatDate(t.at)}</p>
+                            <p className="text-xs font-bold text-default-500 mb-1">{t("admin.review_buyer_reply")}</p>
+                            <p className="text-sm text-default-700">{th.text}</p>
+                            <p className="text-xs text-default-400 mt-1">{formatDate(th.at)}</p>
                           </div>
                         ))}
                       </div>
@@ -191,7 +200,7 @@ export default function ManageReviews() {
                     <div className="flex gap-1 flex-shrink-0">
                       <Button
                         isIconOnly size="sm" variant="light"
-                        title={r.reply ? "Sửa phản hồi" : "Phản hồi"}
+                        title={r.reply ? t("admin.review_edit_reply_btn") : t("admin.review_reply_btn")}
                         onPress={() => openReply(r)}
                       >
                         {r.reply ? <Pencil size={14} /> : <MessageSquare size={14} />}
@@ -216,11 +225,11 @@ export default function ManageReviews() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>{replyTarget?.existing ? "Sửa phản hồi" : "Phản hồi đánh giá"}</ModalHeader>
+              <ModalHeader>{replyTarget?.existing ? t("admin.review_edit_reply_title") : t("admin.review_reply_title")}</ModalHeader>
               <ModalBody>
                 <Textarea
-                  label="Nội dung phản hồi"
-                  placeholder="Nhập phản hồi của bạn..."
+                  label={t("admin.review_reply_label_input")}
+                  placeholder={t("admin.review_reply_placeholder")}
                   value={replyText}
                   onValueChange={setReplyText}
                   radius="lg"
@@ -228,9 +237,9 @@ export default function ManageReviews() {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Hủy</Button>
+                <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button color="primary" isLoading={saving} onPress={handleReply}>
-                  {replyTarget?.existing ? "Cập nhật" : "Gửi phản hồi"}
+                  {replyTarget?.existing ? t("common.update") : t("admin.review_reply_btn")}
                 </Button>
               </ModalFooter>
             </>
