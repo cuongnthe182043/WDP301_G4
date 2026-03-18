@@ -6,23 +6,25 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Chip,
 } from "@heroui/react";
 import { Plus, Pencil, Trash2, FolderTree, Lock } from "lucide-react";
-
-const GENDER_OPTS = [
-  { key: "",       label: "Không chọn" },
-  { key: "men",    label: "Nam" },
-  { key: "women",  label: "Nữ" },
-  { key: "unisex", label: "Unisex" },
-];
+import { useTranslation } from "react-i18next";
 
 const EMPTY = { name: "", parent_id: "", gender_hint: "", description: "" };
 
 export default function CategoriesPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const isAdmin   = user?.role_name === "system_admin";
+  const isAdmin = user?.role_name === "system_admin";
+
+  const GENDER_OPTS = [
+    { key: "",       label: t("common.optional") },
+    { key: "men",    label: t("profile.gender_male") },
+    { key: "women",  label: t("profile.gender_female") },
+    { key: "unisex", label: "Unisex" },
+  ];
 
   const [rows,      setRows]      = useState([]);
   const [loading,   setLoading]   = useState(true);
-  const [modal,     setModal]     = useState(null); // null | "create" | "edit"
+  const [modal,     setModal]     = useState(null);
   const [form,      setForm]      = useState(EMPTY);
   const [saving,    setSaving]    = useState(false);
   const [delTarget, setDelTarget] = useState(null);
@@ -63,7 +65,7 @@ export default function CategoriesPage() {
   const handleDelete = async () => {
     if (!delTarget) return;
     try { await svc.deleteCategory(delTarget._id); setDelTarget(null); load(); }
-    catch (e) { alert(e.message || "Không thể xóa"); }
+    catch (e) { alert(e.message || t("common.error")); }
   };
 
   const byId       = Object.fromEntries(rows.map(r => [r._id, r]));
@@ -73,18 +75,18 @@ export default function CategoriesPage() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-default-900">Danh mục</h1>
-          <p className="text-sm text-default-400">{rows.length} danh mục</p>
+          <h1 className="text-xl font-black text-default-900">{t("shop.categories")}</h1>
+          <p className="text-sm text-default-400">{rows.length} {t("shop.categories").toLowerCase()}</p>
         </div>
         <div className="flex items-center gap-2">
           {!isAdmin && (
             <Chip size="sm" variant="flat" color="warning" startContent={<Lock size={11} />}>
-              Chỉ xem
+              {t("common.view_only")}
             </Chip>
           )}
           {isAdmin && (
             <Button color="primary" radius="lg" size="sm" startContent={<Plus size={14} />} onPress={openCreate}>
-              Thêm danh mục
+              {t("common.add_category")}
             </Button>
           )}
         </div>
@@ -93,9 +95,7 @@ export default function CategoriesPage() {
       {!isAdmin && (
         <div className="flex items-center gap-2 p-3 bg-warning-50 border border-warning-200 rounded-xl">
           <Lock size={14} className="text-warning-600 flex-shrink-0" />
-          <p className="text-xs text-warning-700">
-            Danh mục do quản trị viên quản lý. Bạn có thể xem nhưng không thể thêm, sửa hoặc xóa.
-          </p>
+          <p className="text-xs text-warning-700">{t("common.admin_only")}</p>
         </div>
       )}
 
@@ -104,12 +104,12 @@ export default function CategoriesPage() {
           {loading ? (
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : rows.length === 0 ? (
-            <div className="text-center py-16 text-default-400">Chưa có danh mục nào</div>
+            <div className="text-center py-16 text-default-400">{t("common.no_data")}</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Tên", "Cha", "Cấp", "Giới tính", ...(isAdmin ? [""] : [])].map(h => (
+                  {[t("common.name"), t("common.parent"), t("common.level"), t("common.gender"), ...(isAdmin ? [""] : [])].map(h => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -126,7 +126,7 @@ export default function CategoriesPage() {
                     <td className="px-4 py-3 text-default-500">{byId[r.parent_id]?.name || "—"}</td>
                     <td className="px-4 py-3">
                       <Chip size="sm" variant="flat" color={r.level === 0 ? "primary" : r.level === 1 ? "secondary" : "default"}>
-                        Cấp {r.level ?? 0}
+                        {t("common.level")} {r.level ?? 0}
                       </Chip>
                     </td>
                     <td className="px-4 py-3 text-default-500 capitalize">{r.gender_hint || "—"}</td>
@@ -150,21 +150,21 @@ export default function CategoriesPage() {
         </CardBody>
       </Card>
 
-      {/* Create/Edit Modal — admin only */}
+      {/* Create/Edit Modal */}
       {isAdmin && (
         <>
           <Modal isOpen={!!modal} onOpenChange={(o) => !o && setModal(null)} radius="xl">
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>{modal === "edit" ? "Sửa danh mục" : "Thêm danh mục"}</ModalHeader>
+                  <ModalHeader>{modal === "edit" ? t("common.edit_category") : t("common.add_category")}</ModalHeader>
                   <ModalBody className="space-y-3">
                     <Input
-                      isRequired label="Tên danh mục" placeholder="Áo khoác, Quần jeans..."
+                      isRequired label={t("product.category")} placeholder="..."
                       value={form.name} onValueChange={v => setForm(f => ({ ...f, name: v }))} radius="lg"
                     />
                     <Select
-                      label="Danh mục cha" placeholder="Không có (danh mục gốc)"
+                      label={t("common.parent")} placeholder={t("common.optional")}
                       selectedKeys={form.parent_id ? new Set([form.parent_id]) : new Set()}
                       onSelectionChange={k => setForm(f => ({ ...f, parent_id: Array.from(k)[0] || "" }))}
                       radius="lg"
@@ -172,7 +172,7 @@ export default function CategoriesPage() {
                       {parentOpts.map(p => <SelectItem key={p._id}>{"\u00a0".repeat((p.level||0)*4)}{p.name}</SelectItem>)}
                     </Select>
                     <Select
-                      label="Giới tính" placeholder="Không chọn"
+                      label={t("common.gender")} placeholder={t("common.optional")}
                       selectedKeys={form.gender_hint ? new Set([form.gender_hint]) : new Set()}
                       onSelectionChange={k => setForm(f => ({ ...f, gender_hint: Array.from(k)[0] || "" }))}
                       radius="lg"
@@ -180,14 +180,14 @@ export default function CategoriesPage() {
                       {GENDER_OPTS.filter(o => o.key).map(o => <SelectItem key={o.key}>{o.label}</SelectItem>)}
                     </Select>
                     <Input
-                      label="Mô tả" placeholder="Tùy chọn"
+                      label={t("common.description")} placeholder={t("common.optional")}
                       value={form.description} onValueChange={v => setForm(f => ({ ...f, description: v }))} radius="lg"
                     />
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
                     <Button color="primary" radius="lg" isLoading={saving} isDisabled={!form.name.trim()} onPress={handleSave}>
-                      {modal === "edit" ? "Lưu" : "Tạo"}
+                      {modal === "edit" ? t("common.save") : t("common.create")}
                     </Button>
                   </ModalFooter>
                 </>
@@ -199,16 +199,16 @@ export default function CategoriesPage() {
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>Xóa danh mục</ModalHeader>
+                  <ModalHeader>{t("common.delete_category")}</ModalHeader>
                   <ModalBody>
                     <p className="text-sm text-default-500">
-                      Xóa danh mục <strong className="text-default-900">"{delTarget?.name}"</strong>?
-                      Chỉ xóa được nếu không còn sản phẩm hoặc danh mục con.
+                      {t("common.confirm_delete")} <strong className="text-default-900">"{delTarget?.name}"</strong>?
+                      {" "}{t("common.cannot_delete_hint")}
                     </p>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
-                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>Xóa</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>{t("common.delete")}</Button>
                   </ModalFooter>
                 </>
               )}

@@ -1,41 +1,43 @@
 // frontend/src/components/shop/ShopSideNav.jsx
 import { useNavigate, useLocation } from "react-router-dom";
 import { X, LayoutDashboard, Package, PlusCircle, AlertTriangle, Tag, Sliders, Award, FileSpreadsheet, ChevronRight } from "lucide-react";
-
-const groups = [
-  {
-    title: "Tổng quan",
-    items: [
-      { t: "Bảng điều khiển", to: "/shop/dashboard", icon: LayoutDashboard, color: "#38bdf8", bg: "rgba(56,189,248,0.15)" },
-    ],
-  },
-  {
-    title: "Sản phẩm",
-    items: [
-      { t: "Tất cả sản phẩm", to: "/shop/products", icon: Package, color: "#a78bfa", bg: "rgba(167,139,250,0.15)" },
-      { t: "Thêm sản phẩm", to: "/shop/products/new", icon: PlusCircle, color: "#34d399", bg: "rgba(52,211,153,0.15)" },
-      { t: "Hàng sắp hết", to: "/shop/inventory/low-stock", icon: AlertTriangle, color: "#fb923c", bg: "rgba(251,146,60,0.15)" },
-    ],
-  },
-  {
-    title: "Danh mục & Thuộc tính",
-    items: [
-      { t: "Danh mục", to: "/shop/catalog/categories", icon: Tag, color: "#f472b6", bg: "rgba(244,114,182,0.15)" },
-      { t: "Thuộc tính", to: "/shop/catalog/attributes", icon: Sliders, color: "#fbbf24", bg: "rgba(251,191,36,0.15)" },
-      { t: "Brand", to: "/shop/catalog/brands", icon: Award, color: "#f87171", bg: "rgba(248,113,113,0.15)" },
-    ],
-  },
-  {
-    title: "Dữ liệu",
-    items: [
-      { t: "Import Excel", to: "/shop/products#import", icon: FileSpreadsheet, color: "#4ade80", bg: "rgba(74,222,128,0.15)" },
-    ],
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function ShopSideNav({ open, onClose }) {
+  const { t } = useTranslation();
   const nav = useNavigate();
   const location = useLocation();
+
+  const groups = [
+    {
+      title: t("shop.nav_overview"),
+      items: [
+        { t: t("shop.nav_dashboard"), to: "/shop/dashboard", icon: LayoutDashboard, color: "#38bdf8", bg: "rgba(56,189,248,0.15)" },
+      ],
+    },
+    {
+      title: t("shop.nav_products"),
+      items: [
+        { t: t("shop.nav_all_products"), to: "/shop/products", icon: Package, color: "#a78bfa", bg: "rgba(167,139,250,0.15)" },
+        { t: t("shop.nav_add_product"), to: "/shop/products/new", icon: PlusCircle, color: "#34d399", bg: "rgba(52,211,153,0.15)" },
+        { t: t("shop.nav_low_stock"), to: "/shop/inventory/low-stock", icon: AlertTriangle, color: "#fb923c", bg: "rgba(251,146,60,0.15)" },
+      ],
+    },
+    {
+      title: t("shop.nav_catalog"),
+      items: [
+        { t: t("shop.nav_categories"), to: "/shop/catalog/categories", icon: Tag, color: "#f472b6", bg: "rgba(244,114,182,0.15)" },
+        { t: t("shop.nav_attributes"), to: "/shop/catalog/attributes", icon: Sliders, color: "#fbbf24", bg: "rgba(251,191,36,0.15)" },
+        { t: t("shop.nav_brands"), to: "/shop/catalog/brands", icon: Award, color: "#f87171", bg: "rgba(248,113,113,0.15)" },
+      ],
+    },
+    {
+      title: t("shop.nav_data"),
+      items: [
+        { t: t("shop.nav_import_excel"), to: "/shop/products#import", icon: FileSpreadsheet, color: "#4ade80", bg: "rgba(74,222,128,0.15)" },
+      ],
+    },
+  ];
 
   // Find the single best-matching path for the current URL
   const allPaths = groups
@@ -88,7 +90,7 @@ export default function ShopSideNav({ open, onClose }) {
             </div>
             <div>
               <p className="text-white font-semibold text-sm leading-tight">Shop Manager</p>
-              <p className="text-slate-400 text-[11px] leading-tight">Quản lý cửa hàng</p>
+              <p className="text-slate-400 text-[11px] leading-tight">{t("shop.manage_store")}</p>
             </div>
           </div>
           <button

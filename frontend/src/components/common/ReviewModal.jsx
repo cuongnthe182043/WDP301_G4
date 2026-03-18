@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Button, Textarea, Chip,
@@ -6,12 +7,6 @@ import {
 import { Star, Camera, X, Eye, EyeOff } from "lucide-react";
 import { reviewService } from "../../services/reviewService";
 import { useToast } from "./ToastProvider";
-
-const SIZE_OPTIONS = [
-  { value: "fit", label: "Vừa vặn" },
-  { value: "tight", label: "Chật" },
-  { value: "loose", label: "Rộng" },
-];
 
 function StarRating({ value, onChange, size = 28 }) {
   const [hover, setHover] = useState(0);
@@ -40,14 +35,6 @@ function StarRating({ value, onChange, size = 28 }) {
   );
 }
 
-const RATING_LABELS = {
-  1: "Rất tệ",
-  2: "Tệ",
-  3: "Bình thường",
-  4: "Tốt",
-  5: "Tuyệt vời",
-};
-
 /**
  * ReviewModal — create or edit a product review.
  *
@@ -56,8 +43,23 @@ const RATING_LABELS = {
  *    Expected shape: { _id, rating, comment, images, is_anonymous, size_feedback }
  */
 export default function ReviewModal({ isOpen, onOpenChange, item, orderId, existingReview, onSuccess }) {
+  const { t } = useTranslation();
   const toast = useToast();
   const fileRef = useRef(null);
+
+  const SIZE_OPTIONS = [
+    { value: "fit",   label: t("review.size_fit") },
+    { value: "tight", label: t("review.size_tight") },
+    { value: "loose", label: t("review.size_loose") },
+  ];
+
+  const RATING_LABELS = {
+    1: t("review.rating_1"),
+    2: t("review.rating_2"),
+    3: t("review.rating_3"),
+    4: t("review.rating_4"),
+    5: t("review.rating_5"),
+  };
 
   const isEdit = !!existingReview?._id;
 
@@ -106,7 +108,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
   const handlePickImages = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length + totalImages > 5) {
-      toast.warning("Tối đa 5 ảnh");
+      toast.warning(t("review.max_images_warning"));
       return;
     }
     const newPreviews = files.map((f) => URL.createObjectURL(f));
@@ -132,7 +134,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
 
   const handleSubmit = async (onClose) => {
     if (rating === 0) {
-      toast.warning("Vui lòng chọn số sao");
+      toast.warning(t("review.select_rating_warning"));
       return;
     }
 
@@ -158,7 +160,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
           is_anonymous: isAnonymous,
           size_feedback: sizeFeedback,
         });
-        toast.success("Cập nhật đánh giá thành công!");
+        toast.success(t("review.update_success"));
       } else {
         // Create new review
         await reviewService.submit({
@@ -170,14 +172,14 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
           is_anonymous: isAnonymous,
           size_feedback: sizeFeedback,
         });
-        toast.success("Đánh giá thành công!");
+        toast.success(t("review.submit_success"));
       }
 
       reset();
       onClose();
       onSuccess?.();
     } catch (err) {
-      toast.error(err?.response?.data?.message || err.message || "Không thể gửi đánh giá");
+      toast.error(err?.response?.data?.message || err.message || t("review.submit_error"));
     } finally {
       setSubmitting(false);
       setUploading(false);
@@ -191,7 +193,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
           <>
             <ModalHeader className="flex flex-col gap-1">
               <span className="font-black text-default-900">
-                {isEdit ? "Sửa đánh giá" : "Đánh giá sản phẩm"}
+                {isEdit ? t("review.edit_title") : t("review.create_title")}
               </span>
             </ModalHeader>
 
@@ -213,7 +215,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
 
               {/* Star rating */}
               <div className="text-center">
-                <p className="text-sm text-default-600 mb-2">Chất lượng sản phẩm</p>
+                <p className="text-sm text-default-600 mb-2">{t("review.quality_label")}</p>
                 <div className="flex justify-center">
                   <StarRating value={rating} onChange={setRating} size={36} />
                 </div>
@@ -224,8 +226,8 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
 
               {/* Comment */}
               <Textarea
-                label="Nhận xét"
-                placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."
+                label={t("review.comment_label")}
+                placeholder={t("review.comment_placeholder")}
                 value={comment}
                 onValueChange={setComment}
                 minRows={3}
@@ -236,7 +238,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
 
               {/* Image upload */}
               <div>
-                <p className="text-sm text-default-600 mb-2">Thêm hình ảnh (tối đa 5)</p>
+                <p className="text-sm text-default-600 mb-2">{t("review.images_label")}</p>
                 <div className="flex flex-wrap gap-2">
                   {imagePreviews.map((src, idx) => (
                     <div key={idx} className="relative w-20 h-20 rounded-xl overflow-hidden border border-default-200">
@@ -257,7 +259,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
                       className="w-20 h-20 rounded-xl border-2 border-dashed border-default-300 flex flex-col items-center justify-center text-default-400 hover:border-primary hover:text-primary transition-colors"
                     >
                       <Camera size={20} />
-                      <span className="text-xs mt-1">Thêm</span>
+                      <span className="text-xs mt-1">{t("review.add_image")}</span>
                     </button>
                   )}
                 </div>
@@ -273,7 +275,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
 
               {/* Size feedback */}
               <div>
-                <p className="text-sm text-default-600 mb-2">Kích cỡ so với mô tả</p>
+                <p className="text-sm text-default-600 mb-2">{t("review.size_feedback_label")}</p>
                 <div className="flex gap-2">
                   {SIZE_OPTIONS.map((opt) => (
                     <Chip
@@ -296,13 +298,13 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
                 className="flex items-center gap-2 text-sm text-default-500 hover:text-default-700 transition-colors"
               >
                 {isAnonymous ? <EyeOff size={16} /> : <Eye size={16} />}
-                {isAnonymous ? "Đánh giá ẩn danh" : "Hiển thị tên của bạn"}
+                {isAnonymous ? t("review.anonymous_on") : t("review.anonymous_off")}
               </button>
             </ModalBody>
 
             <ModalFooter>
               <Button variant="light" radius="lg" onPress={onClose} isDisabled={submitting}>
-                Đóng
+                {t("common.close")}
               </Button>
               <Button
                 color="primary"
@@ -311,7 +313,7 @@ export default function ReviewModal({ isOpen, onOpenChange, item, orderId, exist
                 isLoading={submitting}
                 isDisabled={rating === 0}
               >
-                {uploading ? "Đang tải ảnh..." : isEdit ? "Cập nhật" : "Gửi đánh giá"}
+                {uploading ? t("review.uploading_images") : isEdit ? t("common.update") : t("review.submit_btn")}
               </Button>
             </ModalFooter>
           </>

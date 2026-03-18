@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./common/ToastProvider";
 import { checkoutService } from "../services/checkoutService";
 import apiClient from "../services/apiClient";
+import { useTranslation } from "react-i18next";
 
 /**
  * PayPalCheckout
@@ -26,6 +27,7 @@ import apiClient from "../services/apiClient";
  * from the DB order by the backend.
  */
 export default function PayPalCheckout({ checkoutPayload, onSuccess, onError }) {
+  const { t } = useTranslation();
   const nav   = useNavigate();
   const toast = useToast();
 
@@ -50,12 +52,12 @@ export default function PayPalCheckout({ checkoutPayload, onSuccess, onError }) 
 
       return res.data.data.paypalOrderId;
     } catch (e) {
-      const msg = e?.response?.data?.message || e?.message || "Không tạo được đơn hàng";
+      const msg = e?.response?.data?.message || e?.message || t("checkout.create_order_failed");
       toast.error(msg);
       onError?.(e);
       throw e; // must re-throw so PayPal SDK knows creation failed
     }
-  }, [checkoutPayload, toast, onError]);
+  }, [checkoutPayload, toast, onError, t]);
 
   const onApprove = useCallback(async (data) => {
     try {
@@ -64,28 +66,28 @@ export default function PayPalCheckout({ checkoutPayload, onSuccess, onError }) 
         orderId: dbOrderIdRef.current,
       });
 
-      toast.success("Thanh toán PayPal thành công!");
+      toast.success(t("checkout.paypal_success"));
       onSuccess?.(res.data.data);
 
       // Redirect to result page
       const code = res.data.data?.order?.order_code || dbOrderIdRef.current;
       nav(`/payment/return?status=success&order_code=${encodeURIComponent(code)}`);
     } catch (e) {
-      const msg = e?.response?.data?.message || e?.message || "Thanh toán thất bại";
+      const msg = e?.response?.data?.message || e?.message || t("checkout.payment_failed");
       toast.error(msg);
       onError?.(e);
     }
-  }, [nav, toast, onSuccess, onError]);
+  }, [nav, toast, onSuccess, onError, t]);
 
   const handleError = useCallback((err) => {
     console.error("PAYPAL_SDK_ERROR:", err);
-    toast.error("Có lỗi khi kết nối với PayPal. Vui lòng thử lại.");
+    toast.error(t("checkout.paypal_connect_error"));
     onError?.(err);
-  }, [toast, onError]);
+  }, [toast, onError, t]);
 
   const handleCancel = useCallback(() => {
-    toast.error("Bạn đã huỷ thanh toán PayPal.");
-  }, [toast]);
+    toast.error(t("checkout.paypal_cancelled"));
+  }, [toast, t]);
 
   return (
     <PayPalScriptProvider

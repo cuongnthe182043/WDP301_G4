@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
@@ -26,26 +27,6 @@ async function fetchVietQRBanks() {
 const maskAcc = (acc = "") =>
   acc.length <= 4 ? acc : `•••• •••• ${acc.slice(-4)}`;
 
-function validateForm(form) {
-  const e = {};
-  if (!form.bank_code) e.bank_code = "Vui lòng chọn ngân hàng";
-  if (!form.account_number.trim()) {
-    e.account_number = "Vui lòng nhập số tài khoản";
-  } else if (!/^\d+$/.test(form.account_number)) {
-    e.account_number = "Số tài khoản chỉ được chứa chữ số";
-  } else if (form.account_number.length < 6 || form.account_number.length > 20) {
-    e.account_number = "Số tài khoản phải từ 6 đến 20 chữ số";
-  }
-  if (!form.owner_name.trim()) {
-    e.owner_name = "Vui lòng nhập tên chủ tài khoản";
-  } else if (form.owner_name.trim().length < 2) {
-    e.owner_name = "Tên chủ tài khoản ít nhất 2 ký tự";
-  } else if (/[^a-zA-ZÀ-ỹ\s]/.test(form.owner_name)) {
-    e.owner_name = "Tên không được chứa ký tự đặc biệt";
-  }
-  return e;
-}
-
 /* ─── Skeleton card ────────────────────────────────────────────── */
 function BankCardSkeleton() {
   return (
@@ -62,19 +43,41 @@ function BankCardSkeleton() {
 }
 
 /* ─── OTP dots display ─────────────────────────────────────────── */
-function OtpDots({ otp }) {
+function OtpDots({ otp, t }) {
   if (!otp) return null;
   return (
     <div className="mt-3 p-3 rounded-xl text-center" style={{ background: "#F0FDF4", border: "1.5px solid #BBF7D0" }}>
-      <p className="text-xs text-green-600 font-semibold mb-1">Mã OTP (môi trường test)</p>
+      <p className="text-xs text-green-600 font-semibold mb-1">{t("bank.otp_test_label")}</p>
       <p className="text-2xl font-black tracking-[0.4em] text-green-700">{otp}</p>
-      <p className="text-[10px] text-green-500 mt-1">Hết hạn sau 5 phút</p>
+      <p className="text-[10px] text-green-500 mt-1">{t("bank.otp_expires")}</p>
     </div>
   );
 }
 
 /* ─── Main component ───────────────────────────────────────────── */
 export default function BankAccountsManager() {
+  const { t } = useTranslation();
+
+  const validateForm = (form) => {
+    const e = {};
+    if (!form.bank_code) e.bank_code = t("bank.err_select_bank");
+    if (!form.account_number.trim()) {
+      e.account_number = t("bank.err_account_required");
+    } else if (!/^\d+$/.test(form.account_number)) {
+      e.account_number = t("bank.err_account_digits_only");
+    } else if (form.account_number.length < 6 || form.account_number.length > 20) {
+      e.account_number = t("bank.err_account_length");
+    }
+    if (!form.owner_name.trim()) {
+      e.owner_name = t("bank.err_owner_required");
+    } else if (form.owner_name.trim().length < 2) {
+      e.owner_name = t("bank.err_owner_min");
+    } else if (/[^a-zA-ZÀ-ỹ\s]/.test(form.owner_name)) {
+      e.owner_name = t("bank.err_owner_special");
+    }
+    return e;
+  };
+
   const [items, setItems]         = useState([]);
   const [loadingList, setLoadingList] = useState(true);
   const [banks, setBanks]         = useState([]);   // VietQR list
@@ -163,11 +166,11 @@ export default function BankAccountsManager() {
         logo_url: bank?.logo || "",
       });
       await load();
-      showFlash("ok", "Đã thêm tài khoản ngân hàng");
+      showFlash("ok", t("bank.flash_added"));
       setAddOpen(false);
       resetAdd();
     } catch (err) {
-      setSubmitErr(err?.response?.data?.message || err.message || "Có lỗi xảy ra");
+      setSubmitErr(err?.response?.data?.message || err.message || t("common.error"));
     } finally { setSubmitting(false); }
   };
 
@@ -176,8 +179,8 @@ export default function BankAccountsManager() {
     try {
       await bankService.setDefault(id);
       await load();
-      showFlash("ok", "Đã đặt tài khoản mặc định");
-    } catch { showFlash("err", "Không thể cập nhật"); }
+      showFlash("ok", t("bank.flash_default_set"));
+    } catch { showFlash("err", t("bank.flash_update_fail")); }
   };
 
   /* ── Send OTP ── */
@@ -188,7 +191,7 @@ export default function BankAccountsManager() {
       const { otp } = await bankService.sendOtp(item._id);
       setOtpSent(otp); // mock: show OTP in UI
     } catch (err) {
-      setOtpErr(err?.response?.data?.message || "Không gửi được OTP");
+      setOtpErr(err?.response?.data?.message || t("bank.otp_send_fail"));
     } finally { setOtpLoading(false); }
   };
 
@@ -199,20 +202,20 @@ export default function BankAccountsManager() {
       const { otp } = await bankService.sendOtp(otpItem._id);
       setOtpSent(otp);
     } catch (err) {
-      setOtpErr(err?.response?.data?.message || "Không gửi được OTP");
+      setOtpErr(err?.response?.data?.message || t("bank.otp_send_fail"));
     } finally { setOtpLoading(false); }
   };
 
   const onVerifyOtp = async () => {
-    if (!otpCode.trim()) { setOtpErr("Vui lòng nhập mã OTP"); return; }
+    if (!otpCode.trim()) { setOtpErr(t("bank.otp_enter_error")); return; }
     setOtpVerifying(true); setOtpErr("");
     try {
       await bankService.verifyOtp(otpItem._id, otpCode.trim());
       await load();
-      showFlash("ok", "Xác minh tài khoản thành công!");
+      showFlash("ok", t("bank.flash_verified"));
       setOtpOpen(false);
     } catch (err) {
-      setOtpErr(err?.response?.data?.message || "Mã OTP không đúng");
+      setOtpErr(err?.response?.data?.message || t("bank.otp_wrong"));
     } finally { setOtpVerifying(false); }
   };
 
@@ -223,9 +226,9 @@ export default function BankAccountsManager() {
     try {
       await bankService.remove(deleteItem._id);
       await load();
-      showFlash("ok", "Đã xóa tài khoản ngân hàng");
+      showFlash("ok", t("bank.flash_deleted"));
       setDeleteOpen(false);
-    } catch { showFlash("err", "Không thể xóa"); }
+    } catch { showFlash("err", t("bank.flash_delete_fail")); }
     finally { setDeleting(false); setDeleteItem(null); }
   };
 
@@ -235,7 +238,7 @@ export default function BankAccountsManager() {
       {/* Header row */}
       <div className="flex items-center justify-between mb-5">
         <p className="text-xs text-blue-400 font-semibold">
-          {items.length} tài khoản đã liên kết
+          {t("bank.linked_count", { count: items.length })}
         </p>
         <motion.button
           whileHover={{ scale: 1.03, y: -1 }}
@@ -244,7 +247,7 @@ export default function BankAccountsManager() {
           className="inline-flex items-center gap-2 h-9 px-4 rounded-xl text-sm font-black text-white shadow-md"
           style={{ background: "linear-gradient(135deg, #1E40AF, #2563EB)", boxShadow: "0 4px 14px rgba(29,78,216,0.3)" }}
         >
-          <Plus size={15} /> Thêm ngân hàng
+          <Plus size={15} /> {t("bank.add_bank_btn")}
         </motion.button>
       </div>
 
@@ -272,7 +275,7 @@ export default function BankAccountsManager() {
         >
           <CreditCard size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
           <p className="text-xs text-blue-700 font-semibold leading-relaxed">
-            Hoàn tiền sẽ được chuyển vào tài khoản mặc định của bạn.
+            {t("bank.refund_notice")}
           </p>
         </motion.div>
       )}
@@ -295,8 +298,8 @@ export default function BankAccountsManager() {
           >
             <Building2 size={28} className="text-blue-300" />
           </motion.div>
-          <p className="text-sm font-bold text-blue-400">Chưa có tài khoản nào</p>
-          <p className="text-xs text-blue-300 mt-1">Thêm tài khoản ngân hàng để nhận hoàn tiền</p>
+          <p className="text-sm font-bold text-blue-400">{t("bank.empty_title")}</p>
+          <p className="text-xs text-blue-300 mt-1">{t("bank.empty_desc")}</p>
         </motion.div>
       ) : (
         <div className="space-y-3">
@@ -331,13 +334,13 @@ export default function BankAccountsManager() {
                     {it.is_default && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full"
                         style={{ background: "#DBEAFE", color: "#1D4ED8", border: "1px solid #93C5FD" }}>
-                        <Star size={9} className="fill-blue-600" /> MẶC ĐỊNH
+                        <Star size={9} className="fill-blue-600" /> {t("bank.default_badge")}
                       </span>
                     )}
                     {it.is_verified ? (
                       <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full"
                         style={{ background: "#DCFCE7", color: "#15803D", border: "1px solid #86EFAC" }}>
-                        <ShieldCheck size={9} /> Đã xác minh
+                        <ShieldCheck size={9} /> {t("bank.verified_badge")}
                       </span>
                     ) : (
                       <button
@@ -345,7 +348,7 @@ export default function BankAccountsManager() {
                         className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full transition-all hover:opacity-80"
                         style={{ background: "#FEF3C7", color: "#92400E", border: "1px solid #FDE68A" }}
                       >
-                        <Shield size={9} /> Chưa xác minh · Xác minh ngay
+                        <Shield size={9} /> {t("bank.unverified_badge")}
                       </button>
                     )}
                   </div>
@@ -362,7 +365,7 @@ export default function BankAccountsManager() {
                       className="h-8 px-3 rounded-xl text-xs font-bold border-2 transition-all"
                       style={{ borderColor: "#BFDBFE", color: "#2563EB", background: "#EFF6FF" }}
                     >
-                      Mặc định
+                      {t("bank.set_default_btn")}
                     </motion.button>
                   )}
                   <motion.button
@@ -393,8 +396,8 @@ export default function BankAccountsManager() {
                     <CreditCard size={17} className="text-white" />
                   </div>
                   <div>
-                    <p className="font-black text-gray-900 leading-tight">Thêm ngân hàng liên kết</p>
-                    <p className="text-xs text-gray-400 font-normal">Điền thông tin tài khoản của bạn</p>
+                    <p className="font-black text-gray-900 leading-tight">{t("bank.add_modal_title")}</p>
+                    <p className="text-xs text-gray-400 font-normal">{t("bank.add_modal_subtitle")}</p>
                   </div>
                 </div>
               </ModalHeader>
@@ -402,12 +405,12 @@ export default function BankAccountsManager() {
               <ModalBody className="gap-4">
                 {/* Bank selector */}
                 <div>
-                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">Ngân hàng *</p>
+                  <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1.5">{t("bank.bank_field_label")}</p>
                   {banksLoading ? (
                     <Skeleton className="h-12 rounded-xl" />
                   ) : (
                     <Select
-                      placeholder="Chọn ngân hàng..."
+                      placeholder={t("bank.bank_field_placeholder")}
                       selectedKeys={form.bank_code ? new Set([form.bank_code]) : new Set()}
                       onSelectionChange={(keys) => setField("bank_code", Array.from(keys)[0] || "")}
                       variant="bordered"
@@ -457,29 +460,29 @@ export default function BankAccountsManager() {
 
                 {/* Account number */}
                 <Input
-                  label="Số tài khoản *"
-                  placeholder="VD: 1234567890"
+                  label={t("bank.account_number_label")}
+                  placeholder={t("bank.account_number_placeholder")}
                   value={form.account_number}
                   onValueChange={(v) => setField("account_number", v.replace(/\D/g, ""))}
                   variant="bordered"
                   radius="lg"
                   isInvalid={!!errors.account_number}
                   errorMessage={errors.account_number}
-                  description="Chỉ nhập chữ số, từ 6 đến 20 ký tự"
+                  description={t("bank.account_number_desc")}
                   maxLength={20}
                 />
 
                 {/* Owner name */}
                 <Input
-                  label="Họ tên chủ tài khoản *"
-                  placeholder="VD: NGUYEN VAN A"
+                  label={t("bank.owner_name_label")}
+                  placeholder={t("bank.owner_name_placeholder")}
                   value={form.owner_name}
                   onValueChange={(v) => setField("owner_name", v.toUpperCase())}
                   variant="bordered"
                   radius="lg"
                   isInvalid={!!errors.owner_name}
                   errorMessage={errors.owner_name}
-                  description="Nhập đúng tên như trên thẻ ngân hàng"
+                  description={t("bank.owner_name_desc")}
                 />
 
                 {submitErr && (
@@ -493,7 +496,7 @@ export default function BankAccountsManager() {
               </ModalBody>
 
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Huỷ</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button
                   color="primary" radius="lg" className="font-bold"
                   onPress={onSubmit}
@@ -501,7 +504,7 @@ export default function BankAccountsManager() {
                   isLoading={submitting}
                   startContent={!submitting && <Plus size={15} />}
                 >
-                  Thêm tài khoản
+                  {t("bank.add_account_btn")}
                 </Button>
               </ModalFooter>
             </>
@@ -522,7 +525,7 @@ export default function BankAccountsManager() {
                     <KeyRound size={16} className="text-white" />
                   </div>
                   <div>
-                    <p className="font-black text-gray-900 leading-tight">Xác minh OTP</p>
+                    <p className="font-black text-gray-900 leading-tight">{t("bank.otp_modal_title")}</p>
                     <p className="text-xs text-gray-400 font-normal">
                       {otpItem ? maskAcc(otpItem.account_number) : ""}
                     </p>
@@ -534,17 +537,17 @@ export default function BankAccountsManager() {
                 {otpLoading ? (
                   <div className="flex flex-col items-center py-4 gap-2">
                     <div className="w-8 h-8 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-sm text-gray-500">Đang gửi OTP…</p>
+                    <p className="text-sm text-gray-500">{t("bank.otp_sending")}</p>
                   </div>
                 ) : (
                   <>
                     <p className="text-sm text-gray-600">
-                      Nhập mã OTP 6 số để xác minh quyền sở hữu tài khoản ngân hàng.
+                      {t("bank.otp_instructions")}
                     </p>
-                    <OtpDots otp={otpSent} />
+                    <OtpDots otp={otpSent} t={t} />
                     <Input
-                      label="Mã OTP"
-                      placeholder="Nhập 6 chữ số"
+                      label={t("bank.otp_input_label")}
+                      placeholder={t("bank.otp_input_placeholder")}
                       value={otpCode}
                       onValueChange={(v) => { setOtpCode(v.replace(/\D/g, "").slice(0, 6)); setOtpErr(""); }}
                       variant="bordered"
@@ -558,14 +561,14 @@ export default function BankAccountsManager() {
                       onClick={onResendOtp}
                       className="flex items-center gap-1.5 text-xs font-bold text-blue-500 hover:text-blue-700 transition-colors mx-auto"
                     >
-                      <RefreshCw size={12} /> Gửi lại OTP
+                      <RefreshCw size={12} /> {t("bank.otp_resend_btn")}
                     </button>
                   </>
                 )}
               </ModalBody>
 
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Huỷ</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button
                   radius="lg" className="font-bold"
                   style={{ background: "linear-gradient(135deg, #059669, #10B981)", color: "#fff" }}
@@ -574,7 +577,7 @@ export default function BankAccountsManager() {
                   isLoading={otpVerifying}
                   startContent={!otpVerifying && <ShieldCheck size={15} />}
                 >
-                  Xác minh
+                  {t("bank.otp_verify_btn")}
                 </Button>
               </ModalFooter>
             </>
@@ -593,31 +596,31 @@ export default function BankAccountsManager() {
                   <div className="w-9 h-9 rounded-2xl flex items-center justify-center bg-red-100">
                     <Trash2 size={16} className="text-red-500" />
                   </div>
-                  <p className="font-black text-gray-900">Xoá tài khoản ngân hàng?</p>
+                  <p className="font-black text-gray-900">{t("bank.delete_modal_title")}</p>
                 </div>
               </ModalHeader>
               <ModalBody>
                 <p className="text-sm text-gray-600">
-                  Bạn có chắc muốn xoá{" "}
+                  {t("bank.delete_confirm_text")}{" "}
                   <b>{deleteItem?.bank_name}</b>{" "}
                   <span className="font-mono text-blue-500">{maskAcc(deleteItem?.account_number)}</span>?
-                  Hành động này không thể hoàn tác.
+                  {" "}{t("bank.delete_irreversible")}
                 </p>
                 {deleteItem?.is_default && (
                   <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl mt-1"
                     style={{ background: "#FEF3C7", border: "1.5px solid #FDE68A" }}>
                     <AlertCircle size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                     <p className="text-xs text-amber-700 font-semibold">
-                      Đây là tài khoản mặc định. Tài khoản tiếp theo sẽ được tự động đặt làm mặc định.
+                      {t("bank.delete_default_warning")}
                     </p>
                   </div>
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Huỷ</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button color="danger" radius="lg" className="font-bold" onPress={onDelete}
                   isLoading={deleting} isDisabled={deleting}>
-                  Xoá
+                  {t("common.delete")}
                 </Button>
               </ModalFooter>
             </>

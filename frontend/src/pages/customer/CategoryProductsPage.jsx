@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button, Select, SelectItem, Input } from "@heroui/react";
 import { SlidersHorizontal, Search } from "lucide-react";
 import { productApi } from "../../services/productService";
-import { formatCurrency } from "../../utils/formatCurrency";
 import ProductCard from "../../components/home/ProductCard.jsx";
 import SkeletonProductCard from "../../components/ui/SkeletonProductCard.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
-
-const SORT_OPTIONS = [
-  { key: "created_at", label: "Mới nhất" },
-  { key: "price_asc",  label: "Giá tăng dần" },
-  { key: "price_desc", label: "Giá giảm dần" },
-  { key: "sold",       label: "Bán chạy nhất" },
-];
 
 const gridVariants = {
   hidden: {},
@@ -26,6 +19,15 @@ const LIMIT = 20;
 
 export default function CategoryProductsPage() {
   const { slug } = useParams();
+  const { t } = useTranslation();
+
+  const SORT_OPTIONS = [
+    { key: "created_at", label: t("product.sort_newest") },
+    { key: "price_asc",  label: t("product.sort_price_asc") },
+    { key: "price_desc", label: t("product.sort_price_desc") },
+    { key: "sold",       label: t("product.sort_best_sold") },
+  ];
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [minPrice, setMinPrice] = useState("");
@@ -54,7 +56,7 @@ export default function CategoryProductsPage() {
 
   const catLabel = slug
     ? slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, " ")
-    : "Danh mục";
+    : t("product.category");
 
   return (
     <PageContainer>
@@ -62,7 +64,7 @@ export default function CategoryProductsPage() {
       <div className="mb-7">
         <h1 className="text-2xl font-black text-default-900">{catLabel}</h1>
         <p className="text-sm text-default-400 mt-1">
-          {loading ? "Đang tải…" : `${products.length} sản phẩm`}
+          {loading ? t("common.loading") : `${products.length} ${t("product.products_count")}`}
         </p>
       </div>
 
@@ -71,7 +73,7 @@ export default function CategoryProductsPage() {
         <SlidersHorizontal size={16} className="text-default-500 self-center" />
         <Input
           size="sm"
-          label="Giá từ"
+          label={t("product.price_from")}
           type="number"
           placeholder="0"
           value={minPrice}
@@ -82,7 +84,7 @@ export default function CategoryProductsPage() {
         />
         <Input
           size="sm"
-          label="Đến"
+          label={t("product.price_to")}
           type="number"
           placeholder="∞"
           value={maxPrice}
@@ -93,7 +95,7 @@ export default function CategoryProductsPage() {
         />
         <Select
           size="sm"
-          label="Sắp xếp"
+          label={t("common.sort")}
           selectedKeys={sort}
           onSelectionChange={setSort}
           className="w-44"
@@ -109,7 +111,7 @@ export default function CategoryProductsPage() {
           startContent={<Search size={14} />}
           className="font-semibold"
         >
-          Lọc
+          {t("common.filter")}
         </Button>
       </div>
 
@@ -121,9 +123,9 @@ export default function CategoryProductsPage() {
       ) : products.length === 0 ? (
         <EmptyState
           icon={Search}
-          title="Không tìm thấy sản phẩm"
-          description="Thử điều chỉnh bộ lọc hoặc tìm kiếm với từ khoá khác."
-          actionLabel="Xoá bộ lọc"
+          title={t("product.no_products")}
+          description={t("product.filter_adjust")}
+          actionLabel={t("product.filter_clear")}
           onAction={() => { setMinPrice(""); setMaxPrice(""); load(); }}
         />
       ) : (

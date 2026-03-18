@@ -1,6 +1,7 @@
 import React from "react";
 import { Chip } from "@heroui/react";
 import { Info, ShieldCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 /**
  * PaymentMethodPanel
@@ -11,6 +12,8 @@ import { Info, ShieldCheck } from "lucide-react";
  *   method — currently selected method string ("COD" | "PAYPAL" | "VNPAY")
  */
 export default function PaymentMethodPanel({ method }) {
+  const { t } = useTranslation();
+
   if (method === "PAYPAL") {
     return (
       <div className="border border-default-200 rounded-xl p-4 space-y-3">
@@ -20,13 +23,12 @@ export default function PaymentMethodPanel({ method }) {
           <Chip size="sm" variant="flat" color="primary">Sandbox</Chip>
         </div>
         <p className="text-sm text-default-500">
-          Nhấn nút PayPal bên dưới để xác nhận thanh toán qua tài khoản PayPal Sandbox của bạn.
+          {t("checkout.paypal_desc")}
         </p>
         <div className="flex items-start gap-1 text-xs text-default-400">
           <Info size={14} className="flex-shrink-0 mt-0.5" />
           <span>
-            Cửa sổ PayPal sẽ mở ra để bạn đăng nhập và xác nhận. Đây là môi trường thử nghiệm (Sandbox) —
-            không có tiền thật được thu.
+            {t("checkout.paypal_info")}
           </span>
         </div>
       </div>
@@ -42,13 +44,12 @@ export default function PaymentMethodPanel({ method }) {
           <Chip size="sm" variant="flat" color="warning">Sandbox</Chip>
         </div>
         <p className="text-sm text-default-500">
-          Nhấn "Thanh toán qua VNPAY" để được chuyển đến cổng thanh toán VNPAY Sandbox.
+          {t("checkout.vnpay_desc")}
         </p>
         <div className="flex items-start gap-1 text-xs text-default-400">
           <Info size={14} className="flex-shrink-0 mt-0.5" />
           <span>
-            Hỗ trợ ATM nội địa, Visa/Mastercard, QR Code. Đây là môi trường Sandbox —
-            không có tiền thật được thu. Chữ ký SHA512 được xác thực tự động khi trả về.
+            {t("checkout.vnpay_info")}
           </span>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { userService } from "../../services/userService";
 import { useAuth } from "../../context/AuthContext";
 import PersonalInfoForm from "../../components/PersonalInfoForm";
@@ -7,47 +8,10 @@ import AddressManager from "../../components/AddressManager";
 import BankAccountsManager from "../../components/BankAccountsManager";
 import ChangePasswordForm from "../../components/ChangePasswordForm";
 import { Skeleton, Avatar } from "@heroui/react";
-import { User, MapPin, Wallet, Lock, ChevronRight, Shield, Star } from "lucide-react";
+import { User, MapPin, Wallet, Lock, ChevronRight, Shield, Star, Ruler, Save, CheckCircle2 } from "lucide-react";
+import { Button, Input } from "@heroui/react";
+import { toast } from "sonner";
 import PageContainer from "../../components/ui/PageContainer.jsx";
-
-const TABS = [
-  {
-    id: "personal",
-    label: "Thông tin cá nhân",
-    icon: User,
-    desc: "Họ tên, email, số điện thoại",
-    gradient: "from-blue-500 to-blue-700",
-    lightBg: "#EFF6FF",
-    accent: "#2563EB",
-  },
-  {
-    id: "addresses",
-    label: "Địa chỉ nhận hàng",
-    icon: MapPin,
-    desc: "Quản lý địa chỉ giao hàng",
-    gradient: "from-sky-500 to-blue-600",
-    lightBg: "#F0F9FF",
-    accent: "#0284C7",
-  },
-  {
-    id: "banks",
-    label: "Tài khoản ngân hàng",
-    icon: Wallet,
-    desc: "Thêm & quản lý phương thức",
-    gradient: "from-indigo-500 to-blue-700",
-    lightBg: "#EEF2FF",
-    accent: "#4338CA",
-  },
-  {
-    id: "password",
-    label: "Đổi mật khẩu",
-    icon: Lock,
-    desc: "Bảo mật tài khoản của bạn",
-    gradient: "from-blue-600 to-indigo-700",
-    lightBg: "#EFF6FF",
-    accent: "#1D4ED8",
-  },
-];
 
 /* ── Animated background orbs ── */
 function BgOrbs() {
@@ -144,12 +108,151 @@ function ProfileSkeleton() {
   );
 }
 
+const BODY_FIELDS = [
+  { key: "height",   label: "Height",   unit: "cm", placeholder: "170" },
+  { key: "weight",   label: "Weight",   unit: "kg", placeholder: "65"  },
+  { key: "chest",    label: "Chest",    unit: "cm", placeholder: "92"  },
+  { key: "waist",    label: "Waist",    unit: "cm", placeholder: "76"  },
+  { key: "hip",      label: "Hip",      unit: "cm", placeholder: "96"  },
+  { key: "shoulder", label: "Shoulder", unit: "cm", placeholder: "44"  },
+];
+
+function BodyMeasurementsForm() {
+  const [vals,    setVals]    = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving,  setSaving]  = useState(false);
+  const [saved,   setSaved]   = useState(false);
+
+  useEffect(() => {
+    userService.getBodyProfile()
+      .then((p) => {
+        if (p) setVals(Object.fromEntries(BODY_FIELDS.map(({ key }) => [key, p[key] ? String(p[key]) : ""])));
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const set = (k, v) => setVals((prev) => ({ ...prev, [k]: v }));
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      const payload = Object.fromEntries(
+        BODY_FIELDS.map(({ key }) => [key, vals[key] ? Number(vals[key]) : undefined])
+          .filter(([, v]) => v)
+      );
+      await userService.saveBodyProfile(payload);
+      setSaved(true);
+      toast.success("Body measurements saved");
+      setTimeout(() => setSaved(false), 3000);
+    } catch { toast.error("Save failed"); }
+    finally { setSaving(false); }
+  };
+
+  if (loading) return (
+    <div className="space-y-3">
+      {[1,2,3].map(i => <div key={i} className="h-12 bg-default-100 rounded-xl animate-pulse" />)}
+    </div>
+  );
+
+  return (
+    <div className="space-y-5">
+      <div className="bg-cyan-50 border border-cyan-100 rounded-2xl p-4">
+        <p className="text-sm font-bold text-cyan-800 mb-1 flex items-center gap-2">
+          <Ruler size={14} /> Save your measurements once, use everywhere
+        </p>
+        <p className="text-xs text-cyan-600">
+          These measurements auto-fill the AI Size Advisor on every product page so you get instant size recommendations without re-entering your data each time.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {BODY_FIELDS.map(({ key, label, unit, placeholder }) => (
+          <Input
+            key={key}
+            label={`${label} (${unit})`}
+            placeholder={placeholder}
+            type="number"
+            min="0"
+            value={vals[key] || ""}
+            onValueChange={(v) => set(key, v)}
+            size="sm"
+            radius="lg"
+            variant="bordered"
+            endContent={<span className="text-xs text-default-400">{unit}</span>}
+          />
+        ))}
+      </div>
+
+      <Button
+        color="primary"
+        radius="lg"
+        isLoading={saving}
+        onPress={save}
+        className="font-bold w-full"
+        startContent={saved ? <CheckCircle2 size={15} /> : <Save size={15} />}
+      >
+        {saved ? "Saved!" : "Save Measurements"}
+      </Button>
+    </div>
+  );
+}
+
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const { updateUser } = useAuth();
   const [me,        setMe]        = useState(null);
   const [activeTab, setActiveTab] = useState("personal");
   const [loading,   setLoading]   = useState(true);
   const [error,     setError]     = useState("");
+
+  const TABS = [
+    {
+      id: "personal",
+      label: t("profile.personal_info"),
+      icon: User,
+      desc: t("profile.name") + ", " + t("profile.email") + ", " + t("profile.phone"),
+      gradient: "from-blue-500 to-blue-700",
+      lightBg: "#EFF6FF",
+      accent: "#2563EB",
+    },
+    {
+      id: "addresses",
+      label: t("profile.addresses"),
+      icon: MapPin,
+      desc: t("profile.addresses_desc"),
+      gradient: "from-sky-500 to-blue-600",
+      lightBg: "#F0F9FF",
+      accent: "#0284C7",
+    },
+    {
+      id: "banks",
+      label: t("profile.bank_accounts"),
+      icon: Wallet,
+      desc: t("profile.banks_desc"),
+      gradient: "from-indigo-500 to-blue-700",
+      lightBg: "#EEF2FF",
+      accent: "#4338CA",
+    },
+    {
+      id: "password",
+      label: t("auth.change_password"),
+      icon: Lock,
+      desc: t("profile.password_desc"),
+      gradient: "from-blue-600 to-indigo-700",
+      lightBg: "#EFF6FF",
+      accent: "#1D4ED8",
+    },
+    {
+      id: "body",
+      label: t("profile.body_measurements"),
+      icon: Ruler,
+      desc: t("profile.body_measurements_desc"),
+      gradient: "from-cyan-500 to-blue-600",
+      lightBg: "#ECFEFF",
+      accent: "#0891B2",
+    },
+  ];
 
   const activeTabData = TABS.find((t) => t.id === activeTab);
 
@@ -189,9 +292,9 @@ export default function ProfilePage() {
         >
           <div className="flex items-center gap-2 mb-1">
             <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(180deg,#2563EB,#6366F1)" }} />
-            <h1 className="text-2xl font-black text-blue-900 tracking-tight">Tài khoản của tôi</h1>
+            <h1 className="text-2xl font-black text-blue-900 tracking-tight">{t("profile.my_account")}</h1>
           </div>
-          <p className="text-blue-400 text-sm ml-3 pl-0.5">Quản lý thông tin & bảo mật tài khoản</p>
+          <p className="text-blue-400 text-sm ml-3 pl-0.5">{t("profile.manage_account")}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 items-start">
@@ -223,7 +326,7 @@ export default function ProfilePage() {
                 <UserAvatar me={me} />
                 <div>
                   <p className="text-white font-black text-lg leading-tight">
-                    {me?.name || "Người dùng"}
+                    {me?.name || t("profile.user")}
                   </p>
                   {me?.email && (
                     <p className="text-blue-200 text-xs mt-1 truncate max-w-[200px]">{me.email}</p>
@@ -235,7 +338,7 @@ export default function ProfilePage() {
                   style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)", color: "#FEF9C3" }}
                 >
                   <Star size={11} className="fill-yellow-300 text-yellow-300" />
-                  Thành viên Silver
+                  {t("profile.silver_member")}
                 </div>
               </div>
             </motion.div>
@@ -371,6 +474,7 @@ export default function ProfilePage() {
                   {activeTab === "addresses" && <AddressManager />}
                   {activeTab === "banks"     && <BankAccountsManager />}
                   {activeTab === "password"  && <ChangePasswordForm />}
+                  {activeTab === "body"      && <BodyMeasurementsForm />}
                 </motion.div>
               </AnimatePresence>
             </div>

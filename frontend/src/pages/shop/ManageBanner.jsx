@@ -6,8 +6,9 @@ import {
 import { Plus, Search, Eye, Pencil, Trash2, Upload } from "lucide-react";
 import { bannerApi } from "../../services/bannerService";
 import { useToast } from "../../components/common/ToastProvider";
+import { useTranslation } from "react-i18next";
 
-const formatDate = (d) => d ? new Date(d).toLocaleDateString("vi-VN") : "-";
+const formatDate = (d) => d ? new Date(d).toLocaleDateString() : "-";
 const POSITIONS = ["homepage_top", "homepage_mid", "homepage_bottom", "category_page"];
 
 const BLANK = {
@@ -16,6 +17,7 @@ const BLANK = {
 };
 
 export default function ManageBanner() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [banners,     setBanners]     = useState([]);
   const [loading,     setLoading]     = useState(true);
@@ -56,14 +58,14 @@ export default function ManageBanner() {
       }
       if (mode === "create") await bannerApi.create(payload);
       else await bannerApi.update(selected._id, payload);
-      toast.success(mode === "create" ? "Tạo banner thành công" : "Cập nhật banner thành công");
+      toast.success(mode === "create" ? t("shop.banner_create") : t("shop.banner_edit"));
       closeDialog(); fetch();
     } catch (e) { toast.error(e?.response?.data?.message || e.message); }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Xóa banner này?")) return;
-    try { await bannerApi.delete(id); toast.success("Đã xóa banner"); fetch(); }
+    if (!window.confirm(t("common.confirm_delete"))) return;
+    try { await bannerApi.delete(id); toast.success(t("common.delete")); fetch(); }
     catch (e) { toast.error(e?.response?.data?.message || e.message); }
   };
 
@@ -72,14 +74,14 @@ export default function ManageBanner() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-xl font-black text-default-900">Quản lý Banner</h1>
+        <h1 className="text-xl font-black text-default-900">{t("shop.banner")}</h1>
         <div className="flex gap-2">
           <form onSubmit={(e) => { e.preventDefault(); setSearchTerm(searchInput); setPage(1); }} className="flex gap-2">
-            <Input size="sm" placeholder="Tìm banner..." value={searchInput} onValueChange={setSearchInput}
+            <Input size="sm" placeholder={t("shop.search_banner")} value={searchInput} onValueChange={setSearchInput}
               radius="lg" className="w-44" startContent={<Search size={14} />} />
-            <Button size="sm" type="submit" variant="bordered" radius="lg">Tìm</Button>
+            <Button size="sm" type="submit" variant="bordered" radius="lg">{t("common.search")}</Button>
           </form>
-          <Button size="sm" color="primary" radius="lg" startContent={<Plus size={14} />} onPress={openCreate}>Tạo mới</Button>
+          <Button size="sm" color="primary" radius="lg" startContent={<Plus size={14} />} onPress={openCreate}>{t("common.create_new")}</Button>
         </div>
       </div>
 
@@ -89,14 +91,14 @@ export default function ManageBanner() {
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Tiêu đề", "Ảnh", "Link", "Vị trí", "Từ", "Đến", "Kích hoạt", ""].map((h) => (
+                  {[t("common.title"), t("common.image"), "Link", t("shop.banner_position"), t("common.from"), t("common.to"), t("shop.banner_active"), ""].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-default-100">
                 {banners.length === 0 ? (
-                  <tr><td colSpan={8} className="text-center py-10 text-default-400">Không có banner nào</td></tr>
+                  <tr><td colSpan={8} className="text-center py-10 text-default-400">{t("shop.no_banners")}</td></tr>
                 ) : banners.map((b) => (
                   <tr key={b._id} className="hover:bg-default-50">
                     <td className="px-4 py-3 font-semibold text-default-900">{b.title}</td>
@@ -134,18 +136,18 @@ export default function ManageBanner() {
           {(onClose) => (
             <>
               <ModalHeader>
-                {mode === "detail" ? "Chi tiết Banner" : mode === "create" ? "Tạo Banner" : "Chỉnh sửa Banner"}
+                {mode === "detail" ? t("shop.banner_detail") : mode === "create" ? t("shop.banner_create") : t("shop.banner_edit")}
               </ModalHeader>
               <ModalBody className="space-y-3">
                 {selected && (
                   <>
-                    <Input label="Tiêu đề" value={selected.title || ""} onValueChange={(v) => set("title", v)} radius="lg" isReadOnly={mode === "detail"} />
+                    <Input label={t("common.title")} value={selected.title || ""} onValueChange={(v) => set("title", v)} radius="lg" isReadOnly={mode === "detail"} />
                     {selected.imagePreview && (
                       <img src={selected.imagePreview} alt="Preview" className="w-full rounded-xl border border-default-200" />
                     )}
                     {mode !== "detail" && (
                       <Button as="label" variant="bordered" radius="lg" startContent={<Upload size={14} />} className="cursor-pointer">
-                        {selected.image_file ? "Đổi ảnh" : "Upload ảnh"}
+                        {selected.image_file ? t("shop.change_image") : t("shop.upload_image")}
                         <input type="file" accept="image/*" hidden onChange={(e) => {
                           const f = e.target.files[0];
                           if (f) set("image_file", f) || setSelected((s) => ({ ...s, image_file: f, imagePreview: URL.createObjectURL(f) }));
@@ -153,15 +155,15 @@ export default function ManageBanner() {
                       </Button>
                     )}
                     <Input label="Link" value={selected.link || ""} onValueChange={(v) => set("link", v)} radius="lg" isReadOnly={mode === "detail"} />
-                    <Select label="Vị trí" selectedKeys={new Set([selected.position])}
+                    <Select label={t("shop.banner_position")} selectedKeys={new Set([selected.position])}
                       onSelectionChange={(k) => set("position", Array.from(k)[0])} radius="lg" isDisabled={mode === "detail"}>
                       {POSITIONS.map((p) => <SelectItem key={p}>{p}</SelectItem>)}
                     </Select>
-                    <Input label="Từ ngày" type="date" value={selected.start_date?.split("T")[0] || ""}
+                    <Input label={t("shop.from_date")} type="date" value={selected.start_date?.split("T")[0] || ""}
                       onValueChange={(v) => set("start_date", v)} radius="lg" isReadOnly={mode === "detail"} />
-                    <Input label="Đến ngày" type="date" value={selected.end_date?.split("T")[0] || ""}
+                    <Input label={t("shop.to_date")} type="date" value={selected.end_date?.split("T")[0] || ""}
                       onValueChange={(v) => set("end_date", v)} radius="lg" isReadOnly={mode === "detail"} />
-                    <Select label="Kích hoạt" selectedKeys={new Set([String(selected.is_active)])}
+                    <Select label={t("shop.banner_active")} selectedKeys={new Set([String(selected.is_active)])}
                       onSelectionChange={(k) => set("is_active", Array.from(k)[0] === "true")} radius="lg" isDisabled={mode === "detail"}>
                       <SelectItem key="true">Yes</SelectItem>
                       <SelectItem key="false">No</SelectItem>
@@ -170,8 +172,8 @@ export default function ManageBanner() {
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Đóng</Button>
-                {mode !== "detail" && <Button color="primary" onPress={handleSave}>Lưu</Button>}
+                <Button variant="light" onPress={onClose}>{t("common.close")}</Button>
+                {mode !== "detail" && <Button color="primary" onPress={handleSave}>{t("common.save")}</Button>}
               </ModalFooter>
             </>
           )}

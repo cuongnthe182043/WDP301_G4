@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Input, Pagination, Chip, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Progress,
@@ -14,16 +15,6 @@ const formatDate  = (d) => d ? new Date(d).toLocaleDateString("vi-VN") : "—";
 const formatDt    = (d) => d ? new Date(d).toLocaleString("vi-VN")     : "—";
 const toInputDate = (d) => d ? new Date(d).toISOString().split("T")[0]  : "";
 
-// Derive voucher status
-function getStatus(v) {
-  const now = new Date();
-  if (!v.is_active)                     return { label: "Tắt",         color: "default" };
-  if (new Date(v.valid_to)   <= now)    return { label: "Hết hạn",     color: "danger"  };
-  if (new Date(v.valid_from) >  now)    return { label: "Chưa kích hoạt", color: "warning" };
-  if (v.used_count >= v.max_uses)       return { label: "Hết lượt",    color: "danger"  };
-  return { label: "Đang hoạt động", color: "success" };
-}
-
 const BLANK = {
   code: "", discount_type: "percent", discount_value: "",
   max_uses: "", usage_limit_per_user: 1, min_order_value: 0,
@@ -32,6 +23,7 @@ const BLANK = {
 
 // ── Distribute Voucher Modal ───────────────────────────────────────────────────
 function DistributeModal({ voucher, onClose }) {
+  const { t } = useTranslation();
   const toast   = useToast();
   const [form,  setForm]   = useState({ recipient_type: "all_buyers", custom_user_ids: [], channels: ["in_app"], message: "" });
   const [customers, setCust] = useState([]);
@@ -50,7 +42,7 @@ function DistributeModal({ voucher, onClose }) {
 
   const handleSend = async () => {
     if (form.recipient_type === "custom" && !form.custom_user_ids.length)
-      return toast.error("Chọn ít nhất 1 khách hàng");
+      return toast.error(t("admin.voucher_distribute_min_customer"));
     setSave(true);
     try {
       const res = await voucherDistributeApi.distribute(voucher._id, {
@@ -59,7 +51,7 @@ function DistributeModal({ voucher, onClose }) {
         channels:        form.channels,
         message:         form.message,
       });
-      toast.success(res.message || "Đã gửi voucher thành công");
+      toast.success(res.message || t("admin.voucher_distribute_success"));
       onClose();
     } catch (e) {
       toast.error(e?.response?.data?.message || e.message);
@@ -72,20 +64,20 @@ function DistributeModal({ voucher, onClose }) {
         {(onModalClose) => (
           <>
             <ModalHeader className="flex items-center gap-2">
-              <Send size={16} /> Gửi voucher <span className="text-primary font-black">{voucher?.code}</span> cho khách hàng
+              <Send size={16} /> {t("admin.voucher_distribute_title", { code: voucher?.code })}
             </ModalHeader>
             <ModalBody className="space-y-3 pb-2">
-              <Select label="Đối tượng nhận"
+              <Select label={t("admin.voucher_distribute_recipient")}
                 selectedKeys={new Set([form.recipient_type])}
                 onSelectionChange={(k) => set("recipient_type", Array.from(k)[0])} radius="lg">
-                <SelectItem key="all_buyers">Tất cả khách đã mua</SelectItem>
-                <SelectItem key="recent_30d">Mua trong 30 ngày gần đây</SelectItem>
-                <SelectItem key="custom">Chọn thủ công</SelectItem>
+                <SelectItem key="all_buyers">{t("admin.voucher_distribute_all")}</SelectItem>
+                <SelectItem key="recent_30d">{t("admin.voucher_distribute_recent")}</SelectItem>
+                <SelectItem key="custom">{t("admin.voucher_distribute_custom")}</SelectItem>
               </Select>
 
               {form.recipient_type === "custom" && (
                 <div>
-                  <p className="text-sm font-medium text-default-700 mb-2">Chọn khách hàng</p>
+                  <p className="text-sm font-medium text-default-700 mb-2">{t("admin.voucher_distribute_select_customers")}</p>
                   {loading ? <Spinner size="sm" /> : (
                     <div className="max-h-48 overflow-y-auto border border-default-200 rounded-xl p-2 space-y-1">
                       {customers.map(c => (
@@ -104,16 +96,19 @@ function DistributeModal({ voucher, onClose }) {
                           </div>
                         </label>
                       ))}
-                      {!customers.length && <p className="text-xs text-center text-default-400 py-3">Chưa có khách hàng</p>}
+                      {!customers.length && <p className="text-xs text-center text-default-400 py-3">{t("admin.voucher_distribute_no_customers")}</p>}
                     </div>
                   )}
                 </div>
               )}
 
               <div>
-                <p className="text-sm font-medium text-default-700 mb-2">Kênh gửi</p>
+                <p className="text-sm font-medium text-default-700 mb-2">{t("admin.voucher_distribute_channels")}</p>
                 <div className="flex gap-4">
-                  {[{ key: "in_app", label: "Thông báo app" }, { key: "email", label: "Email" }].map(({ key, label }) => (
+                  {[
+                    { key: "in_app", label: t("admin.voucher_distribute_inapp") },
+                    { key: "email",  label: t("admin.voucher_distribute_email") },
+                  ].map(({ key, label }) => (
                     <label key={key} className="flex items-center gap-2 cursor-pointer text-sm">
                       <input type="checkbox"
                         checked={form.channels.includes(key)}
@@ -129,13 +124,13 @@ function DistributeModal({ voucher, onClose }) {
                 </div>
               </div>
 
-              <Input label="Lời nhắn (tuỳ chọn)" placeholder="VD: Quà tặng dành riêng cho bạn!"
+              <Input label={t("admin.voucher_distribute_message")} placeholder={t("admin.voucher_distribute_message_placeholder")}
                 value={form.message} onValueChange={(v) => set("message", v)} radius="lg" />
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onModalClose}>Hủy</Button>
+              <Button variant="light" onPress={onModalClose}>{t("common.cancel")}</Button>
               <Button color="primary" isLoading={saving} onPress={handleSend} startContent={<Send size={14} />}>
-                Gửi ngay
+                {t("admin.voucher_distribute_send")}
               </Button>
             </ModalFooter>
           </>
@@ -146,7 +141,19 @@ function DistributeModal({ voucher, onClose }) {
 }
 
 export default function ManageVoucher() {
+  const { t } = useTranslation();
   const toast = useToast();
+
+  // Derive voucher status
+  function getStatus(v) {
+    const now = new Date();
+    if (!v.is_active)                     return { label: t("admin.voucher_status_inactive"),  color: "default" };
+    if (new Date(v.valid_to)   <= now)    return { label: t("admin.voucher_status_expired"),   color: "danger"  };
+    if (new Date(v.valid_from) >  now)    return { label: t("admin.voucher_status_upcoming"),  color: "warning" };
+    if (v.used_count >= v.max_uses)       return { label: t("admin.voucher_status_expired"),   color: "danger"  };
+    return { label: t("admin.voucher_status_active"), color: "success" };
+  }
+
   const [vouchers,   setVouchers]   = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [page,       setPage]       = useState(1);
@@ -169,7 +176,7 @@ export default function ManageVoucher() {
       setTotal(res.data?.total || 0);
       setTotalPages(res.data?.totalPages || 1);
     } catch (e) {
-      toast.error(e?.response?.data?.message || e.message || "Lỗi tải voucher");
+      toast.error(e?.response?.data?.message || e.message || t("admin.voucher_load_error"));
     } finally { setLoading(false); }
   }, [page, searchTerm, statusFilter]);
 
@@ -189,11 +196,11 @@ export default function ManageVoucher() {
   const set = (key, val) => setSelected((s) => ({ ...s, [key]: val }));
 
   const handleSave = async () => {
-    if (!selected.code?.trim())         return toast.error("Nhập mã voucher");
-    if (!selected.discount_value)       return toast.error("Nhập giá trị giảm");
-    if (!selected.max_uses)             return toast.error("Nhập số lượt tối đa");
-    if (!selected.valid_from)           return toast.error("Chọn ngày bắt đầu");
-    if (!selected.valid_to)             return toast.error("Chọn ngày kết thúc");
+    if (!selected.code?.trim())         return toast.error(t("admin.voucher_validate_code"));
+    if (!selected.discount_value)       return toast.error(t("admin.voucher_validate_value"));
+    if (!selected.max_uses)             return toast.error(t("admin.voucher_validate_max"));
+    if (!selected.valid_from)           return toast.error(t("admin.voucher_validate_from"));
+    if (!selected.valid_to)             return toast.error(t("admin.voucher_validate_to"));
 
     const payload = {
       ...selected,
@@ -207,7 +214,7 @@ export default function ManageVoucher() {
     try {
       if (mode === "create") await voucherApi.create(payload);
       else                   await voucherApi.update(selected._id, payload);
-      toast.success(mode === "create" ? "Tạo voucher thành công" : "Cập nhật thành công");
+      toast.success(mode === "create" ? t("admin.voucher_create_success") : t("admin.voucher_update_success"));
       closeDialog();
       load(page);
     } catch (e) {
@@ -218,16 +225,16 @@ export default function ManageVoucher() {
   const handleToggle = async (v) => {
     try {
       const res = await voucherApi.toggle(v._id);
-      toast.success(res.data?.is_active ? "Đã kích hoạt" : "Đã tắt");
+      toast.success(res.data?.is_active ? t("admin.voucher_toggle_on_msg") : t("admin.voucher_toggle_off_msg"));
       load(page);
     } catch (e) { toast.error(e?.response?.data?.message || e.message); }
   };
 
   const handleDelete = async (v) => {
-    if (!window.confirm(`Xóa voucher "${v.code}"?`)) return;
+    if (!window.confirm(t("admin.voucher_delete_confirm", { code: v.code }))) return;
     try {
       await voucherApi.delete(v._id);
-      toast.success("Đã xóa voucher");
+      toast.success(t("admin.voucher_delete_success"));
       load(page);
     } catch (e) { toast.error(e?.response?.data?.message || e.message); }
   };
@@ -244,25 +251,25 @@ export default function ManageVoucher() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-default-900">Quản lý Voucher</h1>
-          <p className="text-sm text-default-400">Tổng {total} voucher</p>
+          <h1 className="text-xl font-black text-default-900">{t("admin.voucher_manage_title")}</h1>
+          <p className="text-sm text-default-400">{t("admin.voucher_total", { count: total })}</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <form onSubmit={(e) => { e.preventDefault(); setSearchTerm(searchInput); setPage(1); }} className="flex gap-2">
-            <Input size="sm" placeholder="Tìm mã voucher..." value={searchInput} onValueChange={setSearchInput}
+            <Input size="sm" placeholder={t("admin.voucher_search_placeholder")} value={searchInput} onValueChange={setSearchInput}
               radius="lg" className="w-44" startContent={<Search size={14} />} />
-            <Button size="sm" type="submit" variant="bordered" radius="lg">Tìm</Button>
+            <Button size="sm" type="submit" variant="bordered" radius="lg">{t("admin.voucher_search_btn")}</Button>
           </form>
-          <Select size="sm" placeholder="Trạng thái" className="w-40" radius="lg"
+          <Select size="sm" placeholder={t("common.status")} className="w-40" radius="lg"
             selectedKeys={statusFilter ? new Set([statusFilter]) : new Set()}
             onSelectionChange={(k) => { setStatusFilter(Array.from(k)[0] || ""); setPage(1); }}>
-            <SelectItem key="active">Đang hoạt động</SelectItem>
-            <SelectItem key="upcoming">Chưa kích hoạt</SelectItem>
-            <SelectItem key="expired">Hết hạn</SelectItem>
-            <SelectItem key="inactive">Đã tắt</SelectItem>
+            <SelectItem key="active">{t("admin.voucher_status_active")}</SelectItem>
+            <SelectItem key="upcoming">{t("admin.voucher_status_upcoming")}</SelectItem>
+            <SelectItem key="expired">{t("admin.voucher_status_expired")}</SelectItem>
+            <SelectItem key="inactive">{t("admin.voucher_status_inactive")}</SelectItem>
           </Select>
           <Button size="sm" color="primary" radius="lg" startContent={<Plus size={14} />} onPress={openCreate}>
-            Tạo mới
+            {t("admin.voucher_create_btn")}
           </Button>
         </div>
       </div>
@@ -273,12 +280,12 @@ export default function ManageVoucher() {
           {loading ? (
             <div className="flex justify-center py-10"><Spinner /></div>
           ) : vouchers.length === 0 ? (
-            <div className="py-12 text-center text-default-400">Không có voucher nào</div>
+            <div className="py-12 text-center text-default-400">{t("admin.voucher_no_data")}</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Code", "Giảm", "Sử dụng", "Ngày hết hạn", "Trạng thái", ""].map((h) => (
+                  {["Code", t("admin.voucher_col_discount"), t("admin.voucher_col_usage"), t("admin.voucher_col_expiry"), t("admin.voucher_col_status"), ""].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -295,14 +302,14 @@ export default function ManageVoucher() {
                           <span className="font-bold text-default-900 tracking-wider">{v.code}</span>
                           <button
                             className="text-default-400 hover:text-primary transition-colors"
-                            title="Sao chép mã"
+                            title={t("admin.voucher_copy_title")}
                             onClick={() => copyCode(v.code, v._id)}
                           >
                             {copiedId === v._id ? <Check size={13} className="text-success" /> : <Copy size={13} />}
                           </button>
                         </div>
                         {v.min_order_value > 0 && (
-                          <p className="text-xs text-default-400 mt-0.5">Tối thiểu {formatCurrency(v.min_order_value)}</p>
+                          <p className="text-xs text-default-400 mt-0.5">{t("admin.voucher_min_order", { amount: formatCurrency(v.min_order_value) })}</p>
                         )}
                       </td>
 
@@ -317,7 +324,7 @@ export default function ManageVoucher() {
 
                       {/* Usage progress */}
                       <td className="px-4 py-3 min-w-[120px]">
-                        <div className="text-xs text-default-600 mb-1">{v.used_count}/{v.max_uses} lượt</div>
+                        <div className="text-xs text-default-600 mb-1">{t("admin.voucher_uses_progress", { used: v.used_count, max: v.max_uses })}</div>
                         <Progress
                           size="sm" radius="full" value={usedPct}
                           color={usedPct >= 100 ? "danger" : usedPct >= 75 ? "warning" : "primary"}
@@ -338,24 +345,24 @@ export default function ManageVoucher() {
                       {/* Actions */}
                       <td className="px-4 py-3">
                         <div className="flex gap-1 justify-end">
-                          <Button isIconOnly size="sm" variant="light" title="Chi tiết" onPress={() => openDetail(v)}>
+                          <Button isIconOnly size="sm" variant="light" title={t("admin.voucher_detail_title")} onPress={() => openDetail(v)}>
                             <Eye size={14} />
                           </Button>
-                          <Button isIconOnly size="sm" variant="light" title="Chỉnh sửa" onPress={() => openEdit(v)}>
+                          <Button isIconOnly size="sm" variant="light" title={t("admin.voucher_edit_title")} onPress={() => openEdit(v)}>
                             <Pencil size={14} />
                           </Button>
                           <Button isIconOnly size="sm" variant="light"
-                            title={v.is_active ? "Tắt voucher" : "Bật voucher"}
+                            title={v.is_active ? t("admin.voucher_toggle_off") : t("admin.voucher_toggle_on")}
                             color={v.is_active ? "warning" : "success"}
                             onPress={() => handleToggle(v)}>
                             {v.is_active ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
                           </Button>
                           <Button isIconOnly size="sm" variant="light" color="primary"
-                            title="Gửi cho khách hàng" onPress={() => setDistributeVoucher(v)}>
+                            title={t("admin.voucher_send_customers")} onPress={() => setDistributeVoucher(v)}>
                             <Send size={14} />
                           </Button>
                           <Button isIconOnly size="sm" variant="light" color="danger"
-                            title="Xóa" onPress={() => handleDelete(v)}>
+                            title={t("admin.voucher_delete_title")} onPress={() => handleDelete(v)}>
                             <Trash2 size={14} />
                           </Button>
                         </div>
@@ -383,25 +390,29 @@ export default function ManageVoucher() {
           {(onClose) => (
             <>
               <ModalHeader>
-                {mode === "detail" ? "Chi tiết Voucher" : mode === "create" ? "Tạo Voucher mới" : "Chỉnh sửa Voucher"}
+                {mode === "detail"
+                  ? t("admin.voucher_detail_title")
+                  : mode === "create"
+                    ? t("admin.voucher_create_title")
+                    : t("admin.voucher_edit_title_modal")}
               </ModalHeader>
               <ModalBody className="space-y-3 pb-2">
                 {selected && mode === "detail" ? (
                   // ── Detail view ────────────────────────────────────────
                   <div className="space-y-2">
                     {[
-                      ["Mã",             selected.code],
-                      ["Loại giảm",      selected.discount_type === "percent" ? "Phần trăm" : "Cố định"],
-                      ["Giá trị giảm",   selected.discount_type === "percent"
+                      [t("admin.voucher_detail_code"),       selected.code],
+                      [t("admin.voucher_detail_type"),       selected.discount_type === "percent" ? t("admin.voucher_type_percent") : t("admin.voucher_type_fixed")],
+                      [t("admin.voucher_detail_value"),      selected.discount_type === "percent"
                           ? `${selected.discount_value}%`
                           : formatCurrency(selected.discount_value)],
-                      ["Đơn tối thiểu",  formatCurrency(selected.min_order_value || 0)],
-                      ["Max lượt",       selected.max_uses],
-                      ["Đã dùng",        selected.used_count || 0],
-                      ["Giới hạn/user",  selected.usage_limit_per_user],
-                      ["Bắt đầu",        formatDt(selected.valid_from)],
-                      ["Kết thúc",       formatDt(selected.valid_to)],
-                      ["Trạng thái",     selected.is_active ? "Bật" : "Tắt"],
+                      [t("admin.voucher_detail_min_order"),  formatCurrency(selected.min_order_value || 0)],
+                      [t("admin.voucher_detail_max_uses"),   selected.max_uses],
+                      [t("admin.voucher_detail_used"),       selected.used_count || 0],
+                      [t("admin.voucher_detail_per_user"),   selected.usage_limit_per_user],
+                      [t("admin.voucher_detail_start"),      formatDt(selected.valid_from)],
+                      [t("admin.voucher_detail_end"),        formatDt(selected.valid_to)],
+                      [t("admin.voucher_detail_status"),     selected.is_active ? t("admin.voucher_detail_on") : t("admin.voucher_detail_off")],
                     ].map(([label, val]) => (
                       <div key={label} className="flex justify-between items-center border border-default-100 rounded-xl px-4 py-2">
                         <span className="text-sm text-default-500 font-medium">{label}</span>
@@ -411,7 +422,7 @@ export default function ManageVoucher() {
                     {selected.max_uses > 0 && (
                       <div className="pt-1">
                         <div className="flex justify-between text-xs text-default-500 mb-1">
-                          <span>Đã dùng</span>
+                          <span>{t("admin.voucher_detail_used_progress")}</span>
                           <span>{selected.used_count}/{selected.max_uses}</span>
                         </div>
                         <Progress
@@ -425,21 +436,21 @@ export default function ManageVoucher() {
                   // ── Create / Edit form ─────────────────────────────────
                   <>
                     <Input
-                      label="Mã voucher" placeholder="VD: SALE20"
+                      label={t("admin.voucher_form_code")} placeholder={t("admin.voucher_form_code_placeholder")}
                       value={selected.code}
                       onValueChange={(v) => set("code", v.toUpperCase())}
-                      radius="lg" description="Tự động chuyển in hoa"
+                      radius="lg" description={t("admin.voucher_form_code_desc")}
                     />
                     <div className="grid grid-cols-2 gap-3">
-                      <Select label="Loại giảm"
+                      <Select label={t("admin.voucher_form_type")}
                         selectedKeys={new Set([selected.discount_type])}
                         onSelectionChange={(k) => set("discount_type", Array.from(k)[0])}
                         radius="lg">
-                        <SelectItem key="percent">Phần trăm (%)</SelectItem>
-                        <SelectItem key="fixed">Cố định (₫)</SelectItem>
+                        <SelectItem key="percent">{t("admin.voucher_type_percent")}</SelectItem>
+                        <SelectItem key="fixed">{t("admin.voucher_type_fixed")}</SelectItem>
                       </Select>
                       <Input
-                        label={selected.discount_type === "percent" ? "Giá trị (%)" : "Giá trị (₫)"}
+                        label={selected.discount_type === "percent" ? t("admin.voucher_form_value_percent") : t("admin.voucher_form_value_fixed")}
                         type="number" min="1" max={selected.discount_type === "percent" ? 100 : undefined}
                         value={String(selected.discount_value)}
                         onValueChange={(v) => set("discount_value", v)}
@@ -448,53 +459,53 @@ export default function ManageVoucher() {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <Input
-                        label="Tổng lượt dùng" type="number" min="1"
+                        label={t("admin.voucher_form_max_uses")} type="number" min="1"
                         value={String(selected.max_uses)}
                         onValueChange={(v) => set("max_uses", v)}
                         radius="lg"
                       />
                       <Input
-                        label="Giới hạn / người" type="number" min="1"
+                        label={t("admin.voucher_form_per_user")} type="number" min="1"
                         value={String(selected.usage_limit_per_user)}
                         onValueChange={(v) => set("usage_limit_per_user", v)}
                         radius="lg"
                       />
                     </div>
                     <Input
-                      label="Giá trị đơn tối thiểu (₫)" type="number" min="0"
+                      label={t("admin.voucher_form_min_order")} type="number" min="0"
                       value={String(selected.min_order_value)}
                       onValueChange={(v) => set("min_order_value", v)}
                       radius="lg"
                     />
                     <div className="grid grid-cols-2 gap-3">
                       <Input
-                        label="Từ ngày" type="date"
+                        label={t("admin.voucher_form_from")} type="date"
                         value={selected.valid_from || ""}
                         onValueChange={(v) => set("valid_from", v)}
                         radius="lg"
                       />
                       <Input
-                        label="Đến ngày" type="date"
+                        label={t("admin.voucher_form_to")} type="date"
                         value={selected.valid_to || ""}
                         onValueChange={(v) => set("valid_to", v)}
                         radius="lg"
                       />
                     </div>
-                    <Select label="Trạng thái"
+                    <Select label={t("admin.voucher_form_status")}
                       selectedKeys={new Set([String(selected.is_active)])}
                       onSelectionChange={(k) => set("is_active", Array.from(k)[0] === "true")}
                       radius="lg">
-                      <SelectItem key="true">Bật (hoạt động)</SelectItem>
-                      <SelectItem key="false">Tắt</SelectItem>
+                      <SelectItem key="true">{t("admin.voucher_form_active")}</SelectItem>
+                      <SelectItem key="false">{t("admin.voucher_form_inactive")}</SelectItem>
                     </Select>
                   </>
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Đóng</Button>
+                <Button variant="light" onPress={onClose}>{t("common.close")}</Button>
                 {mode !== "detail" && (
                   <Button color="primary" isLoading={saving} onPress={handleSave}>
-                    {mode === "create" ? "Tạo voucher" : "Lưu thay đổi"}
+                    {mode === "create" ? t("admin.voucher_create_submit") : t("admin.voucher_save_btn")}
                   </Button>
                 )}
               </ModalFooter>

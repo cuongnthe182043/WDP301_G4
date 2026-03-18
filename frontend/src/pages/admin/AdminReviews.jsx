@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Pagination, Chip, Select, SelectItem, Avatar, Tabs, Tab,
-  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Divider, Input,
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Input,
 } from "@heroui/react";
 import { CheckCircle, Trash2, AlertTriangle, Ban, ShieldOff, Star, Eye, EyeOff } from "lucide-react";
 import apiClient from "../../services/apiClient";
@@ -20,7 +21,6 @@ const adminApi = {
 };
 
 const STATUS_COLOR = { visible: "success", hidden: "warning", pending: "danger", deleted: "default" };
-const STATUS_LABEL = { visible: "Hiển thị", hidden: "Đã ẩn", pending: "Chờ duyệt", deleted: "Đã xóa" };
 const formatDate   = (d) => d ? new Date(d).toLocaleString("vi-VN") : "—";
 
 function StarRow({ value }) {
@@ -35,7 +35,16 @@ function StarRow({ value }) {
 
 // ─── Reviews Tab ─────────────────────────────────────────────────────────────
 function ReviewsTab() {
+  const { t } = useTranslation();
   const toast = useToast();
+
+  const STATUS_LABEL = {
+    visible: t("admin.review_status_visible"),
+    hidden:  t("admin.review_status_hidden"),
+    pending: t("admin.review_status_pending"),
+    deleted: t("admin.review_status_deleted"),
+  };
+
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage]       = useState(1);
@@ -51,26 +60,26 @@ function ReviewsTab() {
       setReviews(res.data?.items || []);
       setTotal(res.data?.total || 0);
       setTp(Math.ceil((res.data?.total || 0) / LIMIT));
-    } catch { toast.error("Lỗi tải dữ liệu"); }
+    } catch { toast.error(t("admin.refund_load_error")); }
     finally { setLoading(false); }
   }, [page, statusFilter]);
 
   useEffect(() => { load(page); }, [page, statusFilter]);
 
   const approve = async (id) => {
-    try { await adminApi.approve(id); toast.success("Đã duyệt"); load(page); }
+    try { await adminApi.approve(id); toast.success(t("admin.admin_review_approve")); load(page); }
     catch (e) { toast.error(e?.message); }
   };
   const toggleHide = async (id, currentStatus) => {
     try {
       const res = await adminApi.toggleHide(id);
-      toast.success(res.data?.status === "hidden" ? "Đã ẩn đánh giá" : "Đã hiện đánh giá");
+      toast.success(res.data?.status === "hidden" ? t("admin.admin_review_hide") : t("admin.admin_review_show"));
       load(page);
     } catch (e) { toast.error(e?.message); }
   };
   const remove = async (id) => {
-    if (!confirm("Xóa đánh giá này?")) return;
-    try { await adminApi.delete(id); toast.success("Đã xóa"); load(page); }
+    if (!confirm(t("admin.admin_review_delete"))) return;
+    try { await adminApi.delete(id); toast.success(t("admin.admin_review_delete")); load(page); }
     catch (e) { toast.error(e?.message); }
   };
 
@@ -80,16 +89,16 @@ function ReviewsTab() {
         <Select size="sm" className="w-40" radius="lg"
           selectedKeys={statusFilter ? new Set([statusFilter]) : new Set()}
           onSelectionChange={(k) => { setStatusFilter(Array.from(k)[0] || ""); setPage(1); }}>
-          <SelectItem key="pending">Chờ duyệt</SelectItem>
-          <SelectItem key="hidden">Đã ẩn</SelectItem>
-          <SelectItem key="visible">Hiển thị</SelectItem>
+          <SelectItem key="pending">{t("admin.review_status_pending")}</SelectItem>
+          <SelectItem key="hidden">{t("admin.review_status_hidden")}</SelectItem>
+          <SelectItem key="visible">{t("admin.review_status_visible")}</SelectItem>
         </Select>
       </div>
 
       <Card radius="xl" shadow="sm">
         <CardBody className="p-0">
           {loading ? <div className="flex justify-center py-10"><Spinner /></div>
-          : reviews.length === 0 ? <p className="text-center py-10 text-default-400">Không có đánh giá nào</p>
+          : reviews.length === 0 ? <p className="text-center py-10 text-default-400">{t("admin.admin_review_none")}</p>
           : (
             <div className="divide-y divide-default-100">
               {reviews.map((r) => (
@@ -106,17 +115,17 @@ function ReviewsTab() {
                           </Chip>
                           <span className="text-xs text-default-400">{formatDate(r.createdAt)}</span>
                         </div>
-                        <p className="text-sm text-default-700 mt-1">{r.comment || <em className="text-default-400">Không có nội dung</em>}</p>
+                        <p className="text-sm text-default-700 mt-1">{r.comment || <em className="text-default-400">{t("admin.admin_review_no_content")}</em>}</p>
                         {r.flagged_reason && (
                           <p className="text-xs text-danger mt-1 flex items-center gap-1">
                             <AlertTriangle size={11} /> {r.flagged_reason}
                           </p>
                         )}
-                        {r.product_id && <p className="text-xs text-default-400 mt-1">SP: {r.product_id.name}</p>}
+                        {r.product_id && <p className="text-xs text-default-400 mt-1">{t("admin.admin_review_product_label")} {r.product_id.name}</p>}
                         {r.user_id && (
                           <p className="text-xs text-default-400">
-                            Cảnh báo: <span className="font-bold text-warning">{r.user_id.warning_count || 0}</span>
-                            {r.user_id.status === "banned" && <Chip size="sm" color="danger" variant="flat" className="ml-1">Bị khóa</Chip>}
+                            {t("admin.admin_review_warning_label")} <span className="font-bold text-warning">{r.user_id.warning_count || 0}</span>
+                            {r.user_id.status === "banned" && <Chip size="sm" color="danger" variant="flat" className="ml-1">{t("admin.admin_review_banned")}</Chip>}
                           </p>
                         )}
                       </div>
@@ -125,11 +134,11 @@ function ReviewsTab() {
                       {r.status !== "visible" && (
                         <Button size="sm" variant="flat" color="success" startContent={<CheckCircle size={12} />}
                           onPress={() => approve(r._id)}>
-                          Duyệt
+                          {t("admin.admin_review_approve")}
                         </Button>
                       )}
                       <Button size="sm" variant="flat" color="warning" isIconOnly
-                        title={r.status === "hidden" ? "Hiện đánh giá" : "Ẩn đánh giá"}
+                        title={r.status === "hidden" ? t("admin.admin_review_show") : t("admin.admin_review_hide")}
                         onPress={() => toggleHide(r._id, r.status)}>
                         {r.status === "hidden" ? <Eye size={14} /> : <EyeOff size={14} />}
                       </Button>
@@ -152,6 +161,7 @@ function ReviewsTab() {
 
 // ─── Users Tab ───────────────────────────────────────────────────────────────
 function UsersTab() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [users, setUsers]     = useState([]);
   const [loading, setLoading] = useState(true);
@@ -173,14 +183,14 @@ function UsersTab() {
       setUsers(res.data?.items || []);
       setTotal(res.data?.total || 0);
       setTp(Math.ceil((res.data?.total || 0) / LIMIT));
-    } catch { toast.error("Lỗi tải dữ liệu"); }
+    } catch { toast.error(t("admin.refund_load_error")); }
     finally { setLoading(false); }
   }, [page]);
 
   useEffect(() => { load(page); }, [page]);
 
   const warn = async (id) => {
-    try { await adminApi.warn(id, "Vi phạm nội dung đánh giá"); toast.success("Đã cảnh báo"); load(page); }
+    try { await adminApi.warn(id, t("admin.warn")); toast.success(t("admin.warn")); load(page); }
     catch (e) { toast.error(e?.message); }
   };
 
@@ -189,7 +199,7 @@ function UsersTab() {
     setSaving(true);
     try {
       await adminApi.ban(banTarget._id, banDays ? Number(banDays) : undefined, banReason || undefined);
-      toast.success("Đã khóa tài khoản");
+      toast.success(t("admin.ban"));
       setBanTarget(null);
       load(page);
     } catch (e) { toast.error(e?.message); }
@@ -197,23 +207,30 @@ function UsersTab() {
   };
 
   const unban = async (id) => {
-    try { await adminApi.unban(id); toast.success("Đã mở khóa"); load(page); }
+    try { await adminApi.unban(id); toast.success(t("admin.unban")); load(page); }
     catch (e) { toast.error(e?.message); }
   };
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-default-400">Hiển thị người dùng có lịch sử vi phạm ({total} người)</p>
+      <p className="text-sm text-default-400">{t("admin.admin_users_total", { count: total })}</p>
 
       <Card radius="xl" shadow="sm">
         <CardBody className="p-0 overflow-auto">
           {loading ? <div className="flex justify-center py-10"><Spinner /></div>
-          : users.length === 0 ? <p className="text-center py-10 text-default-400">Không có vi phạm nào</p>
+          : users.length === 0 ? <p className="text-center py-10 text-default-400">{t("admin.admin_users_none")}</p>
           : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Người dùng", "Email", "Vi phạm", "Trạng thái", "Khóa đến", ""].map(h => (
+                  {[
+                    t("admin.admin_users_col_user"),
+                    t("admin.admin_users_col_email"),
+                    t("admin.admin_users_col_violations"),
+                    t("admin.admin_users_col_status"),
+                    t("admin.admin_users_col_banned_until"),
+                    "",
+                  ].map(h => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -228,16 +245,20 @@ function UsersTab() {
                     <td className="px-4 py-3 text-default-500 text-xs">{u.email}</td>
                     <td className="px-4 py-3">
                       <Chip size="sm" color={u.warning_count >= 5 ? "danger" : u.warning_count >= 3 ? "warning" : "default"} variant="flat">
-                        {u.warning_count} lần
+                        {t("admin.admin_users_violations", { count: u.warning_count })}
                       </Chip>
                     </td>
                     <td className="px-4 py-3">
                       <Chip size="sm" color={u.status === "banned" ? "danger" : "success"} variant="flat">
-                        {u.status === "banned" ? "Bị khóa" : "Hoạt động"}
+                        {u.status === "banned" ? t("admin.admin_users_banned") : t("admin.admin_users_active")}
                       </Chip>
                     </td>
                     <td className="px-4 py-3 text-xs text-default-400">
-                      {u.ban_until ? new Date(u.ban_until).toLocaleDateString("vi-VN") : u.status === "banned" ? "Vĩnh viễn" : "—"}
+                      {u.ban_until
+                        ? new Date(u.ban_until).toLocaleDateString("vi-VN")
+                        : u.status === "banned"
+                          ? t("admin.admin_users_permanent")
+                          : "—"}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1 justify-end">
@@ -245,18 +266,18 @@ function UsersTab() {
                           <>
                             <Button size="sm" variant="light" color="warning" onPress={() => warn(u._id)}
                               startContent={<AlertTriangle size={12} />}>
-                              Cảnh báo
+                              {t("admin.admin_users_warn_btn")}
                             </Button>
                             <Button size="sm" variant="flat" color="danger" onPress={() => { setBanTarget(u); setBanDays(""); setBanReason(""); }}
                               startContent={<Ban size={12} />}>
-                              Khóa
+                              {t("admin.admin_users_ban_btn")}
                             </Button>
                           </>
                         )}
                         {u.status === "banned" && (
                           <Button size="sm" variant="flat" color="success" onPress={() => unban(u._id)}
                             startContent={<ShieldOff size={12} />}>
-                            Mở khóa
+                            {t("admin.admin_users_unban_btn")}
                           </Button>
                         )}
                       </div>
@@ -276,27 +297,27 @@ function UsersTab() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Khóa tài khoản: {banTarget?.name}</ModalHeader>
+              <ModalHeader>{t("admin.admin_ban_title", { name: banTarget?.name })}</ModalHeader>
               <ModalBody className="space-y-3">
                 <Input
-                  label="Số ngày khóa (để trống = vĩnh viễn)"
+                  label={t("admin.admin_ban_days")}
                   type="number" min="1"
                   value={banDays}
                   onValueChange={setBanDays}
-                  placeholder="Ví dụ: 7"
+                  placeholder={t("admin.admin_ban_days_placeholder")}
                   radius="lg"
                 />
                 <Input
-                  label="Lý do"
+                  label={t("admin.admin_ban_reason")}
                   value={banReason}
                   onValueChange={setBanReason}
-                  placeholder="Vi phạm chính sách nội dung…"
+                  placeholder={t("admin.admin_ban_reason_placeholder")}
                   radius="lg"
                 />
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Hủy</Button>
-                <Button color="danger" isLoading={saving} onPress={submitBan}>Xác nhận khóa</Button>
+                <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                <Button color="danger" isLoading={saving} onPress={submitBan}>{t("admin.admin_ban_confirm")}</Button>
               </ModalFooter>
             </>
           )}
@@ -308,18 +329,19 @@ function UsersTab() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function AdminReviews() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-black text-default-900">Kiểm duyệt đánh giá</h1>
-        <p className="text-sm text-default-400">Quản lý nội dung vi phạm và tài khoản người dùng</p>
+        <h1 className="text-xl font-black text-default-900">{t("admin.admin_reviews_title")}</h1>
+        <p className="text-sm text-default-400">{t("admin.admin_reviews_subtitle")}</p>
       </div>
 
       <Tabs radius="lg" color="primary">
-        <Tab key="reviews" title="Đánh giá vi phạm">
+        <Tab key="reviews" title={t("admin.admin_reviews_tab")}>
           <ReviewsTab />
         </Tab>
-        <Tab key="users" title="Người dùng vi phạm">
+        <Tab key="users" title={t("admin.admin_users_tab")}>
           <UsersTab />
         </Tab>
       </Tabs>

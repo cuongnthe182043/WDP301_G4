@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, SunMedium } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function ThemeSettingsPanel({ iconColor }) {
+  const { t } = useTranslation();
   const { theme, toggleTheme, brightness, setBrightness } = useTheme();
   const [open, setOpen] = useState(false);
   const isDark = theme === "dark";
@@ -33,7 +35,7 @@ export default function ThemeSettingsPanel({ iconColor }) {
         onClick={() => setOpen((v) => !v)}
         className="w-9 h-9 flex items-center justify-center rounded-full outline-none focus:outline-none"
         style={{ color: iconColor }}
-        title="Giao diện"
+        title={t("theme.label")}
       >
         <div
           className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
@@ -66,7 +68,7 @@ export default function ThemeSettingsPanel({ iconColor }) {
                 className="text-[10px] font-black uppercase tracking-widest mb-3"
                 style={{ color: labelColor }}
               >
-                Giao diện
+                {t("theme.label")}
               </p>
 
               {/* Light / Dark toggle */}
@@ -75,8 +77,8 @@ export default function ThemeSettingsPanel({ iconColor }) {
                 style={{ background: trackBg }}
               >
                 {[
-                  { key: "light", Icon: Sun,  label: "Sáng" },
-                  { key: "dark",  Icon: Moon, label: "Tối"  },
+                  { key: "light", Icon: Sun,  label: t("theme.light") },
+                  { key: "dark",  Icon: Moon, label: t("theme.dark")  },
                 ].map(({ key, Icon, label }) => (
                   <button
                     key={key}
@@ -96,7 +98,7 @@ export default function ThemeSettingsPanel({ iconColor }) {
                   <div className="flex items-center gap-1.5">
                     <SunMedium size={13} style={{ color: accentBlue }} />
                     <span className="text-xs font-semibold" style={{ color: textPrimary }}>
-                      Độ sáng
+                      {t("theme.brightness")}
                     </span>
                   </div>
                   <span className="text-xs font-bold" style={{ color: accentBlue }}>
@@ -122,8 +124,8 @@ export default function ThemeSettingsPanel({ iconColor }) {
                   className="flex justify-between text-[10px] font-medium mt-1.5"
                   style={{ color: textSecond }}
                 >
-                  <span>Tối</span>
-                  <span>Sáng nhất</span>
+                  <span>{t("theme.min")}</span>
+                  <span>{t("theme.max")}</span>
                 </div>
               </div>
             </motion.div>

@@ -10,44 +10,30 @@ import {
   Search, SlidersHorizontal, X, Star, ChevronDown, ChevronUp,
   Package, TrendingUp, Sparkles,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { productApi } from "../../services/productService";
 import { homeService } from "../../services/homeService";
 import { formatCurrency } from "../../utils/formatCurrency";
 import PageContainer from "../../components/ui/PageContainer";
 
-// ─── constants ──────────────────────────────────────────────────────
-const SORT_OPTIONS = [
-  { key: "created_at", label: "Mới nhất" },
-  { key: "popular",    label: "Phổ biến nhất" },
-  { key: "rating",     label: "Đánh giá cao" },
-  { key: "price_asc",  label: "Giá tăng dần" },
-  { key: "price_desc", label: "Giá giảm dần" },
-  { key: "sold",       label: "Bán chạy nhất" },
-];
-
+// ─── constants (non-translatable) ──────────────────────────────────────────────────────
 const SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
-const COLORS = [
-  { name: "Đen",       value: "black",  hex: "#1a1a1a" },
-  { name: "Trắng",     value: "white",  hex: "#f0f0f0", border: "#d1d5db" },
-  { name: "Xám",       value: "gray",   hex: "#9ca3af" },
-  { name: "Đỏ",        value: "red",    hex: "#ef4444" },
-  { name: "Xanh lá",   value: "green",  hex: "#22c55e" },
-  { name: "Xanh dương",value: "blue",   hex: "#3b82f6" },
-  { name: "Vàng",      value: "yellow", hex: "#eab308" },
-  { name: "Hồng",      value: "pink",   hex: "#ec4899" },
-  { name: "Nâu",       value: "brown",  hex: "#92400e" },
-  { name: "Cam",       value: "orange", hex: "#f97316" },
-  { name: "Tím",       value: "purple", hex: "#a855f7" },
-  { name: "Xanh lơ",   value: "cyan",   hex: "#06b6d4" },
+const COLORS_DATA = [
+  { nameKey: "product.color_black",  value: "black",  hex: "#1a1a1a" },
+  { nameKey: "product.color_white",  value: "white",  hex: "#f0f0f0", border: "#d1d5db" },
+  { nameKey: "product.color_gray",   value: "gray",   hex: "#9ca3af" },
+  { nameKey: "product.color_red",    value: "red",    hex: "#ef4444" },
+  { nameKey: "product.color_green",  value: "green",  hex: "#22c55e" },
+  { nameKey: "product.color_blue",   value: "blue",   hex: "#3b82f6" },
+  { nameKey: "product.color_yellow", value: "yellow", hex: "#eab308" },
+  { nameKey: "product.color_pink",   value: "pink",   hex: "#ec4899" },
+  { nameKey: "product.color_brown",  value: "brown",  hex: "#92400e" },
+  { nameKey: "product.color_orange", value: "orange", hex: "#f97316" },
+  { nameKey: "product.color_purple", value: "purple", hex: "#a855f7" },
+  { nameKey: "product.color_cyan",   value: "cyan",   hex: "#06b6d4" },
 ];
-const PRICE_PRESETS = [
-  { label: "Dưới 200k",    min: 0,       max: 200_000 },
-  { label: "200k – 500k",  min: 200_000, max: 500_000 },
-  { label: "500k – 1tr",   min: 500_000, max: 1_000_000 },
-  { label: "Trên 1tr",     min: 1_000_000, max: 0 },
-];
-const RATING_OPTIONS = [5, 4, 3, 2];
 const MAX_PRICE = 10_000_000;
+const RATING_OPTIONS = [5, 4, 3, 2];
 
 if (!document.getElementById("sp-css")) {
   const s = document.createElement("style");
@@ -215,6 +201,7 @@ function Stars({ value = 0, size = 13 }) {
 
 function ProductCard({ product }) {
   const nav  = useNavigate();
+  const { t } = useTranslation();
   const img  = Array.isArray(product.images) ? product.images[0] : product.images;
   const price = product.base_price || 0;
   const rating = product.rating_avg || 0;
@@ -232,7 +219,7 @@ function ProductCard({ product }) {
         }
         {product.is_featured && (
           <span className="sp-badge" style={{ background: "linear-gradient(90deg,#1d4ed8,#2563eb)", color: "#fff" }}>
-            Nổi bật
+            {t("product.featured")}
           </span>
         )}
         {product.sold_count > 100 && !product.is_featured && (
@@ -256,7 +243,7 @@ function ProductCard({ product }) {
         <div className="flex items-end justify-between mt-0.5">
           <p className="font-black text-[15px]" style={{ color: "#1d4ed8" }}>{formatCurrency(price)}</p>
           {product.sold_count > 0 && (
-            <p className="text-[10px] text-slate-400">Đã bán {product.sold_count > 999 ? (product.sold_count/1000).toFixed(1)+"k" : product.sold_count}</p>
+            <p className="text-[10px] text-slate-400">{t("product.sold")} {product.sold_count > 999 ? (product.sold_count/1000).toFixed(1)+"k" : product.sold_count}</p>
           )}
         </div>
       </div>
@@ -313,7 +300,7 @@ function Section({ title, id, open, onToggle, children, badge }) {
 }
 
 // ─── Price section (self-contained local state) ───────────────────────
-function PriceSection({ urlMin, urlMax, onCommit }) {
+function PriceSection({ urlMin, urlMax, onCommit, pricePresets }) {
   const numMin = Number(urlMin) || 0;
   const numMax = Number(urlMax) || MAX_PRICE;
 
@@ -366,11 +353,13 @@ function PriceSection({ urlMin, urlMax, onCommit }) {
     commit(draft[0], mx);
   };
 
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-3">
       {/* Preset quick-select */}
       <div className="flex flex-wrap gap-1.5">
-        {PRICE_PRESETS.map(p => (
+        {pricePresets.map(p => (
           <button key={p.label} className={`sp-preset ${isPresetActive(p) ? "on" : ""}`}
             onClick={() => applyPreset(p)}>{p.label}</button>
         ))}
@@ -393,7 +382,7 @@ function PriceSection({ urlMin, urlMax, onCommit }) {
       {/* Manual inputs */}
       <div className="flex items-center gap-2">
         <div className="flex-1">
-          <p className="text-[10px] text-slate-400 mb-1 font-semibold">Từ</p>
+          <p className="text-[10px] text-slate-400 mb-1 font-semibold">{t("product.price_from_label")}</p>
           <input
             className="sp-price-input"
             type="text" inputMode="numeric"
@@ -406,11 +395,11 @@ function PriceSection({ urlMin, urlMax, onCommit }) {
         </div>
         <div className="w-4 h-px bg-slate-300 mt-4 flex-shrink-0" />
         <div className="flex-1">
-          <p className="text-[10px] text-slate-400 mb-1 font-semibold">Đến</p>
+          <p className="text-[10px] text-slate-400 mb-1 font-semibold">{t("product.price_to_label")}</p>
           <input
             className="sp-price-input"
             type="text" inputMode="numeric"
-            placeholder="Tối đa"
+            placeholder={t("product.price_max")}
             value={maxInput}
             onChange={e => setMaxInput(e.target.value.replace(/\D/g,""))}
             onBlur={handleMaxBlur}
@@ -422,7 +411,7 @@ function PriceSection({ urlMin, urlMax, onCommit }) {
       {/* Display current range */}
       {(draft[0] > 0 || draft[1] < MAX_PRICE) && (
         <p className="text-[11px] text-blue-600 font-semibold text-center">
-          {formatCurrency(draft[0])} – {draft[1] >= MAX_PRICE ? "Không giới hạn" : formatCurrency(draft[1])}
+          {formatCurrency(draft[0])} – {draft[1] >= MAX_PRICE ? t("product.price_unlimited") : formatCurrency(draft[1])}
         </p>
       )}
     </div>
@@ -431,6 +420,7 @@ function PriceSection({ urlMin, urlMax, onCommit }) {
 
 // ─── Filter Sidebar ────────────────────────────────────────────────────
 function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onReset }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState({
     category: true, brand: false, price: true,
     size: true, color: false, rating: true, other: false,
@@ -458,6 +448,15 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
   const ratingBadge = filters.rating ? 1 : 0;
   const otherBadge = (filters.inStock === "1" ? 1 : 0) + (filters.discounts === "1" ? 1 : 0);
 
+  const COLORS = COLORS_DATA.map(c => ({ ...c, name: t(c.nameKey) }));
+
+  const PRICE_PRESETS = [
+    { label: t("product.price_under_200k"), min: 0,         max: 200_000 },
+    { label: t("product.price_200k_500k"),  min: 200_000,   max: 500_000 },
+    { label: t("product.price_500k_1m"),    min: 500_000,   max: 1_000_000 },
+    { label: t("product.price_over_1m"),    min: 1_000_000, max: 0 },
+  ];
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden"
       style={{ border: "1.5px solid #eff6ff", boxShadow: "0 4px 20px rgba(29,78,216,.06)" }}>
@@ -466,21 +465,21 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
       <div className="flex items-center justify-between px-4 py-3 border-b border-blue-50">
         <div className="flex items-center gap-2">
           <SlidersHorizontal size={14} style={{ color: "#1d4ed8" }} />
-          <span className="font-black text-sm text-slate-800" style={{ fontFamily: "'Baloo 2',cursive" }}>Bộ lọc</span>
+          <span className="font-black text-sm text-slate-800" style={{ fontFamily: "'Baloo 2',cursive" }}>{t("common.filter")}</span>
         </div>
         <button onClick={onReset}
           className="text-[11px] font-bold px-2 py-1 rounded-lg transition-colors hover:bg-blue-50"
           style={{ color: "#1d4ed8" }}>
-          Xóa tất cả
+          {t("product.filter_clear")}
         </button>
       </div>
 
       <div className="px-4 py-3">
 
         {/* Category */}
-        <Section id="category" title="Danh mục" open={open.category} onToggle={tog} badge={catBadge}>
+        <Section id="category" title={t("product.category")} open={open.category} onToggle={tog} badge={catBadge}>
           <div className="flex flex-col">
-            {[{ _id: "", name: "Tất cả" }, ...categories].map(c => {
+            {[{ _id: "", name: t("common.all") }, ...categories].map(c => {
               const val = c._id ? (c.slug || c._id) : "";
               const active = filters.category === val || (!filters.category && val === "");
               return (
@@ -499,9 +498,9 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
         </Section>
 
         {/* Brand */}
-        <Section id="brand" title="Thương hiệu" open={open.brand} onToggle={tog} badge={brandBadge}>
+        <Section id="brand" title={t("product.brand")} open={open.brand} onToggle={tog} badge={brandBadge}>
           {brands.length > 5 && (
-            <input className="sp-brand-search mb-2" placeholder="Tìm thương hiệu…"
+            <input className="sp-brand-search mb-2" placeholder={t("product.search_brand")}
               value={brandQ} onChange={e => setBrandQ(e.target.value)} />
           )}
           <div className="flex flex-col gap-0.5 max-h-52 overflow-y-auto pr-1">
@@ -523,21 +522,22 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
                 </label>
               );
             })}
-            {filteredBrands.length === 0 && <p className="text-[12px] text-slate-400 px-1 py-2">Không tìm thấy</p>}
+            {filteredBrands.length === 0 && <p className="text-[12px] text-slate-400 px-1 py-2">{t("product.not_found_brand")}</p>}
           </div>
         </Section>
 
         {/* Price */}
-        <Section id="price" title="Khoảng giá" open={open.price} onToggle={tog} badge={priceBadge}>
+        <Section id="price" title={t("product.section_price")} open={open.price} onToggle={tog} badge={priceBadge}>
           <PriceSection
             urlMin={filters.minPrice}
             urlMax={filters.maxPrice}
+            pricePresets={PRICE_PRESETS}
             onCommit={(mn, mx) => setFilters({ minPrice: mn, maxPrice: mx })}
           />
         </Section>
 
         {/* Size */}
-        <Section id="size" title="Kích cỡ" open={open.size} onToggle={tog} badge={sizeBadge}>
+        <Section id="size" title={t("product.section_size")} open={open.size} onToggle={tog} badge={sizeBadge}>
           <div className="flex flex-wrap gap-2">
             {SIZES.map(s => (
               <button key={s} className={`sp-sz ${activeSizes.includes(s) ? "on" : ""}`}
@@ -547,7 +547,7 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
         </Section>
 
         {/* Color */}
-        <Section id="color" title="Màu sắc" open={open.color} onToggle={tog} badge={colorBadge}>
+        <Section id="color" title={t("product.section_color")} open={open.color} onToggle={tog} badge={colorBadge}>
           <div className="flex flex-wrap gap-2.5">
             {COLORS.map(c => {
               const active = activeColors.includes(c.value);
@@ -583,7 +583,7 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
         </Section>
 
         {/* Rating */}
-        <Section id="rating" title="Đánh giá" open={open.rating} onToggle={tog} badge={ratingBadge}>
+        <Section id="rating" title={t("product.reviews")} open={open.rating} onToggle={tog} badge={ratingBadge}>
           <div className="flex flex-col gap-1">
             {RATING_OPTIONS.map(r => {
               const active = Number(filters.rating) === r;
@@ -595,7 +595,7 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
                   onClick={() => setFilter("rating", active ? "" : r)}
                 >
                   <Stars value={r} size={12} />
-                  <span>trở lên</span>
+                  <span>{t("product.and_above")}</span>
                   {active && <span className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: "#1d4ed8" }} />}
                 </button>
               );
@@ -604,12 +604,12 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
         </Section>
 
         {/* Other */}
-        <Section id="other" title="Khác" open={open.other} onToggle={tog} badge={otherBadge}>
+        <Section id="other" title={t("product.section_other")} open={open.other} onToggle={tog} badge={otherBadge}>
           <div className="flex flex-col gap-2">
             {[
-              { key: "inStock",   label: "Còn hàng",     icon: "🟢" },
-              { key: "discounts", label: "Đang giảm giá", icon: "🏷️" },
-            ].map(({ key, label, icon }) => {
+              { key: "inStock",   labelKey: "product.in_stock", icon: "🟢" },
+              { key: "discounts", labelKey: "product.on_sale",  icon: "🏷️" },
+            ].map(({ key, labelKey, icon }) => {
               const active = filters[key] === "1";
               return (
                 <label key={key} className="flex items-center gap-2.5 cursor-pointer px-1 py-1 rounded-lg hover:bg-blue-50 transition-colors">
@@ -620,7 +620,7 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
                   </div>
                   <span className="text-[13px] select-none" style={{ color: active ? "#1d4ed8" : "#374151", fontWeight: active ? 600 : 400 }}
                     onClick={() => setFilter(key, active ? "" : "1")}>
-                    {icon} {label}
+                    {icon} {t(labelKey)}
                   </span>
                 </label>
               );
@@ -635,8 +635,18 @@ function FilterSidebar({ filters, setFilter, setFilters, categories, brands, onR
 
 // ─── Main Page ──────────────────────────────────────────────────────────
 export default function SearchPage() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const nav = useNavigate();
+
+  const SORT_OPTIONS = [
+    { key: "created_at", label: t("product.sort_newest") },
+    { key: "popular",    label: t("product.sort_popular") },
+    { key: "rating",     label: t("product.sort_rating") },
+    { key: "price_asc",  label: t("product.sort_price_asc") },
+    { key: "price_desc", label: t("product.sort_price_desc") },
+    { key: "sold",       label: t("product.sort_best_sold") },
+  ];
 
   const getP = (k, def = "") => searchParams.get(k) ?? def;
   const filters = {
@@ -772,15 +782,16 @@ export default function SearchPage() {
     const b = brands.find(x => (x.slug || x._id) === filters.brand);
     activeChips.push({ label: b?.name || filters.brand, key: "brand" });
   }
-  if (filters.minPrice) activeChips.push({ label: `Từ ${formatCurrency(Number(filters.minPrice))}`, key: "minPrice" });
-  if (filters.maxPrice) activeChips.push({ label: `Đến ${formatCurrency(Number(filters.maxPrice))}`, key: "maxPrice" });
+  if (filters.minPrice) activeChips.push({ label: `${t("product.price_from_label")} ${formatCurrency(Number(filters.minPrice))}`, key: "minPrice" });
+  if (filters.maxPrice) activeChips.push({ label: `${t("product.price_to_label")} ${formatCurrency(Number(filters.maxPrice))}`, key: "maxPrice" });
   if (filters.sizes)    filters.sizes.split(",").filter(Boolean).forEach(s => activeChips.push({ label: `Size ${s}`, key: "sizes", val: s }));
   if (filters.colors)   filters.colors.split(",").filter(Boolean).forEach(c => {
-    activeChips.push({ label: COLORS.find(x => x.value === c)?.name || c, key: "colors", val: c });
+    const colorEntry = COLORS_DATA.find(x => x.value === c);
+    activeChips.push({ label: colorEntry ? t(colorEntry.nameKey) : c, key: "colors", val: c });
   });
   if (filters.rating)    activeChips.push({ label: `≥ ${filters.rating}★`, key: "rating" });
-  if (filters.inStock === "1") activeChips.push({ label: "Còn hàng", key: "inStock" });
-  if (filters.discounts === "1") activeChips.push({ label: "Giảm giá", key: "discounts" });
+  if (filters.inStock === "1") activeChips.push({ label: t("product.in_stock"), key: "inStock" });
+  if (filters.discounts === "1") activeChips.push({ label: t("product.on_sale"), key: "discounts" });
 
   const removeChip = ({ key, val }) => {
     if (val) {
@@ -805,7 +816,7 @@ export default function SearchPage() {
             className="w-full h-[52px] pl-11 pr-12 text-[15px] font-semibold bg-white rounded-2xl outline-none transition-all"
             style={{ border: "1.5px solid #dbeafe", boxShadow: "0 2px 16px rgba(29,78,216,.06)",
               fontFamily: "'Quicksand',sans-serif", color: "#1e293b" }}
-            placeholder="Tìm kiếm sản phẩm, thương hiệu, danh mục…"
+            placeholder={t("product.search_products")}
             value={searchInput}
             onChange={e => { setSearchInput(e.target.value); setShowSug(true); }}
             onFocus={() => setShowSug(true)}
@@ -830,7 +841,7 @@ export default function SearchPage() {
               transition={{ duration: .15 }}
               className="absolute top-full left-0 right-0 z-50 bg-white rounded-2xl mt-1 overflow-hidden"
               style={{ border: "1.5px solid #dbeafe", boxShadow: "0 12px 40px rgba(29,78,216,.12)" }}>
-              <p className="px-4 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Gợi ý</p>
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t("product.suggestions")}</p>
               {suggestions.map(p => (
                 <div key={p._id} className="sp-sug flex items-center gap-3"
                   onClick={() => { setShowSug(false); nav(`/products/${p.slug || p._id}`); }}>
@@ -865,7 +876,7 @@ export default function SearchPage() {
             ))}
             <button onClick={resetFilters}
               className="text-[11px] font-bold text-slate-400 hover:text-red-500 transition-colors underline decoration-dotted ml-1">
-              Xóa tất cả
+              {t("product.filter_clear")}
             </button>
           </motion.div>
         )}
@@ -880,7 +891,7 @@ export default function SearchPage() {
             style={{ background: "rgba(219,234,254,.7)", border: "1.5px solid #bfdbfe", color: "#1d4ed8" }}
             onClick={() => setMobileOpen(true)}>
             <SlidersHorizontal size={14} />
-            Bộ lọc
+            {t("common.filter")}
             {activeChips.length > 0 && (
               <span className="w-5 h-5 rounded-full text-[10px] font-black text-white flex items-center justify-center"
                 style={{ background: "#1d4ed8" }}>{activeChips.length}</span>
@@ -889,8 +900,8 @@ export default function SearchPage() {
 
           <p className="text-[13px] text-slate-500">
             {loading
-              ? <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-blue-400 border-t-transparent animate-spin inline-block" /> Đang tìm…</span>
-              : <><span className="font-bold text-slate-800">{total.toLocaleString()}</span> sản phẩm{filters.q && <> cho <span className="font-bold" style={{ color: "#1d4ed8" }}>"{filters.q}"</span></>}</>
+              ? <span className="inline-flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-blue-400 border-t-transparent animate-spin inline-block" /> {t("product.searching")}</span>
+              : <><span className="font-bold text-slate-800">{total.toLocaleString()}</span> {t("product.products_count")}{filters.q && <> {t("product.results_for")} <span className="font-bold" style={{ color: "#1d4ed8" }}>"{filters.q}"</span></>}</>
             }
           </p>
         </div>
@@ -901,7 +912,7 @@ export default function SearchPage() {
           selectedKeys={new Set([filters.sort])}
           onSelectionChange={k => setFilter("sort", Array.from(k)[0])}
           variant="bordered"
-          aria-label="Sắp xếp"
+          aria-label={t("common.sort")}
           startContent={<TrendingUp size={13} className="text-blue-400" />}
           classNames={{ trigger: "border-blue-100 hover:border-blue-300 h-9 text-[13px]" }}
         >
@@ -934,14 +945,14 @@ export default function SearchPage() {
                 <Sparkles size={34} style={{ color: "#1d4ed8" }} />
               </motion.div>
               <p className="text-xl font-black text-slate-800 mb-2" style={{ fontFamily: "'Baloo 2',cursive" }}>
-                Không tìm thấy sản phẩm
+                {t("product.no_products")}
               </p>
               <p className="text-[14px] text-slate-500 mb-5 max-w-xs">
-                Hãy thử từ khóa khác hoặc mở rộng bộ lọc để xem thêm kết quả.
+                {t("product.no_products_desc")}
               </p>
               {activeChips.length > 0 && (
                 <Button radius="lg" variant="flat" color="primary" size="sm" onPress={resetFilters}>
-                  Xóa bộ lọc
+                  {t("product.clear_filters_btn")}
                 </Button>
               )}
             </motion.div>
@@ -983,7 +994,7 @@ export default function SearchPage() {
         <ModalContent>
           <ModalHeader className="font-black border-b border-blue-50" style={{ fontFamily: "'Baloo 2',cursive" }}>
             <div className="flex items-center gap-2">
-              <SlidersHorizontal size={16} style={{ color: "#1d4ed8" }} /> Bộ lọc
+              <SlidersHorizontal size={16} style={{ color: "#1d4ed8" }} /> {t("common.filter")}
             </div>
           </ModalHeader>
           <ModalBody className="px-4">
@@ -991,7 +1002,7 @@ export default function SearchPage() {
           </ModalBody>
           <ModalFooter className="border-t border-blue-50">
             <Button color="primary" radius="lg" className="w-full font-bold" onPress={() => setMobileOpen(false)}>
-              Xem {total.toLocaleString()} sản phẩm
+              {t("product.see_n_products", { n: total.toLocaleString() })}
             </Button>
           </ModalFooter>
         </ModalContent>

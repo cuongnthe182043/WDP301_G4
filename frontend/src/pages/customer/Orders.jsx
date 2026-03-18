@@ -74,7 +74,7 @@ export default function Orders() {
 
   return (
     <PageContainer wide={false}>
-      <h1 className="text-2xl font-black text-default-900 mb-6">{t("order.title")}</h1>
+      <h1 className="text-2xl font-black text-default-900 dark:text-zinc-100 mb-6">{t("order.title")}</h1>
 
       {/* Filter row */}
       <div className="flex flex-col md:flex-row gap-3 mb-5 items-start md:items-center">
@@ -108,7 +108,7 @@ export default function Orders() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 rounded-2xl bg-default-100 animate-pulse" />
+            <div key={i} className="h-40 rounded-2xl bg-default-100 dark:bg-zinc-700 animate-pulse" />
           ))}
         </div>
       ) : data.items.length === 0 ? (
@@ -129,12 +129,12 @@ export default function Orders() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05, duration: 0.3 }}
               >
-                <Card radius="xl" shadow="sm" className="border border-default-100">
+                <Card radius="xl" shadow="sm" className="border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
                   <CardBody className="p-5">
                     {/* Order header */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-black text-default-900">#{o.order_code}</span>
+                        <span className="font-black text-default-900 dark:text-zinc-100">#{o.order_code}</span>
                         <Chip
                           size="sm"
                           color={STATUS_COLOR[o.status] || "default"}
@@ -144,7 +144,7 @@ export default function Orders() {
                           {STATUS_LABEL[o.status] || o.status}
                         </Chip>
                         {o.createdAt && (
-                          <span className="text-xs text-default-400">
+                          <span className="text-xs text-default-400 dark:text-zinc-500">
                             {new Date(o.createdAt).toLocaleDateString("vi-VN")}
                           </span>
                         )}
@@ -184,29 +184,29 @@ export default function Orders() {
                       {(o.items || []).slice(0, 3).map((it, i) => (
                         <div key={i} className="flex items-center justify-between gap-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-xl overflow-hidden bg-default-100 flex-shrink-0">
+                            <div className="w-12 h-12 rounded-xl overflow-hidden bg-default-100 dark:bg-zinc-700 flex-shrink-0">
                               {it.image_url && <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />}
                             </div>
                             <div>
-                              <p className="font-semibold text-sm text-default-900 line-clamp-1">{it.name}</p>
-                              {it.variant_text && <p className="text-xs text-default-400">{it.variant_text}</p>}
-                              <p className="text-xs text-default-400">SL: {it.qty}</p>
+                              <p className="font-semibold text-sm text-default-900 dark:text-zinc-100 line-clamp-1">{it.name}</p>
+                              {it.variant_text && <p className="text-xs text-default-400 dark:text-zinc-500">{it.variant_text}</p>}
+                              <p className="text-xs text-default-400 dark:text-zinc-500">SL: {it.qty}</p>
                             </div>
                           </div>
-                          <p className="font-bold text-sm text-default-800 whitespace-nowrap">
+                          <p className="font-bold text-sm text-default-800 dark:text-zinc-200 whitespace-nowrap">
                             {formatCurrency(it.total || it.price * it.qty)}
                           </p>
                         </div>
                       ))}
                       {(o.items?.length || 0) > 3 && (
-                        <p className="text-xs text-default-400 text-center pt-1">
+                        <p className="text-xs text-default-400 dark:text-zinc-500 text-center pt-1">
                           +{o.items.length - 3} sản phẩm khác
                         </p>
                       )}
                     </div>
 
                     {/* Total */}
-                    <div className="flex justify-between items-center mt-3 pt-3 border-t border-default-100">
+                    <div className="flex justify-between items-center mt-3 pt-3 border-t border-default-100 dark:border-zinc-700">
                       <div className="flex gap-2 flex-wrap">
                         {["pending", "confirmed", "processing"].includes(o.status) && (
                           <Button
@@ -230,7 +230,7 @@ export default function Orders() {
                         )}
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-default-400">{t("order.total")}:</span>
+                        <span className="text-sm text-default-400 dark:text-zinc-500">{t("order.total")}:</span>
                         <span className="font-black text-primary text-base">
                           {formatCurrency(Number(o.total_price))}
                         </span>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { orderService } from "../../services/orderService";
 import { reviewService } from "../../services/reviewService";
@@ -10,33 +11,6 @@ import { Truck, RefreshCw, ArrowLeft, CheckCircle2, Circle, Package, Star } from
 import { formatCurrency } from "../../utils/formatCurrency";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 import ReviewModal from "../../components/common/ReviewModal.jsx";
-
-const STATUS_LABEL = {
-  order_created:         "Chờ xác nhận",
-  pending:               "Chờ xác nhận",
-  payment_pending:       "Chờ thanh toán",
-  payment_confirmed:     "Đã thanh toán",
-  payment_failed:        "Thanh toán thất bại",
-  confirmed:             "Đã xác nhận",
-  processing:            "Đang chuẩn bị",
-  packed:                "Đã đóng gói",
-  picking:               "Shipper đang lấy",
-  in_transit:            "Đang vận chuyển",
-  out_for_delivery:      "Đang giao hàng",
-  shipping:              "Đang giao hàng",
-  delivered:             "Hoàn thành",
-  delivery_failed:       "Giao thất bại",
-  cancelled_by_customer: "Đã hủy",
-  cancelled_by_shop:     "Shop đã hủy",
-  canceled_by_customer:  "Đã hủy",
-  canceled_by_shop:      "Shop đã hủy",
-  canceled:              "Đã hủy",
-  return_requested:      "Yêu cầu hoàn/đổi",
-  return_approved:       "Đã duyệt hoàn/đổi",
-  return_rejected:       "Từ chối hoàn/đổi",
-  refund_pending:        "Chờ hoàn tiền",
-  refund_completed:      "Đã hoàn tiền",
-};
 
 const STATUS_COLOR = {
   order_created: "warning",    pending: "warning",
@@ -58,6 +32,35 @@ const STATUS_COLOR = {
 export default function OrderDetail() {
   const { id } = useParams();
   const nav    = useNavigate();
+  const { t }  = useTranslation();
+
+  const STATUS_LABEL = {
+    order_created:         t("order.status_order_created"),
+    pending:               t("order.status_order_created"),
+    payment_pending:       t("order.status_payment_pending"),
+    payment_confirmed:     t("order.status_payment_confirmed"),
+    payment_failed:        t("order.status_payment_failed"),
+    confirmed:             t("order.status_payment_confirmed"),
+    processing:            t("order.status_processing"),
+    packed:                t("order.status_packed"),
+    picking:               t("order.status_picking"),
+    in_transit:            t("order.status_in_transit"),
+    out_for_delivery:      t("order.status_out_for_delivery"),
+    shipping:              t("order.status_out_for_delivery"),
+    delivered:             t("order.status_delivered_full"),
+    delivery_failed:       t("order.status_delivery_failed"),
+    cancelled_by_customer: t("order.status_cancelled_customer"),
+    cancelled_by_shop:     t("order.status_cancelled_shop"),
+    canceled_by_customer:  t("order.status_cancelled_customer"),
+    canceled_by_shop:      t("order.status_cancelled_shop"),
+    canceled:              t("order.status_cancelled_customer"),
+    return_requested:      t("order.status_return_requested"),
+    return_approved:       t("order.status_return_approved"),
+    return_rejected:       t("order.status_return_rejected"),
+    refund_pending:        t("order.status_refund_pending_full"),
+    refund_completed:      t("order.status_refund_completed"),
+  };
+
   const [ord,        setOrd]        = useState(null);
   const [track,      setTrack]      = useState(null);
   const [loading,    setLoading]    = useState(true);
@@ -65,7 +68,6 @@ export default function OrderDetail() {
   const [reason,      setReason]      = useState("");
   const [refundType,  setRefundType]  = useState("refund");
 
-  // Review state — Map<product_id, reviewDoc> for edit support
   const [reviewMap, setReviewMap] = useState(new Map());
   const [reviewItem, setReviewItem] = useState(null);
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -75,9 +77,8 @@ export default function OrderDetail() {
     try {
       const d = await orderService.detail(id);
       setOrd(d);
-      const t = await orderService.tracking(id).catch(() => null);
-      setTrack(t);
-      // Load existing reviews for this order
+      const tr = await orderService.tracking(id).catch(() => null);
+      setTrack(tr);
       if (d?.status === "delivered") {
         try {
           const rvData = await reviewService.getByOrder(id);
@@ -97,10 +98,7 @@ export default function OrderDetail() {
     setReviewOpen(true);
   };
 
-  const onReviewSuccess = () => {
-    // Reload reviews for this order to refresh the map
-    load();
-  };
+  const onReviewSuccess = () => { load(); };
 
   if (loading) return (
     <PageContainer wide={false}>
@@ -113,11 +111,17 @@ export default function OrderDetail() {
 
   if (!ord) return (
     <PageContainer wide={false}>
-      <p className="text-default-400">Không tìm thấy đơn hàng.</p>
+      <p className="text-default-400">{t("order.empty")}</p>
     </PageContainer>
   );
 
   const isDelivered = ord.status === "delivered";
+
+  const REFUND_TYPES = [
+    { key: "refund",   label: t("order.refund_money"),  desc: t("order.refund_money_desc") },
+    { key: "return",   label: t("order.return_goods"),  desc: t("order.return_goods_desc") },
+    { key: "exchange", label: t("order.exchange"),      desc: t("order.exchange_desc") },
+  ];
 
   return (
     <PageContainer wide={false}>
@@ -127,15 +131,15 @@ export default function OrderDetail() {
           <Button
             as={Link} to="/orders"
             isIconOnly variant="bordered" radius="lg" size="sm"
-            aria-label="Quay lại"
+            aria-label={t("common.back")}
           >
             <ArrowLeft size={16} />
           </Button>
           <div>
-            <h1 className="text-xl font-black text-default-900">Đơn #{ord.order_code}</h1>
+            <h1 className="text-xl font-black text-default-900 dark:text-zinc-100">{t("order.order_code")} #{ord.order_code}</h1>
             {ord.createdAt && (
-              <p className="text-sm text-default-400">
-                Đặt ngày {new Date(ord.createdAt).toLocaleDateString("vi-VN")}
+              <p className="text-sm text-default-400 dark:text-zinc-500">
+                {t("order.placed_on")} {new Date(ord.createdAt).toLocaleDateString("vi-VN")}
               </p>
             )}
           </div>
@@ -152,9 +156,9 @@ export default function OrderDetail() {
 
       {/* Products */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
           <CardBody className="p-5">
-            <h3 className="font-bold text-default-900 mb-4">Sản phẩm</h3>
+            <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-4">{t("order.products_section")}</h3>
             <div className="space-y-3">
               {(ord.items || []).map((it, idx) => {
                 const existingReview = reviewMap.get(it.product_id);
@@ -162,31 +166,31 @@ export default function OrderDetail() {
                   <div key={idx}>
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-default-100 flex-shrink-0">
+                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-default-100 dark:bg-zinc-700 flex-shrink-0">
                           {it.image_url && <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />}
                         </div>
                         <div>
-                          <p className="font-semibold text-sm text-default-900">{it.name}</p>
-                          {it.variant_text && <p className="text-xs text-default-400">{it.variant_text}</p>}
-                          <p className="text-xs text-default-400">SL: {it.qty}</p>
+                          <p className="font-semibold text-sm text-default-900 dark:text-zinc-100">{it.name}</p>
+                          {it.variant_text && <p className="text-xs text-default-400 dark:text-zinc-500">{it.variant_text}</p>}
+                          <p className="text-xs text-default-400 dark:text-zinc-500">{t("order.qty_short")} {it.qty}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <p className="font-bold text-sm text-default-800 whitespace-nowrap">
+                        <p className="font-bold text-sm text-default-800 dark:text-zinc-200 whitespace-nowrap">
                           {formatCurrency(it.total || it.price * it.qty)}
                         </p>
                         {isDelivered && (
                           existingReview ? (
                             <div className="flex items-center gap-1">
                               <Chip size="sm" variant="flat" color="success" startContent={<CheckCircle2 size={12} />}>
-                                Đã đánh giá
+                                {t("order.reviewed")}
                               </Chip>
                               <Button
                                 size="sm" variant="light" radius="lg" color="primary"
                                 onPress={() => openReviewModal(it)}
                                 className="font-medium min-w-0 px-2"
                               >
-                                Sửa
+                                {t("order.edit_review")}
                               </Button>
                             </div>
                           ) : (
@@ -196,7 +200,7 @@ export default function OrderDetail() {
                               onPress={() => openReviewModal(it)}
                               className="font-medium"
                             >
-                              Đánh giá
+                              {t("order.write_review")}
                             </Button>
                           )
                         )}
@@ -208,7 +212,7 @@ export default function OrderDetail() {
             </div>
             <Divider className="my-4" />
             <div className="flex justify-end items-center gap-2">
-              <span className="text-default-400 text-sm">Tổng cộng:</span>
+              <span className="text-default-400 dark:text-zinc-500 text-sm">{t("order.total_label")}</span>
               <span className="font-black text-primary text-lg">{formatCurrency(Number(ord.total_price))}</span>
             </div>
           </CardBody>
@@ -221,24 +225,23 @@ export default function OrderDetail() {
           <CardBody className="p-5">
             <div className="flex items-center gap-2 mb-4">
               <Truck size={18} className="text-primary" />
-              <h3 className="font-bold text-default-900">Vận chuyển</h3>
+              <h3 className="font-bold text-default-900">{t("order.shipping_section")}</h3>
               {ord.shipping_provider && (
                 <Chip size="sm" variant="flat" color="primary">{ord.shipping_provider}</Chip>
               )}
             </div>
 
-            {/* GHN code + expected delivery */}
             {(track?.ghn_order_code || track?.expected_delivery) && (
               <div className="flex flex-wrap gap-3 mb-4 text-sm">
                 {track.ghn_order_code && (
                   <div className="flex items-center gap-2">
-                    <span className="text-default-400">Mã vận đơn:</span>
+                    <span className="text-default-400">{t("order.tracking_code")}</span>
                     <Chip size="sm" color="secondary" variant="flat">{track.ghn_order_code}</Chip>
                   </div>
                 )}
                 {track.expected_delivery && (
                   <div className="flex items-center gap-2">
-                    <span className="text-default-400">Dự kiến giao:</span>
+                    <span className="text-default-400">{t("order.expected_delivery")}</span>
                     <span className="font-medium text-default-700">
                       {new Date(track.expected_delivery).toLocaleDateString("vi-VN")}
                     </span>
@@ -247,7 +250,6 @@ export default function OrderDetail() {
               </div>
             )}
 
-            {/* Tracking timeline — newest first */}
             {track?.steps?.length ? (
               <div className="space-y-0">
                 {[...track.steps].reverse().map((s, idx) => {
@@ -260,7 +262,6 @@ export default function OrderDetail() {
                       transition={{ delay: idx * 0.05 }}
                       className="flex gap-3"
                     >
-                      {/* Timeline line + dot */}
                       <div className="flex flex-col items-center">
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
                           isFirst ? "bg-primary text-white" : "bg-default-100 text-default-400"
@@ -271,7 +272,6 @@ export default function OrderDetail() {
                           <div className="w-px flex-1 bg-default-200 my-1 min-h-[24px]" />
                         )}
                       </div>
-                      {/* Step content */}
                       <div className={`pb-4 flex-1 ${idx === track.steps.length - 1 ? "pb-0" : ""}`}>
                         <p className={`text-sm font-semibold ${isFirst ? "text-primary" : "text-default-600"}`}>
                           {s.text}
@@ -289,7 +289,7 @@ export default function OrderDetail() {
               </div>
             ) : (
               <div className="flex items-center gap-2 text-sm text-default-400 py-2">
-                <Package size={16} /> Chưa có thông tin vận chuyển.
+                <Package size={16} /> {t("order.no_shipping_info")}
               </div>
             )}
           </CardBody>
@@ -307,23 +307,23 @@ export default function OrderDetail() {
           <Button
             color="danger" variant="bordered" radius="lg" size="sm"
             onPress={async () => {
-              if (!confirm("Hủy đơn hàng này?")) return;
+              if (!confirm(t("order.cancel_confirm"))) return;
               await orderService.cancel(id);
               await load();
             }}
           >
-            Hủy đơn
+            {t("order.cancel")}
           </Button>
         )}
         {ord.status === "delivered" && (
           <Button variant="bordered" radius="lg" size="sm" onPress={() => { setRefundType("refund"); setReason(""); setOpenRefund(true); }}>
-            Yêu cầu hoàn/đổi
+            {t("order.refund_return")}
           </Button>
         )}
         {ord.status === "return_rejected" && (
           <Button variant="bordered" radius="lg" size="sm" color="warning"
             onPress={() => { setRefundType("refund"); setReason(""); setOpenRefund(true); }}>
-            Gửi lại yêu cầu
+            {t("order.resubmit")}
           </Button>
         )}
         <Button
@@ -332,7 +332,7 @@ export default function OrderDetail() {
           onPress={async () => { await orderService.reorder(id); nav("/cart"); }}
           className="font-medium"
         >
-          Mua lại
+          {t("order.reorder")}
         </Button>
       </motion.div>
 
@@ -341,61 +341,55 @@ export default function OrderDetail() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-black text-default-900">Yêu cầu hoàn/đổi</ModalHeader>
+              <ModalHeader className="font-black text-default-900">{t("order.refund_modal_title")}</ModalHeader>
               <ModalBody className="space-y-4">
-                <p className="text-xs text-default-400">Yêu cầu trong vòng 3 ngày kể từ khi giao thành công.</p>
+                <p className="text-xs text-default-400">{t("order.refund_deadline")}</p>
 
-                {/* Type selector */}
                 <div>
-                  <p className="text-sm font-semibold text-default-700 mb-2">Loại yêu cầu</p>
+                  <p className="text-sm font-semibold text-default-700 mb-2">{t("order.refund_type")}</p>
                   <div className="flex gap-2 flex-wrap">
-                    {[
-                      { key: "refund",   label: "Hoàn tiền",  desc: "Nhận lại tiền" },
-                      { key: "return",   label: "Trả hàng",   desc: "Trả hàng & hoàn tiền" },
-                      { key: "exchange", label: "Đổi hàng",   desc: "Đổi sang sản phẩm khác" },
-                    ].map((t) => (
+                    {REFUND_TYPES.map((rt) => (
                       <button
-                        key={t.key}
+                        key={rt.key}
                         type="button"
-                        onClick={() => setRefundType(t.key)}
+                        onClick={() => setRefundType(rt.key)}
                         className={`flex-1 min-w-[100px] rounded-xl border-2 px-3 py-2 text-left transition-all ${
-                          refundType === t.key
+                          refundType === rt.key
                             ? "border-primary bg-primary/5"
                             : "border-default-200 hover:border-default-300"
                         }`}
                       >
-                        <p className={`text-sm font-bold ${refundType === t.key ? "text-primary" : "text-default-700"}`}>{t.label}</p>
-                        <p className="text-xs text-default-400">{t.desc}</p>
+                        <p className={`text-sm font-bold ${refundType === rt.key ? "text-primary" : "text-default-700"}`}>{rt.label}</p>
+                        <p className="text-xs text-default-400">{rt.desc}</p>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Reason */}
                 <div>
-                  <p className="text-sm font-semibold text-default-700 mb-2">Lý do</p>
+                  <p className="text-sm font-semibold text-default-700 mb-2">{t("common.reason")}</p>
                   <textarea
                     rows={4}
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    placeholder="Nêu rõ lý do để shop xem xét nhanh hơn…"
+                    placeholder={t("common.reason") + "…"}
                     className="w-full border border-default-300 rounded-2xl px-4 py-3 text-sm outline-none focus:border-primary resize-none transition-colors"
                   />
                 </div>
 
                 {refundType === "return" && (
                   <p className="text-xs text-warning-600 bg-warning-50 rounded-xl px-3 py-2">
-                    Shop sẽ cung cấp địa chỉ trả hàng sau khi duyệt yêu cầu.
+                    {t("order.return_note")}
                   </p>
                 )}
                 {refundType === "exchange" && (
                   <p className="text-xs text-primary-600 bg-primary-50 rounded-xl px-3 py-2">
-                    Mô tả sản phẩm bạn muốn đổi sang trong phần lý do.
+                    {t("order.exchange_note")}
                   </p>
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Đóng</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.close")}</Button>
                 <Button
                   color="primary" radius="lg"
                   isDisabled={!reason.trim()}
@@ -405,7 +399,7 @@ export default function OrderDetail() {
                     await load();
                   }}
                 >
-                  Gửi yêu cầu
+                  {t("order.send_request")}
                 </Button>
               </ModalFooter>
             </>
