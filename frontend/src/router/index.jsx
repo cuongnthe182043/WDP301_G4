@@ -1,0 +1,213 @@
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+/* ===== Auth Pages ===== */
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ChangePassword from "../pages/auth/ChangePassword";
+
+/* ===== Customer Pages ===== */
+import HomePage from "../pages/customer/HomePage";
+import ProductDetail from "../pages/customer/ProductDetail";
+import AllProductsPages from "../pages/customer/AllProductsPages";
+import SearchPage from "../pages/customer/SearchPage";
+import CategoryProductsPage from "../pages/customer/CategoryProductsPage";
+import ProfilePage from "../pages/customer/Profile";
+import Cart from "../pages/customer/Cart";
+import Checkout from "../pages/customer/Checkout";
+import PaymentReturn from "../pages/customer/PaymentReturn";
+import OrderDetail from "../pages/customer/OrderDetail";
+import Orders from "../pages/customer/Orders";
+import Wishlist from "../pages/customer/Wishlist";
+import Wallet from "../pages/customer/Wallet";
+import NotificationsPage from "../pages/customer/NotificationsPage";
+import MyReviews from "../pages/customer/MyReviews";
+import VouchersPage from "../pages/customer/VouchersPage";
+
+/* ===== Support / Ticket Pages (customer-facing) ===== */
+import Tickets from "../pages/support/Tickets";
+import TicketDetail from "../pages/support/TicketDetail";
+import PrivacyPolicy from "../pages/support/PrivacyPolicy";
+import TermsOfService from "../pages/support/TermsOfService";
+
+/* ===== Shop (Seller) Pages ===== */
+import ShopLayout from "../pages/shop/ShopLayout";
+import Dashboard from "../pages/shop/Dashboard";
+import ManageProducts from "../pages/shop/ManageProducts";
+import AddProduct from "../pages/shop/AddProduct";
+import LowStockPage from "../pages/shop/LowStockPage";
+import CategoriesPage from "../pages/shop/CategoriesPage";
+import AttributesPage from "../pages/shop/AttributesPage";
+import BrandsPage from "../pages/shop/BrandsPage";
+import VariantsPage from "../pages/shop/VariantsPage";
+import ManageOrders from "../pages/shop/ManageOrders";
+import ManageRefunds from "../pages/shop/ManageRefunds";
+import ManageCustomers from "../pages/shop/ManageCustomers";
+import ManageReviews from "../pages/shop/ManageReviews";
+import ShopWallet from "../pages/shop/ShopWallet";
+import ManageMarketing from "../pages/shop/ManageMarketing";
+import ManageVoucher from "../pages/shop/ManageVoucher";
+import ManageFlashsale from "../pages/shop/ManageFlashsale";
+import ManageBanner from "../pages/shop/ManageBanner";
+import ManageCampaigns from "../pages/shop/ManageCampaigns";
+import ManageCredits from "../pages/shop/ManageCredits";
+import SizeChartsPage from "../pages/shop/SizeChartsPage";
+
+/* ===== New Vendor / Admin Pages ===== */
+import RegisterShop from "../pages/customer/RegisterShop";
+import ShopPage from "../pages/customer/ShopPage";
+import ShopSettings from "../pages/shop/ShopSettings";
+import AdminShops from "../pages/admin/AdminShops";
+import AdminProducts from "../pages/admin/AdminProducts";
+import AdminPendingProducts from "../pages/admin/AdminPendingProducts";
+import AdminReviews from "../pages/admin/AdminReviews";
+import AdminUsers from "../pages/admin/AdminUsers";
+
+/* ===== Admin Pages ===== */
+import AdminLayout from "../pages/admin/AdminLayout";
+import SystemConfig from "../pages/admin/SystemConfig";
+import AuditLogs from "../pages/admin/AuditLogs";
+import Reconciliation from "../pages/admin/Reconciliation";
+import ApiKeyManager from "../pages/admin/ApiKeyManager";
+
+/* ===== Other Roles ===== */
+import SalesOrders from "../pages/sales/SalesOrders";
+import NotFound from "../pages/errors/NotFound";
+
+/* ===== Route Guards ===== */
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, authReady } = useAuth();
+  if (!authReady) return null;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
+function RoleRoute({ children, roles = [], permAny = [], permAll = [] }) {
+  const { user, authReady } = useAuth();
+  if (!authReady) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  const roleName = user.role_name || user.role || user.role_id;
+  const perms = Array.isArray(user.permissions) ? user.permissions : [];
+  const roleOK    = roles.length   === 0 ? true : roles.includes(roleName);
+  const permAnyOK = permAny.length === 0 ? true : permAny.some((p) => perms.includes(p));
+  const permAllOK = permAll.length === 0 ? true : permAll.every((p) => perms.includes(p));
+  return roleOK && permAnyOK && permAllOK ? children : <Navigate to="/" replace />;
+}
+
+function ShopGuard({ children }) {
+  return (
+    <ProtectedRoute>
+      <RoleRoute roles={["shop_owner", "sales", "system_admin"]}>
+        {children}
+      </RoleRoute>
+    </ProtectedRoute>
+  );
+}
+
+export default function AppRouter() {
+  return (
+    <Routes>
+      {/* ===== Public ===== */}
+      <Route path="/login"           element={<Login />} />
+      <Route path="/register"        element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/privacy"   element={<PrivacyPolicy />} />
+      <Route path="/terms"     element={<TermsOfService />} />
+      {/* ===== Auth Required ===== */}
+      <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+
+      {/* ===== Customer — Public ===== */}
+      <Route path="/"                   element={<HomePage />} />
+      <Route path="/product/:idOrSlug"  element={<ProductDetail />} />
+      <Route path="/products/:idOrSlug" element={<ProductDetail />} />
+      <Route path="/products"           element={<AllProductsPages />} />
+      <Route path="/search"             element={<SearchPage />} />
+      <Route path="/categories/:slug"   element={<CategoryProductsPage />} />
+      <Route path="/shops/:shopSlug"    element={<ShopPage />} />
+
+      {/* ===== Customer — Protected ===== */}
+      <Route path="/register-shop" element={<ProtectedRoute><RegisterShop /></ProtectedRoute>} />
+      <Route path="/profile"  element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/cart"     element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+      <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+      <Route path="/payment/return" element={<ProtectedRoute><PaymentReturn /></ProtectedRoute>} />
+      <Route path="/orders"         element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+      <Route path="/orders/:id"     element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+      <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
+      <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
+      <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+      <Route path="/vouchers"       element={<ProtectedRoute><VouchersPage /></ProtectedRoute>} />
+      <Route path="/my-reviews"     element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
+
+      {/* ===== Customer Support / Tickets ===== */}
+      <Route path="/tickets"         element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+      <Route path="/tickets/:id"     element={<ProtectedRoute><TicketDetail /></ProtectedRoute>} />
+      <Route path="/support/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+
+      {/* ===== SHOP AREA ===== */}
+      <Route path="/shop" element={<ShopGuard><ShopLayout /></ShopGuard>}>
+        <Route index                              element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard"                   element={<Dashboard />} />
+
+        {/* Orders */}
+        <Route path="orders"                      element={<ManageOrders />} />
+        <Route path="refunds"                     element={<ManageRefunds />} />
+        <Route path="customers"                   element={<ManageCustomers />} />
+
+        {/* Products */}
+        <Route path="admin/products"              element={<ManageProducts />} />
+        <Route path="admin/products/new"          element={<AddProduct />} />
+        <Route path="admin/products/:id"          element={<AddProduct mode="edit" />} />
+        <Route path="admin/products/:id/variants" element={<VariantsPage />} />
+        <Route path="inventory/low-stock"         element={<LowStockPage />} />
+
+        {/* Catalog */}
+        <Route path="catalog/categories"          element={<CategoriesPage />} />
+        <Route path="catalog/attributes"          element={<AttributesPage />} />
+        <Route path="catalog/brands"              element={<BrandsPage />} />
+        <Route path="size-charts"                 element={<SizeChartsPage />} />
+
+        {/* Reviews & Marketing */}
+        <Route path="reviews"                     element={<ManageReviews />} />
+        <Route path="marketing"                   element={<ManageMarketing />} />
+        <Route path="marketing/vouchers"          element={<ManageVoucher />} />
+        <Route path="marketing/flashsale"         element={<ManageFlashsale />} />
+        <Route path="marketing/banners"           element={<ManageBanner />} />
+        <Route path="marketing/campaigns"         element={<ManageCampaigns />} />
+        <Route path="marketing/credits"           element={<ManageCredits />} />
+
+        {/* Finance */}
+        <Route path="wallet"                      element={<ShopWallet />} />
+
+        {/* Settings */}
+        <Route path="settings"                    element={<ShopSettings />} />
+      </Route>
+
+      {/* Backward-compat shop redirects */}
+      <Route path="/shop/products"     element={<Navigate to="/shop/admin/products" replace />} />
+      <Route path="/shop/products/new" element={<Navigate to="/shop/admin/products/new" replace />} />
+      <Route path="/shop/dashboard"    element={<Navigate to="/shop" replace />} />
+
+      {/* ===== Sales ===== */}
+      <Route path="/sales/orders" element={<RoleRoute roles={["sales"]}><SalesOrders /></RoleRoute>} />
+
+      {/* ===== Admin ===== */}
+      <Route path="/admin" element={<RoleRoute roles={["system_admin"]}><AdminLayout /></RoleRoute>}>
+        <Route index element={<Navigate to="/admin/shops" replace />} />
+        <Route path="shops"            element={<AdminShops />} />
+        <Route path="products"         element={<AdminProducts />} />
+        <Route path="products/pending" element={<AdminPendingProducts />} />
+        <Route path="reviews"        element={<AdminReviews />} />
+        <Route path="users"          element={<AdminUsers />} />
+        <Route path="system-config"  element={<SystemConfig />} />
+        <Route path="audit-logs"     element={<AuditLogs />} />
+        <Route path="reconciliation" element={<Reconciliation />} />
+        <Route path="api-keys"       element={<ApiKeyManager />} />
+      </Route>
+
+      {/* ===== 404 ===== */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}

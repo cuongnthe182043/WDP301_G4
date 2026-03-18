@@ -1,0 +1,2776 @@
+[{
+  "_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "name": "Thời trang nam",
+  "description": "",
+  "parent_id": null,
+  "level": 0,
+  "path": [],
+  "ancestors": [],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "thoi-trang-nam",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:39.505Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:44.323Z"
+  }
+},
+{
+  "_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "name": "Thời trang nữ",
+  "description": "",
+  "parent_id": null,
+  "level": 0,
+  "path": [],
+  "ancestors": [],
+  "children_count": 7,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "thoi-trang-nu",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:39.851Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:53.018Z"
+  }
+},
+{
+  "_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "name": "Unisex",
+  "description": "",
+  "parent_id": null,
+  "level": 0,
+  "path": [],
+  "ancestors": [],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "unisex",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:40.190Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:56.911Z"
+  }
+},
+{
+  "_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "name": "Áo",
+  "description": "",
+  "parent_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "level": 1,
+  "path": [
+    "thoi-trang-nam"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06"
+  ],
+  "children_count": 9,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:40.504Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:04.739Z"
+  }
+},
+{
+  "_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "name": "Quần",
+  "description": "",
+  "parent_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "level": 1,
+  "path": [
+    "thoi-trang-nam"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06"
+  ],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:41.339Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:09.252Z"
+  }
+},
+{
+  "_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "name": "Đồ ngủ",
+  "description": "",
+  "parent_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "level": 1,
+  "path": [
+    "thoi-trang-nam"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06"
+  ],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "do-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:42.156Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:13.685Z"
+  }
+},
+{
+  "_id": "cat-93f14047-e835-497d-991d-c18cf3238847",
+  "name": "Đồ lót",
+  "description": "",
+  "parent_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "level": 1,
+  "path": [
+    "thoi-trang-nam"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06"
+  ],
+  "children_count": 4,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "do-lot",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:42.874Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:17.223Z"
+  }
+},
+{
+  "_id": "cat-88ee6906-0bce-442c-ad19-9175dc4f5840",
+  "name": "Bộ",
+  "description": "",
+  "parent_id": "cat-4625f711-588e-4131-abed-343ce9bbee06",
+  "level": 1,
+  "path": [
+    "thoi-trang-nam"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06"
+  ],
+  "children_count": 3,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "bo",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:43.576Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:21.132Z"
+  }
+},
+{
+  "_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "name": "Váy",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 6,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:44.393Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:40.707Z"
+  }
+},
+{
+  "_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "name": "Áo",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 7,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:46.221Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:28.662Z"
+  }
+},
+{
+  "_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "name": "Quần",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 7,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:48.548Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:35.387Z"
+  }
+},
+{
+  "_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "name": "Đầm",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:49.534Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:45.363Z"
+  }
+},
+{
+  "_id": "cat-23a4b73a-f547-4296-9898-3632a150b026",
+  "name": "Đồ lót",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 4,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "do-lot",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:50.359Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:48.819Z"
+  }
+},
+{
+  "_id": "cat-0b199e31-dec0-403e-83d0-2b95fc47816d",
+  "name": "Đồ ngủ",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 3,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "do-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:51.133Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:51.620Z"
+  }
+},
+{
+  "_id": "cat-ca293c96-9040-4602-947e-cca0b4c6648c",
+  "name": "Bộ",
+  "description": "",
+  "parent_id": "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+  "level": 1,
+  "path": [
+    "thoi-trang-nu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1"
+  ],
+  "children_count": 3,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "bo",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:52.273Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:55.951Z"
+  }
+},
+{
+  "_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "name": "Áo",
+  "description": "",
+  "parent_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "level": 1,
+  "path": [
+    "unisex"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f"
+  ],
+  "children_count": 6,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:53.093Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:02.449Z"
+  }
+},
+{
+  "_id": "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29",
+  "name": "Quần",
+  "description": "",
+  "parent_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "level": 1,
+  "path": [
+    "unisex"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f"
+  ],
+  "children_count": 4,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:53.868Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:05.975Z"
+  }
+},
+{
+  "_id": "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46",
+  "name": "Đồ ngủ",
+  "description": "",
+  "parent_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "level": 1,
+  "path": [
+    "unisex"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f"
+  ],
+  "children_count": 3,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "do-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:54.795Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:08.670Z"
+  }
+},
+{
+  "_id": "cat-203fb3db-9226-46a4-88dd-de44e853bd0a",
+  "name": "Đồ lót",
+  "description": "",
+  "parent_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "level": 1,
+  "path": [
+    "unisex"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f"
+  ],
+  "children_count": 2,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "do-lot",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:55.527Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:10.463Z"
+  }
+},
+{
+  "_id": "cat-7966f8f8-8b32-401d-9c2e-29505946f614",
+  "name": "Bộ",
+  "description": "",
+  "parent_id": "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+  "level": 1,
+  "path": [
+    "unisex"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f"
+  ],
+  "children_count": 2,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "bo",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:56.268Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:12.524Z"
+  }
+},
+{
+  "_id": "cat-d949df89-9a43-446b-8529-dbe5bfadd6ed",
+  "name": "Áo thun",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-thun",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:56.976Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:57.613Z"
+  }
+},
+{
+  "_id": "cat-1cba2ac8-6114-4cf1-aade-9faa19a605e0",
+  "name": "Áo polo",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-polo",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:57.814Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:58.459Z"
+  }
+},
+{
+  "_id": "cat-af739e7c-a0c1-4498-b9d2-bf8ac9631728",
+  "name": "Áo sơ mi",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-so-mi",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:58.656Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:59.304Z"
+  }
+},
+{
+  "_id": "cat-c7a59aaf-a1b1-4432-ae05-4545feb6795b",
+  "name": "Áo khoác",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-khoac",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:59.514Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:00.163Z"
+  }
+},
+{
+  "_id": "cat-49c991c6-ce86-4540-bb8e-6081f286c7d8",
+  "name": "Áo len",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-len",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:00.435Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:01.062Z"
+  }
+},
+{
+  "_id": "cat-71e5678a-0e97-43f7-b9c8-ae93b76bbc1e",
+  "name": "Hoodie",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "hoodie",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:01.306Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:01.956Z"
+  }
+},
+{
+  "_id": "cat-519e5339-7aca-4728-b13a-29648b18f188",
+  "name": "Cardigan",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "cardigan",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:02.151Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:02.827Z"
+  }
+},
+{
+  "_id": "cat-9345dcff-bd73-41f5-a058-346d5b2d4c49",
+  "name": "Áo tanktop",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-tanktop",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:03.049Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:03.702Z"
+  }
+},
+{
+  "_id": "cat-c8c63060-cca1-4bb9-a296-c9428a6c5685",
+  "name": "Áo thể thao",
+  "description": "",
+  "parent_id": "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-a95bb36b-ded9-41bd-ac0b-1c2e9eb2fe04"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-the-thao",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:03.909Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:04.603Z"
+  }
+},
+{
+  "_id": "cat-e660b4da-c000-4a65-a2ae-0580274d048b",
+  "name": "Quần jeans",
+  "description": "",
+  "parent_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-52022443-b984-498f-8c66-499d1ba0b924"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-jeans",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:04.815Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:05.475Z"
+  }
+},
+{
+  "_id": "cat-e22d1f85-9e1a-43e9-ab34-73786f3a5b2f",
+  "name": "Quần tây",
+  "description": "",
+  "parent_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-52022443-b984-498f-8c66-499d1ba0b924"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-tay",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:05.678Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:06.373Z"
+  }
+},
+{
+  "_id": "cat-3160bc98-6d42-41f5-9033-f9f320d21fe6",
+  "name": "Quần kaki",
+  "description": "",
+  "parent_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-52022443-b984-498f-8c66-499d1ba0b924"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-kaki",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:06.596Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:07.353Z"
+  }
+},
+{
+  "_id": "cat-97ef9887-5d4e-48a6-bc1a-1116aea33a66",
+  "name": "Quần short",
+  "description": "",
+  "parent_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-52022443-b984-498f-8c66-499d1ba0b924"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-short",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:07.553Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:08.265Z"
+  }
+},
+{
+  "_id": "cat-da843475-d74d-48dd-8e5c-0534153ad9bb",
+  "name": "Quần jogger",
+  "description": "",
+  "parent_id": "cat-52022443-b984-498f-8c66-499d1ba0b924",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-52022443-b984-498f-8c66-499d1ba0b924"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-jogger",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:08.463Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:09.129Z"
+  }
+},
+{
+  "_id": "cat-b24af652-af44-4ee7-985f-e697e7d859e5",
+  "name": "Bộ đồ ngủ",
+  "description": "",
+  "parent_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "bo-do-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:09.319Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:09.986Z"
+  }
+},
+{
+  "_id": "cat-011b736c-bf2e-4be7-bbe4-06533bd72bf5",
+  "name": "Pyjama",
+  "description": "",
+  "parent_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "pyjama",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:10.204Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:10.897Z"
+  }
+},
+{
+  "_id": "cat-0e0ecabb-be51-4c2a-a3d9-1da3cd57fe03",
+  "name": "Áo ngủ",
+  "description": "",
+  "parent_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:11.090Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:11.807Z"
+  }
+},
+{
+  "_id": "cat-8d8c3c2c-df4b-45e0-85ff-9a21d3af4303",
+  "name": "Quần ngủ",
+  "description": "",
+  "parent_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:12.023Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:12.699Z"
+  }
+},
+{
+  "_id": "cat-47b0e418-23b6-42cc-876e-114c86565909",
+  "name": "Bộ mặc nhà",
+  "description": "",
+  "parent_id": "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-3489ee3c-51ff-46a7-a7d2-6365bcfe728e"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "bo-mac-nha",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:12.901Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:13.536Z"
+  }
+},
+{
+  "_id": "cat-b9f8e298-3ade-48fb-8434-2b411ac55e6a",
+  "name": "Boxer",
+  "description": "",
+  "parent_id": "cat-93f14047-e835-497d-991d-c18cf3238847",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-93f14047-e835-497d-991d-c18cf3238847"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "boxer",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:13.756Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:14.449Z"
+  }
+},
+{
+  "_id": "cat-d210d4fc-df33-4f9d-8d70-877fa8b80ec4",
+  "name": "Brief",
+  "description": "",
+  "parent_id": "cat-93f14047-e835-497d-991d-c18cf3238847",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-93f14047-e835-497d-991d-c18cf3238847"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "brief",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:14.642Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:15.304Z"
+  }
+},
+{
+  "_id": "cat-108f21fb-c3d7-452a-91a7-8afff9fbfde3",
+  "name": "Quần lót nam thể thao",
+  "description": "",
+  "parent_id": "cat-93f14047-e835-497d-991d-c18cf3238847",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-93f14047-e835-497d-991d-c18cf3238847"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-lot-nam-the-thao",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:15.507Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:16.199Z"
+  }
+},
+{
+  "_id": "cat-212b938d-6f30-4a55-920d-ae43e72f5e05",
+  "name": "Quần lót cotton",
+  "description": "",
+  "parent_id": "cat-93f14047-e835-497d-991d-c18cf3238847",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-93f14047-e835-497d-991d-c18cf3238847"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "quan-lot-cotton",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:16.401Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:17.079Z"
+  }
+},
+{
+  "_id": "cat-5834f335-22ab-4a9a-a9ca-27eca3975bbc",
+  "name": "Bộ thể thao",
+  "description": "",
+  "parent_id": "cat-88ee6906-0bce-442c-ad19-9175dc4f5840",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-88ee6906-0bce-442c-ad19-9175dc4f5840"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "bo-the-thao",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:17.316Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:17.985Z"
+  }
+},
+{
+  "_id": "cat-f92883cc-9b5c-4046-aee4-0ffd5e9e8ef3",
+  "name": "Bộ vest",
+  "description": "",
+  "parent_id": "cat-88ee6906-0bce-442c-ad19-9175dc4f5840",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-88ee6906-0bce-442c-ad19-9175dc4f5840"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "bo-vest",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:18.195Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:18.837Z"
+  }
+},
+{
+  "_id": "cat-699cedba-ebfc-4b92-8da6-55d68bd3506e",
+  "name": "Set áo + quần",
+  "description": "",
+  "parent_id": "cat-88ee6906-0bce-442c-ad19-9175dc4f5840",
+  "level": 2,
+  "path": [
+    "thoi-trang-nam",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-4625f711-588e-4131-abed-343ce9bbee06",
+    "cat-88ee6906-0bce-442c-ad19-9175dc4f5840"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "set-ao-quan",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:19.044Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:20.697Z"
+  }
+},
+{
+  "_id": "cat-0c9c53e5-7b26-418c-b7b2-edd7dbdf45c4",
+  "name": "Áo thun",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-thun",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:21.357Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:23.216Z"
+  }
+},
+{
+  "_id": "cat-fbb56ad0-d576-40ab-a74d-4809428a6c45",
+  "name": "Áo croptop",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-croptop",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:23.416Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:24.082Z"
+  }
+},
+{
+  "_id": "cat-6ee39841-7dcc-426e-b4f4-3713f4db3154",
+  "name": "Áo sơ mi",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-so-mi",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:24.281Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:24.982Z"
+  }
+},
+{
+  "_id": "cat-db169561-3240-4517-a895-82422a79abe7",
+  "name": "Áo kiểu",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-kieu",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:25.176Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:25.827Z"
+  }
+},
+{
+  "_id": "cat-d9245510-f1ac-4470-a169-341fd68b6754",
+  "name": "Áo len",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-len",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:26.050Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:26.763Z"
+  }
+},
+{
+  "_id": "cat-0dc371ee-8d52-4a8f-8e20-9dc41d30fd43",
+  "name": "Hoodie",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "hoodie",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:26.961Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:27.621Z"
+  }
+},
+{
+  "_id": "cat-a4c592be-b810-4fa9-9a92-35d5192b6bd9",
+  "name": "Cardigan",
+  "description": "",
+  "parent_id": "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0cb98150-b5ee-48dc-8d4d-c870f854d435"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "cardigan",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:27.824Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:28.521Z"
+  }
+},
+{
+  "_id": "cat-976eec38-e30b-48b0-a71f-4bf6fb499a34",
+  "name": "Quần jeans",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-jeans",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:28.729Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:29.760Z"
+  }
+},
+{
+  "_id": "cat-d79df528-855e-4199-8bad-ab1a19091c24",
+  "name": "Quần kaki",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-kaki",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:29.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:30.702Z"
+  }
+},
+{
+  "_id": "cat-a0c0ab0d-6299-427b-b01d-b200b4c9bc5b",
+  "name": "Quần short",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-short",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:30.922Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:31.656Z"
+  }
+},
+{
+  "_id": "cat-23d28c67-486d-41d6-8627-e218fe4827ce",
+  "name": "Quần jogger",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-jogger",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:31.864Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:32.527Z"
+  }
+},
+{
+  "_id": "cat-9a7c027c-22bf-403c-87e7-ad13507a113e",
+  "name": "Legging",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "legging",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:32.771Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:33.498Z"
+  }
+},
+{
+  "_id": "cat-489b7cad-6fc7-479f-b351-421598ae9dfe",
+  "name": "Culottes",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "culottes",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:33.703Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:34.349Z"
+  }
+},
+{
+  "_id": "cat-4ea6aad4-4243-4b7f-b718-610b1266870a",
+  "name": "Quần ống rộng",
+  "description": "",
+  "parent_id": "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23fc6bab-d1ee-4d67-a433-b1ae28fb3fac"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-ong-rong",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:34.574Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:35.226Z"
+  }
+},
+{
+  "_id": "cat-95ab8b57-50d7-4276-b67d-2033eb9d0b3c",
+  "name": "Chân váy",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "chan-vay",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:35.474Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:36.130Z"
+  }
+},
+{
+  "_id": "cat-cad6b90c-1553-40bd-bc9c-f862911615ea",
+  "name": "Váy chữ A",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-chu-a",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:36.336Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:37.007Z"
+  }
+},
+{
+  "_id": "cat-fc05b14b-6205-4914-bbdd-7b46973eb131",
+  "name": "Váy body",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-body",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:37.216Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:37.907Z"
+  }
+},
+{
+  "_id": "cat-72d1b5db-70de-4692-a1c4-f84dd39a55ed",
+  "name": "Váy maxi",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-maxi",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:38.146Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:38.789Z"
+  }
+},
+{
+  "_id": "cat-81155509-df67-4b73-8af5-863acf5fb5ed",
+  "name": "Váy xòe",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-xoe",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:38.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:39.651Z"
+  }
+},
+{
+  "_id": "cat-953127e3-82e3-4215-b6b9-3c44e627333d",
+  "name": "Váy 2 dây",
+  "description": "",
+  "parent_id": "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "vay"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-a0f75f4c-e48b-4c25-8029-e8e9fa5aac39"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-2-day",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:39.858Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:40.571Z"
+  }
+},
+{
+  "_id": "cat-a11e3f4f-5b65-43e2-a113-005bace5fca9",
+  "name": "Đầm công sở",
+  "description": "",
+  "parent_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "dam"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-e5351800-7cbd-4ee0-888e-1617283acd55"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam-cong-so",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:40.772Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:41.548Z"
+  }
+},
+{
+  "_id": "cat-d8ad1fae-f277-44ba-91a3-4d1fb342b7c1",
+  "name": "Đầm suông",
+  "description": "",
+  "parent_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "dam"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-e5351800-7cbd-4ee0-888e-1617283acd55"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam-suong",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:41.741Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:42.420Z"
+  }
+},
+{
+  "_id": "cat-73d30ef1-c357-4991-954c-9f9ff998f972",
+  "name": "Đầm body",
+  "description": "",
+  "parent_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "dam"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-e5351800-7cbd-4ee0-888e-1617283acd55"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam-body",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:42.617Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:43.286Z"
+  }
+},
+{
+  "_id": "cat-12230171-6742-4200-81c4-5be62202a82b",
+  "name": "Đầm maxi",
+  "description": "",
+  "parent_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "dam"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-e5351800-7cbd-4ee0-888e-1617283acd55"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam-maxi",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:43.509Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:44.323Z"
+  }
+},
+{
+  "_id": "cat-3fc6d880-84be-47ed-900c-6524c29ccb45",
+  "name": "Đầm babydoll",
+  "description": "",
+  "parent_id": "cat-e5351800-7cbd-4ee0-888e-1617283acd55",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "dam"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-e5351800-7cbd-4ee0-888e-1617283acd55"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "dam-babydoll",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:44.532Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:45.231Z"
+  }
+},
+{
+  "_id": "cat-1547cd49-1dba-4251-8be9-d63a317fc3e2",
+  "name": "Áo lót",
+  "description": "",
+  "parent_id": "cat-23a4b73a-f547-4296-9898-3632a150b026",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23a4b73a-f547-4296-9898-3632a150b026"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "ao-lot",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:45.431Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:46.099Z"
+  }
+},
+{
+  "_id": "cat-3320d6d7-a994-4753-adb2-9928daee3cca",
+  "name": "Quần lót",
+  "description": "",
+  "parent_id": "cat-23a4b73a-f547-4296-9898-3632a150b026",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23a4b73a-f547-4296-9898-3632a150b026"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "quan-lot",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:46.296Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:46.968Z"
+  }
+},
+{
+  "_id": "cat-c161a1ea-58f4-47fd-a2bc-9db8b595caf1",
+  "name": "Bralette",
+  "description": "",
+  "parent_id": "cat-23a4b73a-f547-4296-9898-3632a150b026",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23a4b73a-f547-4296-9898-3632a150b026"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "bralette",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:47.177Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:47.840Z"
+  }
+},
+{
+  "_id": "cat-784080a7-81db-48ce-9f13-64f6931c3135",
+  "name": "Bodysuit",
+  "description": "",
+  "parent_id": "cat-23a4b73a-f547-4296-9898-3632a150b026",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-23a4b73a-f547-4296-9898-3632a150b026"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "bodysuit",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:48.041Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:48.682Z"
+  }
+},
+{
+  "_id": "cat-1b2f1219-1abd-4388-8c64-ecce7f96f2a1",
+  "name": "Pyjama",
+  "description": "",
+  "parent_id": "cat-0b199e31-dec0-403e-83d0-2b95fc47816d",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0b199e31-dec0-403e-83d0-2b95fc47816d"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "pyjama",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:48.882Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:49.599Z"
+  }
+},
+{
+  "_id": "cat-88748842-4f82-4ff7-9b51-cdcedad6600d",
+  "name": "Váy ngủ",
+  "description": "",
+  "parent_id": "cat-0b199e31-dec0-403e-83d0-2b95fc47816d",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0b199e31-dec0-403e-83d0-2b95fc47816d"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "vay-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:49.791Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:50.473Z"
+  }
+},
+{
+  "_id": "cat-30a8f554-1116-4206-8596-a9d7be56c057",
+  "name": "Bộ mặc nhà",
+  "description": "",
+  "parent_id": "cat-0b199e31-dec0-403e-83d0-2b95fc47816d",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-0b199e31-dec0-403e-83d0-2b95fc47816d"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "bo-mac-nha",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:50.779Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:51.488Z"
+  }
+},
+{
+  "_id": "cat-5bffb595-eb2e-4ad7-8aa4-4f43098e19a6",
+  "name": "Bộ thể thao",
+  "description": "",
+  "parent_id": "cat-ca293c96-9040-4602-947e-cca0b4c6648c",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-ca293c96-9040-4602-947e-cca0b4c6648c"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "bo-the-thao",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:51.687Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:52.338Z"
+  }
+},
+{
+  "_id": "cat-98cd5462-a789-4706-97e1-03a00e683f7b",
+  "name": "Set áo + váy",
+  "description": "",
+  "parent_id": "cat-ca293c96-9040-4602-947e-cca0b4c6648c",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-ca293c96-9040-4602-947e-cca0b4c6648c"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "set-ao-vay",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:52.532Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:53.196Z"
+  }
+},
+{
+  "_id": "cat-72494a5a-4aa6-42b0-8212-a130bde79701",
+  "name": "Set áo + quần",
+  "description": "",
+  "parent_id": "cat-ca293c96-9040-4602-947e-cca0b4c6648c",
+  "level": 2,
+  "path": [
+    "thoi-trang-nu",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-997e61c0-488d-4abe-9f07-9b738f2ec8c1",
+    "cat-ca293c96-9040-4602-947e-cca0b4c6648c"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "women",
+  "is_active": true,
+  "slug": "set-ao-quan",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:53.442Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:55.515Z"
+  }
+},
+{
+  "_id": "cat-b6428169-ac1c-43c6-b9de-607ba7c2f647",
+  "name": "Áo thun",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao-thun",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:56.170Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:57.675Z"
+  }
+},
+{
+  "_id": "cat-334cba5f-fccf-40ae-81f6-75b3f92f8a0b",
+  "name": "Áo polo",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao-polo",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:57.954Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:58.598Z"
+  }
+},
+{
+  "_id": "cat-25cfbca8-b9ce-464d-b58e-f073814f79ef",
+  "name": "Áo sơ mi",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao-so-mi",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:58.802Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:34:59.589Z"
+  }
+},
+{
+  "_id": "cat-d34ff9d0-ec9a-463c-bdb2-ee1e4f9ddac4",
+  "name": "Áo khoác",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao-khoac",
+  "createdAt": {
+    "$date": "2025-11-05T14:34:59.808Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:00.527Z"
+  }
+},
+{
+  "_id": "cat-95f4b735-aaa8-4f81-8a82-3045ce29d560",
+  "name": "Hoodie",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "hoodie",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:00.778Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:01.414Z"
+  }
+},
+{
+  "_id": "cat-b93bbdb0-4ae9-4f99-b20a-2c5b86b84012",
+  "name": "Sweatshirt",
+  "description": "",
+  "parent_id": "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae",
+  "level": 2,
+  "path": [
+    "unisex",
+    "ao"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-f12497aa-e4bf-4928-abb7-e372fc2fa2ae"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "sweatshirt",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:01.611Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:02.320Z"
+  }
+},
+{
+  "_id": "cat-9838830b-4242-4cf3-a197-1aeadc21350d",
+  "name": "Quần jeans",
+  "description": "",
+  "parent_id": "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29",
+  "level": 2,
+  "path": [
+    "unisex",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan-jeans",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:02.519Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:03.162Z"
+  }
+},
+{
+  "_id": "cat-332887dc-ca36-4c79-ae22-e71817551f02",
+  "name": "Quần kaki",
+  "description": "",
+  "parent_id": "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29",
+  "level": 2,
+  "path": [
+    "unisex",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan-kaki",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:03.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:04.021Z"
+  }
+},
+{
+  "_id": "cat-56a4f9d0-b181-412c-b49b-60556a1c8572",
+  "name": "Quần short",
+  "description": "",
+  "parent_id": "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29",
+  "level": 2,
+  "path": [
+    "unisex",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan-short",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:04.217Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:04.879Z"
+  }
+},
+{
+  "_id": "cat-b9296549-de35-478a-b57b-ff68371d6690",
+  "name": "Quần jogger",
+  "description": "",
+  "parent_id": "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29",
+  "level": 2,
+  "path": [
+    "unisex",
+    "quan"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-a805ca32-8a40-4263-9b4e-40a0449d5f29"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan-jogger",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:05.075Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:05.840Z"
+  }
+},
+{
+  "_id": "cat-cd773d32-7d9b-4bd0-801f-ce7f1038e55b",
+  "name": "Bộ đồ ngủ",
+  "description": "",
+  "parent_id": "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46",
+  "level": 2,
+  "path": [
+    "unisex",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "bo-do-ngu",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:06.065Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:06.710Z"
+  }
+},
+{
+  "_id": "cat-f58fbbc8-178d-4540-a63f-dc071608a22a",
+  "name": "Pyjama",
+  "description": "",
+  "parent_id": "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46",
+  "level": 2,
+  "path": [
+    "unisex",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "pyjama",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:06.958Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:07.655Z"
+  }
+},
+{
+  "_id": "cat-10711b7c-0e38-4c69-a0ad-8f4330d0b608",
+  "name": "Bộ mặc nhà",
+  "description": "",
+  "parent_id": "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46",
+  "level": 2,
+  "path": [
+    "unisex",
+    "do-ngu"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-2f411a2d-ccb9-4f1b-a8c8-b2d04f681e46"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "bo-mac-nha",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:07.857Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:08.537Z"
+  }
+},
+{
+  "_id": "cat-1a8fe689-d0f3-4138-8652-afa578e17856",
+  "name": "Áo lót unisex",
+  "description": "",
+  "parent_id": "cat-203fb3db-9226-46a4-88dd-de44e853bd0a",
+  "level": 2,
+  "path": [
+    "unisex",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-203fb3db-9226-46a4-88dd-de44e853bd0a"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "ao-lot-unisex",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:08.734Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:09.389Z"
+  }
+},
+{
+  "_id": "cat-5dcc6467-3605-4614-8282-18b553b28695",
+  "name": "Quần lót unisex",
+  "description": "",
+  "parent_id": "cat-203fb3db-9226-46a4-88dd-de44e853bd0a",
+  "level": 2,
+  "path": [
+    "unisex",
+    "do-lot"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-203fb3db-9226-46a4-88dd-de44e853bd0a"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "quan-lot-unisex",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:09.682Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:10.331Z"
+  }
+},
+{
+  "_id": "cat-fb218f88-4473-4d51-9e44-22f133e7ce2e",
+  "name": "Bộ thể thao unisex",
+  "description": "",
+  "parent_id": "cat-7966f8f8-8b32-401d-9c2e-29505946f614",
+  "level": 2,
+  "path": [
+    "unisex",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-7966f8f8-8b32-401d-9c2e-29505946f614"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "bo-the-thao-unisex",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:10.839Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:11.505Z"
+  }
+},
+{
+  "_id": "cat-ed2d4060-7a38-4c71-9469-7fe212ea150a",
+  "name": "Set áo + quần unisex",
+  "description": "",
+  "parent_id": "cat-7966f8f8-8b32-401d-9c2e-29505946f614",
+  "level": 2,
+  "path": [
+    "unisex",
+    "bo"
+  ],
+  "ancestors": [
+    "cat-7bbddde7-e682-4519-86fc-3c80d84a778f",
+    "cat-7966f8f8-8b32-401d-9c2e-29505946f614"
+  ],
+  "children_count": 0,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "unisex",
+  "is_active": true,
+  "slug": "set-ao-quan-unisex",
+  "createdAt": {
+    "$date": "2025-11-05T14:35:11.708Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:35:12.392Z"
+  }
+},
+{
+  "_id": "ord-931cfe6d-bd9e-4918-bbc3-c72168dad66a",
+  "order_code": "DFS1000",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "items": [
+    {
+      "product_id": "prd-4d911a61-6139-463c-bcae-538851235340",
+      "variant_id": "var-e293d539-758a-471c-a91e-36549153f66d",
+      "name": "Quần Lót Nam-Mens Organic Cotton Trunks",
+      "qty": 1,
+      "price": 299000,
+      "discount": 0,
+      "total": 299000,
+      "currency": "VND",
+      "refunded_qty": 0,
+      "shipped_qty": 1,
+      "status": "delivered"
+    }
+  ],
+  "voucher_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
+  "payment_method": "COD",
+  "payment_status": "paid",
+  "shipping_provider": "NONE",
+  "shipping_fee": 0,
+  "expected_delivery": {
+    "$date": "2025-10-23T09:59:51.064Z"
+  },
+  "total_price": 299000,
+  "note": "Leave at reception",
+  "status": "delivered",
+  "inventory_adjusted": false,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:51.067Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:51.067Z"
+  }
+},
+{
+  "_id": "cat-1001",
+  "name": "Áo sơ mi nam",
+  "description": "Các mẫu áo sơ mi nam cao cấp",
+  "parent_id": null,
+  "level": 0,
+  "path": [],
+  "ancestors": [],
+  "children_count": 0,
+  "seo": {
+    "keywords": [
+      "áo sơ mi",
+      "thời trang nam"
+    ]
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "ao-so-mi-nam",
+  "createdAt": "2025-11-05T17:30:00.000Z",
+  "updatedAt": "2025-11-05T17:30:00.000Z"
+},
+{
+  "_id": {
+    "$oid": "690b9a8003169d7555856c40"
+  },
+  "name": "Thời trang gay",
+  "description": "",
+  "parent_id": null,
+  "level": 0,
+  "path": [],
+  "ancestors": [],
+  "children_count": 5,
+  "seo": {
+    "keywords": []
+  },
+  "gender_hint": "men",
+  "is_active": true,
+  "slug": "thoi-trang-gay",
+  "createdAt": {
+    "$date": "2025-11-05T14:33:39.505Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:33:44.323Z"
+  }
+}]

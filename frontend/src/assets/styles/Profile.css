@@ -1,0 +1,17 @@
+/* Profile – layout now handled by HeroUI + Tailwind. Keep minimal utilities for sub-components. */
+
+/* Password strength bar (used by ChangePasswordForm) */
+.pw-strength {
+  height: 6px; border-radius: 9999px; background: #e5e7eb;
+  margin-top: 8px; position: relative; overflow: hidden;
+}
+.pw-strength span {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+  transition: width .25s ease;
+  background: linear-gradient(90deg, #93c5fd, #0B74E5);
+  border-radius: inherit;
+}
+.pw-strength.s0 span { width: 0%; }
+.pw-strength.s1 span { width: 33%; }
+.pw-strength.s2 span { width: 66%; }
+.pw-strength.s3 span { width: 100%; }

@@ -1,0 +1,526 @@
+[{
+  "_id": "brd-adcd511e-cd73-45ab-ace8-3573ca745c4a",
+  "name": "Nike",
+  "slug": "nike",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://inkythuatso.com/uploads/images/2021/11/logo-nike-inkythuatso-2-01-04-15-42-44.jpg"
+},
+{
+  "_id": "brd-ec799272-2c37-438d-b8cb-6d8eb10f1fac",
+  "name": "Adidas",
+  "slug": "adidas",
+  "country": "Germany",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
+  "gender_focus": "mixed"
+},
+{
+  "_id": "brd-17cdcb35-2133-4aaa-9571-ea36dc2c51e7",
+  "name": "Uniqlo",
+  "slug": "uniqlo",
+  "country": "Japan",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/UNIQLO_logo.svg/1029px-UNIQLO_logo.svg.png",
+  "gender_focus": "mixed"
+},
+{
+  "_id": "brd-9cf5112b-94f1-4679-b239-18e7a9a58e36",
+  "name": "Zara",
+  "slug": "zara",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/1280px-Zara_Logo.svg.png"
+},
+{
+  "_id": "brd-b5d4fc21-d270-4a03-b35e-c3ff97d74a96",
+  "name": "H&M",
+  "slug": "h-m",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/1200px-H%26M-Logo.svg.png"
+},
+{
+  "_id": "brd-010e9e76-dfe7-4f22-9158-2c15c6adf319",
+  "name": "Levi's",
+  "slug": "levi-s",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://static.vecteezy.com/system/resources/previews/023/869/641/non_2x/levis-brand-clothes-logo-symbol-design-fashion-illustration-free-vector.jpg"
+},
+{
+  "_id": "brd-adcbe7ec-ffe2-4386-8449-82f29c6b82cf",
+  "name": "Mango",
+  "slug": "mango",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://logos-world.net/wp-content/uploads/2023/01/Mango-Logo.png"
+},
+{
+  "_id": "brd-294d0a07-893c-4a8d-afff-cc277a43cfc2",
+  "name": "Converse",
+  "slug": "converse",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/3/30/Converse_logo.svg"
+},
+{
+  "_id": "brd-5ef8718e-be1a-4c84-a5c5-f3b1fda33d90",
+  "name": "Puma",
+  "slug": "puma",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.210Z"
+  },
+  "logo_url": "https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png"
+},
+{
+  "_id": "brd-d49efd9f-59ce-44f6-8dd0-20ae40bf9641",
+  "name": "The North Face",
+  "slug": "the-north-face",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/The_North_Face.png"
+},
+{
+  "_id": "brd-48a89ac0-2f0d-4379-b520-9c67e1ee1c70",
+  "name": "Under Armour",
+  "slug": "under-armour",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://logos-world.net/wp-content/uploads/2020/04/Under-Armour-Logo-2005-present.png"
+},
+{
+  "_id": "brd-04851d43-16aa-45c5-bb4a-f91f1f789e52",
+  "name": "New Balance",
+  "slug": "new-balance",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPGBiMbRwibmsgshiBoC6zlN2h7wvUT4KZVW-NySGAq2ROJYmL1Y4IkFGYmwB5SNEjoXw&usqp=CAU"
+},
+{
+  "_id": "brd-54f95c67-f0a6-49d3-9b89-c3325506c9b2",
+  "name": "Lacoste",
+  "slug": "lacoste",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://inkythuatso.com/uploads/images/2021/12/logo-lacoste-inkythuatso-22-13-35-14.jpg"
+},
+{
+  "_id": "brd-d0e76026-1ddf-4ff7-b07b-f19e992506b0",
+  "name": "Calvin Klein",
+  "slug": "calvin-klein",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://images.seeklogo.com/logo-png/31/2/calvin-klein-logo-png_seeklogo-311014.png"
+},
+{
+  "_id": "brd-a4c724bd-dfa5-4a8f-866a-39aea4d9641f",
+  "name": "Guess",
+  "slug": "guess",
+  "country": "Unknown",
+  "gender": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.211Z"
+  },
+  "logo_url": "https://jordan1.vn/wp-content/uploads/2023/09/guess-emblem-700x394_3facfabdee7a40a48372f637370ceaed_1024x1024.png"
+},
+{
+  "_id": "brand-651a7b21-75bf-4091-8eb8-ba12af8fda70",
+  "slug": "ivy-moda",
+  "country": "Vietnam",
+  "gender_focus": "women",
+  "is_active": true,
+  "name": "IVY moda",
+  "seo": {
+    "keywords": []
+  }
+},
+{
+  "_id": "brand-5d241e7c-8f42-4817-ad2e-0f0df7ee1b87",
+  "slug": "nem",
+  "country": "Vietnam",
+  "gender_focus": "women",
+  "is_active": true,
+  "name": "NEM",
+  "seo": {
+    "keywords": []
+  }
+},
+{
+  "_id": "brand-df2cae75-1636-4ca7-af90-8bd64aa42830",
+  "slug": "levents",
+  "country": "Vietnam",
+  "gender_focus": "unisex",
+  "is_active": true,
+  "name": "Levents",
+  "seo": {
+    "keywords": []
+  }
+},
+{
+  "_id": "brand-5ba2a9c6-0280-4b27-bde7-efdccaa91284",
+  "slug": "dfs-originals",
+  "country": "Vietnam",
+  "createdAt": {
+    "$date": "2025-11-04T12:43:34.345Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "DFS Originals",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:34.345Z"
+  }
+},
+{
+  "_id": "brand-519cb6ea-28b5-4002-9e57-e0fe63e27dc6",
+  "slug": "minimal-form",
+  "country": "Vietnam",
+  "createdAt": {
+    "$date": "2025-11-04T12:43:35.466Z"
+  },
+  "gender_focus": "unisex",
+  "is_active": true,
+  "name": "Minimal Form",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:35.466Z"
+  }
+},
+{
+  "_id": "brand-a50caedb-2726-45dc-b047-1f1129f4f4aa",
+  "slug": "bluewave-studio",
+  "country": "Vietnam",
+  "createdAt": {
+    "$date": "2025-11-04T12:43:36.070Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "BlueWave Studio",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:36.070Z"
+  }
+},
+{
+  "_id": "brand-0cec8794-3945-407c-a12e-b04cc41e6fcb",
+  "name": "UrbanWave",
+  "slug": "urbanwave",
+  "country": "VN",
+  "gender_focus": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:52.746Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:52.746Z"
+  }
+},
+{
+  "_id": "brand-3bd38004-334c-4d00-90b5-e00e9fff59a0",
+  "name": "AeroFit",
+  "slug": "aerofit",
+  "country": "VN",
+  "gender_focus": "men",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:52.883Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:52.883Z"
+  }
+},
+{
+  "_id": "brand-3f1235bf-97f6-4e9a-b739-d63169c89318",
+  "name": "LuxeLine",
+  "slug": "luxeline",
+  "country": "VN",
+  "gender_focus": "women",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.021Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.021Z"
+  }
+},
+{
+  "_id": "brand-6e45a6bd-9026-40b8-95bb-cc1ed43595a7",
+  "name": "StreetLab",
+  "slug": "streetlab",
+  "country": "VN",
+  "gender_focus": "unisex",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.212Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.212Z"
+  }
+},
+{
+  "_id": "brand-97abcba7-8b5e-4387-8b33-9345731d0868",
+  "name": "CozyHome",
+  "slug": "cozyhome",
+  "country": "VN",
+  "gender_focus": "mixed",
+  "seo": {
+    "keywords": []
+  },
+  "is_active": true,
+  "createdAt": {
+    "$date": "2025-11-05T14:49:53.352Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T14:49:53.352Z"
+  }
+},
+{
+  "_id": "brand-f2c121f4-6a2a-47b3-a0c1-dba47897a176",
+  "slug": "dfs-basics",
+  "country": "VN",
+  "createdAt": {
+    "$date": "2025-11-05T15:04:58.471Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "DFS Basics",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:04:58.471Z"
+  }
+},
+{
+  "_id": "brand-b5fb00aa-29a8-4b7f-87e4-d0856ce88f3a",
+  "slug": "bluepeak",
+  "country": "VN",
+  "createdAt": {
+    "$date": "2025-11-05T15:04:58.979Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "BluePeak",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:04:58.979Z"
+  }
+},
+{
+  "_id": "brand-d31e8166-634b-4039-b155-463c4c179ab1",
+  "slug": "urbanfit",
+  "country": "VN",
+  "createdAt": {
+    "$date": "2025-11-05T15:04:59.631Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "UrbanFit",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:04:59.631Z"
+  }
+},
+{
+  "_id": "brand-5e388c54-13ef-4636-a5bc-12b063ecfc6d",
+  "slug": "ecowear",
+  "country": "VN",
+  "createdAt": {
+    "$date": "2025-11-05T15:05:00.260Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "EcoWear",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:00.260Z"
+  }
+},
+{
+  "_id": "brand-1b4d7b86-8716-4a47-aa89-f42ecd587219",
+  "slug": "classicline",
+  "country": "VN",
+  "createdAt": {
+    "$date": "2025-11-05T15:05:00.662Z"
+  },
+  "gender_focus": "mixed",
+  "is_active": true,
+  "name": "ClassicLine",
+  "seo": {
+    "keywords": []
+  },
+  "updatedAt": {
+    "$date": "2025-11-05T15:05:00.662Z"
+  }
+}]

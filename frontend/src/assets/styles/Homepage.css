@@ -1,0 +1,20 @@
+/* Homepage.css — Only carousel scroll mechanics. All visual styles use Tailwind. */
+
+.carousel-viewport {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+.carousel-track {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding: 4px 2px 8px;
+}
+.carousel-track > * {
+  flex: 0 0 auto;
+}

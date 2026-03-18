@@ -1,0 +1,7 @@
+/* Header – now fully handled by HeroUI Navbar + Tailwind. No MUI overrides needed. */
+:root {
+  --header-height: 64px;
+}
+@media (max-width: 768px) {
+  :root { --header-height: 56px; }
+}

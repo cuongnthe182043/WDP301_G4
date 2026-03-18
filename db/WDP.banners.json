@@ -1,0 +1,64 @@
+[{
+  "_id": "ban-66710d09-565d-4095-b88c-e798df731939",
+  "title": "10.10 is here!",
+  "image_url": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
+  "link": "#",
+  "position": "homepage_bottom",
+  "is_active": true,
+  "start_date": {
+    "$date": "2025-10-18T09:59:50.993Z"
+  },
+  "end_date": {
+    "$date": "2025-10-22T09:59:50.993Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T16:07:22.685Z"
+  },
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "image_public_id": "dfs/banners/mlswhujqkqipqesyrd32"
+},
+{
+  "_id": "ban-0b584424-0e36-4b05-b2e0-62c330b1cd9c",
+  "title": "Black Friday",
+  "image_url": "https://nads.1cdn.vn/2024/11/22/74da3f39-759b-4f08-8850-4c8f2937e81a-1_mangeshdes.png",
+  "link": "#",
+  "position": "homepage_bottom",
+  "is_active": true,
+  "start_date": {
+    "$date": "2025-10-17T09:59:50.993Z"
+  },
+  "end_date": {
+    "$date": "2025-10-23T09:59:50.993Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T15:25:57.491Z"
+  },
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2"
+},
+{
+  "_id": "ban-975ecfdf-df9c-4ad9-9097-713d6e57d88f",
+  "title": "New Arrivals",
+  "image_url": "https://cdn-media.sforum.vn/storage/app/media/anh-dep-82.jpg",
+  "link": "#",
+  "position": "homepage_bottom",
+  "is_active": true,
+  "start_date": {
+    "$date": "2025-10-19T09:59:50.993Z"
+  },
+  "end_date": {
+    "$date": "2025-11-19T09:59:50.993Z"
+  },
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-29T15:26:18.146Z"
+  },
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2"
+}]

@@ -1,0 +1,351 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Card, CardBody, Button, Input, Chip, Select, SelectItem, Spinner,
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea,
+} from "@heroui/react";
+import { Search, CheckCircle, XCircle, Eye, RotateCcw } from "lucide-react";
+import apiClient from "../../services/apiClient";
+
+const STATUS_COLOR = { pending: "warning", active: "success", inactive: "default", out_of_stock: "danger" };
+
+const api = {
+  list:    (p) => apiClient.get("/admin/products", { params: p }).then(r => r.data.data),
+  get:     (id) => apiClient.get(`/admin/products/${id}`).then(r => r.data.data),
+  approve: (id) => apiClient.patch(`/admin/products/${id}/approve`).then(r => r.data.data),
+  reject:  (id, reason) => apiClient.patch(`/admin/products/${id}/reject`, { reason }).then(r => r.data.data),
+};
+
+const LIMIT = 20;
+
+export default function AdminProducts() {
+  const { t } = useTranslation();
+
+  // Reuse shop product status labels
+  const STATUS_LABEL = {
+    pending:      t("shop.product_status_pending"),
+    active:       t("shop.product_status_active"),
+    inactive:     t("shop.product_status_inactive"),
+    out_of_stock: t("shop.product_status_out_of_stock"),
+  };
+
+  const STATUS_OPTS = [
+    { key: "all",          label: t("shop.product_status_all") },
+    { key: "pending",      label: t("shop.product_status_pending") },
+    { key: "active",       label: t("shop.product_status_active") },
+    { key: "inactive",     label: t("shop.product_status_inactive") },
+    { key: "out_of_stock", label: t("shop.product_status_out_of_stock") },
+  ];
+
+  const [loading,       setLoading]       = useState(true);
+  const [products,      setProducts]      = useState([]);
+  const [total,         setTotal]         = useState(0);
+  const [page,          setPage]          = useState(1);
+  const [query,         setQuery]         = useState("");
+  const [statusFilter,  setStatusFilter]  = useState("all");
+  const [detailProd,    setDetailProd]    = useState(null);
+  const [rejectTarget,  setRejectTarget]  = useState(null);
+  const [rejectReason,  setRejectReason]  = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = { page, limit: LIMIT };
+      if (query.trim())           params.q      = query.trim();
+      if (statusFilter !== "all") params.status = statusFilter;
+      const data = await api.list(params);
+      setProducts(data?.items || []);
+      setTotal(data?.total   || 0);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, query, statusFilter]);
+
+  useEffect(() => { fetchProducts(); }, [fetchProducts]);
+  useEffect(() => {
+    const timer = setTimeout(() => { setPage(1); }, 400);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const handleApprove = async (id) => {
+    setActionLoading(true);
+    try { await api.approve(id); fetchProducts(); }
+    catch (err) { console.error(err); }
+    finally { setActionLoading(false); }
+  };
+
+  const handleReject = async () => {
+    if (!rejectTarget) return;
+    setActionLoading(true);
+    try {
+      await api.reject(rejectTarget._id, rejectReason.trim());
+      setRejectTarget(null); setRejectReason(""); fetchProducts();
+    } catch (err) { console.error(err); }
+    finally { setActionLoading(false); }
+  };
+
+  const openDetail = async (p) => {
+    try { setDetailProd(await api.get(p._id)); }
+    catch { setDetailProd(p); }
+  };
+
+  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+
+  const pendingCount = products.filter(p => p.status === "pending").length;
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-xl font-black text-gray-900 dark:text-zinc-100">{t("admin.admin_products_title")}</h1>
+          <p className="text-sm text-gray-400 dark:text-zinc-500">
+            {t("admin.admin_products_total", { count: total })}
+            {pendingCount > 0 && (
+              <span className="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold">
+                {t("admin.admin_products_pending", { count: pendingCount })}
+              </span>
+            )}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select
+            size="sm" radius="lg" className="w-36"
+            selectedKeys={new Set([statusFilter])}
+            onSelectionChange={(k) => { setStatusFilter(Array.from(k)[0] || "all"); setPage(1); }}
+            aria-label={t("admin.admin_products_status_filter")}
+          >
+            {STATUS_OPTS.map((o) => <SelectItem key={o.key}>{o.label}</SelectItem>)}
+          </Select>
+          <Input
+            size="sm" placeholder={t("admin.admin_products_search")} value={query}
+            onValueChange={(v) => setQuery(v)}
+            radius="lg" className="w-60"
+            startContent={<Search size={14} className="text-gray-400" />}
+            isClearable onClear={() => setQuery("")}
+          />
+        </div>
+      </div>
+
+      <Card radius="xl" shadow="sm">
+        <CardBody className="p-0 overflow-auto">
+          {loading ? (
+            <div className="flex justify-center py-16"><Spinner size="lg" /></div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-16 text-gray-400 dark:text-zinc-500">
+              {t("admin.admin_products_none")}
+            </div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
+                <tr>
+                  {[
+                    t("admin.admin_products_col_img"),
+                    t("admin.admin_products_col_product"),
+                    t("admin.admin_products_col_shop"),
+                    t("admin.admin_products_col_price"),
+                    t("admin.admin_products_col_stock"),
+                    t("admin.admin_products_col_status"),
+                    t("admin.admin_products_col_actions"),
+                  ].map((h) => (
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
+                {products.map((p) => (
+                  <tr key={p._id} className={`hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors ${p.status === "pending" ? "bg-amber-50/30 dark:bg-amber-900/10" : ""}`}>
+                    <td className="px-4 py-3">
+                      <img
+                        src={p.images?.[0] || "/no-image.jpg"} alt={p.name}
+                        className="w-12 h-12 object-cover rounded-xl border border-gray-100 dark:border-zinc-700"
+                      />
+                    </td>
+                    <td className="px-4 py-3 max-w-[200px]">
+                      <p className="font-semibold text-gray-900 dark:text-zinc-100 truncate">{p.name}</p>
+                      <p className="text-xs text-gray-400 dark:text-zinc-500 truncate">{p.category?.name || "—"}</p>
+                      {p.rejection_reason && (
+                        <p className="text-xs text-red-500 mt-0.5 truncate" title={p.rejection_reason}>
+                          {p.rejection_reason}
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-zinc-400 max-w-[120px] truncate">
+                      {p.shop?.shop_name || "—"}
+                    </td>
+                    <td className="px-4 py-3 font-bold text-blue-600 whitespace-nowrap">
+                      {(p.base_price || 0).toLocaleString("vi-VN")}₫
+                    </td>
+                    <td className="px-4 py-3 text-gray-600 dark:text-zinc-400">
+                      {p.stock_total ?? 0}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Chip size="sm" color={STATUS_COLOR[p.status] || "default"} variant="flat">
+                        {STATUS_LABEL[p.status] || p.status}
+                      </Chip>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-1 flex-wrap">
+                        <Button size="sm" variant="bordered" radius="lg" isIconOnly onPress={() => openDetail(p)} title={t("common.details")}>
+                          <Eye size={13} />
+                        </Button>
+                        {p.status === "pending" && (
+                          <>
+                            <Button size="sm" color="success" variant="flat" radius="lg" isIconOnly
+                              isLoading={actionLoading} onPress={() => handleApprove(p._id)} title={t("admin.approve")}>
+                              <CheckCircle size={13} />
+                            </Button>
+                            <Button size="sm" color="danger" variant="flat" radius="lg" isIconOnly
+                              onPress={() => { setRejectTarget(p); setRejectReason(""); }} title={t("admin.admin_reject_title")}>
+                              <XCircle size={13} />
+                            </Button>
+                          </>
+                        )}
+                        {p.status === "inactive" && (
+                          <Button size="sm" color="success" variant="flat" radius="lg" isIconOnly
+                            isLoading={actionLoading} onPress={() => handleApprove(p._id)} title={t("admin.admin_products_re_approve")}>
+                            <RotateCcw size={13} />
+                          </Button>
+                        )}
+                        {p.status === "active" && (
+                          <Button size="sm" color="danger" variant="flat" radius="lg" isIconOnly
+                            onPress={() => { setRejectTarget(p); setRejectReason(""); }} title={t("admin.admin_revoke_title")}>
+                            <XCircle size={13} />
+                          </Button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </CardBody>
+      </Card>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
+            {t("shop.product_prev")}
+          </Button>
+          <span className="text-sm text-gray-500 dark:text-zinc-400 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
+            {t("shop.product_next")}
+          </Button>
+        </div>
+      )}
+
+      {/* Detail Modal */}
+      <Modal isOpen={!!detailProd} onOpenChange={(o) => !o && setDetailProd(null)} size="2xl" radius="xl" scrollBehavior="inside">
+        <ModalContent>
+          {(onClose) => detailProd && (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <span>{detailProd.name}</span>
+                <Chip size="sm" color={STATUS_COLOR[detailProd.status] || "default"} variant="flat">
+                  {STATUS_LABEL[detailProd.status] || detailProd.status}
+                </Chip>
+              </ModalHeader>
+              <ModalBody className="space-y-4">
+                {detailProd.images?.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {detailProd.images.map((url, i) => (
+                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-gray-100 dark:border-zinc-700" />
+                    ))}
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <InfoRow label={t("admin.admin_products_detail_price")}    value={`${(detailProd.base_price||0).toLocaleString("vi-VN")}₫`} />
+                  <InfoRow label={t("admin.admin_products_detail_stock")}    value={detailProd.stock_total ?? 0} />
+                  <InfoRow label={t("admin.admin_products_detail_category")} value={detailProd.category?.name || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_brand")}    value={detailProd.brand?.name   || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_shop")}     value={detailProd.shop?.shop_name || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_origin")}   value={detailProd.detail_info?.origin_country || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_variants")} value={(detailProd.variant_dimensions || []).join(", ") || "—"} />
+                  <InfoRow label="ID" value={<span className="font-mono text-xs">{detailProd._id}</span>} />
+                </div>
+                {detailProd.description && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 mb-1">{t("admin.admin_products_detail_desc")}</p>
+                    <p className="text-sm text-gray-700 whitespace-pre-wrap">{detailProd.description}</p>
+                  </div>
+                )}
+                {detailProd.rejection_reason && (
+                  <div className="p-3 bg-red-50 rounded-xl">
+                    <p className="text-xs font-semibold text-red-600 mb-0.5">{t("admin.admin_products_rejection")}</p>
+                    <p className="text-sm text-red-700">{detailProd.rejection_reason}</p>
+                  </div>
+                )}
+              </ModalBody>
+              <ModalFooter>
+                {(detailProd.status === "pending" || detailProd.status === "inactive") && (
+                  <Button color="success" variant="flat" radius="lg" startContent={<CheckCircle size={14} />}
+                    isLoading={actionLoading}
+                    onPress={async () => { await handleApprove(detailProd._id); onClose(); }}>
+                    {t("admin.approve")}
+                  </Button>
+                )}
+                {(detailProd.status === "pending" || detailProd.status === "active") && (
+                  <Button color="danger" variant="flat" radius="lg" startContent={<XCircle size={14} />}
+                    onPress={() => { setDetailProd(null); setRejectTarget(detailProd); setRejectReason(""); }}>
+                    {detailProd.status === "active" ? t("admin.admin_revoke_title") : t("admin.admin_reject_title")}
+                  </Button>
+                )}
+                <Button variant="light" onPress={onClose}>{t("common.close")}</Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Reject / Revoke Modal */}
+      <Modal isOpen={!!rejectTarget} onOpenChange={(o) => !o && setRejectTarget(null)} radius="xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>
+                {rejectTarget?.status === "active" ? t("admin.admin_revoke_title") : t("admin.admin_reject_title")}
+              </ModalHeader>
+              <ModalBody>
+                <p className="text-sm text-gray-500 mb-2"
+                  dangerouslySetInnerHTML={{
+                    __html: rejectTarget?.status === "active"
+                      ? t("admin.admin_revoke_body", { name: rejectTarget?.name })
+                      : t("admin.admin_reject_body", { name: rejectTarget?.name }),
+                  }}
+                />
+                <Textarea
+                  isRequired label={t("admin.admin_reject_reason_label")} placeholder={t("admin.admin_reject_placeholder")}
+                  value={rejectReason} onValueChange={setRejectReason}
+                  radius="lg" minRows={3}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                <Button
+                  color="danger" radius="lg"
+                  isDisabled={!rejectReason.trim()}
+                  onPress={async () => { await handleReject(); onClose(); }}
+                  isLoading={actionLoading}
+                >
+                  {t("admin.admin_confirm_btn")}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+}
+
+function InfoRow({ label, value }) {
+  return (
+    <div>
+      <p className="text-xs text-gray-400 mb-0.5">{label}</p>
+      <p className="font-medium text-gray-800">{value}</p>
+    </div>
+  );
+}

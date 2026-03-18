@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+xgboost
+numpy
+pydantic
+python-dotenv

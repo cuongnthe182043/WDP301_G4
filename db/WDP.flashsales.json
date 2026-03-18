@@ -1,0 +1,215 @@
+[{
+  "_id": "fs-4ed9731d-bbbc-4c5c-bf22-4e2e6ae2bedb",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "title": "11.11 Mega Sale",
+  "description": "Biggest single day sale!",
+  "start_time": {
+    "$date": "2026-10-19T00:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-10-21T09:59:50.915Z"
+  },
+  "status": "scheduled",
+  "discount_type": "percentage",
+  "discount_value": 40,
+  "max_per_user": 2,
+  "total_limit": 500,
+  "products": [
+    {
+      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
+      "variant_id": "var-cdb0d330-7874-4e6b-994c-f4819f35375b",
+      "flash_price": 389400,
+      "original_price": 649000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
+      "variant_id": "var-045e5b88-9d5c-4dc4-b13b-8d9a382ddf5a",
+      "flash_price": 449400,
+      "original_price": 749000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
+      "variant_id": "var-f6fecb9d-a098-4623-bb75-2f97b484930f",
+      "flash_price": 389400,
+      "original_price": 649000,
+      "quantity_total": 20,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
+      "variant_id": "var-a8ab892e-c154-4c4e-81e8-255ba8ebdf38",
+      "flash_price": 329400,
+      "original_price": 549000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "approved_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.920Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T18:59:14.707Z"
+  },
+  "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
+  "__v": 3
+},
+{
+  "_id": "fs-6d63232c-5bcf-4ad5-9d86-59041089d007",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "title": "Black Friday 50%",
+  "description": "Half price on selected items.",
+  "start_time": {
+    "$date": "2025-10-18T09:59:50.915Z"
+  },
+  "end_time": {
+    "$date": "2026-10-22T09:59:50.915Z"
+  },
+  "status": "active",
+  "discount_type": "percentage",
+  "discount_value": 50,
+  "max_per_user": 2,
+  "total_limit": 300,
+  "products": [
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "flash_price": 249000,
+      "original_price": 249000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-015d38e7-ab15-4406-a382-7c8d8ad000db",
+      "flash_price": 349000,
+      "original_price": 349000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "flash_price": 499000,
+      "original_price": 499000,
+      "quantity_total": 20,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-94dc8218-22cf-4202-b8cb-74d2caa873b8",
+      "flash_price": 599000,
+      "original_price": 599000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "approved_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.920Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T18:39:05.122Z"
+  },
+  "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
+  "__v": 2
+},
+{
+  "_id": "fs-2c3c39ef-e90a-4c97-ab26-9b9f382275f7",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "title": "Tet Big Sale",
+  "description": "Tết sale rộn ràng!",
+  "start_time": {
+    "$date": "2025-10-27T09:59:50.915Z"
+  },
+  "end_time": {
+    "$date": "2026-11-01T09:59:50.915Z"
+  },
+  "status": "active",
+  "discount_type": "percentage",
+  "discount_value": 35,
+  "max_per_user": 3,
+  "total_limit": 600,
+  "products": [
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "flash_price": 324350,
+      "original_price": 499000,
+      "quantity_total": 20,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-94dc8218-22cf-4202-b8cb-74d2caa873b8",
+      "flash_price": 389350,
+      "original_price": 599000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "approved_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.921Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T18:46:53.548Z"
+  },
+  "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
+  "__v": 4
+},
+{
+  "_id": "fs-428c5271-f0ae-4126-91e3-50b29de56722",
+  "shop_id": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "title": "Test",
+  "description": "Test",
+  "start_time": {
+    "$date": "2026-01-01T00:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-02-02T00:00:00.000Z"
+  },
+  "status": "scheduled",
+  "discount_type": "percentage",
+  "discount_value": 10,
+  "max_per_user": 10,
+  "total_limit": 10,
+  "products": [
+    {
+      "product_id": "prd-a93885bf-3532-4a67-8ea8-dde83b694f30",
+      "variant_id": "var-7fe89893-d1da-4465-ba2a-818c28f8b3d1",
+      "flash_price": 269100,
+      "original_price": 299000,
+      "quantity_total": 20,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-a93885bf-3532-4a67-8ea8-dde83b694f30",
+      "variant_id": "var-ab0a6057-f7ec-449c-9cde-1e4d239e2fcc",
+      "flash_price": 359100,
+      "original_price": 399000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "https://cdn-media.sforum.vn/storage/app/media/anh-dep-82.jpg",
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "approved_by": null,
+  "createdAt": {
+    "$date": "2025-11-02T19:11:26.493Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T19:11:26.493Z"
+  },
+  "__v": 0
+}]

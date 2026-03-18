@@ -1,0 +1,534 @@
+[{
+  "_id": "crt-877e3301-801e-4bbd-8d55-dcd0671cdc65",
+  "user_id": "usr-2967df42-15f2-43e0-a4b7-e362bd24e5fc",
+  "items": [
+    {
+      "product_id": "prd-4d911a61-6139-463c-bcae-538851235340",
+      "variant_id": "var-e293d539-758a-471c-a91e-36549153f66d",
+      "name": "Nike Air Tee",
+      "price": 249000,
+      "qty": 1,
+      "currency": "VND",
+      "total": 249000
+    }
+  ],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-20T09:59:54.837Z"
+  },
+  "created_at": {
+    "$date": "2025-10-20T09:59:54.838Z"
+  }
+},
+{
+  "_id": "crt-093731dc-3b60-4d15-b74d-4ee1b9cd6087",
+  "user_id": "usr-aba7a7ec-cbc1-48b5-82f2-ef42921e48cd",
+  "items": [
+    {
+      "product_id": "prd-5fe2a797-090e-45b3-b119-f77261e1ec4c",
+      "variant_id": "var-16930408-409f-4763-be74-ae0d5943e3ff",
+      "name": "Adidas Run Tee",
+      "price": 649000,
+      "qty": 1,
+      "currency": "VND",
+      "total": 649000
+    }
+  ],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-20T09:59:54.837Z"
+  },
+  "created_at": {
+    "$date": "2025-10-20T09:59:54.838Z"
+  }
+},
+{
+  "_id": "crt-6f83f65d-fdc6-4be4-9124-a7caa17fe338",
+  "user_id": "usr-8c18972c-69be-4a92-8e2d-ccb7a0be2e8b",
+  "items": [
+    {
+      "product_id": "prd-8bb22444-66b4-4252-87ec-f2b6236f129b",
+      "variant_id": "var-1ff5abd7-5dc9-412e-832e-414e2b89dec0",
+      "name": "Uniqlo Everyday Tee",
+      "price": 499000,
+      "qty": 1,
+      "currency": "VND",
+      "total": 499000
+    }
+  ],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-20T09:59:54.837Z"
+  },
+  "created_at": {
+    "$date": "2025-10-20T09:59:54.838Z"
+  }
+},
+{
+  "_id": "cart-4de8fdc0-8bcb-4679-a7c3-64cbcdabc12d",
+  "user_id": "user-c489a2a2-5318-4845-b989-140b6b956fad",
+  "items": [
+    {
+      "_id": "ci-8ca66bab-efa5-4736-8e39-e16406cd3df1",
+      "product_id": "prd-61f852f9-c38f-4ae2-a293-ce2e1fd0b17d",
+      "variant_id": "var-ba045f0c-e4a4-4f90-bbeb-38384211ccd1",
+      "name": "Uniqlo Tote Bag",
+      "image": "https://cdn.dfs-demo.com/products/uniqlo-tote-bag-40-1.jpg",
+      "price": 699000,
+      "discount_amount": 0,
+      "qty": 3,
+      "currency": "VND",
+      "total": 2097000
+    }
+  ],
+  "total_price": 2097000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-31T18:31:51.436Z"
+  },
+  "created_at": {
+    "$date": "2025-10-27T07:37:04.601Z"
+  }
+},
+{
+  "_id": "cart-0068a1b1-8f54-443e-98d8-cced0c6f92d5",
+  "user_id": "user-41a32708-22fc-4376-9811-825005a27903",
+  "items": [
+    {
+      "_id": "item-ecfde7b2-bdf4-487f-a139-5787f9c5b6a1",
+      "product_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+      "variant_id": "var-ac2924bf-47cc-4c9a-8dff-dda2c5e4f196",
+      "name": "Levi's Denim Jacket",
+      "image": "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 599000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 599000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-ba514681-2417-47ae-8911-af1190d524b5",
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 2,
+      "total": 898000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-09922ee6-bd71-4a8a-96e2-7e206950913d",
+      "product_id": "prd-5ede9b34-2e2f-464f-8838-bd89afb71dce",
+      "variant_id": "var-cfe96964-58ab-42b1-82d8-1dec82a80140",
+      "name": "Calvin Klein Logo Hoodie",
+      "image": "https://cdn.dfs-demo.com/products/calvin-klein-logo-hoodie-44-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 399000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 399000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-be63b84c-a70c-4666-9393-4fe94fc1a9f7",
+      "product_id": "prd-11549dda-b7ce-48af-b3b6-e0856045cecc",
+      "variant_id": "var-eaedf369-f654-4731-83dd-e74b6757a8ca",
+      "name": "Calvin Klein Tapered Pants",
+      "image": "https://cdn.dfs-demo.com/products/calvin-klein-tapered-pants-8-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 599000,
+      "discount_amount": 0,
+      "qty": 2,
+      "total": 1198000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-bfafc0d6-2582-4983-b590-989a9e0dde1e",
+      "product_id": "prd-248830b4-1685-4263-beb0-bb78c64aa8d9",
+      "variant_id": "var-53e2d86d-db0b-431c-a276-32c3bf00c89b",
+      "name": "Zara Classic Shirt",
+      "image": "https://cdn.dfs-demo.com/products/zara-classic-shirt-4-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 399000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 399000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-b6a5f1a2-a1bf-4087-8218-b7ea731aedb2",
+      "product_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+      "variant_id": "var-7f55cd70-117f-4e56-9d46-74ea8556a8d4",
+      "name": "H&M Casual Shirt",
+      "image": "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 449000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-40b791b2-4ad5-4ba7-88db-ab3dd27b3007",
+      "product_id": "prd-8bb22444-66b4-4252-87ec-f2b6236f129b",
+      "variant_id": "var-5e24e97d-f314-4ef0-a61e-fddd2024d052",
+      "name": "Uniqlo Everyday Tee",
+      "image": "https://cdn.dfs-demo.com/products/uniqlo-everyday-tee-3-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 349000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 349000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-74d7c06f-3b37-47f5-8d26-bb620c22f306",
+      "product_id": "prd-026557de-1f0d-43aa-9c99-ffca4af6d4e2",
+      "variant_id": "var-335ae878-d564-4edb-96de-b96ca1a03d3b",
+      "name": "Mango Slim Blouse",
+      "image": "https://cdn.dfs-demo.com/products/mango-slim-blouse-17-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 549000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 549000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 4840000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-29T13:24:47.714Z"
+  },
+  "created_at": {
+    "$date": "2025-10-29T07:57:01.628Z"
+  }
+},
+{
+  "_id": "cart-14327f29-9ae4-4796-bfd8-c4fdbb146fcf",
+  "user_id": "user-21f439d7-7aad-4607-83aa-497777969260",
+  "items": [
+    {
+      "_id": "item-ae91ff76-878c-4a7a-9237-9c7b0ac89e91",
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 2,
+      "total": 898000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 898000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-31T18:04:56.412Z"
+  },
+  "created_at": {
+    "$date": "2025-10-30T01:35:26.589Z"
+  }
+},
+{
+  "_id": "cart-21d3d08d-b89c-4755-953d-0aedb79b38da",
+  "user_id": "user-8506c373-d8f7-44b3-9f4c-38d4c8c4afdd",
+  "items": [
+    {
+      "_id": "item-d816a0be-38df-40a9-a37d-c1552f670120",
+      "product_id": "prd-d87c47ad-e6ef-47ff-a4b7-b28ed9135f78",
+      "variant_id": "var-146251c7-4987-4bae-893a-ef959f1f3ec7",
+      "name": "Levi's High Waist Jeans",
+      "image": "https://cdn.dfs-demo.com/products/levi-s-high-waist-jeans-21-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 249000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 249000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 249000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-10-31T19:06:43.626Z"
+  },
+  "created_at": {
+    "$date": "2025-10-31T19:06:34.465Z"
+  }
+},
+{
+  "_id": "cart-d03b634e-4ce2-4c91-90af-2a467c1e7eaf",
+  "user_id": "user-54fafc66-6cde-46e5-9706-55c830b426b2",
+  "items": [
+    {
+      "_id": "item-5257febb-e2aa-4f32-a864-f3535902158f",
+      "product_id": "prd-d4aa7ba3-ef9d-41f9-a933-dab30d577492",
+      "variant_id": "var-ac2924bf-47cc-4c9a-8dff-dda2c5e4f196",
+      "name": "Levi's Denim Jacket",
+      "image": "https://cdn.dfs-demo.com/products/levi-s-denim-jacket-28-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 599000,
+      "discount_amount": 0,
+      "qty": 2,
+      "total": 1198000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-2c26a8a9-33dd-4eb3-abca-ec901a85676d",
+      "product_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+      "variant_id": "var-7f55cd70-117f-4e56-9d46-74ea8556a8d4",
+      "name": "H&M Casual Shirt",
+      "image": "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 449000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-29cb8734-4279-4d82-83e5-5e2c9a2c1a71",
+      "product_id": "prd-5dfbe597-72fe-45e0-b9d3-fb9d5268de75",
+      "variant_id": "var-35a02f1c-723e-4d42-9449-8b0025d77220",
+      "name": "Nike Tech Fleece Pants",
+      "image": "https://cdn.dfs-demo.com/products/nike-tech-fleece-pants-45-1.jpg",
+      "attributes": {
+        "size": "M",
+        "color": "Black"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 449000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-6fdf6907-bf9e-4abc-af22-1aaa8669615b",
+      "product_id": "prd-097593e4-89ee-44b3-a29c-af5e325ffbca",
+      "variant_id": "var-132da626-9c01-4a15-868f-aa2d59afd7d8",
+      "name": "Uniqlo Dry Polo",
+      "image": "https://cdn.dfs-demo.com/products/uniqlo-dry-polo-41-1.jpg",
+      "price": 249000,
+      "discount_amount": 0,
+      "qty": 25,
+      "total": 6225000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 8321000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-04T20:10:16.797Z"
+  },
+  "created_at": {
+    "$date": "2025-10-31T19:13:39.756Z"
+  }
+},
+{
+  "_id": "cart-2b501099-460d-439b-ab2d-3c9a4d064756",
+  "user_id": "user-1a9d0303-5132-4c92-b44f-066586b8eb44",
+  "items": [
+    {
+      "_id": "item-f18aacee-8e61-4028-b5c0-b25d7c964c41",
+      "product_id": "prd-3f1ecd11-60a4-472c-ac24-60ab7b08ef47",
+      "variant_id": "var-27535c9b-200a-4e88-9705-ec99428581b0",
+      "name": "H&M Casual Shirt",
+      "image": "https://cdn.dfs-demo.com/products/h-m-casual-shirt-5-2.jpg",
+      "attributes": {
+        "size": "L",
+        "color": "White"
+      },
+      "price": 549000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 549000,
+      "currency": "VND"
+    },
+    {
+      "_id": "item-48d13cc2-f4f8-427b-a9c8-e13a515ad66c",
+      "product_id": "prd-8bb22444-66b4-4252-87ec-f2b6236f129b",
+      "variant_id": "var-25a6de1f-2872-49eb-98d5-978f17d64518",
+      "name": "Áo Tank Top chạy bộ adidas Adi365 CLIMACOOL+ Nam - JM5711",
+      "image": "https://cdn.hstatic.net/products/200000477321/upload_99816a0b11934071a2e74d0e5e3f5938_master.jpg",
+      "attributes": {
+        "size": "L",
+        "color": "White"
+      },
+      "price": 449000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 449000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 998000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-03T14:14:34.266Z"
+  },
+  "created_at": {
+    "$date": "2025-11-02T13:38:23.684Z"
+  }
+},
+{
+  "_id": "cart-0a3d87f3-c04c-4fcc-b009-756174fc12a7",
+  "user_id": "user-33b9e807-bdfc-4637-a408-3cbf4ef1480e",
+  "items": [],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-03T04:41:43.038Z"
+  },
+  "created_at": {
+    "$date": "2025-11-03T04:41:43.038Z"
+  }
+},
+{
+  "_id": "cart-cd61488c-9253-47d8-b18b-fc8f56792275",
+  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
+  "items": [
+    {
+      "_id": "item-b2b39094-bd78-44c8-ac15-ace6d6bc5196",
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "price": 499000,
+      "discount_amount": 0,
+      "qty": 3,
+      "total": 1497000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 1497000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-12T17:45:51.082Z"
+  },
+  "created_at": {
+    "$date": "2025-11-04T05:25:22.731Z"
+  }
+},
+{
+  "_id": "cart-8f248cef-ea16-4415-83f3-94451fc1e750",
+  "user_id": "user-3df6cc6f-1ccf-4a1c-bdab-6ff41921a768",
+  "items": [],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-05T16:16:01.624Z"
+  },
+  "created_at": {
+    "$date": "2025-11-05T16:16:01.623Z"
+  }
+},
+{
+  "_id": "cart-b3d6b069-5f0b-4ea9-b52c-f84eb905201b",
+  "user_id": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "items": [],
+  "total_price": 0,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-05T16:59:52.359Z"
+  },
+  "created_at": {
+    "$date": "2025-11-05T16:59:52.359Z"
+  }
+},
+{
+  "_id": "cart-273dac0c-7ae1-49f7-9404-e183a35467b5",
+  "user_id": "user-cc13eead-6a77-42a3-a847-8f5cfe4baa37",
+  "items": [
+    {
+      "_id": "item-5db63123-e22d-47de-beca-98332a4f6b00",
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "price": 499000,
+      "discount_amount": 0,
+      "qty": 1,
+      "total": 499000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 499000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2025-11-13T16:47:30.228Z"
+  },
+  "created_at": {
+    "$date": "2025-11-13T13:31:14.866Z"
+  }
+},
+{
+  "_id": "cart-5d431e66-bd3b-4c7b-900b-654076e9aa13",
+  "user_id": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "items": [
+    {
+      "_id": "item-b350e908-0742-4f2b-9558-e8831e76a67e",
+      "product_id": "prd-52b46c78-b6c6-44a7-9dbc-c3350ac07b68",
+      "variant_id": "var-ba61cb8b-132d-4bef-a2b4-c332d424674c",
+      "name": "Nike Air Max Runner",
+      "image": "https://cdn.dfs-demo.com/products/nike-air-max-runner-46-1.jpg",
+      "price": 499000,
+      "discount_amount": 0,
+      "qty": 2,
+      "total": 998000,
+      "currency": "VND"
+    }
+  ],
+  "total_price": 998000,
+  "currency": "VND",
+  "updated_at": {
+    "$date": "2026-02-19T13:11:02.254Z"
+  },
+  "created_at": {
+    "$date": "2026-02-19T12:56:20.912Z"
+  }
+}]

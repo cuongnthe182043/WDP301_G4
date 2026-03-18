@@ -1,0 +1,186 @@
+[{
+  "_id": "att-5f43f1df-4e96-4f8b-9df5-a6c68bc13397",
+  "name": "Màu sắc",
+  "code": "color",
+  "type": "enum",
+  "values": [
+    "Đen",
+    "Trắng",
+    "Xanh dương",
+    "Đỏ",
+    "Be",
+    "Xanh lá",
+    "Xám"
+  ],
+  "applicable_category_ids": [],
+  "is_variant_dimension": true,
+  "is_active": true,
+  "display_order": 1,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:37.388Z"
+  },
+  "scope": "variant",
+  "unit": null
+},
+{
+  "_id": "att-82936c55-3269-4089-8a86-602397b1cea7",
+  "name": "Kích cỡ",
+  "code": "size",
+  "type": "enum",
+  "values": [
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32"
+  ],
+  "applicable_category_ids": [],
+  "is_variant_dimension": true,
+  "is_active": true,
+  "display_order": 2,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T14:06:18.804Z"
+  },
+  "scope": "variant",
+  "unit": null
+},
+{
+  "_id": "att-01b75c18-e92b-4b8d-a187-e09d0ffe9aef",
+  "name": "Chất liệu (sp)",
+  "code": "material",
+  "type": "enum",
+  "values": [
+    "Cotton",
+    "Polyester",
+    "Spandex",
+    "Lanh",
+    "Lụa",
+    "Len"
+  ],
+  "applicable_category_ids": [],
+  "is_variant_dimension": false,
+  "is_active": true,
+  "display_order": 3,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T14:06:18.719Z"
+  },
+  "scope": "product",
+  "unit": null
+},
+{
+  "_id": "att-8e1653b9-5157-464c-a8b0-11751a3c10eb",
+  "name": "Gender",
+  "code": "gender",
+  "type": "select",
+  "values": [
+    "Men",
+    "Women",
+    "Unisex"
+  ],
+  "applicable_category_ids": [],
+  "is_variant_dimension": false,
+  "is_active": true,
+  "display_order": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "scope": "both"
+},
+{
+  "_id": "att-9b469bb4-a169-4cd3-94ab-86e40d935e32",
+  "name": "Fit",
+  "code": "fit",
+  "type": "select",
+  "values": [
+    "Regular",
+    "Slim",
+    "Relaxed"
+  ],
+  "applicable_category_ids": [],
+  "is_variant_dimension": true,
+  "is_active": true,
+  "display_order": 0,
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:37.526Z"
+  },
+  "scope": "variant"
+},
+{
+  "_id": "attr-25c0c638-7ad3-41c4-b5ff-f83c260f0570",
+  "code": "material_variant",
+  "applicable_category_ids": [],
+  "display_order": 4,
+  "is_active": true,
+  "is_variant_dimension": true,
+  "name": "Chất liệu (biến thể)",
+  "scope": "variant",
+  "type": "enum",
+  "unit": null,
+  "values": [
+    "Cotton mỏng",
+    "Cotton dày",
+    "Lụa cao cấp"
+  ],
+  "updatedAt": {
+    "$date": "2025-11-04T12:43:37.597Z"
+  }
+},
+{
+  "_id": "attr-a0c9d1c8-9e00-4cac-b9d1-7c5c34438d66",
+  "code": "season",
+  "applicable_category_ids": [],
+  "display_order": 5,
+  "is_active": true,
+  "is_variant_dimension": false,
+  "name": "Mùa",
+  "scope": "product",
+  "type": "enum",
+  "unit": null,
+  "values": [
+    "spring",
+    "summer",
+    "autumn",
+    "winter",
+    "all-season"
+  ]
+},
+{
+  "_id": "attr-28cd9ad6-38ab-4598-acb3-6e691d45c8a8",
+  "code": "origin_country",
+  "applicable_category_ids": [],
+  "display_order": 6,
+  "is_active": true,
+  "is_variant_dimension": false,
+  "name": "Xuất xứ",
+  "scope": "product",
+  "type": "enum",
+  "unit": null,
+  "values": [
+    "Vietnam",
+    "Japan",
+    "Germany",
+    "China",
+    "Bangladesh"
+  ]
+}]

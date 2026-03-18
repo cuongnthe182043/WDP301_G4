@@ -1,0 +1,39 @@
+[{
+  "_id": "aud-36a659d6-cb73-4c1f-ac6f-d37774540105",
+  "actor_id": "usr-9bdacac7-d7c7-4b3a-bcc8-ff4d2edae3fe",
+  "action": "LOGIN",
+  "target_id": "usr-9bdacac7-d7c7-4b3a-bcc8-ff4d2edae3fe",
+  "user_agent": "seed-script",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  }
+},
+{
+  "_id": "aud-d7c3c1ad-fffe-42fc-86bc-18e4f3b5e14a",
+  "actor_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "action": "CREATE_PRODUCT",
+  "target_id": "prd-4d911a61-6139-463c-bcae-538851235340",
+  "user_agent": "seed-script",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  }
+},
+{
+  "_id": "aud-e35b1f1e-6ddf-447c-8eaa-04ef834f94bc",
+  "actor_id": "usr-1ff23dd7-bbb7-4fb8-88eb-cb222cb297fc",
+  "action": "APPROVE_REFUND",
+  "target_id": "ref-xxx",
+  "user_agent": "seed-script",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T09:59:54.996Z"
+  }
+}]
