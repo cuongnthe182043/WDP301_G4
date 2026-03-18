@@ -15,8 +15,9 @@ export const shopOrderApi = {
 export const shopRefundApi = {
   getAll: (params = {}) => apiClient.get("/shop/refunds", { params }).then((r) => r.data),
   getById: (id) => apiClient.get(`/shop/refunds/${id}`).then((r) => r.data),
-  approve: (id) => apiClient.post(`/shop/refunds/${id}/approve`).then((r) => r.data),
-  reject: (id, note) => apiClient.post(`/shop/refunds/${id}/reject`, { note }).then((r) => r.data),
+  approve:  (id, note) => apiClient.post(`/shop/refunds/${id}/approve`, { note }).then((r) => r.data),
+  reject:   (id, note) => apiClient.post(`/shop/refunds/${id}/reject`,  { note }).then((r) => r.data),
+  complete: (id, note) => apiClient.post(`/shop/refunds/${id}/complete`, { note }).then((r) => r.data),
 };
 
 // ── Customers ─────────────────────────────────────────────────────────────────
@@ -29,7 +30,6 @@ export const shopCustomerApi = {
 export const shopReviewApi = {
   getAll: (params = {}) => apiClient.get("/shop/reviews", { params }).then((r) => r.data),
   reply: (id, reply) => apiClient.post(`/shop/reviews/${id}/reply`, { reply }).then((r) => r.data),
-  toggleHide: (id) => apiClient.patch(`/shop/reviews/${id}/hide`).then((r) => r.data),
 };
 
 // ── Wallet ────────────────────────────────────────────────────────────────────

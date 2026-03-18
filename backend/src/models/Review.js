@@ -24,6 +24,16 @@ const ReviewSchema = new mongoose.Schema(
     },
     reply: { type: String, default: null },
     reply_at: { type: Date, default: null },
+
+    // Back-and-forth thread (shop ↔ customer after initial shop reply)
+    thread: [{
+      _id: false,
+      from: { type: String, enum: ["customer", "shop"], required: true },
+      text: { type: String, required: true },
+      at:   { type: Date, default: Date.now },
+    }],
+
+    flagged_reason: { type: String, default: null },
   },
   { timestamps: true }
 );

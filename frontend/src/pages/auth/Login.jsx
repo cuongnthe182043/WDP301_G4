@@ -5,6 +5,7 @@ import { Input, Button, Checkbox, Divider, Chip } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, ShieldCheck, Zap, Users, TrendingUp } from "lucide-react";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 /* ─── helpers ─── */
 const clearAuthStorage = () => {
@@ -92,6 +93,7 @@ export default function Login() {
   const [isError, setIsError] = useState(true);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const errors = {
     identifier: touched.identifier ? validateIdentifier(form.identifier) : null,
@@ -382,16 +384,16 @@ export default function Login() {
               className="text-3xl font-black text-default-900 tracking-tight"
               style={{ fontFamily: "'Baloo 2', cursive" }}
             >
-              Đăng nhập
+              {t("common.login")}
             </h1>
             <p className="text-default-500 text-sm mt-1.5">
-              Chưa có tài khoản?{" "}
+              {t("auth.no_account")}{" "}
               <RouterLink
                 to="/register"
                 className="font-bold hover:underline"
                 style={{ color: "#1D4ED8" }}
               >
-                Tạo miễn phí
+                {t("common.register")}
               </RouterLink>
             </p>
           </div>
@@ -413,7 +415,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
             <Input
               autoFocus
-              label="Email / Username / SĐT"
+              label={t("auth.identifier")}
               name="identifier"
               value={form.identifier}
               onChange={handleChange}
@@ -437,13 +439,13 @@ export default function Login() {
               }}
               description={
                 !errors.identifier && !touched.identifier
-                  ? "Email, tên đăng nhập hoặc số điện thoại"
+                  ? t("auth.identifier")
                   : undefined
               }
             />
 
             <Input
-              label="Mật khẩu"
+              label={t("auth.password")}
               name="password"
               type={showPwd ? "text" : "password"}
               value={form.password}
@@ -515,14 +517,14 @@ export default function Login() {
                 size="sm"
                 radius="sm"
               >
-                <span className="text-sm text-default-600">Ghi nhớ đăng nhập</span>
+                <span className="text-sm text-default-600">{t("auth.remember_me")}</span>
               </Checkbox>
               <RouterLink
                 to="/forgot-password"
                 className="text-sm font-semibold hover:underline"
                 style={{ color: "#1D4ED8" }}
               >
-                Quên mật khẩu?
+                {t("auth.forgot_password")}
               </RouterLink>
             </div>
 
@@ -538,14 +540,14 @@ export default function Login() {
                 background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)",
               }}
             >
-              {loading ? "Đang đăng nhập…" : "Đăng nhập →"}
+              {loading ? t("common.loading") : `${t("common.login")} →`}
             </Button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
             <Divider className="flex-1" />
             <span className="text-xs text-default-400 font-medium px-1">
-              hoặc tiếp tục với
+              {t("auth.or_continue_with")}
             </span>
             <Divider className="flex-1" />
           </div>

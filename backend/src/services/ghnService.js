@@ -62,6 +62,23 @@ function mapGhnStatus(ghnStatus) {
 async function createShippingOrder(order) {
   const addr = order.shipping_address || {};
 
+  // Validate required GHN address fields before calling API
+  const districtId = Number(addr.district_code || 0);
+  const wardCode   = String(addr.ward_code || "").trim();
+
+  if (!districtId) {
+    throw new Error(
+      "Địa chỉ giao hàng thiếu mã quận/huyện (district_code). " +
+      "Khách hàng cần cập nhật địa chỉ với đầy đủ thông tin để sử dụng giao hàng nhanh."
+    );
+  }
+  if (!wardCode) {
+    throw new Error(
+      "Địa chỉ giao hàng thiếu mã phường/xã (ward_code). " +
+      "Khách hàng cần cập nhật địa chỉ với đầy đủ thông tin để sử dụng giao hàng nhanh."
+    );
+  }
+
   // Determine payment type:
   // 2 = COD (recipient pays shipper) | 1 = prepaid (shop already paid)
   const isCOD = order.payment_method === "COD";
@@ -83,8 +100,8 @@ async function createShippingOrder(order) {
     to_name:        addr.name    || "Khách hàng",
     to_phone:       addr.phone   || "0000000000",
     to_address:     [addr.street, addr.ward, addr.district].filter(Boolean).join(", "),
-    to_ward_code:   String(addr.ward_code    || ""),
-    to_district_id: Number(addr.district_code || 0),
+    to_ward_code:   wardCode,
+    to_district_id: districtId,
     cod_amount,
     weight:         500,
     length:         20,
@@ -95,11 +112,26 @@ async function createShippingOrder(order) {
   };
 
   console.log(`[GHN] createShippingOrder | order: ${order.order_code} | COD: ${cod_amount}`);
-  const response = await ghnClient.post("/shipping-order/create", payload);
+  console.log(`[GHN] payload:`, JSON.stringify(payload, null, 2));
+
+  let response;
+  try {
+    response = await ghnClient.post("/shipping-order/create", payload);
+  } catch (axiosErr) {
+    const status  = axiosErr.response?.status;
+    const body    = axiosErr.response?.data;
+    const headers = axiosErr.response?.headers;
+    console.error(`[GHN] HTTP ${status} from GHN API`);
+    console.error(`[GHN] Response body:`, JSON.stringify(body, null, 2));
+    console.error(`[GHN] Response headers:`, JSON.stringify(headers, null, 2));
+    const detail = body?.message || body?.error || axiosErr.message;
+    throw new Error(`GHN HTTP ${status}: ${detail}`);
+  }
 
   if (response.data?.code !== 200) {
     const msg = response.data?.message || "GHN API error";
     console.error(`[GHN] createShippingOrder failed | order: ${order.order_code} | msg: ${msg}`);
+    console.error(`[GHN] Full response:`, JSON.stringify(response.data, null, 2));
     throw new Error(`GHN: ${msg}`);
   }
 

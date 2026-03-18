@@ -1,35 +1,33 @@
 import apiClient from "./apiClient";
 
+// ── Shop-owner API (requires auth) ────────────────────────────────────────────
 export const voucherApi = {
-  //Lấy danh sách vouchers
-  getAll: async (page = 1, limit = 5, search = "") => {
-    const res = await apiClient.get(
-      `/vouchers?page=${page}&limit=${limit}&code=${search}`
-    );
-    return res.data;
-  },
+  getAll:   (page = 1, limit = 10, code = "", status = "") =>
+    apiClient.get("/vouchers", { params: { page, limit, code: code || undefined, status: status || undefined } }).then(r => r.data),
 
-  //Lấy chi tiết voucher theo id
-  getDetail: async (id) => {
-    const res = await apiClient.get(`/vouchers/${id}`);
-    return res.data;
-  },
+  getDetail: (id) =>
+    apiClient.get(`/vouchers/${id}`).then(r => r.data),
 
-  //Tạo voucher mới
-  create: async (data) => {
-    const res = await apiClient.post(`/vouchers`, data);
-    return res.data;
-  },
+  create: (data) =>
+    apiClient.post("/vouchers", data).then(r => r.data),
 
-  //Cập nhật voucher
-  update: async (id, data) => {
-    const res = await apiClient.put(`/vouchers/${id}`, data);
-    return res.data;
-  },
+  update: (id, data) =>
+    apiClient.put(`/vouchers/${id}`, data).then(r => r.data),
 
-  //Xóa voucher
-  delete: async (id) => {
-    const res = await apiClient.delete(`/vouchers/${id}`);
-    return res.data;
-  },
+  toggle: (id) =>
+    apiClient.patch(`/vouchers/${id}/toggle`).then(r => r.data),
+
+  delete: (id) =>
+    apiClient.delete(`/vouchers/${id}`).then(r => r.data),
+};
+
+// ── Customer API ──────────────────────────────────────────────────────────────
+export const publicVoucherApi = {
+  // List active, non-expired, non-exhausted vouchers (no auth)
+  listPublic: (params = {}) =>
+    apiClient.get("/vouchers/public", { params }).then(r => r.data),
+
+  // Validate a code + get discount amount (auth required)
+  validate: (code, subtotal) =>
+    apiClient.post("/vouchers/validate", { code, subtotal }).then(r => r.data),
 };

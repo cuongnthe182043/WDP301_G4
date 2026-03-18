@@ -129,6 +129,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/admin/products", adminProductRoutes);
+app.use("/api/admin/moderation", require("./routes/adminModerationRoutes"));
 // app.use("/api/admin", adminRoutes);
 
 app.use("/static/invoices", express.static(path.join(__dirname, "../public/invoices")));

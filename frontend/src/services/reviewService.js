@@ -6,6 +6,7 @@ export const reviewService = {
   getByOrder: (orderId) => apiClient.get(`/reviews/order/${orderId}`).then(r => r.data.data),
   update: (id, payload) => apiClient.put(`/reviews/${id}`, payload).then(r => r.data.data),
   delete: (id) => apiClient.delete(`/reviews/${id}`).then(r => r.data.data),
+  addThreadReply: (id, text) => apiClient.post(`/reviews/${id}/thread`, { text }).then(r => r.data.data),
 
   /** Upload review images via multer → Cloudinary. Returns [{ url, public_id }] */
   uploadImages: (files) => {

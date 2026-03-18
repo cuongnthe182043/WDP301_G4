@@ -51,6 +51,8 @@ const OrderSchema = new mongoose.Schema(
     ],
 
     total_price: { type: Number, required: true },
+    discount:     { type: Number, default: 0 },   // voucher discount applied to this order
+    credits_used: { type: Number, default: 0 },   // shop credits deducted
     note: { type: String },
 
     status: {
@@ -95,14 +97,8 @@ const OrderSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false, collection: "orders" }
 );
 
-// Tự động tính tổng tiền trước khi save
-OrderSchema.pre("save", function (next) {
-  if (this.items && this.items.length > 0) {
-    const subtotal = this.items.reduce((sum, it) => sum + (it.total || (it.price - it.discount) * it.qty), 0);
-    this.total_price = subtotal + (this.shipping_fee || 0);
-  }
-  next();
-});
+// NOTE: total_price is calculated by checkoutService (includes discounts + credits).
+// Do NOT recalculate here — that would override voucher discounts.
 
 
 // doanh thu theo danh muc san pham

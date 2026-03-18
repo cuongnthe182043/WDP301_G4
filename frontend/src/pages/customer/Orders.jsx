@@ -9,17 +9,7 @@ import { Truck, Printer, RefreshCw, Receipt, Search } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
-
-const STATUS_TABS = [
-  { key: "", label: "Tất cả" },
-  { key: "pending", label: "Chờ xác nhận" },
-  { key: "confirmed", label: "Đang xử lý" },
-  { key: "shipping", label: "Đang giao" },
-  { key: "delivered", label: "Hoàn thành" },
-  { key: "canceled", label: "Đã hủy" },
-  { key: "refund_pending", label: "Hoàn/Đổi (chờ)" },
-  { key: "refund_completed", label: "Hoàn/Đổi xong" },
-];
+import { useTranslation } from "react-i18next";
 
 const STATUS_COLOR = {
   pending: "warning",
@@ -33,21 +23,34 @@ const STATUS_COLOR = {
   refund_completed: "success",
 };
 
-const STATUS_LABEL = {
-  pending: "Chờ xác nhận",
-  confirmed: "Đang xử lý",
-  processing: "Đang xử lý",
-  shipping: "Đang giao",
-  delivered: "Hoàn thành",
-  canceled_by_customer: "Đã hủy (khách)",
-  canceled_by_shop: "Đã hủy (cửa hàng)",
-  refund_pending: "Chờ hoàn/đổi",
-  refund_completed: "Đã hoàn/đổi",
-};
-
 export default function Orders() {
   const nav = useNavigate();
-  const [tab, setTab] = useState("Tất cả");
+  const { t } = useTranslation();
+
+  const STATUS_TABS = [
+    { key: "",                label: t("order.filter_all") },
+    { key: "pending",         label: t("order.status_pending") },
+    { key: "confirmed",       label: t("order.status_confirmed") },
+    { key: "shipping",        label: t("order.status_shipping") },
+    { key: "delivered",       label: t("order.status_delivered") },
+    { key: "canceled",        label: t("order.status_cancelled") },
+    { key: "refund_pending",  label: t("order.status_refund_pending") },
+    { key: "refund_completed",label: t("order.status_refund_done") },
+  ];
+
+  const STATUS_LABEL = {
+    pending:              t("order.status_pending"),
+    confirmed:            t("order.status_confirmed"),
+    processing:           t("order.status_confirmed"),
+    shipping:             t("order.status_shipping"),
+    delivered:            t("order.status_delivered"),
+    canceled_by_customer: t("order.status_cancelled"),
+    canceled_by_shop:     t("order.status_cancelled"),
+    refund_pending:       t("order.status_refund_pending"),
+    refund_completed:     t("order.status_refund_done"),
+  };
+
+  const [tab, setTab] = useState("");
   const [data, setData] = useState({ items: [], total: 0, page: 1, limit: 10 });
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
@@ -55,12 +58,11 @@ export default function Orders() {
   const load = async (page = 1) => {
     setLoading(true);
     try {
-      const tabKey = STATUS_TABS.find(t => t.label === tab)?.key ?? "";
       let status;
-      if (tabKey === "canceled") {
+      if (tab === "canceled") {
         status = ["canceled_by_customer", "canceled_by_shop"];
       } else {
-        status = tabKey || undefined;
+        status = tab || undefined;
       }
       const res = await orderService.list({ status, page, limit: 10, q: q || undefined });
       setData(res);
@@ -72,7 +74,7 @@ export default function Orders() {
 
   return (
     <PageContainer wide={false}>
-      <h1 className="text-2xl font-black text-default-900 mb-6">Đơn hàng của tôi</h1>
+      <h1 className="text-2xl font-black text-default-900 mb-6">{t("order.title")}</h1>
 
       {/* Filter row */}
       <div className="flex flex-col md:flex-row gap-3 mb-5 items-start md:items-center">
@@ -83,12 +85,12 @@ export default function Orders() {
           classNames={{ tabList: "gap-1 overflow-x-auto", tab: "text-sm whitespace-nowrap" }}
           className="flex-1"
         >
-          {STATUS_TABS.map((t) => <Tab key={t.label} title={t.label} />)}
+          {STATUS_TABS.map((s) => <Tab key={s.key} title={s.label} />)}
         </Tabs>
         <div className="flex gap-2 flex-shrink-0">
           <Input
             size="sm"
-            placeholder="Tìm mã đơn"
+            placeholder={t("order.order_id")}
             value={q}
             onValueChange={setQ}
             radius="lg"
@@ -97,7 +99,7 @@ export default function Orders() {
             className="w-44"
           />
           <Button size="sm" variant="bordered" radius="lg" onPress={() => load(1)} className="font-medium">
-            Tìm
+            {t("common.search")}
           </Button>
         </div>
       </div>
@@ -112,9 +114,9 @@ export default function Orders() {
       ) : data.items.length === 0 ? (
         <EmptyState
           icon={Receipt}
-          title="Không có đơn hàng nào"
-          description="Đơn hàng của bạn sẽ xuất hiện tại đây sau khi bạn đặt mua."
-          actionLabel="Mua sắm ngay"
+          title={t("order.empty")}
+          description={t("order.empty_cta")}
+          actionLabel={t("order.empty_cta")}
           onAction={() => nav("/")}
         />
       ) : (
@@ -154,7 +156,7 @@ export default function Orders() {
                           onPress={() => nav(`/orders/${o._id}`)}
                           className="font-medium"
                         >
-                          Chi tiết
+                          {t("order.detail")}
                         </Button>
                         <Button
                           size="sm" variant="bordered" radius="lg"
@@ -162,7 +164,7 @@ export default function Orders() {
                           onPress={async () => { const { url } = await orderService.invoice(o._id); window.open(url, "_blank"); }}
                           className="font-medium"
                         >
-                          Hoá đơn
+                          {t("order.track")}
                         </Button>
                         <Button
                           size="sm" color="primary" radius="lg" variant="flat"
@@ -170,7 +172,7 @@ export default function Orders() {
                           onPress={async () => { await orderService.reorder(o._id); nav("/cart"); }}
                           className="font-medium"
                         >
-                          Mua lại
+                          {t("order.reorder")}
                         </Button>
                       </div>
                     </div>
@@ -215,7 +217,7 @@ export default function Orders() {
                               await load(data.page);
                             }}
                           >
-                            Hủy đơn
+                            {t("order.cancel")}
                           </Button>
                         )}
                         {o.status === "delivered" && (
@@ -228,7 +230,7 @@ export default function Orders() {
                         )}
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-default-400">Tổng:</span>
+                        <span className="text-sm text-default-400">{t("order.total")}:</span>
                         <span className="font-black text-primary text-base">
                           {formatCurrency(Number(o.total_price))}
                         </span>

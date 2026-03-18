@@ -14,6 +14,10 @@ import {
   Package, CreditCard, Tag, Settings, Check, Trash2, ExternalLink,
 } from "lucide-react";
 import { useNotifications } from "../../context/NotificationContext";
+import ThemeSettingsPanel from "../common/ThemeSettingsPanel";
+import LanguageSwitcher from "../common/LanguageSwitcher";
+import { useTheme } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 /* ── font helper injected once ── */
 if (typeof document !== "undefined" && !document.getElementById("header-font-override")) {
@@ -69,25 +73,30 @@ function getNotifMeta(n) {
   return NOTIF_META[n.subtype] || NOTIF_META[n.type] || NOTIF_META.system;
 }
 
-function timeAgo(date) {
-  try {
-    const diff = Date.now() - new Date(date).getTime();
-    const m = Math.floor(diff / 60000);
-    if (m < 1) return "vừa xong";
-    if (m < 60) return `${m} phút trước`;
-    const h = Math.floor(m / 60);
-    if (h < 24) return `${h} giờ trước`;
-    const d = Math.floor(h / 24);
-    if (d < 7) return `${d} ngày trước`;
-    return new Date(date).toLocaleDateString("vi-VN");
-  } catch { return ""; }
+function useTimeAgo() {
+  const { t } = useTranslation();
+  return (date) => {
+    try {
+      const diff = Date.now() - new Date(date).getTime();
+      const m = Math.floor(diff / 60000);
+      if (m < 1) return t("notification.just_now");
+      if (m < 60) return t("notification.minutes_ago", { count: m });
+      const h = Math.floor(m / 60);
+      if (h < 24) return t("notification.hours_ago", { count: h });
+      const d = Math.floor(h / 24);
+      if (d < 7) return t("notification.days_ago", { count: d });
+      return new Date(date).toLocaleDateString();
+    } catch { return ""; }
+  };
 }
 
 /* ── Notification dropdown panel ── */
-function NotificationDropdown({ scrolled }) {
+function NotificationDropdown({ scrolled, isDark }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const timeAgo = useTimeAgo();
   const { notifications, unreadCount, markRead, markAllRead, deleteNotif } = useNotifications();
-  const iconColor = scrolled ? "#1D4ED8" : "#ffffff";
+  const iconColor = scrolled ? (isDark ? "#a1a1aa" : "#1D4ED8") : "#ffffff";
 
   const preview = notifications.slice(0, 6);
 
@@ -129,16 +138,16 @@ function NotificationDropdown({ scrolled }) {
       </DropdownTrigger>
 
       <DropdownMenu
-        aria-label="Thông báo"
+        aria-label={t("notification.title")}
         className="p-0 overflow-hidden"
         style={{
           width: 360,
           maxHeight: "calc(100vh - 80px)",
           fontFamily: "'Quicksand', sans-serif",
           borderRadius: 20,
-          boxShadow: "0 8px 40px rgba(29,78,216,0.16), 0 2px 12px rgba(0,0,0,0.08)",
-          border: "1.5px solid #DBEAFE",
-          background: "#fff",
+          boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.5)" : "0 8px 40px rgba(29,78,216,0.16), 0 2px 12px rgba(0,0,0,0.08)",
+          border: isDark ? "1px solid #27272a" : "1.5px solid #DBEAFE",
+          background: isDark ? "#18181b" : "#fff",
         }}
       >
         {/* Header row */}
@@ -146,12 +155,12 @@ function NotificationDropdown({ scrolled }) {
           key="header"
           isReadOnly
           className="cursor-default px-4 py-3 opacity-100 rounded-none border-b border-blue-50"
-          style={{ background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)" }}
+          style={{ background: isDark ? "#1f1f23" : "linear-gradient(135deg, #EFF6FF, #DBEAFE)" }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Bell size={15} className="text-blue-600" />
-              <span className="font-black text-blue-900 text-sm">Thông báo</span>
+              <span className="font-black text-blue-900 text-sm">{t("notification.title")}</span>
               {unreadCount > 0 && (
                 <span className="bg-red-500 text-white text-[10px] font-black rounded-full px-1.5 py-0.5 leading-none">
                   {unreadCount}
@@ -164,7 +173,7 @@ function NotificationDropdown({ scrolled }) {
                 className="flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:text-blue-800 transition-colors"
               >
                 <Check size={11} />
-                Đọc tất cả
+                {t("notification.mark_all_read")}
               </button>
             )}
           </div>
@@ -175,7 +184,7 @@ function NotificationDropdown({ scrolled }) {
           <DropdownItem key="empty" isReadOnly className="cursor-default py-10 text-center opacity-100">
             <div className="flex flex-col items-center gap-2">
               <Bell size={28} className="text-blue-200" />
-              <p className="text-sm text-gray-400 font-semibold">Không có thông báo</p>
+              <p className="text-sm text-gray-400 font-semibold">{t("notification.empty")}</p>
             </div>
           </DropdownItem>
         ) : (
@@ -192,8 +201,12 @@ function NotificationDropdown({ scrolled }) {
                     if (!n.isRead) markRead(n._id);
                     if (n.link) navigate(n.link);
                   }}
-                  className="flex gap-3 px-4 py-3 transition-colors hover:bg-blue-50 cursor-pointer"
-                  style={{ background: n.isRead ? "transparent" : "#F0F7FF" }}
+                  className="flex gap-3 px-4 py-3 transition-colors cursor-pointer"
+                  style={{
+                    background: n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF"),
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = isDark ? "#27272a" : "#EFF6FF"}
+                  onMouseLeave={e => e.currentTarget.style.background = n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF")}
                 >
                   {/* Icon */}
                   <div
@@ -240,14 +253,14 @@ function NotificationDropdown({ scrolled }) {
           key="view-all"
           isReadOnly
           className="cursor-pointer opacity-100 rounded-none border-t border-blue-50 px-4 py-2.5"
-          style={{ background: "#F8FBFF" }}
+          style={{ background: isDark ? "#121215" : "#F8FBFF" }}
         >
           <button
             onClick={() => navigate("/notifications")}
             className="w-full flex items-center justify-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
           >
             <ExternalLink size={12} />
-            Xem tất cả thông báo
+            {t("notification.view_all")}
           </button>
         </DropdownItem>
       </DropdownMenu>
@@ -261,10 +274,15 @@ const NAV_BLUE = {
   background: "linear-gradient(135deg, #1E40AF 0%, #1D4ED8 50%, #2563EB 100%)",
   boxShadow: "0 4px 24px rgba(30,64,175,0.35)",
 };
-const NAV_WHITE = {
+const NAV_WHITE_LIGHT = {
   background: "#ffffff",
   boxShadow: "0 2px 16px rgba(30,64,175,0.10)",
   borderBottom: "1.5px solid #EFF6FF",
+};
+const NAV_WHITE_DARK = {
+  background: "#18181b",
+  boxShadow: "0 2px 16px rgba(0,0,0,0.4)",
+  borderBottom: "1.5px solid #27272a",
 };
 
 export default function Header({ cartCount = 0, notifyCount = 0, user = null, onSearch, onLogout }) {
@@ -272,6 +290,9 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
   const navigate  = useNavigate();
   const scrolled  = useScrolled();
   const isAuth    = AUTH_PATHS.some(p => location.pathname.startsWith(p));
+  const { theme } = useTheme();
+  const isDark    = theme === "dark";
+  const { t }     = useTranslation();
 
   const [searchQ,     setSearchQ]     = useState("");
   const [menuOpen,    setMenuOpen]    = useState(false);
@@ -287,8 +308,8 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
     navigate(`/search?q=${encodeURIComponent(kw)}`);
   };
 
-  const iconColor = scrolled ? "#1D4ED8" : "#ffffff";
-  const iconCls   = scrolled ? "text-blue-700" : "text-white";
+  const iconColor = scrolled ? (isDark ? "#a1a1aa" : "#1D4ED8") : "#ffffff";
+  const iconCls   = scrolled ? (isDark ? "text-blue-400" : "text-blue-700") : "text-white";
 
   return (
     <Navbar
@@ -296,7 +317,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
       onMenuOpenChange={setMenuOpen}
       isBordered={false}
       maxWidth="full"
-      style={scrolled ? NAV_WHITE : NAV_BLUE}
+      style={scrolled ? (isDark ? NAV_WHITE_DARK : NAV_WHITE_LIGHT) : NAV_BLUE}
       className="dfs-header"
       classNames={{
         base: "sticky top-0 z-50 transition-all duration-300",
@@ -358,7 +379,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               <Search size={14} style={{ color: scrolled ? (searchFocus ? "#2563EB" : "#94A3B8") : "rgba(255,255,255,0.7)", flexShrink: 0 }} />
               <input
                 type="search"
-                placeholder="Tìm sản phẩm, thương hiệu…"
+                placeholder={t("nav.search_placeholder")}
                 value={searchQ}
                 onChange={(e) => setSearchQ(e.target.value)}
                 onFocus={() => setSearchFocus(true)}
@@ -366,10 +387,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 className="flex-1 bg-transparent border-none outline-none text-sm min-w-0 font-semibold"
                 style={{ color: scrolled ? "#1E293B" : "#ffffff", fontFamily: "'Quicksand', sans-serif" }}
               />
-              <style>{`
-                input[type="search"]::placeholder { color: ${scrolled ? "#94A3B8" : "rgba(255,255,255,0.55)"}; font-family: 'Quicksand', sans-serif; }
-                input[type="search"]::-webkit-search-cancel-button { display: none; }
-              `}</style>
+              <style>{`input[type="search"]::placeholder{color:${scrolled?"#94A3B8":"rgba(255,255,255,0.55)"};font-family:'Quicksand',sans-serif;}input[type="search"]::-webkit-search-cancel-button{display:none;}`}</style>
               <AnimatePresence>
                 {searchQ && (
                   <motion.button
@@ -398,6 +416,14 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
         {/* GUEST */}
         {!isAuth && !user && (
           <>
+            <NavbarItem className="hidden sm:flex">
+              <LanguageSwitcher iconColor={iconColor} />
+            </NavbarItem>
+
+            <NavbarItem className="hidden sm:flex">
+              <ThemeSettingsPanel iconColor={iconColor} />
+            </NavbarItem>
+
             <NavbarItem className="md:hidden">
               <motion.button whileTap={{ scale: 0.92 }}
                 className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${scrolled ? "hover:bg-blue-50 text-blue-700" : "hover:bg-white/15 text-white"}`}
@@ -417,7 +443,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                     fontFamily: "'Quicksand', sans-serif",
                   }}>
                   <UserPlus size={13} />
-                  Đăng ký
+                  {t("common.register")}
                 </RouterLink>
               </motion.div>
             </NavbarItem>
@@ -431,7 +457,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                     : { background: "#ffffff", color: "#1D4ED8", boxShadow: "0 2px 8px rgba(0,0,0,0.1)", fontFamily: "'Quicksand', sans-serif" }
                   }>
                   <LogIn size={13} />
-                  Đăng nhập
+                  {t("common.login")}
                 </RouterLink>
               </motion.div>
             </NavbarItem>
@@ -473,9 +499,19 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               </motion.div>
             </NavbarItem>
 
+            {/* Language switcher */}
+            <NavbarItem className="hidden sm:flex">
+              <LanguageSwitcher iconColor={iconColor} />
+            </NavbarItem>
+
+            {/* Theme settings */}
+            <NavbarItem className="hidden sm:flex">
+              <ThemeSettingsPanel iconColor={iconColor} />
+            </NavbarItem>
+
             {/* Notification Bell Dropdown */}
             <NavbarItem className="hidden sm:flex">
-              <NotificationDropdown scrolled={scrolled} />
+              <NotificationDropdown scrolled={scrolled} isDark={isDark} />
             </NavbarItem>
 
             {/* Profile dropdown */}
@@ -500,10 +536,10 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 </DropdownTrigger>
 
                 <DropdownMenu
-                  aria-label="Tài khoản"
+                  aria-label={t("nav.profile")}
                   className="w-64 p-1"
                   style={{ fontFamily: "'Quicksand', sans-serif" }}
-                  itemClasses={{ base: "rounded-xl gap-2.5 data-[hover=true]:bg-blue-50" }}
+                  itemClasses={{ base: `rounded-xl gap-2.5 ${isDark ? "data-[hover=true]:bg-slate-700" : "data-[hover=true]:bg-blue-50"}` }}
                 >
                   <DropdownSection showDivider>
                     <DropdownItem key="identity" isReadOnly className="cursor-default py-3 opacity-100">
@@ -514,7 +550,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                           classNames={{ base: "bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black flex-shrink-0" }}
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="font-black text-sm text-gray-900 truncate leading-tight">{user?.name || "Tài khoản"}</p>
+                          <p className="font-black text-sm text-gray-900 truncate leading-tight">{user?.name || t("nav.profile")}</p>
                           {user?.email && <p className="text-[11px] text-blue-400 truncate leading-tight mt-0.5">{user.email}</p>}
                         </div>
                       </div>
@@ -523,21 +559,21 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
                   <DropdownSection showDivider>
                     {[
-                      { key: "profile",  icon: User,    label: "Hồ sơ cá nhân",      desc: "Thông tin, địa chỉ, mật khẩu", path: "/profile" },
-                      { key: "orders",   icon: Receipt, label: "Đơn hàng của tôi",   desc: "Theo dõi & quản lý đơn hàng",  path: "/orders" },
-                      { key: "wishlist", icon: Heart,   label: "Sản phẩm yêu thích", path: "/wishlist" },
-                      { key: "wallet",   icon: Wallet,  label: "Ví DFS",              path: "/wallet" },
-                    ].map(({ key, icon: Icon, label, desc, path }) => (
+                      { key: "profile",  icon: User,    labelKey: "nav.profile",       descKey: "auth.change_password", path: "/profile" },
+                      { key: "orders",   icon: Receipt, labelKey: "nav.orders",        path: "/orders" },
+                      { key: "wishlist", icon: Heart,   labelKey: "nav.wishlist",      path: "/wishlist" },
+                      { key: "wallet",   icon: Wallet,  labelKey: "nav.wallet",        path: "/wallet" },
+                      { key: "vouchers", icon: Tag,     labelKey: "nav.vouchers",      path: "/vouchers" },
+                    ].map(({ key, icon: Icon, labelKey, path }) => (
                       <DropdownItem key={key}
                         startContent={
                           <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                             <Icon size={14} className="text-blue-600" />
                           </div>
                         }
-                        description={desc}
                         onPress={() => navigate(path)}
                       >
-                        <span className="font-semibold text-sm text-gray-800">{label}</span>
+                        <span className="font-semibold text-sm text-gray-800">{t(labelKey)}</span>
                       </DropdownItem>
                     ))}
                   </DropdownSection>
@@ -546,16 +582,14 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                     {user?.role_name === "shop_owner" ? (
                       <DropdownItem key="manage-shop"
                         startContent={<div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0"><Store size={14} className="text-emerald-600" /></div>}
-                        description="Quản lý sản phẩm & đơn hàng"
                         onPress={() => navigate("/shop/dashboard")}>
-                        <span className="font-semibold text-sm text-gray-800">Quản lý shop</span>
+                        <span className="font-semibold text-sm text-gray-800">{t("nav.manage_shop")}</span>
                       </DropdownItem>
                     ) : (
                       <DropdownItem key="register-shop"
                         startContent={<div className="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0"><Store size={14} className="text-amber-600" /></div>}
-                        description="Mở shop và bắt đầu bán hàng"
                         onPress={() => navigate("/register-shop")}>
-                        <span className="font-semibold text-sm text-gray-800">Đăng ký bán hàng</span>
+                        <span className="font-semibold text-sm text-gray-800">{t("nav.register_shop")}</span>
                       </DropdownItem>
                     )}
                   </DropdownSection>
@@ -564,7 +598,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                     <DropdownItem key="logout" color="danger"
                       startContent={<div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0"><LogOut size={14} className="text-red-500" /></div>}
                       onPress={onLogout}>
-                      <span className="font-semibold text-sm">Đăng xuất</span>
+                      <span className="font-semibold text-sm">{t("common.logout")}</span>
                     </DropdownItem>
                   </DropdownSection>
                 </DropdownMenu>
@@ -582,9 +616,9 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
       <NavbarMenu
         className="top-[64px] pt-0 pb-6 px-0 gap-0 overflow-y-auto"
         style={{
-          background: "#ffffff",
-          borderTop: "2px solid #DBEAFE",
-          boxShadow: "0 8px 32px rgba(29,78,216,0.12)",
+          background: isDark ? "#1e293b" : "#ffffff",
+          borderTop: isDark ? "2px solid #334155" : "2px solid #DBEAFE",
+          boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.3)" : "0 8px 32px rgba(29,78,216,0.12)",
           maxHeight: "85dvh",
           fontFamily: "'Quicksand', sans-serif",
         }}
@@ -601,7 +635,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               <input
                 type="search"
                 autoFocus
-                placeholder="Tìm sản phẩm, thương hiệu…"
+                placeholder={t("nav.search_placeholder")}
                 value={searchQ}
                 onChange={(e) => setSearchQ(e.target.value)}
                 className="flex-1 bg-transparent border-none outline-none text-sm text-gray-800 placeholder-blue-300 font-semibold"
@@ -616,14 +650,16 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
           <>
             <NavbarMenuItem className="px-4 mb-2">
               <div className="flex items-center gap-3 p-3 rounded-2xl"
-                style={{ background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)", border: "1.5px solid #BFDBFE" }}>
+                style={isDark
+                  ? { background: "#1f1f23", border: "1px solid #27272a" }
+                  : { background: "linear-gradient(135deg, #EFF6FF, #DBEAFE)", border: "1.5px solid #BFDBFE" }}>
                 <Avatar size="sm"
                   name={(user?.name || "U").charAt(0).toUpperCase()}
                   src={user?.avatar_url || undefined}
                   classNames={{ base: "bg-gradient-to-br from-blue-500 to-blue-700 text-white font-black flex-shrink-0" }}
                 />
                 <div className="min-w-0">
-                  <p className="font-black text-sm text-blue-900 truncate">{user?.name || "Tài khoản"}</p>
+                  <p className="font-black text-sm text-blue-900 truncate">{user?.name || t("nav.profile")}</p>
                   {user?.email && <p className="text-xs text-blue-400 truncate">{user.email}</p>}
                 </div>
               </div>
@@ -631,11 +667,12 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
             <div className="px-3">
               {[
-                { icon: User,    label: "Hồ sơ cá nhân",      path: "/profile" },
-                { icon: Receipt, label: "Đơn hàng của tôi",   path: "/orders" },
-                { icon: Heart,   label: "Sản phẩm yêu thích", path: "/wishlist" },
-                { icon: Wallet,  label: "Ví DFS",              path: "/wallet" },
-                { icon: Bell,    label: "Thông báo",           path: "/notifications", badge: notifyCount },
+                { icon: User,    label: t("nav.profile"),       path: "/profile" },
+                { icon: Receipt, label: t("nav.orders"),        path: "/orders" },
+                { icon: Heart,   label: t("nav.wishlist"),      path: "/wishlist" },
+                { icon: Wallet,  label: t("nav.wallet"),        path: "/wallet" },
+                { icon: Tag,     label: t("nav.vouchers"),      path: "/vouchers" },
+                { icon: Bell,    label: t("nav.notifications"), path: "/notifications", badge: notifyCount },
               ].map(({ icon: Icon, label, path, badge }) => (
                 <NavbarMenuItem key={path}>
                   <RouterLink to={path}
@@ -665,7 +702,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 <div className="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
                   <LogOut size={15} className="text-red-500" />
                 </div>
-                Đăng xuất
+                {t("common.logout")}
               </button>
             </NavbarMenuItem>
           </>
@@ -673,14 +710,14 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
           <div className="px-4 mt-1 flex flex-col gap-2">
             <p className="text-xs font-bold text-blue-400 uppercase tracking-widest px-1 mb-1"
               style={{ fontFamily: "'Quicksand', sans-serif" }}>
-              Tài khoản
+              {t("nav.profile")}
             </p>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
               <RouterLink to="/login"
                 className="flex items-center justify-center gap-2 h-11 rounded-2xl text-sm font-black text-white no-underline shadow-md"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #2563EB)", boxShadow: "0 4px 14px rgba(29,78,216,0.35)", fontFamily: "'Quicksand', sans-serif" }}>
                 <LogIn size={15} />
-                Đăng nhập
+                {t("common.login")}
               </RouterLink>
             </motion.div>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
@@ -688,7 +725,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 className="flex items-center justify-center gap-2 h-11 rounded-2xl text-sm font-bold no-underline"
                 style={{ border: "2px solid #BFDBFE", color: "#1D4ED8", background: "#EFF6FF", fontFamily: "'Quicksand', sans-serif" }}>
                 <UserPlus size={15} />
-                Tạo tài khoản
+                {t("common.register")}
               </RouterLink>
             </motion.div>
           </div>

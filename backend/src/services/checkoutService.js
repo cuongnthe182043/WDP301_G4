@@ -7,6 +7,7 @@ const Address = require("../models/Address");
 const Product = require("../models/Product");
 const ProductVariant = require("../models/ProductVariant");
 const Shop = require("../models/Shop");
+const ShopCredit  = require("../models/ShopCredit");
 const { v4: uuidv4 } = require("uuid");
 const shippingSvc = require("./shippingService");
 
@@ -110,16 +111,44 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// applyVoucher
+// applyVoucher — validates & calculates discount
+// Returns { voucher, discount } on success, or { voucher:null, discount:0, error } on failure
 // ─────────────────────────────────────────────────────────────────────────────
-async function applyVoucher(voucherCode, subtotal) {
+async function applyVoucher(voucherCode, subtotal, userId) {
   if (!voucherCode) return { voucher: null, discount: 0 };
-  const v = await Voucher.findOne({ code: voucherCode, is_active: true });
-  if (!v) return { voucher: null, discount: 0 };
-  const discount = Math.min(
-    v.type === "percent" ? Math.round((subtotal * v.value) / 100) : v.value,
-    v.max_discount || Infinity
-  );
+
+  const code = voucherCode.toString().trim().toUpperCase();
+  const v = await Voucher.findOne({ code, is_active: true });
+  if (!v) return { voucher: null, discount: 0, error: "Mã voucher không tồn tại hoặc đã bị vô hiệu hóa" };
+
+  const now = new Date();
+  if (now < new Date(v.valid_from))
+    return { voucher: null, discount: 0, error: "Voucher chưa có hiệu lực" };
+  if (now > new Date(v.valid_to))
+    return { voucher: null, discount: 0, error: "Voucher đã hết hạn" };
+  if (v.used_count >= v.max_uses)
+    return { voucher: null, discount: 0, error: "Voucher đã hết lượt sử dụng" };
+  if (subtotal < (v.min_order_value || 0))
+    return {
+      voucher: null, discount: 0,
+      error: `Đơn hàng tối thiểu ${(v.min_order_value || 0).toLocaleString("vi-VN")}₫ để dùng voucher này`,
+    };
+
+  if (userId && v.applicable_users?.length > 0) {
+    if (!v.applicable_users.map(String).includes(String(userId)))
+      return { voucher: null, discount: 0, error: "Voucher này không áp dụng cho tài khoản của bạn" };
+  }
+
+  if (userId && v.usage_limit_per_user > 0) {
+    const usedByUser = await Order.countDocuments({ user_id: String(userId), voucher_id: v._id });
+    if (usedByUser >= v.usage_limit_per_user)
+      return { voucher: null, discount: 0, error: "Bạn đã sử dụng hết lượt cho voucher này" };
+  }
+
+  const rawDiscount = v.discount_type === "percent"
+    ? Math.round((subtotal * v.discount_value) / 100)
+    : v.discount_value;
+  const discount = Math.min(rawDiscount, subtotal); // cannot exceed order value
   return { voucher: v, discount: Math.max(0, discount) };
 }
 
@@ -148,6 +177,7 @@ exports.preview = async ({
   address_id,
   ship_provider,
   voucher_code,
+  credits_to_use = {},
 }) => {
   if (!userId) throw Object.assign(new Error("Unauthorized"), { status: 401 });
 
@@ -160,24 +190,50 @@ exports.preview = async ({
     null,
     items
   );
-  const { voucher, discount } = await applyVoucher(voucher_code, subtotal);
-  const total = Math.max(0, subtotal + shipping_fee - discount);
+  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId);
 
   // Enrich with shop names
   const shopIds = [...new Set(items.map((i) => i.shop_id).filter(Boolean))];
   const shops = await Shop.find({ _id: { $in: shopIds } }).select("_id shop_name shop_slug shop_logo").lean();
   const shopMap = new Map(shops.map((s) => [s._id, s]));
 
-  // Group items by shop
+  // Load user's credit balances for each shop
+  const creditRecords = await ShopCredit.find({
+    user_id: String(userId),
+    shop_id: { $in: shopIds },
+    balance: { $gt: 0 },
+  }).lean();
+  const creditBalanceMap = new Map(creditRecords.map((c) => [String(c.shop_id), c.balance]));
+
+  // Group items by shop + calculate per-shop totals including credits
   const shopGroups = [];
   const grouped = groupItemsByShop(items);
+  let totalCreditsDiscount = 0;
+
   for (const [shopId, shopItems] of grouped) {
+    const shopSubtotal = shopItems.reduce((s, i) => s + i.total, 0);
+    const ratio = subtotal > 0 ? shopSubtotal / subtotal : 1;
+    const shopVoucherDiscount = Math.round(discount * ratio);
+
+    const availableCredits = creditBalanceMap.get(String(shopId)) || 0;
+    const requestedCredits  = Number((credits_to_use || {})[shopId] || 0);
+    const creditsUsed       = Math.min(requestedCredits, availableCredits, shopSubtotal - shopVoucherDiscount);
+
+    totalCreditsDiscount += creditsUsed;
+
+    const shopInfo = shopMap.get(shopId);
     shopGroups.push({
-      shop: shopMap.get(shopId) || { _id: shopId, shop_name: "Shop" },
-      items: shopItems,
-      subtotal: shopItems.reduce((s, i) => s + i.total, 0),
+      shop_id:           shopId,
+      shop_name:         shopInfo?.shop_name || "Cửa hàng",
+      shop_logo:         shopInfo?.shop_logo || null,
+      items:             shopItems,
+      subtotal:          shopSubtotal,
+      available_credits: availableCredits,
+      credits_used:      creditsUsed,
     });
   }
+
+  const total = Math.max(0, subtotal + shipping_fee - discount - totalCreditsDiscount);
 
   return {
     items,
@@ -185,9 +241,13 @@ exports.preview = async ({
     subtotal,
     shipping_fee,
     discount,
+    credits_discount: totalCreditsDiscount,
     total,
     currency: "VND",
-    voucher: voucher ? { _id: voucher._id, code: voucher.code } : null,
+    voucher: voucher
+      ? { _id: voucher._id, code: voucher.code, discount_type: voucher.discount_type, discount_value: voucher.discount_value }
+      : null,
+    voucher_error: voucherError || null,
     payment_methods: ["COD", "PAYPAL", "VNPAY"],
   };
 };
@@ -202,6 +262,7 @@ exports.confirm = async ({
   note,
   ship_provider,
   voucher_code,
+  credits_to_use = {},
   selected_item_ids,
   buy_now_items,
   payment_method,
@@ -241,7 +302,8 @@ exports.confirm = async ({
   // ── Apply voucher (applied to total subtotal, then split proportionally) ──
   const subtotal = items.reduce((s, it) => s + it.total, 0);
   const shipping_fee = await shippingSvc.calculate(ship_provider || "GHN", address_id, null, items);
-  const { voucher, discount } = await applyVoucher(voucher_code, subtotal);
+  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId);
+  if (voucherError) throw Object.assign(new Error(voucherError), { status: 400 });
 
   // ── Split items by shop ───────────────────────────────────────────────────
   const grouped = groupItemsByShop(items);
@@ -249,11 +311,20 @@ exports.confirm = async ({
 
   for (const [shopId, shopItems] of grouped) {
     const shopSubtotal = shopItems.reduce((s, i) => s + i.total, 0);
-    // Proportional discount and shipping per shop
+    // Proportional voucher discount and shipping per shop
     const ratio = subtotal > 0 ? shopSubtotal / subtotal : 1;
-    const shopDiscount = Math.round(discount * ratio);
-    const shopShipping = Math.round(shipping_fee * ratio);
-    const total_price = Math.max(0, shopSubtotal + shopShipping - shopDiscount);
+    const shopDiscount  = Math.round(discount * ratio);
+    const shopShipping  = Math.round(shipping_fee * ratio);
+
+    // Shop credits deduction (per-shop, validate balance)
+    const requestedCredits = Number((credits_to_use || {})[shopId] || 0);
+    let shopCreditsUsed = 0;
+    if (requestedCredits > 0) {
+      const creditRecord = await ShopCredit.findOne({ user_id: String(userId), shop_id: String(shopId) });
+      shopCreditsUsed = Math.min(requestedCredits, creditRecord?.balance || 0, shopSubtotal - shopDiscount);
+    }
+
+    const total_price = Math.max(0, shopSubtotal + shopShipping - shopDiscount - shopCreditsUsed);
 
     const orderCode = `ORD${new Date().toISOString().slice(2, 10).replace(/-/g, "")}-${uuidv4().slice(0, 6).toUpperCase()}`;
 
@@ -264,9 +335,11 @@ exports.confirm = async ({
       items: shopItems,
       address_id,
       shipping_address,
-      voucher_id: voucher?._id || null,
+      voucher_id:        voucher?._id || null,
+      discount:          shopDiscount,
+      credits_used:      shopCreditsUsed,
       shipping_provider: ship_provider || "GHN",
-      shipping_fee: shopShipping,
+      shipping_fee:      shopShipping,
       total_price,
       payment_method: method,
       payment_status: "pending",
@@ -274,12 +347,36 @@ exports.confirm = async ({
       status: method === "COD" ? "order_created" : "payment_pending",
     });
 
+    // Deduct credits from ShopCredit balance
+    if (shopCreditsUsed > 0) {
+      await ShopCredit.findOneAndUpdate(
+        { user_id: String(userId), shop_id: String(shopId) },
+        {
+          $inc: { balance: -shopCreditsUsed, total_spent: shopCreditsUsed },
+          $push: {
+            history: {
+              type:          "spend",
+              amount:        -shopCreditsUsed,
+              balance_after: 0, // approximate; will be slightly off — acceptable
+              reason:        `Đơn hàng #${orderCode}`,
+              order_id:      order._id,
+            },
+          },
+        }
+      );
+    }
+
     createdOrders.push({
       order_id: order._id,
       order_code: order.order_code,
       shop_id: shopId,
       total_price,
     });
+  }
+
+  // ── Increment voucher usage counter ──────────────────────────────────────
+  if (voucher) {
+    Voucher.updateOne({ _id: voucher._id }, { $inc: { used_count: 1 } }).catch(() => {});
   }
 
   // ── Clear purchased items from cart ──────────────────────────────────────

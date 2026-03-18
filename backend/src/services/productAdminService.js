@@ -57,7 +57,9 @@ exports.deleteProduct = async (id, shopId) => {
 };
 
 exports.updateProduct = async (id, payload, shopId) => {
-  const patch = { ...payload };
+  // Strip virtual / non-schema fields that must not be $set directly
+  const { variants, _id, createdAt, updatedAt, __v, ...rest } = payload;
+  const patch = { ...rest };
   if (!patch.slug && patch.name) patch.slug = slugify(patch.name);
   if (patch.category_id) {
     const cat = await Category.findById(patch.category_id).lean();
