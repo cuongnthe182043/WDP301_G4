@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Pagination, Input, Select, SelectItem, Chip, Button } from "@heroui/react";
 import { Search, SlidersHorizontal, X, Layers } from "lucide-react";
@@ -11,24 +12,24 @@ import PageContainer from "../../components/ui/PageContainer.jsx";
 
 const LIMIT = 24;
 
-const SORT_OPTIONS = [
-  { key: "newest",     label: "Mới nhất" },
-  { key: "price_asc",  label: "Giá tăng dần" },
-  { key: "price_desc", label: "Giá giảm dần" },
-  { key: "popular",    label: "Phổ biến nhất" },
-];
-
 const gridVariants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.04 } },
 };
 
 export default function AllProductsPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const isSearchPage = location.pathname === "/search";
 
-  // Derive filter values from URL params
+  const SORT_OPTIONS = [
+    { key: "newest",     label: t("product.sort_newest") },
+    { key: "price_asc",  label: t("product.sort_price_asc") },
+    { key: "price_desc", label: t("product.sort_price_desc") },
+    { key: "popular",    label: t("product.sort_popular") },
+  ];
+
   const qParam   = searchParams.get("q") || "";
   const sortParam = searchParams.get("sort") || "newest";
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
@@ -38,7 +39,7 @@ export default function AllProductsPage() {
   const [loading, setLoading]   = useState(false);
   const [localQ, setLocalQ]     = useState(qParam);
 
-  const fetch = useCallback(async (params) => {
+  const fetchProducts = useCallback(async (params) => {
     setLoading(true);
     try {
       const res = await productApi.getAll({ ...params, limit: LIMIT });
@@ -48,11 +49,10 @@ export default function AllProductsPage() {
     finally { setLoading(false); }
   }, []);
 
-  // Sync localQ when URL param changes (e.g. from header search)
   useEffect(() => { setLocalQ(qParam); }, [qParam]);
 
   useEffect(() => {
-    fetch({ q: qParam || undefined, sort: sortParam, page: pageParam });
+    fetchProducts({ q: qParam || undefined, sort: sortParam, page: pageParam });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qParam, sortParam, pageParam]);
 
@@ -73,17 +73,17 @@ export default function AllProductsPage() {
   };
 
   const pageTitle = isSearchPage && qParam
-    ? `Kết quả cho "${qParam}"`
+    ? `${t("product.results_for")} "${qParam}"`
     : qParam
-      ? `Tìm kiếm: "${qParam}"`
-      : "Tất cả sản phẩm";
+      ? `${t("product.search_label")} "${qParam}"`
+      : t("product.all_products");
 
   return (
     <PageContainer>
       <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
         <h1 className="text-2xl font-black text-default-900">{pageTitle}</h1>
         {total > 0 && (
-          <span className="text-sm text-default-400">{total.toLocaleString("vi-VN")} sản phẩm</span>
+          <span className="text-sm text-default-400">{total.toLocaleString("vi-VN")} {t("product.products_count")}</span>
         )}
       </div>
 
@@ -91,7 +91,7 @@ export default function AllProductsPage() {
       <div className="flex gap-3 mb-7 flex-wrap items-center">
         <div className="flex gap-2 flex-1 min-w-[220px] max-w-md">
           <Input
-            placeholder="Tìm kiếm sản phẩm..."
+            placeholder={t("product.search_products")}
             value={localQ}
             onValueChange={setLocalQ}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -110,7 +110,7 @@ export default function AllProductsPage() {
         </div>
 
         <Select
-          aria-label="Sắp xếp"
+          aria-label={t("common.sort")}
           selectedKeys={new Set([sortParam])}
           onSelectionChange={(k) => updateParam("sort", Array.from(k)[0] || "newest")}
           radius="lg"
@@ -143,8 +143,8 @@ export default function AllProductsPage() {
       ) : products.length === 0 ? (
         <EmptyState
           icon={Layers}
-          title="Không tìm thấy sản phẩm"
-          description={qParam ? `Không có sản phẩm nào khớp với "${qParam}".` : "Hiện tại chưa có sản phẩm nào."}
+          title={t("product.no_products")}
+          description={qParam ? `${t("product.no_products_match")} "${qParam}".` : t("product.no_products_yet")}
         />
       ) : (
         <motion.div

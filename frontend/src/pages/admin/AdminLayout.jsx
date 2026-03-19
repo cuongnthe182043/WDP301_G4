@@ -1,33 +1,36 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
-  BarChart2, Key, Shield, Package, Clock, MessageSquare,
+  BarChart2, Key, Shield, Package, Clock, MessageSquare, Users,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
-const NAV_ITEMS = [
-  { to: "/admin/shops",            label: "Quản lý Shop",        icon: Store,          color: "#6366f1", bg: "rgba(99,102,241,0.1)"  },
-  { divider: true },
-  { to: "/admin/products",         label: "Tất cả sản phẩm",     icon: Package,        color: "#0ea5e9", bg: "rgba(14,165,233,0.1)",  exact: true },
-  { to: "/admin/products/pending", label: "Chờ duyệt",           icon: Clock,          color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
-  { divider: true },
-  { to: "/admin/reviews",          label: "Kiểm duyệt đánh giá", icon: MessageSquare,  color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
-  { divider: true },
-  { to: "/admin/audit-logs",       label: "Audit Logs",          icon: FileText,       color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
-  { to: "/admin/reconciliation",   label: "Đối soát",            icon: BarChart2,      color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
-  { to: "/admin/api-keys",         label: "API Keys",            icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
-  { divider: true },
-  { to: "/admin/system-config",    label: "Cấu hình hệ thống",   icon: Settings,       color: "#64748b", bg: "rgba(100,116,139,0.1)" },
-];
-
 export default function AdminLayout() {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAuth();
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const NAV_ITEMS = [
+    { to: "/admin/shops",            label: t("admin.manage_shops"),       icon: Store,          color: "#6366f1", bg: "rgba(99,102,241,0.1)"  },
+    { divider: true },
+    { to: "/admin/products",         label: t("admin.all_products_label"), icon: Package,        color: "#0ea5e9", bg: "rgba(14,165,233,0.1)",  exact: true },
+    { to: "/admin/products/pending", label: t("admin.pending_label"),      icon: Clock,          color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
+    { divider: true },
+    { to: "/admin/reviews",          label: t("admin.moderation_reviews"), icon: MessageSquare,  color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
+    { to: "/admin/users",            label: t("admin.users_nav"),          icon: Users,          color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
+    { divider: true },
+    { to: "/admin/audit-logs",       label: t("admin.audit_logs"),         icon: FileText,       color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
+    { to: "/admin/reconciliation",   label: t("admin.reconciliation"),     icon: BarChart2,      color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
+    { to: "/admin/api-keys",         label: t("admin.api_keys"),           icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+    { divider: true },
+    { to: "/admin/system-config",    label: t("admin.system_config"),      icon: Settings,       color: "#64748b", bg: "rgba(100,116,139,0.1)" },
+  ];
 
   const S = {
     sidebar:     isDark ? { background: "#18181b", borderRight: "1px solid #27272a", boxShadow: "2px 0 16px rgba(0,0,0,0.35)" }
@@ -75,7 +78,7 @@ export default function AdminLayout() {
               className="font-bold text-sm whitespace-nowrap transition-all duration-300 overflow-hidden"
               style={{ maxWidth: collapsed ? 0 : "120px", opacity: collapsed ? 0 : 1, color: S.brandText }}
             >
-              Admin Panel
+              {t("admin.panel")}
             </span>
           </div>
 
@@ -131,7 +134,6 @@ export default function AdminLayout() {
                       }
                     }}
                   >
-                    {/* Active left bar */}
                     {isActive && (
                       <span
                         className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full"
@@ -139,7 +141,6 @@ export default function AdminLayout() {
                       />
                     )}
 
-                    {/* Icon box */}
                     <span
                       className="flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0"
                       style={{ background: item.bg, color: item.color }}
@@ -147,7 +148,6 @@ export default function AdminLayout() {
                       <Icon size={15} />
                     </span>
 
-                    {/* Label */}
                     <span
                       className="text-[13px] font-medium whitespace-nowrap overflow-hidden transition-all duration-300"
                       style={{ maxWidth: collapsed ? 0 : "150px", opacity: collapsed ? 0 : 1 }}
@@ -189,7 +189,7 @@ export default function AdminLayout() {
               style={{ maxWidth: collapsed ? 0 : "140px", opacity: collapsed ? 0 : 1 }}
             >
               <p className="text-[13px] font-semibold truncate whitespace-nowrap" style={{ color: S.brandText }}>{user?.name}</p>
-              <p className="text-[10px] truncate whitespace-nowrap" style={{ color: S.subText }}>System Admin</p>
+              <p className="text-[10px] truncate whitespace-nowrap" style={{ color: S.subText }}>{t("admin.system_admin")}</p>
             </div>
           </div>
         </div>

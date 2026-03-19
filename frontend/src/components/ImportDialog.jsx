@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 
 export default function ImportDialog({ open, onClose, svc, onImported }) {
+  const { t } = useTranslation();
   const [file, setFile] = useState();
   const [busy, setBusy] = useState(false);
 
@@ -17,21 +19,21 @@ export default function ImportDialog({ open, onClose, svc, onImported }) {
   return (
     <Modal isOpen={open} onClose={onClose} size="sm">
       <ModalContent>
-        <ModalHeader>Import sản phẩm từ Excel</ModalHeader>
+        <ModalHeader>{t("product.import_from_excel")}</ModalHeader>
         <ModalBody className="space-y-2">
           <p className="text-sm text-default-600">
-            Cột bắt buộc: name, sku, price, stock. Tuỳ chọn: category, brand, images, attrs(json)
+            {t("product.import_required_cols")}
           </p>
           <Button as="label" variant="bordered" className="cursor-pointer">
-            Chọn file Excel
+            {t("product.pick_excel_file")}
             <input type="file" hidden accept=".xlsx,.xls" onChange={e => setFile(e.target.files?.[0])} />
           </Button>
           {file && <p className="text-xs text-default-400">{file.name}</p>}
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>Huỷ</Button>
+          <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
           <Button color="primary" isDisabled={!file || busy} onPress={doImport}>
-            {busy ? "Đang import…" : "Import"}
+            {busy ? t("product.importing") : t("product.import")}
           </Button>
         </ModalFooter>
       </ModalContent>

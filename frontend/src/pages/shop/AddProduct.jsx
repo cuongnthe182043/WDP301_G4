@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardBody, Button, Spinner, Chip } from "@heroui/react";
 import { CheckCircle, Clock, ChevronLeft, Layers } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import ProductForm from "../../components/ProductForm";
 import { productAdminService as svc } from "../../services/productAdminService";
 
@@ -14,6 +15,7 @@ function cartesian(arrays) {
 }
 
 export default function AddProduct({ mode }) {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = mode === "edit" || !!id;
@@ -51,13 +53,16 @@ export default function AddProduct({ mode }) {
           try {
             const dimArrays = dims.map((d) => variantValues[d]);
             const combos    = cartesian(dimArrays);
+            const totalStock = Number(payload.stock_total) || 0;
+            const perVariant = combos.length > 0 ? Math.floor(totalStock / combos.length) : 0;
+            const remainder  = totalStock - perVariant * combos.length;
             const rows = combos.map((combo, i) => {
               const attrs = {};
               dims.forEach((d, j) => { attrs[d] = combo[j]; });
               return {
                 sku:                `${p._id.replace("prod-", "")}-${i + 1}`,
                 price:              payload.base_price,
-                stock:              0,
+                stock:              perVariant + (i === 0 ? remainder : 0),
                 variant_attributes: attrs,
                 is_active:          true,
               };
@@ -96,16 +101,15 @@ export default function AddProduct({ mode }) {
           </div>
         </div>
         <div className="space-y-2">
-          <h2 className="text-xl font-black text-default-900">Sản phẩm đang chờ duyệt</h2>
+          <h2 className="text-xl font-black text-default-900">{t("product.pending_approval")}</h2>
           <p className="text-sm text-default-500">
-            Sản phẩm <strong className="text-default-700">"{created.name}"</strong> đã được tạo thành công.
-            Sản phẩm sẽ hiển thị trên hệ thống sau khi quản trị viên phê duyệt.
+            {t("product.created_pending_desc", { name: created.name })}
           </p>
           {created.variantCount > 0 && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-success-50 border border-success-200 rounded-xl">
               <CheckCircle size={13} className="text-success-600" />
               <p className="text-xs text-success-700">
-                Đã tạo tự động <strong>{created.variantCount}</strong> biến thể từ các giá trị đã nhập
+                {t("product.auto_variants_created", { n: created.variantCount })}
               </p>
             </div>
           )}
@@ -116,14 +120,14 @@ export default function AddProduct({ mode }) {
             startContent={<ChevronLeft size={14} />}
             onPress={() => navigate("/shop/admin/products")}
           >
-            Quay lại danh sách
+            {t("common.back_to_list")}
           </Button>
           <Button
             color="primary" radius="lg" size="sm"
             startContent={<Layers size={14} />}
             onPress={() => navigate(`/shop/admin/products/${created._id}/variants`)}
           >
-            {created.variantCount > 0 ? "Quản lý biến thể" : "Thêm biến thể"}
+            {created.variantCount > 0 ? t("product.manage_variants") : t("product.add_variant")}
           </Button>
         </div>
       </div>
@@ -141,11 +145,11 @@ export default function AddProduct({ mode }) {
         </Button>
         <div>
           <h1 className="text-xl font-black text-default-900">
-            {isEdit ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
+            {isEdit ? t("product.edit_product") : t("product.add_new_product")}
           </h1>
           {!isEdit && (
             <p className="text-xs text-default-400 mt-0.5">
-              Sản phẩm mới sẽ ở trạng thái <strong>chờ duyệt</strong> cho đến khi quản trị viên phê duyệt
+              {t("product.new_product_pending_note")}
             </p>
           )}
         </div>

@@ -2,21 +2,27 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Card, CardBody, Button, Input, Textarea, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
-  Chip, Pagination, Spinner, Checkbox, CheckboxGroup, Avatar,
+  Chip, Pagination, Spinner, Avatar,
 } from "@heroui/react";
-import { Plus, Megaphone, Mail, Bell, Users, Clock, Check, ChevronRight } from "lucide-react";
+import { Plus, Megaphone, Mail, Bell, Users, ChevronRight, Check } from "lucide-react";
 import { campaignApi, voucherDistributeApi } from "../../services/shopMarketingService";
 import { voucherApi } from "../../services/voucherService";
 import apiClient from "../../services/apiClient";
 import { useToast } from "../../components/common/ToastProvider";
+import { useTranslation } from "react-i18next";
 
-const formatDate = (d) => d ? new Date(d).toLocaleString("vi-VN") : "—";
+const formatDate = (d) => d ? new Date(d).toLocaleString() : "—";
 
 const TYPE_COLOR  = { announcement: "primary", voucher_send: "success", credits_gift: "warning" };
-const TYPE_LABEL  = { announcement: "Thông báo", voucher_send: "Gửi voucher", credits_gift: "Tặng tín dụng" };
 const STATUS_COLOR = { pending: "default", sending: "warning", sent: "success", failed: "danger" };
 
 function CampaignRow({ c }) {
+  const { t } = useTranslation();
+  const TYPE_LABEL = {
+    announcement: t("shop.campaign_announcement"),
+    voucher_send:  t("shop.campaign_voucher_send"),
+    credits_gift:  t("shop.campaign_credits_gift"),
+  };
   return (
     <tr className="hover:bg-default-50 border-b border-default-100">
       <td className="px-4 py-3">
@@ -36,7 +42,7 @@ function CampaignRow({ c }) {
           <span className="text-success font-semibold">{c.sent_count}</span> /{" "}
           {c.recipient_count}
           {c.failed_count > 0 && (
-            <span className="text-danger ml-1">({c.failed_count} lỗi)</span>
+            <span className="text-danger ml-1">({c.failed_count} {t("shop.sent_errors")})</span>
           )}
         </div>
       </td>
@@ -48,10 +54,10 @@ function CampaignRow({ c }) {
   );
 }
 
-// ── Create Campaign Modal ──────────────────────────────────────────────────────
 function CreateModal({ isOpen, onClose, onCreated }) {
+  const { t } = useTranslation();
   const toast = useToast();
-  const [step,    setStep]    = useState(1); // 1=type, 2=content, 3=recipients
+  const [step,    setStep]    = useState(1);
   const [saving,  setSaving]  = useState(false);
   const [form, setForm] = useState({
     campaign_type:  "announcement",
@@ -63,8 +69,8 @@ function CreateModal({ isOpen, onClose, onCreated }) {
     voucher_id:     "",
     credits_amount: "",
   });
-  const [vouchers,   setVouchers]   = useState([]);
-  const [customers,  setCustomers]  = useState([]);
+  const [vouchers,    setVouchers]    = useState([]);
+  const [customers,   setCustomers]   = useState([]);
   const [loadingCust, setLoadingCust] = useState(false);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -84,10 +90,10 @@ function CreateModal({ isOpen, onClose, onCreated }) {
   }, [form.recipient_type]);
 
   const handleSubmit = async () => {
-    if (!form.title.trim() || !form.message.trim()) return toast.error("Nhập tiêu đề và nội dung");
-    if (form.campaign_type === "voucher_send" && !form.voucher_id) return toast.error("Chọn voucher để gửi");
-    if (form.campaign_type === "credits_gift" && !form.credits_amount) return toast.error("Nhập số tín dụng");
-    if (form.recipient_type === "custom" && !form.custom_user_ids.length) return toast.error("Chọn ít nhất 1 khách hàng");
+    if (!form.title.trim() || !form.message.trim()) return toast.error(t("common.required_fields"));
+    if (form.campaign_type === "voucher_send" && !form.voucher_id) return toast.error(t("shop.select_voucher"));
+    if (form.campaign_type === "credits_gift" && !form.credits_amount) return toast.error(t("shop.credits_gift_amount"));
+    if (form.recipient_type === "custom" && !form.custom_user_ids.length) return toast.error(t("shop.select_customers"));
 
     setSaving(true);
     try {
@@ -104,7 +110,7 @@ function CreateModal({ isOpen, onClose, onCreated }) {
           credits_amount: form.campaign_type === "credits_gift" ? Number(form.credits_amount) : undefined,
         });
       }
-      toast.success("Đã gửi chiến dịch thành công!");
+      toast.success(t("shop.campaigns_sent"));
       onCreated?.();
       onClose();
     } catch (e) {
@@ -117,17 +123,15 @@ function CreateModal({ isOpen, onClose, onCreated }) {
       <ModalContent>
         {(onModalClose) => (
           <>
-            <ModalHeader>Tạo chiến dịch thông báo</ModalHeader>
+            <ModalHeader>{t("shop.create_campaign_modal")}</ModalHeader>
             <ModalBody className="space-y-4 pb-2">
-
-              {/* Step 1: Choose type */}
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-default-700">Loại chiến dịch</p>
+                <p className="text-sm font-semibold text-default-700">{t("shop.campaign_type_label")}</p>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { key: "announcement",  icon: Megaphone, label: "Thông báo",    desc: "Gửi tin nhắn tự do" },
-                    { key: "voucher_send",  icon: ChevronRight, label: "Gửi voucher", desc: "Tặng mã giảm giá" },
-                    { key: "credits_gift",  icon: Check, label: "Tặng tín dụng",   desc: "Nạp điểm cửa hàng" },
+                    { key: "announcement", icon: Megaphone,     label: t("shop.campaign_announcement"), desc: t("shop.campaign_announcement_desc") },
+                    { key: "voucher_send", icon: ChevronRight,  label: t("shop.campaign_voucher_send"), desc: t("shop.campaign_voucher_desc") },
+                    { key: "credits_gift", icon: Check,         label: t("shop.campaign_credits_gift"), desc: t("shop.campaign_credits_desc") },
                   ].map(({ key, icon: Icon, label, desc }) => (
                     <button key={key}
                       onClick={() => set("campaign_type", key)}
@@ -140,43 +144,38 @@ function CreateModal({ isOpen, onClose, onCreated }) {
                 </div>
               </div>
 
-              {/* Voucher picker */}
               {form.campaign_type === "voucher_send" && (
-                <Select label="Chọn voucher" selectedKeys={form.voucher_id ? new Set([form.voucher_id]) : new Set()}
+                <Select label={t("shop.select_voucher")} selectedKeys={form.voucher_id ? new Set([form.voucher_id]) : new Set()}
                   onSelectionChange={(k) => set("voucher_id", Array.from(k)[0] || "")} radius="lg">
                   {vouchers.map(v => (
                     <SelectItem key={v._id}>
-                      {v.code} — {v.discount_type === "percent" ? `${v.discount_value}%` : `${v.discount_value.toLocaleString("vi-VN")}₫`}
+                      {v.code} — {v.discount_type === "percent" ? `${v.discount_value}%` : `${v.discount_value.toLocaleString()}₫`}
                     </SelectItem>
                   ))}
                 </Select>
               )}
 
-              {/* Credits amount */}
               {form.campaign_type === "credits_gift" && (
-                <Input label="Số tín dụng tặng (₫)" type="number" min="1000"
+                <Input label={`${t("shop.credits_gift_amount")} (₫)`} type="number" min="1000"
                   value={form.credits_amount} onValueChange={(v) => set("credits_amount", v)} radius="lg" />
               )}
 
-              {/* Title & message */}
-              <Input label="Tiêu đề" placeholder="VD: Khuyến mãi hôm nay!"
+              <Input label={t("common.title")} placeholder="VD: Khuyến mãi hôm nay!"
                 value={form.title} onValueChange={(v) => set("title", v)} radius="lg" />
-              <Textarea label="Nội dung" placeholder="Nội dung thông báo..."
+              <Textarea label={t("common.description")} placeholder="..."
                 value={form.message} onValueChange={(v) => set("message", v)} radius="lg" minRows={3} />
 
-              {/* Recipients */}
-              <Select label="Đối tượng nhận"
+              <Select label={t("common.recipients")}
                 selectedKeys={new Set([form.recipient_type])}
                 onSelectionChange={(k) => set("recipient_type", Array.from(k)[0])} radius="lg">
-                <SelectItem key="all_buyers">Tất cả khách đã mua</SelectItem>
-                <SelectItem key="recent_30d">Mua trong 30 ngày gần đây</SelectItem>
-                <SelectItem key="custom">Chọn thủ công</SelectItem>
+                <SelectItem key="all_buyers">{t("shop.recipients_all_buyers")}</SelectItem>
+                <SelectItem key="recent_30d">{t("shop.recipients_recent_30d")}</SelectItem>
+                <SelectItem key="custom">{t("shop.recipients_custom")}</SelectItem>
               </Select>
 
-              {/* Custom customer picker */}
               {form.recipient_type === "custom" && (
                 <div>
-                  <p className="text-sm font-medium text-default-700 mb-2">Chọn khách hàng</p>
+                  <p className="text-sm font-medium text-default-700 mb-2">{t("shop.select_customers")}</p>
                   {loadingCust ? <Spinner size="sm" /> : (
                     <div className="max-h-48 overflow-y-auto space-y-1 border border-default-200 rounded-xl p-2">
                       {customers.map(c => (
@@ -196,18 +195,17 @@ function CreateModal({ isOpen, onClose, onCreated }) {
                           </div>
                         </label>
                       ))}
-                      {!customers.length && <p className="text-xs text-center text-default-400 py-3">Chưa có khách hàng</p>}
+                      {!customers.length && <p className="text-xs text-center text-default-400 py-3">{t("shop.no_customers")}</p>}
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Channels */}
               <div>
-                <p className="text-sm font-medium text-default-700 mb-2">Kênh gửi</p>
+                <p className="text-sm font-medium text-default-700 mb-2">{t("common.channels")}</p>
                 <div className="flex gap-3">
                   {[
-                    { key: "in_app", icon: Bell, label: "Thông báo app" },
+                    { key: "in_app", icon: Bell, label: t("shop.channel_in_app") },
                     { key: "email",  icon: Mail, label: "Email" },
                   ].map(({ key, icon: Icon, label }) => (
                     <label key={key} className="flex items-center gap-2 cursor-pointer">
@@ -227,9 +225,9 @@ function CreateModal({ isOpen, onClose, onCreated }) {
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onModalClose}>Hủy</Button>
+              <Button variant="light" onPress={onModalClose}>{t("common.cancel")}</Button>
               <Button color="primary" isLoading={saving} onPress={handleSubmit}>
-                Gửi ngay
+                {t("shop.send_now")}
               </Button>
             </ModalFooter>
           </>
@@ -239,8 +237,8 @@ function CreateModal({ isOpen, onClose, onCreated }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function ManageCampaigns() {
+  const { t } = useTranslation();
   const [campaigns, setCampaigns] = useState([]);
   const [loading,   setLoading]   = useState(true);
   const [page,      setPage]      = useState(1);
@@ -269,31 +267,30 @@ export default function ManageCampaigns() {
     <div className="space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-default-900">Chiến dịch thông báo</h1>
-          <p className="text-sm text-default-400">Gửi voucher, tín dụng, thông báo đến khách hàng</p>
+          <h1 className="text-xl font-black text-default-900">{t("shop.campaigns")}</h1>
+          <p className="text-sm text-default-400">{t("shop.campaigns_desc")}</p>
         </div>
         <div className="flex gap-2">
-          <Select size="sm" placeholder="Loại" className="w-40" radius="lg"
+          <Select size="sm" placeholder={t("common.type")} className="w-40" radius="lg"
             selectedKeys={typeFilter ? new Set([typeFilter]) : new Set()}
             onSelectionChange={(k) => { setTypeFilter(Array.from(k)[0] || ""); setPage(1); }}>
-            <SelectItem key="announcement">Thông báo</SelectItem>
-            <SelectItem key="voucher_send">Gửi voucher</SelectItem>
-            <SelectItem key="credits_gift">Tặng tín dụng</SelectItem>
+            <SelectItem key="announcement">{t("shop.campaign_announcement")}</SelectItem>
+            <SelectItem key="voucher_send">{t("shop.campaign_voucher_send")}</SelectItem>
+            <SelectItem key="credits_gift">{t("shop.campaign_credits_gift")}</SelectItem>
           </Select>
           <Button size="sm" color="primary" radius="lg" startContent={<Plus size={14} />}
             onPress={() => setShowCreate(true)}>
-            Tạo chiến dịch
+            {t("shop.create_campaign")}
           </Button>
         </div>
       </div>
 
-      {/* Stats cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "Tổng chiến dịch", value: total },
-          { label: "Đã gửi thành công", value: campaigns.filter(c => c.status === "sent").length },
-          { label: "Khách được nhận", value: campaigns.reduce((s, c) => s + (c.sent_count || 0), 0) },
-          { label: "Lỗi gửi", value: campaigns.reduce((s, c) => s + (c.failed_count || 0), 0) },
+          { label: t("shop.total_campaigns"), value: total },
+          { label: t("shop.campaigns_sent"), value: campaigns.filter(c => c.status === "sent").length },
+          { label: t("shop.customers_received"), value: campaigns.reduce((s, c) => s + (c.sent_count || 0), 0) },
+          { label: t("common.errors"), value: campaigns.reduce((s, c) => s + (c.failed_count || 0), 0) },
         ].map(({ label, value }) => (
           <Card key={label} radius="xl" shadow="sm">
             <CardBody className="py-3 px-4">
@@ -304,17 +301,16 @@ export default function ManageCampaigns() {
         ))}
       </div>
 
-      {/* Table */}
       <Card radius="xl" shadow="sm">
         <CardBody className="p-0 overflow-auto">
           {loading ? <div className="flex justify-center py-10"><Spinner /></div>
           : campaigns.length === 0
-          ? <div className="py-12 text-center text-default-400"><Megaphone size={36} className="mx-auto mb-2 opacity-30" />Chưa có chiến dịch nào</div>
+          ? <div className="py-12 text-center text-default-400"><Megaphone size={36} className="mx-auto mb-2 opacity-30" />{t("shop.no_campaigns")}</div>
           : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Chiến dịch", "Loại", "Đối tượng", "Đã gửi", "Trạng thái", "Thời gian"].map(h => (
+                  {[t("shop.campaigns"), t("common.type"), t("common.target"), t("common.sent"), t("common.status"), t("common.time")].map(h => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>

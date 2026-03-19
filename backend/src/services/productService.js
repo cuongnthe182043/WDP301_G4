@@ -76,15 +76,29 @@ async function getProductDetail(idOrSlug) {
     getFlashSaleItemForProduct(prodDoc._id),
   ]);
 
-  // ===== Size chart: try (brand_id, category_id, gender) → (null, category_id, gender)
+  // ===== Size chart lookup — most-specific to least-specific
   let sizeChart = null;
-  if (category?._id) {
-    const gender = chooseGender(category);
-    sizeChart =
-      (await ProductSizeChart.findOne({ brand_id: prodDoc.brand_id || null, category_id: category._id, gender }).lean())
-      || (await ProductSizeChart.findOne({ brand_id: null, category_id: category._id, gender }).lean())
-      || null;
-  }
+  const _gender = chooseGender(category);
+  sizeChart =
+    // 1. exact brand + category + gender
+    (prodDoc.brand_id && category?._id
+      ? await ProductSizeChart.findOne({ brand_id: prodDoc.brand_id, category_id: category._id, gender: _gender, is_active: true }).lean()
+      : null)
+    // 2. any brand + same category + gender
+    || (category?._id
+      ? await ProductSizeChart.findOne({ category_id: category._id, gender: _gender, is_active: true }).lean()
+      : null)
+    // 3. same category, any gender
+    || (category?._id
+      ? await ProductSizeChart.findOne({ category_id: category._id, is_active: true }).lean()
+      : null)
+    // 4. any chart matching gender (no category constraint)
+    || await ProductSizeChart.findOne({ gender: _gender, is_active: true }).lean()
+    // 5. any unisex chart
+    || await ProductSizeChart.findOne({ gender: "unisex", is_active: true }).lean()
+    // 6. absolutely any active chart
+    || await ProductSizeChart.findOne({ is_active: true }).lean()
+    || null;
 
   // price range
   let price_min = prodDoc.base_price;

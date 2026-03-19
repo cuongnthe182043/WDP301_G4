@@ -14,7 +14,7 @@ router.get('/:idOrSlug', productController.getDetail);
 router.get('/:idOrSlug/reviews', productController.getReviews);
 router.get('/:idOrSlug/ratings-summary', productController.getRatingsSummary);
 router.get('/:idOrSlug/related', productController.getRelated);
-router.post('/:id/size-match', verifyToken, productController.sizeMatch);
+router.post('/:id/size-match', productController.sizeMatch); // public — no auth required
 
 
 

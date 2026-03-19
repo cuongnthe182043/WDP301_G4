@@ -53,6 +53,7 @@ import ManageFlashsale from "../pages/shop/ManageFlashsale";
 import ManageBanner from "../pages/shop/ManageBanner";
 import ManageCampaigns from "../pages/shop/ManageCampaigns";
 import ManageCredits from "../pages/shop/ManageCredits";
+import SizeChartsPage from "../pages/shop/SizeChartsPage";
 
 /* ===== New Vendor / Admin Pages ===== */
 import RegisterShop from "../pages/customer/RegisterShop";
@@ -62,6 +63,7 @@ import AdminShops from "../pages/admin/AdminShops";
 import AdminProducts from "../pages/admin/AdminProducts";
 import AdminPendingProducts from "../pages/admin/AdminPendingProducts";
 import AdminReviews from "../pages/admin/AdminReviews";
+import AdminUsers from "../pages/admin/AdminUsers";
 
 /* ===== Admin Pages ===== */
 import AdminLayout from "../pages/admin/AdminLayout";
@@ -164,6 +166,7 @@ export default function AppRouter() {
         <Route path="catalog/categories"          element={<CategoriesPage />} />
         <Route path="catalog/attributes"          element={<AttributesPage />} />
         <Route path="catalog/brands"              element={<BrandsPage />} />
+        <Route path="size-charts"                 element={<SizeChartsPage />} />
 
         {/* Reviews & Marketing */}
         <Route path="reviews"                     element={<ManageReviews />} />
@@ -196,6 +199,7 @@ export default function AppRouter() {
         <Route path="products"         element={<AdminProducts />} />
         <Route path="products/pending" element={<AdminPendingProducts />} />
         <Route path="reviews"        element={<AdminReviews />} />
+        <Route path="users"          element={<AdminUsers />} />
         <Route path="system-config"  element={<SystemConfig />} />
         <Route path="audit-logs"     element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />

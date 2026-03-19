@@ -6,25 +6,27 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
 } from "@heroui/react";
 import { Plus, Pencil, Trash2, X, Lock } from "lucide-react";
-
-const TYPE_OPTS  = [
-  { key: "enum",    label: "Enum (chọn từ danh sách)" },
-  { key: "select",  label: "Select" },
-  { key: "text",    label: "Text" },
-  { key: "number",  label: "Number" },
-  { key: "boolean", label: "Boolean" },
-];
-const SCOPE_OPTS = [
-  { key: "variant", label: "Biến thể" },
-  { key: "product", label: "Sản phẩm" },
-  { key: "both",    label: "Cả hai" },
-];
+import { useTranslation } from "react-i18next";
 
 const EMPTY = { name: "", code: "", type: "enum", scope: "both", unit: "", values: [], is_variant_dimension: false };
 
 export default function AttributesPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const isAdmin   = user?.role_name === "system_admin";
+  const isAdmin = user?.role_name === "system_admin";
+
+  const TYPE_OPTS = [
+    { key: "enum",    label: "Enum" },
+    { key: "select",  label: "Select" },
+    { key: "text",    label: "Text" },
+    { key: "number",  label: "Number" },
+    { key: "boolean", label: "Boolean" },
+  ];
+  const SCOPE_OPTS = [
+    { key: "variant", label: t("shop.variant_management") },
+    { key: "product", label: t("product.title") },
+    { key: "both",    label: t("common.all") },
+  ];
 
   const [rows,      setRows]      = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -80,25 +82,25 @@ export default function AttributesPage() {
 
   const handleDelete = async () => {
     try { await svc.deleteAttribute(delTarget._id); setDelTarget(null); load(); }
-    catch (e) { alert(e.message || "Không thể xóa"); }
+    catch (e) { alert(e.message || t("common.error")); }
   };
 
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-default-900">Thuộc tính</h1>
-          <p className="text-sm text-default-400">{rows.length} thuộc tính</p>
+          <h1 className="text-xl font-black text-default-900">{t("shop.attributes")}</h1>
+          <p className="text-sm text-default-400">{rows.length} {t("shop.attributes").toLowerCase()}</p>
         </div>
         <div className="flex items-center gap-2">
           {!isAdmin && (
             <Chip size="sm" variant="flat" color="warning" startContent={<Lock size={11} />}>
-              Chỉ xem
+              {t("common.view_only")}
             </Chip>
           )}
           {isAdmin && (
             <Button color="primary" radius="lg" size="sm" startContent={<Plus size={14} />} onPress={openCreate}>
-              Thêm thuộc tính
+              {t("common.add_attribute")}
             </Button>
           )}
         </div>
@@ -107,9 +109,7 @@ export default function AttributesPage() {
       {!isAdmin && (
         <div className="flex items-center gap-2 p-3 bg-warning-50 border border-warning-200 rounded-xl">
           <Lock size={14} className="text-warning-600 flex-shrink-0" />
-          <p className="text-xs text-warning-700">
-            Thuộc tính do quản trị viên quản lý. Bạn có thể xem nhưng không thể thêm, sửa hoặc xóa.
-          </p>
+          <p className="text-xs text-warning-700">{t("common.admin_only")}</p>
         </div>
       )}
 
@@ -118,12 +118,12 @@ export default function AttributesPage() {
           {loading ? (
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : rows.length === 0 ? (
-            <div className="text-center py-16 text-default-400">Chưa có thuộc tính nào</div>
+            <div className="text-center py-16 text-default-400">{t("common.no_data")}</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Tên", "Mã", "Kiểu", "Phạm vi", "Giá trị mẫu", ...(isAdmin ? [""] : [])].map(h => (
+                  {[t("common.name"), "Code", t("common.type"), t("common.status"), t("common.attribute_values"), ...(isAdmin ? [""] : [])].map(h => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -165,29 +165,27 @@ export default function AttributesPage() {
         </CardBody>
       </Card>
 
-      {/* Modals — admin only */}
       {isAdmin && (
         <>
           <Modal isOpen={!!modal} onOpenChange={(o) => !o && setModal(null)} radius="xl" size="lg">
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>{modal === "edit" ? "Sửa thuộc tính" : "Thêm thuộc tính"}</ModalHeader>
+                  <ModalHeader>{modal === "edit" ? t("common.edit_attribute") : t("common.add_attribute")}</ModalHeader>
                   <ModalBody className="space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <Input
-                        isRequired label="Tên thuộc tính" placeholder="Màu sắc, Kích cỡ..."
+                        isRequired label={t("common.name")} placeholder="..."
                         value={form.name} onValueChange={v => setForm(f => ({ ...f, name: v }))} radius="lg"
                       />
                       <Input
-                        isRequired label="Mã (code)" placeholder="color, size..."
+                        isRequired label="Code" placeholder="color, size..."
                         value={form.code} onValueChange={v => setForm(f => ({ ...f, code: v }))} radius="lg"
-                        description="Chữ thường, không dấu"
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <Select
-                        label="Kiểu dữ liệu"
+                        label={t("common.type")}
                         selectedKeys={new Set([form.type])}
                         onSelectionChange={k => setForm(f => ({ ...f, type: Array.from(k)[0] || "enum" }))}
                         radius="lg"
@@ -195,7 +193,7 @@ export default function AttributesPage() {
                         {TYPE_OPTS.map(o => <SelectItem key={o.key}>{o.label}</SelectItem>)}
                       </Select>
                       <Select
-                        label="Phạm vi"
+                        label={t("common.status")}
                         selectedKeys={new Set([form.scope])}
                         onSelectionChange={k => setForm(f => ({ ...f, scope: Array.from(k)[0] || "both" }))}
                         radius="lg"
@@ -204,14 +202,14 @@ export default function AttributesPage() {
                       </Select>
                     </div>
                     <Input
-                      label="Đơn vị" placeholder="kg, cm... (tùy chọn)"
+                      label={t("common.note")} placeholder={t("common.optional")}
                       value={form.unit} onValueChange={v => setForm(f => ({ ...f, unit: v }))} radius="lg"
                     />
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-default-700">Giá trị mẫu</p>
+                      <p className="text-sm font-medium text-default-700">{t("common.attribute_values")}</p>
                       <div className="flex gap-2">
                         <Input
-                          placeholder="Đỏ, S, Cotton..." value={valInput}
+                          placeholder="..." value={valInput}
                           onValueChange={setValInput} radius="lg" size="sm" className="flex-1"
                           onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addValue())}
                         />
@@ -227,13 +225,13 @@ export default function AttributesPage() {
                     </div>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
                     <Button
                       color="primary" radius="lg" isLoading={saving}
                       isDisabled={!form.name.trim() || !form.code.trim()}
                       onPress={handleSave}
                     >
-                      {modal === "edit" ? "Lưu" : "Tạo"}
+                      {modal === "edit" ? t("common.save") : t("common.create")}
                     </Button>
                   </ModalFooter>
                 </>
@@ -245,15 +243,15 @@ export default function AttributesPage() {
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>Xóa thuộc tính</ModalHeader>
+                  <ModalHeader>{t("common.delete_attribute")}</ModalHeader>
                   <ModalBody>
                     <p className="text-sm text-default-500">
-                      Xóa thuộc tính <strong className="text-default-900">"{delTarget?.name}"</strong>?
+                      {t("common.confirm_delete")} <strong className="text-default-900">"{delTarget?.name}"</strong>?
                     </p>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
-                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>Xóa</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>{t("common.delete")}</Button>
                   </ModalFooter>
                 </>
               )}

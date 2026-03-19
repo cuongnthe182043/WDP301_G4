@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
@@ -156,21 +157,28 @@ function refineByMeasurements(rows = [], baseLabel, extras = {}) {
   return best?.label || baseLabel;
 }
 
-function fitLabelVi(fit) {
-  return { perfect: "Rất phù hợp", good: "Phù hợp", acceptable: "Tạm ổn", poor: "Không phù hợp" }[fit] || fit;
+function fitLabel(fit, t) {
+  const map = {
+    perfect: t("product.fit_perfect"),
+    good: t("product.fit_good"),
+    acceptable: t("product.fit_acceptable"),
+    poor: t("product.fit_poor"),
+  };
+  return map[fit] || fit;
 }
 
 /* ─────────────────────── Star component ─────────────────────── */
 function Stars({ value = 0, size = 16 }) {
+  const { t } = useTranslation();
   const v = Number(value || 0);
   const full = Math.floor(v);
   const half = v - full >= 0.5;
   const arr = Array.from({ length: 5 }, (_, i) => (i < full ? "full" : i === full && half ? "half" : "empty"));
   const color = { full: "#f59e0b", half: "#f59e0b", empty: "#d1d5db" };
   return (
-    <div className="flex gap-0.5" aria-label={`${v.toFixed(1)} / 5 sao`}>
-      {arr.map((t, i) => (
-        <Star key={i} size={size} fill={color[t]} color={color[t]} strokeWidth={0} />
+    <div className="flex gap-0.5" aria-label={t("product.stars_aria", { value: v.toFixed(1) })}>
+      {arr.map((type, i) => (
+        <Star key={i} size={size} fill={color[type]} color={color[type]} strokeWidth={0} />
       ))}
     </div>
   );
@@ -205,6 +213,7 @@ function ProductDetailSkeleton() {
 
 /* ═══════════════════════════ MAIN PAGE ═══════════════════════════ */
 export default function ProductDetail() {
+  const { t } = useTranslation();
   const { idOrSlug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -233,6 +242,8 @@ export default function ProductDetail() {
   const [sizeSuggest, setSizeSuggest] = useState(null);
   const [sizeScores, setSizeScores] = useState([]);
   const [sizeResultFit, setSizeResultFit] = useState(null);
+  const [sizeReason, setSizeReason] = useState(null);    // "xgboost_model" | "rule_based"
+  const [sizeFeatures, setSizeFeatures] = useState([]);  // features used by XGBoost
   const [sizeLoading, setSizeLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
@@ -276,7 +287,7 @@ export default function ProductDetail() {
         }
       } catch (e) {
         if (!alive) return;
-        setError(e?.response?.data?.message || e?.message || "Không tải được chi tiết sản phẩm");
+        setError(e?.response?.data?.message || e?.message || t("product.load_error"));
       } finally { if (alive) setLoading(false); }
     })();
     setActiveIndex(0);
@@ -333,13 +344,13 @@ export default function ProductDetail() {
 
   const di = p.detail_info || {};
   const specEntries = [
-    di.origin_country ? ["Xuất xứ", di.origin_country] : null,
-    Array.isArray(di.materials) && di.materials.length ? ["Chất liệu", di.materials.join(", ")] : null,
+    di.origin_country ? [t("product.spec_origin"), di.origin_country] : null,
+    Array.isArray(di.materials) && di.materials.length ? [t("product.spec_materials"), di.materials.join(", ")] : null,
     di.material_ratio && Object.keys(di.material_ratio).length
-      ? ["Tỉ lệ chất liệu", Object.entries(di.material_ratio).map(([k, v]) => `${k}: ${v}%`).join(", ")] : null,
-    Array.isArray(di.seasons) && di.seasons.length ? ["Mùa phù hợp", di.seasons.join(", ")] : null,
-    di.customization_available != null ? ["Tuỳ chỉnh", di.customization_available ? "Có" : "Không"] : null,
-    di.care_instructions ? ["Hướng dẫn bảo quản", di.care_instructions] : null,
+      ? [t("product.spec_material_ratio"), Object.entries(di.material_ratio).map(([k, v]) => `${k}: ${v}%`).join(", ")] : null,
+    Array.isArray(di.seasons) && di.seasons.length ? [t("product.spec_seasons"), di.seasons.join(", ")] : null,
+    di.customization_available != null ? [t("product.spec_customization"), di.customization_available ? t("common.yes") : t("common.no")] : null,
+    di.care_instructions ? [t("product.spec_care"), di.care_instructions] : null,
   ].filter(Boolean);
   const va = getVarAttrs(selectedVar);
   Object.entries(va).forEach(([k, v]) => specEntries.push([prettyKey(k), String(rawVal(v))]));
@@ -351,7 +362,7 @@ export default function ProductDetail() {
 
   const onPick = (k, v) => setSelectedAttrs((prev) => resolveOnPick(variantsMemo, prev, k, v));
 
-  const canSuggest = Number(height) > 0 && Number(weight) > 0 && Array.isArray(sizeChart?.rows) && sizeChart.rows.length > 0;
+  const canSuggest = Number(height) > 0 && Number(weight) > 0;
 
   // Load saved body profile when modal opens
   useEffect(() => {
@@ -381,9 +392,9 @@ export default function ProductDetail() {
         hip:      Number(hip)      || undefined,
         shoulder: Number(shoulder) || undefined,
       });
-      toast.success("Đã lưu số đo cơ thể!");
+      toast.success(t("product.body_saved"));
     } catch {
-      toast.error("Không lưu được số đo");
+      toast.error(t("product.body_save_error"));
     } finally { setProfileSaving(false); }
   };
 
@@ -399,10 +410,16 @@ export default function ProductDetail() {
         hip:      Number(hip)      || undefined,
         shoulder: Number(shoulder) || undefined,
       });
+      if (result?.reason === "no_chart") {
+        toast.error(t("product.no_size_chart"));
+        return;
+      }
       const label = result?.recommended_size || null;
       setSizeSuggest(label);
       setSizeScores(result?.all_sizes || []);
       setSizeResultFit(result?.fit || null);
+      setSizeReason(result?.reason || null);
+      setSizeFeatures(result?.features_used || []);
       if (label && (p.variant_dimensions || []).map(norm).includes("size")) {
         setSelectedAttrs((prev) => ({ ...prev, size: label }));
       }
@@ -424,6 +441,8 @@ export default function ProductDetail() {
       setSizeSuggest(label || null);
       setSizeScores([]);
       setSizeResultFit(null);
+      setSizeReason("rule_based");
+      setSizeFeatures([]);
       if (label && (p.variant_dimensions || []).map(norm).includes("size")) {
         setSelectedAttrs((prev) => ({ ...prev, size: label }));
       }
@@ -457,17 +476,17 @@ export default function ProductDetail() {
 
   /* ── Cart actions ── */
   const addToCart = async () => {
-    if (!selectedVar) return toast.error("Vui lòng chọn tổ hợp hợp lệ.");
-    if ((selectedVar.stock ?? 0) <= 0) return toast.error("Biến thể đã hết hàng.");
-    if (qty > (selectedVar.stock ?? 0)) return toast.error("Không đủ tồn kho.");
+    if (!selectedVar) return toast.error(t("product.select_variant"));
+    if ((selectedVar.stock ?? 0) <= 0) return toast.error(t("product.variant_out_of_stock"));
+    if (qty > (selectedVar.stock ?? 0)) return toast.error(t("product.insufficient_stock"));
     setAdding(true);
     try {
       await cartService.add({ product_id: p._id, variant_id: selectedVar._id || selectedVar.id, qty });
       flyToCart();
-      toast.success("Đã thêm vào giỏ hàng!");
+      toast.success(t("product.added_to_cart"));
       refreshCartBadge();
     } catch (e) {
-      const msg = e?.response?.data?.message || e.message || "Không thêm được vào giỏ";
+      const msg = e?.response?.data?.message || e.message || t("product.add_to_cart_error");
       if ([401, 403].includes(e?.response?.status)) {
         return navigate(`/login?returnUrl=${encodeURIComponent(location.pathname + location.search)}`);
       }
@@ -476,9 +495,9 @@ export default function ProductDetail() {
   };
 
   const buyNow = () => {
-    if (!selectedVar) return toast.error("Vui lòng chọn tổ hợp hợp lệ.");
-    if ((selectedVar.stock ?? 0) <= 0) return toast.error("Biến thể đã hết hàng.");
-    if (qty > (selectedVar.stock ?? 0)) return toast.error("Không đủ tồn kho.");
+    if (!selectedVar) return toast.error(t("product.select_variant"));
+    if ((selectedVar.stock ?? 0) <= 0) return toast.error(t("product.variant_out_of_stock"));
+    if (qty > (selectedVar.stock ?? 0)) return toast.error(t("product.insufficient_stock"));
     if (!localStorage.getItem(TOKEN_KEY)) return navigate(`/login?returnUrl=${encodeURIComponent(location.pathname + location.search)}`);
     navigate("/checkout", {
       state: {
@@ -495,14 +514,14 @@ export default function ProductDetail() {
       if (isWishlisted) {
         await userService.removeFromWishlist(p._id);
         setIsWishlisted(false);
-        toast.success("Đã xóa khỏi danh sách yêu thích");
+        toast.success(t("product.removed_from_wishlist"));
       } else {
         await userService.addToWishlist(p._id);
         setIsWishlisted(true);
-        toast.success("Đã thêm vào danh sách yêu thích!");
+        toast.success(t("product.added_to_wishlist"));
       }
     } catch (e) {
-      toast.error(e?.response?.data?.message || e?.message || "Không cập nhật được danh sách yêu thích");
+      toast.error(e?.response?.data?.message || e?.message || t("product.wishlist_error"));
     } finally {
       setWishlistLoading(false);
     }
@@ -522,14 +541,14 @@ export default function ProductDetail() {
     <div className="max-w-6xl mx-auto px-4 py-20 text-center">
       <AlertCircle size={48} className="mx-auto mb-4 text-danger" />
       <p className="text-danger font-semibold">{error}</p>
-      <Button className="mt-4" variant="bordered" onPress={() => navigate(-1)}>Quay lại</Button>
+      <Button className="mt-4" variant="bordered" onPress={() => navigate(-1)}>{t("common.back")}</Button>
     </div>
   );
 
   if (!p._id) return (
     <div className="max-w-6xl mx-auto px-4 py-20 text-center">
       <Package size={48} className="mx-auto mb-4 text-default-300" />
-      <p className="text-default-500 font-semibold">Không tìm thấy sản phẩm</p>
+      <p className="text-default-500 font-semibold">{t("product.no_products")}</p>
     </div>
   );
 
@@ -565,7 +584,7 @@ export default function ProductDetail() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-default-300 text-sm">
-                  Không có ảnh
+                  {t("product.no_image")}
                 </div>
               )}
             </AnimatePresence>
@@ -588,8 +607,8 @@ export default function ProductDetail() {
               whileTap={{ scale: 0.9 }}
               onClick={toggleWishlist}
               disabled={wishlistLoading}
-              aria-label={isWishlisted ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"}
-              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md z-10 transition-colors hover:bg-white"
+              aria-label={isWishlisted ? t("product.remove_from_wishlist_aria") : t("product.add_to_wishlist_aria")}
+              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm flex items-center justify-center shadow-md z-10 transition-colors hover:bg-white dark:hover:bg-zinc-800"
             >
               {wishlistLoading ? (
                 <span className="w-4 h-4 border-2 border-danger border-t-transparent rounded-full animate-spin" />
@@ -608,15 +627,15 @@ export default function ProductDetail() {
               <>
                 <button
                   onClick={() => setActiveIndex((i) => (i - 1 + images.length) % images.length)}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 hover:bg-white transition-colors md:hidden"
-                  aria-label="Ảnh trước"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
+                  aria-label={t("product.prev_image")}
                 >
                   <ChevronLeft size={16} />
                 </button>
                 <button
                   onClick={() => setActiveIndex((i) => (i + 1) % images.length)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 hover:bg-white transition-colors md:hidden"
-                  aria-label="Ảnh tiếp"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
+                  aria-label={t("product.next_image")}
                 >
                   <ChevronRight size={16} />
                 </button>
@@ -662,11 +681,11 @@ export default function ProductDetail() {
               <div className="flex items-center gap-1.5">
                 <Stars value={ratingValue} size={16} />
                 <span className="text-sm font-bold text-default-700">{ratingValue.toFixed(1)}</span>
-                <span className="text-sm text-default-400">({ratingCount} đánh giá)</span>
+                <span className="text-sm text-default-400">({ratingCount} {t("product.reviews")})</span>
               </div>
             )}
             {sold > 0 && (
-              <span className="text-sm text-default-400">• Đã bán <b className="text-default-700">{formatSold(sold)}</b></span>
+              <span className="text-sm text-default-400">• {t("product.sold_prefix")} <b className="text-default-700">{formatSold(sold)}</b> {t("product.sold_suffix")}</span>
             )}
             {p.sku && <span className="text-xs text-default-400 border border-default-200 rounded-lg px-2 py-0.5">SKU: {p.sku}</span>}
           </div>
@@ -728,9 +747,9 @@ export default function ProductDetail() {
                   (selectedVar.stock ?? 0) > 0 ? "text-success" : "text-danger"
                 }`}>
                   {(selectedVar.stock ?? 0) > 0 ? (
-                    <><CheckCircle2 size={15} /> Còn hàng ({selectedVar.stock})</>
+                    <><CheckCircle2 size={15} /> {t("product.in_stock")} ({selectedVar.stock})</>
                   ) : (
-                    <><AlertCircle size={15} /> Hết hàng</>
+                    <><AlertCircle size={15} /> {t("product.out_of_stock")}</>
                   )}
                 </div>
               )}
@@ -742,10 +761,10 @@ export default function ProductDetail() {
             onClick={() => setSizeOpen(true)}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:opacity-75 transition-opacity self-start"
           >
-            <Sparkles size={15} /> AI gợi ý size
+            <Sparkles size={15} /> {t("product.ai_size")}
             {sizeSuggest && (
               <Chip size="sm" color="success" variant="flat" className="ml-1">
-                Đề xuất: {sizeSuggest}
+                {t("product.size_recommend_label", { size: sizeSuggest })}
               </Chip>
             )}
           </button>
@@ -754,7 +773,7 @@ export default function ProductDetail() {
           <div className="space-y-3 pt-2">
             {/* Quantity selector */}
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-default-700">Số lượng:</span>
+              <span className="text-sm font-semibold text-default-700">{t("product.quantity")}:</span>
               <div className="flex items-center gap-1 border border-default-200 rounded-xl overflow-hidden">
                 <button
                   onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -799,7 +818,7 @@ export default function ProductDetail() {
                   isLoading={adding}
                   className="font-bold border-2"
                 >
-                  Thêm vào giỏ
+                  {t("product.add_to_cart")}
                 </Button>
               </motion.div>
               <motion.div whileTap={{ scale: 0.98 }} className="flex-1">
@@ -814,7 +833,7 @@ export default function ProductDetail() {
                   isLoading={adding}
                   className="font-bold shadow-md"
                 >
-                  Mua ngay
+                  {t("product.buy_now")}
                 </Button>
               </motion.div>
             </div>
@@ -832,21 +851,21 @@ export default function ProductDetail() {
 
       {/* ══ SIZE ADVISOR + SIZE CHART ══ */}
       <section id="size-section" className="mb-8">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-zinc-700 rounded-2xl p-5">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="font-bold text-default-800 flex items-center gap-2">
-                <Sparkles size={16} className="text-primary" /> Gợi ý size bằng AI
+                <Sparkles size={16} className="text-primary" /> {t("product.ai_size_heading")}
               </p>
               <p className="text-sm text-default-500 mt-0.5">
                 {sizeSuggest
-                  ? <>Size phù hợp nhất: <b className="text-primary">{sizeSuggest}</b> {sizeResultFit && <span className="text-xs text-default-400">({fitLabelVi(sizeResultFit)})</span>}</>
-                  : "Nhập số đo để AI gợi ý size phù hợp chính xác nhất"}
+                  ? <>{t("product.best_size_label")}: <b className="text-primary">{sizeSuggest}</b> {sizeResultFit && <span className="text-xs text-default-400">({fitLabel(sizeResultFit, t)})</span>}</>
+                  : t("product.enter_measurements_hint")}
               </p>
             </div>
             <Button size="sm" color="primary" variant="flat" radius="lg" onPress={() => setSizeOpen(true)}
               startContent={<Ruler size={14} />}>
-              {sizeSuggest ? "Cập nhật số đo" : "Nhập số đo →"}
+              {sizeSuggest ? t("product.update_measurements") : t("product.enter_measurements_cta")}
             </Button>
           </div>
 
@@ -860,12 +879,12 @@ export default function ProductDetail() {
                 return (
                   <div
                     key={s.label}
-                    className={`rounded-xl p-3 border transition-all ${isBest ? "border-primary bg-white shadow-md" : "border-blue-100 bg-white/60"}`}
+                    className={`rounded-xl p-3 border transition-all ${isBest ? "border-primary bg-white dark:bg-zinc-800 shadow-md" : "border-blue-100 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60"}`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className={`text-sm font-black ${isBest ? "text-primary" : "text-default-700"}`}>
                         {s.label}
-                        {isBest && <span className="ml-1 text-[10px] font-bold text-primary">✓ Tốt nhất</span>}
+                        {isBest && <span className="ml-1 text-[10px] font-bold text-primary">✓ {t("product.size_best")}</span>}
                       </span>
                       <span className={`text-xs font-bold text-${color}`}>{score}%</span>
                     </div>
@@ -878,22 +897,22 @@ export default function ProductDetail() {
         </div>
 
         {Array.isArray(sizeChart?.rows) && sizeChart.rows.length > 0 && (
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-default-200">
+          <div className="mt-4 overflow-x-auto rounded-2xl border border-default-200 dark:border-zinc-700">
             <table className="w-full text-sm">
-              <thead className="bg-default-50">
+              <thead className="bg-default-50 dark:bg-zinc-800">
                 <tr>
-                  <th className="text-left px-4 py-2.5 font-bold text-default-700">Size</th>
+                  <th className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-zinc-300">Size</th>
                   {sizeHeaders.map((k) => (
-                    <th key={k} className="text-left px-4 py-2.5 font-bold text-default-700">{prettyKey(k)}</th>
+                    <th key={k} className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-zinc-300">{prettyKey(k)}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {sizeChart.rows.map((r, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-default-50/50"}>
+                  <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-default-50/50 dark:bg-zinc-800/50"}>
                     <td className="px-4 py-2.5 font-black text-primary">{r.label}</td>
                     {sizeHeaders.map((k) => (
-                      <td key={k} className="px-4 py-2.5 text-default-700">{r.measurements?.[k] ?? "—"}</td>
+                      <td key={k} className="px-4 py-2.5 text-default-700 dark:text-zinc-300">{r.measurements?.[k] ?? "—"}</td>
                     ))}
                   </tr>
                 ))}
@@ -906,12 +925,12 @@ export default function ProductDetail() {
       {/* ══ SPECS ══ */}
       {!!specEntries.length && (
         <section className="mb-8">
-          <h3 className="text-lg font-black text-default-900 mb-4">Chi tiết sản phẩm</h3>
-          <div className="rounded-2xl border border-default-200 overflow-hidden">
+          <h3 className="text-lg font-black text-default-900 mb-4">{t("product.product_details")}</h3>
+          <div className="rounded-2xl border border-default-200 dark:border-zinc-700 overflow-hidden">
             {specEntries.map(([k, v], i) => (
-              <div key={i} className={`flex gap-4 px-4 py-3 text-sm ${i % 2 === 0 ? "bg-white" : "bg-default-50/50"}`}>
-                <span className="w-40 flex-shrink-0 font-semibold text-default-600">{k}</span>
-                <span className="text-default-800">{String(v)}</span>
+              <div key={i} className={`flex gap-4 px-4 py-3 text-sm ${i % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-default-50/50 dark:bg-zinc-800/50"}`}>
+                <span className="w-40 flex-shrink-0 font-semibold text-default-600 dark:text-zinc-400">{k}</span>
+                <span className="text-default-800 dark:text-zinc-200">{String(v)}</span>
               </div>
             ))}
           </div>
@@ -921,9 +940,9 @@ export default function ProductDetail() {
       {/* ══ DESCRIPTION ══ */}
       {p.description && (
         <section className="mb-8">
-          <h3 className="text-lg font-black text-default-900 mb-4">Mô tả sản phẩm</h3>
+          <h3 className="text-lg font-black text-default-900 mb-4">{t("product.description")}</h3>
           <div
-            className="prose prose-sm max-w-none text-default-700 bg-white border border-default-200 rounded-2xl p-5"
+            className="prose prose-sm max-w-none text-default-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 border border-default-200 dark:border-zinc-700 rounded-2xl p-5"
             dangerouslySetInnerHTML={{ __html: p.description }}
           />
         </section>
@@ -931,14 +950,14 @@ export default function ProductDetail() {
 
       {/* ══ REVIEWS ══ */}
       <section className="mb-10">
-        <h2 className="text-lg font-black text-default-900 mb-5">Đánh giá sản phẩm</h2>
+        <h2 className="text-lg font-black text-default-900 mb-5">{t("product.reviews_section")}</h2>
 
         {/* Summary */}
-        <div className="flex items-start gap-6 bg-default-50 rounded-2xl p-5 mb-5">
+        <div className="flex items-start gap-6 bg-default-50 dark:bg-zinc-800 rounded-2xl p-5 mb-5">
           <div className="text-center flex-shrink-0">
             <div className="text-4xl font-black text-default-900">{ratingValue?.toFixed(1)}</div>
             <Stars value={ratingValue} size={18} />
-            <div className="text-xs text-default-400 mt-1">{ratingCount} đánh giá</div>
+            <div className="text-xs text-default-400 mt-1">{ratingCount} {t("product.reviews")}</div>
           </div>
           <div className="flex-1">
             {/* Star filter chips */}
@@ -950,10 +969,10 @@ export default function ProductDetail() {
                   className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
                     String(rvStar) === String(f)
                       ? "bg-primary text-white border-primary"
-                      : "border-default-200 text-default-600 hover:border-primary hover:text-primary"
+                      : "border-default-200 dark:border-zinc-700 text-default-600 dark:text-zinc-400 hover:border-primary hover:text-primary"
                   }`}
                 >
-                  {f === "all" ? "Tất cả" : `${f} ★ (${summary.histogram?.[f] || 0})`}
+                  {f === "all" ? t("common.all") : `${f} ★ (${summary.histogram?.[f] || 0})`}
                 </button>
               ))}
             </div>
@@ -969,7 +988,7 @@ export default function ProductDetail() {
                   key={r._id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white border border-default-100 rounded-2xl p-4 shadow-sm"
+                  className="bg-white dark:bg-zinc-900 border border-default-100 dark:border-zinc-700 rounded-2xl p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
@@ -981,7 +1000,7 @@ export default function ProductDetail() {
                         </div>
                       )}
                       <div>
-                        <p className="font-bold text-sm text-default-800">{r.author_name || "Người dùng"}</p>
+                        <p className="font-bold text-sm text-default-800">{r.author_name || t("common.anonymous")}</p>
                         <Stars value={r.rating || 0} size={13} />
                       </div>
                     </div>
@@ -1005,7 +1024,7 @@ export default function ProductDetail() {
                   )}
                   {r.size_feedback && r.size_feedback !== "unknown" && (
                     <Chip size="sm" variant="flat" color="secondary" className="mt-2">
-                      {r.size_feedback === "fit" ? "Vừa vặn" : r.size_feedback === "tight" ? "Chật" : "Rộng"}
+                      {r.size_feedback === "fit" ? t("common.size_fit") : r.size_feedback === "tight" ? t("common.size_tight") : t("common.size_loose")}
                     </Chip>
                   )}
 
@@ -1013,7 +1032,7 @@ export default function ProductDetail() {
                   {r.reply && (
                     <div className="mt-3 ml-2 border-l-2 border-primary/30 pl-3 space-y-2">
                       <div className="bg-primary/5 rounded-xl p-3">
-                        <p className="text-xs font-bold text-primary mb-1">Phản hồi của shop</p>
+                        <p className="text-xs font-bold text-primary mb-1">{t("product.shop_reply")}</p>
                         <p className="text-sm text-default-700">{r.reply}</p>
                         {r.reply_at && (
                           <p className="text-xs text-default-400 mt-1">{new Date(r.reply_at).toLocaleDateString("vi-VN")}</p>
@@ -1021,11 +1040,11 @@ export default function ProductDetail() {
                       </div>
 
                       {/* Thread replies after shop reply */}
-                      {(r.thread || []).filter(t => t.from === "customer").map((t, i) => (
+                      {(r.thread || []).filter(th => th.from === "customer").map((th, i) => (
                         <div key={i} className="bg-default-50 rounded-xl p-3">
-                          <p className="text-xs font-bold text-default-600 mb-1">Người mua phản hồi</p>
-                          <p className="text-sm text-default-700">{t.text}</p>
-                          <p className="text-xs text-default-400 mt-1">{new Date(t.at).toLocaleDateString("vi-VN")}</p>
+                          <p className="text-xs font-bold text-default-600 mb-1">{t("product.buyer_reply")}</p>
+                          <p className="text-sm text-default-700">{th.text}</p>
+                          <p className="text-xs text-default-400 mt-1">{new Date(th.at).toLocaleDateString("vi-VN")}</p>
                         </div>
                       ))}
                     </div>
@@ -1042,23 +1061,23 @@ export default function ProductDetail() {
                 onPress={() => setRvPage((p) => Math.max(1, p - 1))}
                 startContent={<ChevronLeft size={14} />}
               >
-                Trước
+                {t("product.prev_page")}
               </Button>
-              <span className="text-sm text-default-500">Trang {rvPage}</span>
+              <span className="text-sm text-default-500">{t("common.page")} {rvPage}</span>
               <Button
                 size="sm" variant="bordered" radius="lg"
                 isDisabled={(reviews.items?.length || 0) < RV_LIMIT}
                 onPress={() => setRvPage((p) => p + 1)}
                 endContent={<ChevronRight size={14} />}
               >
-                Sau
+                {t("product.next_page")}
               </Button>
             </div>
           </>
         ) : (
           <div className="text-center py-12 text-default-400 bg-default-50 rounded-2xl">
             <Star size={32} className="mx-auto mb-3 opacity-30" />
-            <p className="font-medium">Chưa có đánh giá phù hợp bộ lọc.</p>
+            <p className="font-medium">{t("product.no_reviews_filter")}</p>
           </div>
         )}
       </section>
@@ -1066,7 +1085,7 @@ export default function ProductDetail() {
       {/* ══ RELATED PRODUCTS ══ */}
       {!!related?.length && (
         <section>
-          <h2 className="text-lg font-black text-default-900 mb-5">Sản phẩm liên quan</h2>
+          <h2 className="text-lg font-black text-default-900 mb-5">{t("product.related")}</h2>
           <motion.div
             variants={{ show: { transition: { staggerChildren: 0.06 } } }}
             initial="hidden"
@@ -1091,8 +1110,8 @@ export default function ProductDetail() {
                     <Sparkles size={15} className="text-white" />
                   </div>
                   <div>
-                    <p className="font-black text-default-900 leading-tight">AI Gợi ý size</p>
-                    <p className="text-xs text-default-400 font-normal">Nhập số đo để nhận gợi ý chính xác</p>
+                    <p className="font-black text-default-900 leading-tight">{t("product.modal_ai_title")}</p>
+                    <p className="text-xs text-default-400 font-normal">{t("product.modal_ai_subtitle")}</p>
                   </div>
                 </div>
               </ModalHeader>
@@ -1106,12 +1125,12 @@ export default function ProductDetail() {
                     {/* Measurement inputs */}
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { label: "Chiều cao (cm)", placeholder: "VD: 165", val: height, setter: setHeight, required: true },
-                        { label: "Cân nặng (kg)",  placeholder: "VD: 55",  val: weight, setter: setWeight, required: true },
-                        { label: "Vòng ngực (cm)", placeholder: "VD: 86",  val: chest,  setter: setChest },
-                        { label: "Vòng eo (cm)",   placeholder: "VD: 68",  val: waist,  setter: setWaist },
-                        { label: "Vòng mông (cm)", placeholder: "VD: 90",  val: hip,    setter: setHip },
-                        { label: "Ngang vai (cm)", placeholder: "VD: 38",  val: shoulder, setter: setShoulder },
+                        { label: t("product.measure_height"), placeholder: "165", val: height, setter: setHeight, required: true },
+                        { label: t("product.measure_weight"), placeholder: "55",  val: weight, setter: setWeight, required: true },
+                        { label: t("product.measure_chest"),  placeholder: "86",  val: chest,  setter: setChest },
+                        { label: t("product.measure_waist"),  placeholder: "68",  val: waist,  setter: setWaist },
+                        { label: t("product.measure_hip"),    placeholder: "90",  val: hip,    setter: setHip },
+                        { label: t("product.measure_shoulder"), placeholder: "38", val: shoulder, setter: setShoulder },
                       ].map(({ label, placeholder, val, setter, required }) => (
                         <Input
                           key={label}
@@ -1128,23 +1147,33 @@ export default function ProductDetail() {
                         />
                       ))}
                     </div>
-                    <p className="text-xs text-default-400">* Bắt buộc. Số đo khác giúp AI gợi ý chính xác hơn.</p>
+                    <p className="text-xs text-default-400">{t("product.measure_required_hint")}</p>
 
                     {/* Result — shown after scoring */}
                     {sizeSuggest && sizeScores.length > 0 && (
                       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
                         <Divider className="my-3" />
-                        <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center gap-2 mb-3 flex-wrap">
                           <CheckCircle2 size={16} className="text-success" />
                           <p className="font-bold text-sm text-default-800">
-                            Đề xuất cho bạn: <span className="text-primary">{sizeSuggest}</span>
-                            {sizeResultFit && (
-                              <Chip size="sm" color={sizeResultFit === "perfect" ? "success" : sizeResultFit === "good" ? "primary" : "warning"} variant="flat" className="ml-2 text-xs">
-                                {fitLabelVi(sizeResultFit)}
-                              </Chip>
-                            )}
+                            {t("product.recommend_for_you")}: <span className="text-primary">{sizeSuggest}</span>
                           </p>
+                          {sizeResultFit && (
+                            <Chip size="sm" color={sizeResultFit === "perfect" ? "success" : sizeResultFit === "good" ? "primary" : "warning"} variant="flat" className="text-xs">
+                              {fitLabel(sizeResultFit, t)}
+                            </Chip>
+                          )}
+                          {sizeReason === "xgboost_model" ? (
+                            <Chip size="sm" color="secondary" variant="flat" className="text-xs">🤖 XGBoost AI</Chip>
+                          ) : sizeReason === "rule_based" ? (
+                            <Chip size="sm" color="default" variant="flat" className="text-xs">📐 Rule-based</Chip>
+                          ) : null}
                         </div>
+                        {sizeFeatures.length > 0 && (
+                          <p className="text-xs text-default-400 mb-2">
+                            Based on: {sizeFeatures.map((f) => f.replace(/_/g, " ")).join(", ")}
+                          </p>
+                        )}
                         <div className="space-y-2.5">
                           {sizeScores.map((s) => {
                             const score = s.fit_score ?? 0;
@@ -1171,7 +1200,7 @@ export default function ProductDetail() {
                     {!Array.isArray(sizeChart?.rows) || sizeChart.rows.length === 0 ? (
                       <div className="text-center py-4 text-default-400 text-sm">
                         <Ruler size={28} className="mx-auto mb-2 opacity-30" />
-                        <p>Sản phẩm này chưa có bảng size để gợi ý.</p>
+                        <p>{t("product.no_size_chart")}</p>
                       </div>
                     ) : null}
                   </>
@@ -1188,10 +1217,10 @@ export default function ProductDetail() {
                   onPress={saveProfile}
                   className="font-bold"
                 >
-                  Lưu số đo
+                  {t("product.save_measurements")}
                 </Button>
                 <div className="flex-1" />
-                <Button variant="light" radius="lg" onPress={onClose}>Đóng</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.close")}</Button>
                 <Button
                   color="primary"
                   radius="lg"
@@ -1201,7 +1230,7 @@ export default function ProductDetail() {
                   isLoading={sizeLoading}
                   className="font-bold"
                 >
-                  Gợi ý size
+                  {t("product.suggest_size")}
                 </Button>
               </ModalFooter>
             </>

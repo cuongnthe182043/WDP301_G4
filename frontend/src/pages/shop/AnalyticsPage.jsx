@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   LineChart,
   Line,
@@ -20,6 +21,7 @@ import { getRevenueByMonth, getRevenueByCategory } from "../../services/shopServ
 
 
 const AnalyticsPage = () => {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     users: 0,
     reviews: 0,
@@ -63,7 +65,7 @@ const AnalyticsPage = () => {
     fetchChartData();
  }, []);
 
-  if (loading) return <p className="text-center mt-5">Đang tải dữ liệu...</p>;
+  if (loading) return <p className="text-center mt-5">{t("common.loading")}</p>;
 
   return (
     <div className="container py-4">
@@ -83,8 +85,8 @@ const AnalyticsPage = () => {
           <div className="card shadow-sm border-0">
             <div className="card-body">
               <div className="mb-4">
-                <h2 className="h5 fw-bold text-dark mb-1">Biểu đồ doanh thu theo tháng</h2>
-                <p className="text-muted small">Tổng quan doanh thu 12 tháng gần nhất</p>
+                <h2 className="h5 fw-bold text-dark mb-1">{t("shop.revenue_report")}</h2>
+                <p className="text-muted small">{t("shop.today_revenue")}</p>
               </div>
               <div style={{ width: "100%", height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -99,14 +101,14 @@ const AnalyticsPage = () => {
                       dataKey="totalRevenue"
                       stroke="#5B93FF"
                       strokeWidth={2}
-                      name="Doanh thu (VND)"
+                      name={t("shop.total_revenue")}
                     />
                     <Line
                       type="monotone"
                       dataKey="totalTransactions"
                       stroke="#FFC107"
                       strokeWidth={2}
-                      name="Số giao dịch"
+                      name={t("shop.total_orders")}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -120,7 +122,7 @@ const AnalyticsPage = () => {
           <div className="card shadow-sm border-0">
             <div className="card-body">
               <div className="mb-4">
-                <h2 className="h5 fw-bold text-dark"> Biểu đồ doanh thu theo danh mục</h2>
+                <h2 className="h5 fw-bold text-dark">{t("shop.chart_analysis")}</h2>
               </div>
               <div style={{ width: "100%", height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">

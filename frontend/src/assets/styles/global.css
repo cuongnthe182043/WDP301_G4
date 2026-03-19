@@ -60,7 +60,14 @@
   box-shadow: var(--shadow-soft);
   transition: box-shadow .25s ease, transform .25s ease;
 }
+.dark .soft-card {
+  background: #18181b;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
 .soft-card:hover {
   box-shadow: var(--shadow-hover);
   transform: translateY(-1px);
+}
+.dark .soft-card:hover {
+  box-shadow: 0 10px 26px rgba(0,0,0,0.5);
 }

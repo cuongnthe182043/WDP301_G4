@@ -6,19 +6,21 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Chip,
 } from "@heroui/react";
 import { Plus, Pencil, Trash2, Lock } from "lucide-react";
-
-const GENDER_OPTS = [
-  { key: "mixed",  label: "Tất cả" },
-  { key: "men",    label: "Nam" },
-  { key: "women",  label: "Nữ" },
-  { key: "unisex", label: "Unisex" },
-];
+import { useTranslation } from "react-i18next";
 
 const EMPTY = { name: "", country: "", gender_focus: "mixed", description: "" };
 
 export default function BrandsPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const isAdmin   = user?.role_name === "system_admin";
+  const isAdmin = user?.role_name === "system_admin";
+
+  const GENDER_OPTS = [
+    { key: "mixed",  label: t("common.all") },
+    { key: "men",    label: t("profile.gender_male") },
+    { key: "women",  label: t("profile.gender_female") },
+    { key: "unisex", label: "Unisex" },
+  ];
 
   const [rows,      setRows]      = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -62,25 +64,25 @@ export default function BrandsPage() {
 
   const handleDelete = async () => {
     try { await svc.deleteBrand(delTarget._id); setDelTarget(null); load(); }
-    catch (e) { alert(e.message || "Không thể xóa"); }
+    catch (e) { alert(e.message || t("common.error")); }
   };
 
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-black text-default-900">Thương hiệu</h1>
-          <p className="text-sm text-default-400">{rows.length} thương hiệu</p>
+          <h1 className="text-xl font-black text-default-900">{t("shop.brands")}</h1>
+          <p className="text-sm text-default-400">{rows.length} {t("shop.brands").toLowerCase()}</p>
         </div>
         <div className="flex items-center gap-2">
           {!isAdmin && (
             <Chip size="sm" variant="flat" color="warning" startContent={<Lock size={11} />}>
-              Chỉ xem
+              {t("common.view_only")}
             </Chip>
           )}
           {isAdmin && (
             <Button color="primary" radius="lg" size="sm" startContent={<Plus size={14} />} onPress={openCreate}>
-              Thêm thương hiệu
+              {t("common.add_brand")}
             </Button>
           )}
         </div>
@@ -89,9 +91,7 @@ export default function BrandsPage() {
       {!isAdmin && (
         <div className="flex items-center gap-2 p-3 bg-warning-50 border border-warning-200 rounded-xl">
           <Lock size={14} className="text-warning-600 flex-shrink-0" />
-          <p className="text-xs text-warning-700">
-            Thương hiệu do quản trị viên quản lý. Bạn có thể xem nhưng không thể thêm, sửa hoặc xóa.
-          </p>
+          <p className="text-xs text-warning-700">{t("common.admin_only")}</p>
         </div>
       )}
 
@@ -100,12 +100,12 @@ export default function BrandsPage() {
           {loading ? (
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : rows.length === 0 ? (
-            <div className="text-center py-16 text-default-400">Chưa có thương hiệu nào</div>
+            <div className="text-center py-16 text-default-400">{t("common.no_data")}</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="bg-default-50 border-b border-default-100">
                 <tr>
-                  {["Logo", "Tên", "Quốc gia", "Đối tượng", ...(isAdmin ? [""] : [])].map(h => (
+                  {[t("common.image"), t("common.name"), t("common.type"), t("common.gender"), ...(isAdmin ? [""] : [])].map(h => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -142,39 +142,38 @@ export default function BrandsPage() {
         </CardBody>
       </Card>
 
-      {/* Modals — admin only */}
       {isAdmin && (
         <>
           <Modal isOpen={!!modal} onOpenChange={(o) => !o && setModal(null)} radius="xl">
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>{modal === "edit" ? "Sửa thương hiệu" : "Thêm thương hiệu"}</ModalHeader>
+                  <ModalHeader>{modal === "edit" ? t("common.edit_brand") : t("common.add_brand")}</ModalHeader>
                   <ModalBody className="space-y-3">
                     <Input
-                      isRequired label="Tên thương hiệu" placeholder="Nike, Adidas..."
+                      isRequired label={t("product.brand")} placeholder="Nike, Adidas..."
                       value={form.name} onValueChange={v => setForm(f => ({ ...f, name: v }))} radius="lg"
                     />
                     <Input
-                      label="Quốc gia" placeholder="Việt Nam, USA..."
+                      label={t("common.type")} placeholder="..."
                       value={form.country} onValueChange={v => setForm(f => ({ ...f, country: v }))} radius="lg"
                     />
                     <Select
-                      label="Đối tượng" selectedKeys={new Set([form.gender_focus || "mixed"])}
+                      label={t("common.gender")} selectedKeys={new Set([form.gender_focus || "mixed"])}
                       onSelectionChange={k => setForm(f => ({ ...f, gender_focus: Array.from(k)[0] || "mixed" }))}
                       radius="lg"
                     >
                       {GENDER_OPTS.map(o => <SelectItem key={o.key}>{o.label}</SelectItem>)}
                     </Select>
                     <Input
-                      label="Mô tả" placeholder="Tùy chọn"
+                      label={t("common.description")} placeholder={t("common.optional")}
                       value={form.description} onValueChange={v => setForm(f => ({ ...f, description: v }))} radius="lg"
                     />
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
                     <Button color="primary" radius="lg" isLoading={saving} isDisabled={!form.name.trim()} onPress={handleSave}>
-                      {modal === "edit" ? "Lưu" : "Tạo"}
+                      {modal === "edit" ? t("common.save") : t("common.create")}
                     </Button>
                   </ModalFooter>
                 </>
@@ -186,15 +185,15 @@ export default function BrandsPage() {
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>Xóa thương hiệu</ModalHeader>
+                  <ModalHeader>{t("common.delete_brand")}</ModalHeader>
                   <ModalBody>
                     <p className="text-sm text-default-500">
-                      Xóa thương hiệu <strong className="text-default-900">"{delTarget?.name}"</strong>?
+                      {t("common.confirm_delete")} <strong className="text-default-900">"{delTarget?.name}"</strong>?
                     </p>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose}>Hủy</Button>
-                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>Xóa</Button>
+                    <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
+                    <Button color="danger" onPress={async () => { await handleDelete(); onClose(); }}>{t("common.delete")}</Button>
                   </ModalFooter>
                 </>
               )}

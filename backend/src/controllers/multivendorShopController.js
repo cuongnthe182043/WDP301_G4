@@ -1,4 +1,5 @@
-const svc = require("../services/multivendorShopService");
+const svc      = require("../services/multivendorShopService");
+const auditLog = require("../services/auditLogService");
 
 // ─── Public ───────────────────────────────────────────────────────────────────
 
@@ -55,6 +56,7 @@ exports.adminListShops = async (req, res, next) => {
 exports.adminApproveShop = async (req, res, next) => {
   try {
     const shop = await svc.adminApproveShop(req.params.id);
+    auditLog.log({ actorId: req.user._id, action: "shop.approve", targetCollection: "shops", targetId: String(shop._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { shop_name: shop.shop_name } });
     res.json({ success: true, data: shop, message: "Đã duyệt shop" });
   } catch (e) { next(e); }
 };
@@ -62,6 +64,7 @@ exports.adminApproveShop = async (req, res, next) => {
 exports.adminSuspendShop = async (req, res, next) => {
   try {
     const shop = await svc.adminSuspendShop(req.params.id, req.body.reason);
+    auditLog.log({ actorId: req.user._id, action: "shop.suspend", targetCollection: "shops", targetId: String(shop._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { shop_name: shop.shop_name, reason: req.body.reason } });
     res.json({ success: true, data: shop, message: "Đã tạm khóa shop" });
   } catch (e) { next(e); }
 };
@@ -69,6 +72,7 @@ exports.adminSuspendShop = async (req, res, next) => {
 exports.adminRejectShop = async (req, res, next) => {
   try {
     const shop = await svc.adminRejectShop(req.params.id, req.body.reason);
+    auditLog.log({ actorId: req.user._id, action: "shop.reject", targetCollection: "shops", targetId: String(shop._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { shop_name: shop.shop_name, reason: req.body.reason } });
     res.json({ success: true, data: shop, message: "Đã từ chối shop" });
   } catch (e) { next(e); }
 };

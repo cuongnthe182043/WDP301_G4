@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  Input, Button, Select, SelectItem, Textarea, Checkbox, CheckboxGroup, Chip,
+  Input, Button, Select, SelectItem, Textarea, Checkbox, CheckboxGroup, Chip, Switch,
 } from "@heroui/react";
 import { X, Plus, Upload, AlertCircle } from "lucide-react";
 import CategoryCascader from "./CategoryCascader";
 
-const SEASONS = [
-  { key: "spring",     label: "Xuân" },
-  { key: "summer",     label: "Hè" },
-  { key: "autumn",     label: "Thu" },
-  { key: "winter",     label: "Đông" },
-  { key: "all-season", label: "4 mùa" },
+const SEASON_KEYS = [
+  { key: "spring",     labelKey: "product.season_spring" },
+  { key: "summer",     labelKey: "product.season_summer" },
+  { key: "autumn",     labelKey: "product.season_autumn" },
+  { key: "winter",     labelKey: "product.season_winter" },
+  { key: "all-season", labelKey: "product.season_all" },
 ];
 
-const VARIANT_DIMS = [
-  { key: "color",            label: "Màu sắc",   placeholder: "VD: Đỏ, Xanh, Đen" },
-  { key: "size",             label: "Kích cỡ",   placeholder: "VD: S, M, L, XL" },
-  { key: "material_variant", label: "Chất liệu", placeholder: "VD: Cotton, Polyester" },
-  { key: "pattern",          label: "Họa tiết",  placeholder: "VD: Trơn, Kẻ sọc" },
-  { key: "fit",              label: "Kiểu dáng", placeholder: "VD: Slim fit, Regular" },
+const VARIANT_DIM_KEYS = [
+  { key: "color",            labelKey: "product.variant_color",    placeholderKey: "product.variant_color_ph" },
+  { key: "size",             labelKey: "product.variant_size",     placeholderKey: "product.variant_size_ph" },
+  { key: "material_variant", labelKey: "product.variant_material", placeholderKey: "product.variant_material_ph" },
+  { key: "pattern",          labelKey: "product.variant_pattern",  placeholderKey: "product.variant_pattern_ph" },
+  { key: "fit",              labelKey: "product.variant_fit",      placeholderKey: "product.variant_fit_ph" },
 ];
 
 const EMPTY = {
@@ -32,6 +33,7 @@ const EMPTY = {
 };
 
 export default function ProductForm({ initial, onSubmit, svc, loading = false }) {
+  const { t } = useTranslation();
   const [form,      setForm]      = useState({ ...EMPTY, ...(initial || {}) });
   const [brands,    setBrands]    = useState([]);
   const [tagInput,  setTagInput]  = useState("");
@@ -52,7 +54,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
       const variantValues = {};
       if (initial.variant_values) {
         // variant_values may come back as a plain object or Map-like
-        for (const dim of VARIANT_DIMS.map(d => d.key)) {
+        for (const dim of VARIANT_DIM_KEYS.map(d => d.key)) {
           const vals = initial.variant_values?.[dim] || initial.variant_values?.get?.(dim);
           if (vals?.length) variantValues[dim] = vals;
         }
@@ -102,11 +104,11 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
 
   // ── Tags ──────────────────────────────────────────────────────────
   const addTag = () => {
-    const t = tagInput.trim();
-    if (t && !form.tags.includes(t)) set("tags", [...form.tags, t]);
+    const tg = tagInput.trim();
+    if (tg && !form.tags.includes(tg)) set("tags", [...form.tags, tg]);
     setTagInput("");
   };
-  const removeTag = (t) => set("tags", form.tags.filter((x) => x !== t));
+  const removeTag = (tg) => set("tags", form.tags.filter((x) => x !== tg));
 
   // ── Materials ─────────────────────────────────────────────────────
   const addMaterial = () => {
@@ -152,26 +154,26 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
   const validate = () => {
     const e = {};
     if (!form.name.trim())
-      e.name = "Tên sản phẩm là bắt buộc";
+      e.name = t("product.err_name_required");
     else if (form.name.trim().length < 5)
-      e.name = "Tên sản phẩm phải có ít nhất 5 ký tự";
+      e.name = t("product.err_name_min");
 
     if (!form.description.trim())
-      e.description = "Mô tả sản phẩm là bắt buộc";
+      e.description = t("product.err_desc_required");
     else if (form.description.trim().length < 20)
-      e.description = "Mô tả cần ít nhất 20 ký tự";
+      e.description = t("product.err_desc_min");
 
     const price = Number(form.base_price);
     if (!form.base_price || isNaN(price) || price <= 0)
-      e.base_price = "Giá bán phải lớn hơn 0";
+      e.base_price = t("product.err_price_positive");
     else if (price < 1000)
-      e.base_price = "Giá bán tối thiểu là 1.000₫";
+      e.base_price = t("product.err_price_min");
 
     if (!form.category_id)
-      e.category_id = "Vui lòng chọn danh mục";
+      e.category_id = t("product.err_category_required");
 
     if (!form.images?.length)
-      e.images = "Cần ít nhất 1 ảnh sản phẩm";
+      e.images = t("product.err_image_required");
 
     return e;
   };
@@ -193,17 +195,21 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
   };
 
   const isEdit = !!initial?._id;
+  // Product already has saved variants in DB (edit mode only)
+  const hasExistingVariants = isEdit && (initial?.variants?.length ?? 0) > 0;
   const hasVariantValues = form.variant_dimensions.some(
     (d) => (form.variant_values?.[d] || []).length > 0
   );
+  // Show status toggle only when product is already approved (active or inactive)
+  const canToggleStatus = isEdit && (initial?.status === "active" || initial?.status === "inactive");
 
   return (
     <div className="space-y-6">
       {/* ── Basic Info ──────────────────────────────────────────── */}
-      <Section title="Thông tin cơ bản">
+      <Section title={t("product.section_basic")}>
         <div>
           <Input
-            isRequired label="Tên sản phẩm" placeholder="Nhập tên sản phẩm..."
+            isRequired label={t("product.name_label")} placeholder={t("product.name_placeholder")}
             value={form.name} onValueChange={(v) => { set("name", v); setErrors(p => { const n = {...p}; delete n.name; return n; }); }}
             radius="lg"
             isInvalid={!!errors.name}
@@ -212,7 +218,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
         </div>
         <div>
           <Textarea
-            isRequired label="Mô tả sản phẩm" placeholder="Mô tả chi tiết sản phẩm (ít nhất 20 ký tự)..."
+            isRequired label={t("product.desc_label")} placeholder={t("product.desc_placeholder")}
             value={form.description} onValueChange={(v) => { set("description", v); setErrors(p => { const n = {...p}; delete n.description; return n; }); }}
             radius="lg" minRows={4}
             isInvalid={!!errors.description}
@@ -221,29 +227,61 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
-            isRequired label="Giá bán (VND)" placeholder="VD: 299000"
+            isRequired label={t("product.price_label")} placeholder={t("product.price_placeholder")}
             type="number" min="1000"
             value={String(form.base_price)}
             onValueChange={(v) => { set("base_price", v); setErrors(p => { const n = {...p}; delete n.base_price; return n; }); }}
             radius="lg"
-            description="Đơn vị: VND — tối thiểu 1.000₫"
+            description={t("product.price_description")}
             isInvalid={!!errors.base_price}
             errorMessage={errors.base_price}
           />
           <Input
-            label="Tồn kho ban đầu" placeholder="0" type="number" min="0"
+            label={t("product.stock_label")} placeholder="0" type="number" min="0"
             value={String(form.stock_total)} onValueChange={(v) => set("stock_total", v)}
             radius="lg"
-            description={hasVariantValues ? "Tự động tính khi biến thể được tạo" : "Số lượng tồn kho"}
+            isReadOnly={hasExistingVariants}
+            description={
+              hasExistingVariants
+                ? t("product.stock_from_variants")
+                : hasVariantValues
+                  ? t("product.stock_auto_desc")
+                  : t("product.stock_desc")
+            }
           />
         </div>
       </Section>
 
+      {/* ── Status Toggle (edit mode, approved products only) ───── */}
+      {canToggleStatus && (
+        <Section title={t("product.section_status")}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-default-700">{t("product.status_label")}</p>
+              <p className="text-xs text-default-400 mt-0.5">
+                {form.status === "active"
+                  ? t("product.status_desc_active")
+                  : t("product.status_desc_inactive")}
+              </p>
+            </div>
+            <Switch
+              isSelected={form.status === "active"}
+              onValueChange={(v) => set("status", v ? "active" : "inactive")}
+              color="success"
+            >
+              <span className="text-sm font-medium">
+                {form.status === "active" ? t("common.status_active") : t("common.status_inactive")}
+              </span>
+            </Switch>
+          </div>
+        </Section>
+      )}
+
       {/* ── Classification ──────────────────────────────────────── */}
-      <Section title="Phân loại">
+      <Section title={t("product.section_classify")}>
         <div>
           <p className="text-sm font-medium text-default-700 mb-2">
-            Danh mục <span className="text-danger">*</span>
+            {t("product.category_label")} <span className="text-danger">*</span>
           </p>
           <CategoryCascader value={form.category_id} onChange={(v) => { set("category_id", v); setErrors(p => { const n = {...p}; delete n.category_id; return n; }); }} svc={svc} />
           {errors.category_id && (
@@ -253,7 +291,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
           )}
         </div>
         <Select
-          label="Thương hiệu" placeholder="Chọn thương hiệu"
+          label={t("product.brand_label")} placeholder={t("product.brand_placeholder")}
           selectedKeys={form.brand_id ? new Set([form.brand_id]) : new Set()}
           onSelectionChange={(k) => set("brand_id", Array.from(k)[0] || "")}
           radius="lg"
@@ -262,18 +300,18 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
         </Select>
         {/* Tags */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-default-700">Tags</p>
+          <p className="text-sm font-medium text-default-700">{t("product.tags_label")}</p>
           <div className="flex gap-2">
             <Input
-              placeholder="Nhập tag và nhấn Enter..." value={tagInput} onValueChange={setTagInput}
+              placeholder={t("product.tags_placeholder")} value={tagInput} onValueChange={setTagInput}
               radius="lg" size="sm" className="flex-1"
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
             />
             <Button size="sm" variant="bordered" radius="lg" onPress={addTag} isIconOnly><Plus size={14} /></Button>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {form.tags.map((t) => (
-              <Chip key={t} size="sm" variant="flat" onClose={() => removeTag(t)}>{t}</Chip>
+            {form.tags.map((tg) => (
+              <Chip key={tg} size="sm" variant="flat" onClose={() => removeTag(tg)}>{tg}</Chip>
             ))}
           </div>
         </div>
@@ -281,11 +319,13 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
 
       {/* ── Variant Dimensions ──────────────────────────────────── */}
       <Section
-        title="Thuộc tính biến thể"
-        description="Chọn thuộc tính → ngay lập tức thêm các giá trị cho thuộc tính đó"
+        title={t("product.section_variants")}
+        description={t("product.variants_desc")}
       >
         <div className="space-y-4">
-          {VARIANT_DIMS.map((d) => {
+          {VARIANT_DIM_KEYS.map((d) => {
+            const label = t(d.labelKey);
+            const placeholder = t(d.placeholderKey);
             const checked = form.variant_dimensions.includes(d.key);
             const values  = form.variant_values?.[d.key] || [];
             return (
@@ -306,7 +346,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
                     }}
                     radius="lg"
                   >
-                    <span className="font-medium text-sm text-default-800">{d.label}</span>
+                    <span className="font-medium text-sm text-default-800">{label}</span>
                   </Checkbox>
                 </div>
 
@@ -314,11 +354,11 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
                 {checked && (
                   <div className="px-4 pb-4 space-y-2 border-t border-primary-100">
                     <p className="text-xs text-default-500 pt-3">
-                      Thêm các giá trị {d.label.toLowerCase()} (nhấn Enter hoặc nút +)
+                      {t("product.variant_add_hint", { dim: label.toLowerCase() })}
                     </p>
                     <div className="flex gap-2">
                       <Input
-                        placeholder={d.placeholder}
+                        placeholder={placeholder}
                         value={dimInputs[d.key] || ""}
                         onValueChange={(v) => setDimInputs((p) => ({ ...p, [d.key]: v }))}
                         onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addDimValue(d.key))}
@@ -333,7 +373,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
                     </div>
                     <div className="flex flex-wrap gap-1.5 min-h-[28px]">
                       {values.length === 0 && (
-                        <span className="text-xs text-default-300 italic">Chưa có giá trị nào</span>
+                        <span className="text-xs text-default-300 italic">{t("product.variant_no_values")}</span>
                       )}
                       {values.map((val) => (
                         <Chip
@@ -355,26 +395,26 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
           <div className="flex items-start gap-2 p-3 bg-primary-50 rounded-xl border border-primary-100">
             <div className="text-primary-500 mt-0.5"><Plus size={14} /></div>
             <p className="text-xs text-primary-700">
-              Hệ thống sẽ tự động tạo tất cả tổ hợp biến thể từ các giá trị bạn đã nhập sau khi tạo sản phẩm.
+              {t("product.variant_auto_notice")}
             </p>
           </div>
         )}
       </Section>
 
       {/* ── Detail Info ─────────────────────────────────────────── */}
-      <Section title="Thông tin chi tiết">
+      <Section title={t("product.section_detail")}>
         <Input
-          label="Xuất xứ" placeholder="Việt Nam, Trung Quốc..."
+          label={t("product.origin_label")} placeholder={t("product.origin_placeholder")}
           value={form.detail_info.origin_country}
           onValueChange={(v) => setDetail("origin_country", v)}
           radius="lg"
         />
         {/* Materials */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-default-700">Chất liệu</p>
+          <p className="text-sm font-medium text-default-700">{t("product.materials_label")}</p>
           <div className="flex gap-2">
             <Input
-              placeholder="VD: Cotton, Polyester..." value={matInput}
+              placeholder={t("product.materials_placeholder")} value={matInput}
               onValueChange={setMatInput} radius="lg" size="sm" className="flex-1"
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addMaterial())}
             />
@@ -388,19 +428,19 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
         </div>
         {/* Seasons */}
         <div className="space-y-2">
-          <p className="text-sm font-medium text-default-700">Mùa phù hợp</p>
+          <p className="text-sm font-medium text-default-700">{t("product.seasons_label")}</p>
           <CheckboxGroup
             value={form.detail_info.seasons}
             onValueChange={(v) => setDetail("seasons", v)}
             orientation="horizontal"
           >
-            {SEASONS.map((s) => (
-              <Checkbox key={s.key} value={s.key} radius="lg">{s.label}</Checkbox>
+            {SEASON_KEYS.map((s) => (
+              <Checkbox key={s.key} value={s.key} radius="lg">{t(s.labelKey)}</Checkbox>
             ))}
           </CheckboxGroup>
         </div>
         <Textarea
-          label="Hướng dẫn bảo quản" placeholder="Giặt máy ở 30°C, không sấy..."
+          label={t("product.care_label")} placeholder={t("product.care_placeholder")}
           value={form.detail_info.care_instructions}
           onValueChange={(v) => setDetail("care_instructions", v)}
           radius="lg" minRows={2}
@@ -408,17 +448,17 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
       </Section>
 
       {/* ── Images & Video ──────────────────────────────────────── */}
-      <Section title="Hình ảnh & Video">
+      <Section title={t("product.section_media")}>
         <div className="space-y-3">
           <p className="text-sm font-medium text-default-700">
-            Ảnh sản phẩm <span className="text-danger">*</span>
+            {t("product.images_label")} <span className="text-danger">*</span>
           </p>
           <Button
             as="label" variant="bordered" radius="lg" startContent={<Upload size={14} />}
             className="cursor-pointer" isLoading={uploading}
             color={errors.images ? "danger" : "default"}
           >
-            Tải ảnh lên (Cloudinary)
+            {t("product.upload_images_btn")}
             <input hidden accept="image/*" type="file" multiple onChange={handleImages} />
           </Button>
           {errors.images && (
@@ -443,7 +483,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
                   </button>
                   {i === 0 && (
                     <span className="absolute bottom-1 left-1 text-[9px] bg-black/60 text-white px-1 rounded">
-                      Ảnh chính
+                      {t("product.main_image_badge")}
                     </span>
                   )}
                 </div>
@@ -452,17 +492,17 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
           )}
         </div>
         <div className="space-y-2">
-          <p className="text-sm font-medium text-default-700">Video (tùy chọn)</p>
+          <p className="text-sm font-medium text-default-700">{t("product.video_label")}</p>
           <Button
             as="label" variant="bordered" radius="lg" startContent={<Upload size={14} />}
             className="cursor-pointer" isLoading={uploading}
           >
-            Tải video lên (Cloudinary)
+            {t("product.upload_video_btn")}
             <input hidden accept="video/*" type="file" onChange={handleVideo} />
           </Button>
           {(form.videos || [])[0] && (
             <div className="flex items-center gap-2">
-              <Chip size="sm" variant="flat" color="success">Video đã tải lên</Chip>
+              <Chip size="sm" variant="flat" color="success">{t("product.video_uploaded")}</Chip>
               <Button size="sm" variant="light" color="danger" isIconOnly
                 onPress={() => set("videos", [])}>
                 <X size={14} />
@@ -473,21 +513,21 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
       </Section>
 
       {/* ── SEO ────────────────────────────────────────────────── */}
-      <Section title="SEO (tùy chọn)">
+      <Section title={t("product.section_seo")}>
         <Input
-          label="Tiêu đề SEO" placeholder="Để trống sẽ dùng tên sản phẩm"
+          label={t("product.seo_title_label")} placeholder={t("product.seo_title_placeholder")}
           value={form.seo.title} onValueChange={(v) => setSeo("title", v)} radius="lg"
         />
         <Textarea
-          label="Mô tả SEO" placeholder="Mô tả ngắn cho công cụ tìm kiếm..."
+          label={t("product.seo_desc_label")} placeholder={t("product.seo_desc_placeholder")}
           value={form.seo.description} onValueChange={(v) => setSeo("description", v)}
           radius="lg" minRows={2}
         />
         <div className="space-y-2">
-          <p className="text-sm font-medium text-default-700">Từ khóa SEO</p>
+          <p className="text-sm font-medium text-default-700">{t("product.seo_keywords_label")}</p>
           <div className="flex gap-2">
             <Input
-              placeholder="Nhập từ khóa và nhấn Enter..." value={kw} onValueChange={setKw}
+              placeholder={t("product.seo_keywords_placeholder")} value={kw} onValueChange={setKw}
               radius="lg" size="sm" className="flex-1"
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
             />
@@ -505,7 +545,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
       {Object.keys(errors).length > 0 && (
         <div className="p-4 bg-danger-50 border border-danger-200 rounded-xl">
           <p className="text-sm font-semibold text-danger mb-2 flex items-center gap-1.5">
-            <AlertCircle size={15} /> Vui lòng kiểm tra lại các trường sau:
+            <AlertCircle size={15} /> {t("product.validation_summary")}
           </p>
           <ul className="space-y-0.5">
             {Object.values(errors).map((msg, i) => (
@@ -521,7 +561,7 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
           color="primary" radius="lg" size="lg"
           onPress={handleSubmit} isLoading={loading}
         >
-          {isEdit ? "Cập nhật sản phẩm" : "Tạo sản phẩm"}
+          {isEdit ? t("product.btn_update") : t("product.btn_create")}
         </Button>
       </div>
     </div>

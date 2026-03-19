@@ -1,4 +1,5 @@
-const Product = require("../models/Product");
+const Product  = require("../models/Product");
+const auditLog = require("../services/auditLogService");
 
 // GET /api/admin/products?status=pending&q=...&page=1&limit=20
 exports.listProducts = async (req, res, next) => {
@@ -52,6 +53,7 @@ exports.approveProduct = async (req, res, next) => {
       { new: true }
     );
     if (!p) return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+    auditLog.log({ actorId: req.user._id, action: "product.approve", targetCollection: "products", targetId: String(p._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: p.name } });
     res.json({ success: true, data: p });
   } catch (e) { next(e); }
 };
@@ -66,6 +68,7 @@ exports.rejectProduct = async (req, res, next) => {
       { new: true }
     );
     if (!p) return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+    auditLog.log({ actorId: req.user._id, action: "product.reject", targetCollection: "products", targetId: String(p._id), ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: p.name, reason } });
     res.json({ success: true, data: p });
   } catch (e) { next(e); }
 };

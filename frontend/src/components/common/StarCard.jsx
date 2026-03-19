@@ -1,5 +1,6 @@
 import React from "react";
 import { Users, ShoppingCart, Star, CreditCard } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SingleCard = ({ title, value, icon: Icon, bgColor, iconColor }) => {
   return (
@@ -35,34 +36,34 @@ const SingleCard = ({ title, value, icon: Icon, bgColor, iconColor }) => {
   );
 };
 
-//  Component hiển thị toàn bộ grid Stat Cards
 const StatCardsGrid = ({ stats }) => {
+  const { t } = useTranslation();
   if (!stats) return null;
 
   const cards = [
     {
-      title: "Người dùng",
+      title: t("shop.stat_users"),
       value: stats.users?.toLocaleString(),
       icon: Users,
       bgColor: "#E8F4FF",
       iconColor: "text-info",
     },
     {
-      title: "Sản phẩm",
+      title: t("shop.stat_products"),
       value: stats.products?.toLocaleString(),
       icon: ShoppingCart,
       bgColor: "#EAF1FF",
       iconColor: "text-primary",
     },
     {
-      title: "Đánh giá",
+      title: t("shop.stat_reviews"),
       value: stats.reviews?.toLocaleString(),
       icon: Star,
       bgColor: "#FFF8E1",
       iconColor: "text-warning",
     },
     {
-      title: "Giao dịch",
+      title: t("shop.stat_transactions"),
       value: stats.transactions?.toLocaleString(),
       icon: CreditCard,
       bgColor: "#E9FBE9",

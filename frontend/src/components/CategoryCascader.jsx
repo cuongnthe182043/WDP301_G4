@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Select, SelectItem } from "@heroui/react";
+import { useTranslation } from "react-i18next";
 
 export default function CategoryCascader({ value, onChange, svc }) {
+  const { t } = useTranslation();
   const [tree, setTree] = useState([]);
   const [lv1, setLv1] = useState("");
   const [lv2, setLv2] = useState("");
@@ -18,7 +20,7 @@ export default function CategoryCascader({ value, onChange, svc }) {
   return (
     <div className="flex flex-col md:flex-row gap-2">
       <Select
-        label="Danh mục 1"
+        label={t("product.category_level", { n: 1 })}
         selectedKeys={lv1 ? new Set([lv1]) : new Set()}
         onSelectionChange={(k) => { const v = Array.from(k)[0] || ""; setLv1(v); setLv2(""); setLv3(""); }}
       >
@@ -26,7 +28,7 @@ export default function CategoryCascader({ value, onChange, svc }) {
       </Select>
 
       <Select
-        label="Danh mục 2"
+        label={t("product.category_level", { n: 2 })}
         selectedKeys={lv2 ? new Set([lv2]) : new Set()}
         onSelectionChange={(k) => { const v = Array.from(k)[0] || ""; setLv2(v); setLv3(""); }}
         isDisabled={!lv1}
@@ -35,7 +37,7 @@ export default function CategoryCascader({ value, onChange, svc }) {
       </Select>
 
       <Select
-        label="Danh mục 3"
+        label={t("product.category_level", { n: 3 })}
         selectedKeys={lv3 ? new Set([lv3]) : new Set()}
         onSelectionChange={(k) => setLv3(Array.from(k)[0] || "")}
         isDisabled={!lv2}

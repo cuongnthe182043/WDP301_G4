@@ -2,33 +2,39 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardBody, Button, Chip, Divider } from "@heroui/react";
-import { ArrowLeft, Clock, CheckCircle2, AlertCircle, MessageSquare } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle2, MessageSquare } from "lucide-react";
 import { supportService } from "../../services/supportService";
 import { useToast } from "../../components/common/ToastProvider";
 import PageContainer from "../../components/ui/PageContainer.jsx";
+import { useTranslation } from "react-i18next";
 
 const STATUS_COLOR = {
   open: "warning", in_progress: "primary", escalated: "danger", closed: "default",
 };
-const STATUS_LABEL = {
-  open: "Đang mở", in_progress: "Đang xử lý", escalated: "Khẩn cấp", closed: "Đã đóng",
-};
 
 export default function TicketDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const nav = useNavigate();
   const toast = useToast();
-  const [ticket, setTicket] = useState(null);
+  const [ticket,  setTicket]  = useState(null);
   const [loading, setLoading] = useState(true);
   const [closing, setClosing] = useState(false);
+
+  const STATUS_LABEL = {
+    open:        t("support.status_open"),
+    in_progress: t("support.status_in_progress"),
+    escalated:   t("support.status_escalated"),
+    closed:      t("support.status_closed"),
+  };
 
   useEffect(() => {
     (async () => {
       try {
-        const t = await supportService.getTicket(id);
-        setTicket(t);
+        const tk = await supportService.getTicket(id);
+        setTicket(tk);
       } catch (e) {
-        toast.error(e?.message || "Không tải được ticket");
+        toast.error(e?.message || t("common.error"));
         nav("/tickets");
       } finally { setLoading(false); }
     })();
@@ -39,9 +45,9 @@ export default function TicketDetail() {
     try {
       const updated = await supportService.closeTicket(id);
       setTicket(updated);
-      toast.success("Ticket đã được đóng.");
+      toast.success(t("support.ticket_closed"));
     } catch (e) {
-      toast.error(e?.message || "Không đóng được ticket");
+      toast.error(e?.message || t("common.error"));
     } finally { setClosing(false); }
   };
 
@@ -65,7 +71,7 @@ export default function TicketDetail() {
         startContent={<ArrowLeft size={14} />}
         className="mb-5 -ml-2 text-default-500"
       >
-        Quay lại danh sách
+        {t("support.back_to_list")}
       </Button>
 
       <div className="space-y-4">
@@ -94,11 +100,11 @@ export default function TicketDetail() {
               <div className="flex items-center gap-4 mt-5 text-xs text-default-400">
                 <span className="flex items-center gap-1">
                   <Clock size={11} />
-                  Tạo lúc {new Date(ticket.createdAt).toLocaleString("vi-VN")}
+                  {t("support.created_at")} {new Date(ticket.createdAt).toLocaleString()}
                 </span>
                 {ticket.order_id && (
                   <span>
-                    Đơn hàng:{" "}
+                    {t("support.order_ref")}:{" "}
                     <Link to={`/orders/${ticket.order_id}`} className="text-primary font-semibold hover:underline">
                       {ticket.order_id}
                     </Link>
@@ -109,14 +115,13 @@ export default function TicketDetail() {
           </Card>
         </motion.div>
 
-        {/* Activity Log */}
         {Array.isArray(ticket.logs) && ticket.logs.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <Card radius="2xl" shadow="sm" className="border border-default-100">
               <CardBody className="p-5">
                 <h3 className="font-bold text-default-900 mb-4 flex items-center gap-2">
                   <MessageSquare size={16} className="text-default-400" />
-                  Lịch sử hoạt động
+                  {t("support.activity_log")}
                 </h3>
                 <div className="space-y-3">
                   {ticket.logs.map((log, i) => (
@@ -125,7 +130,7 @@ export default function TicketDetail() {
                       <div>
                         <p className="text-sm text-default-700">{log.action}</p>
                         <p className="text-xs text-default-400">
-                          {new Date(log.created_at).toLocaleString("vi-VN")}
+                          {new Date(log.created_at).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -136,7 +141,6 @@ export default function TicketDetail() {
           </motion.div>
         )}
 
-        {/* Actions */}
         {ticket.status !== "closed" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
             <Button
@@ -148,7 +152,7 @@ export default function TicketDetail() {
               startContent={<CheckCircle2 size={16} />}
               className="font-semibold"
             >
-              Đóng ticket (đã giải quyết)
+              {t("support.close_ticket")}
             </Button>
           </motion.div>
         )}

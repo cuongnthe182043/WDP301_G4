@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Card, CardBody, CardHeader, Input, Textarea, Button, Chip,
@@ -8,31 +9,31 @@ import { Store, CheckCircle, Clock, XCircle, ArrowRight } from "lucide-react";
 import { useToast } from "../../components/common/ToastProvider";
 import { registerShop, getMyShop } from "../../services/shopService";
 
-const STATUS_CONFIG = {
-  pending: {
-    icon: Clock,
-    color: "warning",
-    label: "Đang chờ duyệt",
-    desc: "Đơn đăng ký của bạn đang được admin xem xét. Chúng tôi sẽ thông báo kết quả sớm nhất.",
-  },
-  approved: {
-    icon: CheckCircle,
-    color: "success",
-    label: "Đã được duyệt",
-    desc: "Chúc mừng! Shop của bạn đã được duyệt. Bạn có thể bắt đầu bán hàng ngay.",
-  },
-  suspended: {
-    icon: XCircle,
-    color: "danger",
-    label: "Bị tạm khóa",
-    desc: "Shop của bạn đang bị tạm khóa. Vui lòng liên hệ admin để biết thêm chi tiết.",
-  },
-};
-//datamock
-
 export default function RegisterShop() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const STATUS_CONFIG = {
+    pending: {
+      icon: Clock,
+      color: "warning",
+      label: t("shop.status_pending"),
+      desc: t("shop.status_pending_desc"),
+    },
+    approved: {
+      icon: CheckCircle,
+      color: "success",
+      label: t("shop.status_approved"),
+      desc: t("shop.status_approved_desc"),
+    },
+    suspended: {
+      icon: XCircle,
+      color: "danger",
+      label: t("shop.status_suspended"),
+      desc: t("shop.status_suspended_desc"),
+    },
+  };
 
   const [existingShop, setExistingShop] = useState(null);
   const [loadingShop, setLoadingShop] = useState(true);
@@ -56,16 +57,16 @@ export default function RegisterShop() {
 
   const handleSubmit = async () => {
     if (!form.shop_name.trim()) {
-      toast.error("Vui lòng nhập tên shop");
+      toast.error(t("shop.shop_name_required"));
       return;
     }
     setLoading(true);
     try {
       const result = await registerShop(form);
-      toast.success(result.message || "Đăng ký thành công!");
+      toast.success(result.message || t("shop.register_success"));
       setExistingShop(result.data);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Đăng ký thất bại");
+      toast.error(err.response?.data?.message || t("shop.register_failed"));
     } finally {
       setLoading(false);
     }
@@ -95,7 +96,7 @@ export default function RegisterShop() {
               <p className="text-sm text-gray-500">{cfg.desc}</p>
               {existingShop.rejection_reason && (
                 <div className="w-full p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
-                  Lý do: {existingShop.rejection_reason}
+                  {t("shop.rejection_reason")} {existingShop.rejection_reason}
                 </div>
               )}
               {existingShop.status === "approved" && (
@@ -106,7 +107,7 @@ export default function RegisterShop() {
                   onPress={() => navigate("/shop/dashboard")}
                   className="w-full font-bold"
                 >
-                  Vào trang quản lý shop
+                  {t("shop.go_to_dashboard")}
                 </Button>
               )}
             </CardBody>
@@ -130,23 +131,23 @@ export default function RegisterShop() {
                 <Store size={24} className="text-blue-600" />
               </div>
               <div>
-                <h1 className="text-xl font-black text-gray-900">Đăng ký bán hàng</h1>
-                <p className="text-sm text-gray-500">Mở shop và bắt đầu kinh doanh trên nền tảng</p>
+                <h1 className="text-xl font-black text-gray-900">{t("shop.register_page_title")}</h1>
+                <p className="text-sm text-gray-500">{t("shop.register_page_subtitle")}</p>
               </div>
             </div>
           </CardHeader>
           <CardBody className="px-6 py-5 flex flex-col gap-4">
             <Input
-              label="Tên shop *"
-              placeholder="VD: Thời Trang Hoàng Yến"
+              label={t("shop.shop_name_label")}
+              placeholder={t("shop.shop_name_placeholder")}
               value={form.shop_name}
               onValueChange={set("shop_name")}
               radius="lg"
               variant="bordered"
             />
             <Textarea
-              label="Mô tả shop"
-              placeholder="Giới thiệu về shop của bạn..."
+              label={t("shop.description_label")}
+              placeholder={t("shop.description_placeholder")}
               value={form.description}
               onValueChange={set("description")}
               radius="lg"
@@ -155,7 +156,7 @@ export default function RegisterShop() {
             />
             <div className="grid grid-cols-2 gap-3">
               <Input
-                label="Số điện thoại"
+                label={t("shop.phone_label")}
                 placeholder="0901234567"
                 value={form.phone}
                 onValueChange={set("phone")}
@@ -163,7 +164,7 @@ export default function RegisterShop() {
                 variant="bordered"
               />
               <Input
-                label="Email shop"
+                label={t("shop.email_label")}
                 placeholder="shop@example.com"
                 value={form.email}
                 onValueChange={set("email")}
@@ -172,8 +173,8 @@ export default function RegisterShop() {
               />
             </div>
             <Input
-              label="Địa chỉ shop"
-              placeholder="123 Đường ABC, Quận 1, TP.HCM"
+              label={t("shop.address_label")}
+              placeholder={t("shop.address_placeholder")}
               value={form.address}
               onValueChange={set("address")}
               radius="lg"
@@ -181,7 +182,7 @@ export default function RegisterShop() {
             />
 
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-700">
-              Sau khi đăng ký, đơn của bạn sẽ được admin xem xét trong vòng 1-3 ngày làm việc.
+              {t("shop.approval_notice")}
             </div>
 
             <Button
@@ -193,7 +194,7 @@ export default function RegisterShop() {
               className="w-full font-bold"
               endContent={!loading && <ArrowRight size={16} />}
             >
-              Gửi đơn đăng ký
+              {t("shop.submit_application")}
             </Button>
           </CardBody>
         </Card>

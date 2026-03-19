@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Card, CardBody, Button, Chip, Skeleton, Divider,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Textarea,
 } from "@heroui/react";
-import { Star, Trash2, Edit3, ArrowLeft, MessageSquare, Image as ImageIcon } from "lucide-react";
+import { Star, Trash2, Edit3, ArrowLeft, MessageSquare } from "lucide-react";
 import { reviewService } from "../../services/reviewService";
 import { useToast } from "../../components/common/ToastProvider";
 import PageContainer from "../../components/ui/PageContainer";
@@ -26,18 +27,17 @@ function Stars({ value, size = 14 }) {
 }
 
 export default function MyReviews() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Edit modal state
   const [editOpen, setEditOpen] = useState(false);
   const [editReview, setEditReview] = useState(null);
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Delete confirm
   const [deleteId, setDeleteId] = useState(null);
 
   const load = async () => {
@@ -46,7 +46,7 @@ export default function MyReviews() {
       const data = await reviewService.getMyReviews();
       setReviews(data.reviews || data || []);
     } catch {
-      toast.error("Không thể tải đánh giá");
+      toast.error(t("review.load_failed"));
     } finally {
       setLoading(false);
     }
@@ -69,11 +69,11 @@ export default function MyReviews() {
         rating: editRating,
         comment: editComment.trim(),
       });
-      toast.success("Cập nhật đánh giá thành công");
+      toast.success(t("review.update_success"));
       onClose();
       load();
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Không thể cập nhật");
+      toast.error(err?.response?.data?.message || t("review.update_failed"));
     } finally {
       setSaving(false);
     }
@@ -82,11 +82,11 @@ export default function MyReviews() {
   const handleDelete = async () => {
     try {
       await reviewService.delete(deleteId);
-      toast.success("Đã xóa đánh giá");
+      toast.success(t("review.delete_success"));
       setDeleteId(null);
       load();
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Không thể xóa");
+      toast.error(err?.response?.data?.message || t("review.delete_failed"));
     }
   };
 
@@ -105,20 +105,20 @@ export default function MyReviews() {
     <PageContainer wide={false}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <Button as={Link} to="/orders" isIconOnly variant="bordered" radius="lg" size="sm" aria-label="Quay lại">
+        <Button as={Link} to="/orders" isIconOnly variant="bordered" radius="lg" size="sm" aria-label={t("common.back")}>
           <ArrowLeft size={16} />
         </Button>
         <div>
-          <h1 className="text-xl font-black text-default-900">Đánh giá của tôi</h1>
-          <p className="text-sm text-default-400">{reviews.length} đánh giá</p>
+          <h1 className="text-xl font-black text-default-900">{t("review.my_reviews")}</h1>
+          <p className="text-sm text-default-400">{t("review.reviews_count", { count: reviews.length })}</p>
         </div>
       </div>
 
       {reviews.length === 0 ? (
         <div className="text-center py-16 text-default-400 bg-default-50 rounded-2xl">
           <MessageSquare size={40} className="mx-auto mb-3 opacity-30" />
-          <p className="font-medium">Bạn chưa có đánh giá nào.</p>
-          <p className="text-sm mt-1">Hãy mua sắm và đánh giá sản phẩm nhé!</p>
+          <p className="font-medium">{t("review.no_reviews")}</p>
+          <p className="text-sm mt-1">{t("review.no_reviews_hint")}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -134,7 +134,6 @@ export default function MyReviews() {
                 <Card radius="xl" shadow="sm" className="border border-default-100">
                   <CardBody className="p-4">
                     <div className="flex items-start gap-3">
-                      {/* Product image */}
                       {product?.images?.[0] && (
                         <Link to={`/product/${product.slug || product._id}`} className="flex-shrink-0">
                           <div className="w-16 h-16 rounded-xl overflow-hidden bg-default-100">
@@ -144,7 +143,6 @@ export default function MyReviews() {
                       )}
 
                       <div className="flex-1 min-w-0">
-                        {/* Product name */}
                         {product?.name && (
                           <Link to={`/product/${product.slug || product._id}`}>
                             <p className="font-semibold text-sm text-default-900 hover:text-primary transition-colors line-clamp-1">
@@ -153,23 +151,20 @@ export default function MyReviews() {
                           </Link>
                         )}
 
-                        {/* Stars + date */}
                         <div className="flex items-center gap-2 mt-1">
                           <Stars value={rv.rating} />
                           <span className="text-xs text-default-400">
                             {new Date(rv.createdAt).toLocaleDateString("vi-VN")}
                           </span>
                           {rv.is_anonymous && (
-                            <Chip size="sm" variant="flat" color="default">Ẩn danh</Chip>
+                            <Chip size="sm" variant="flat" color="default">{t("common.anonymous")}</Chip>
                           )}
                         </div>
 
-                        {/* Comment */}
                         {rv.comment && (
                           <p className="text-sm text-default-600 mt-2 leading-relaxed">{rv.comment}</p>
                         )}
 
-                        {/* Images */}
                         {rv.images?.length > 0 && (
                           <div className="flex gap-2 mt-2 flex-wrap">
                             {rv.images.map((img, i) => (
@@ -180,27 +175,25 @@ export default function MyReviews() {
                           </div>
                         )}
 
-                        {/* Size feedback */}
                         {rv.size_feedback && rv.size_feedback !== "unknown" && (
                           <Chip size="sm" variant="flat" color="secondary" className="mt-2">
-                            {rv.size_feedback === "fit" ? "Vừa vặn" : rv.size_feedback === "tight" ? "Chật" : "Rộng"}
+                            {rv.size_feedback === "fit" ? t("common.size_fit") : rv.size_feedback === "tight" ? t("common.size_tight") : t("common.size_loose")}
                           </Chip>
                         )}
                       </div>
 
-                      {/* Actions */}
                       <div className="flex flex-col gap-1 flex-shrink-0">
                         <Button
                           isIconOnly size="sm" variant="light" radius="lg"
                           onPress={() => openEdit(rv)}
-                          aria-label="Sửa"
+                          aria-label={t("common.edit")}
                         >
                           <Edit3 size={14} className="text-default-500" />
                         </Button>
                         <Button
                           isIconOnly size="sm" variant="light" radius="lg" color="danger"
                           onPress={() => setDeleteId(rv._id)}
-                          aria-label="Xóa"
+                          aria-label={t("common.delete")}
                         >
                           <Trash2 size={14} />
                         </Button>
@@ -219,10 +212,10 @@ export default function MyReviews() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-black text-default-900">Sửa đánh giá</ModalHeader>
+              <ModalHeader className="font-black text-default-900">{t("review.edit_review")}</ModalHeader>
               <ModalBody>
                 <div className="text-center mb-3">
-                  <p className="text-sm text-default-600 mb-2">Chất lượng sản phẩm</p>
+                  <p className="text-sm text-default-600 mb-2">{t("common.product_quality")}</p>
                   <div className="flex justify-center gap-1">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <button key={s} type="button" onClick={() => setEditRating(s)}>
@@ -237,7 +230,7 @@ export default function MyReviews() {
                   </div>
                 </div>
                 <Textarea
-                  label="Nhận xét"
+                  label={t("common.comment")}
                   value={editComment}
                   onValueChange={setEditComment}
                   minRows={3}
@@ -246,14 +239,14 @@ export default function MyReviews() {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Đóng</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.close")}</Button>
                 <Button
                   color="primary" radius="lg"
                   isLoading={saving}
                   isDisabled={editRating === 0}
                   onPress={() => handleUpdate(onClose)}
                 >
-                  Cập nhật
+                  {t("common.update")}
                 </Button>
               </ModalFooter>
             </>
@@ -266,14 +259,14 @@ export default function MyReviews() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-black text-default-900">Xóa đánh giá</ModalHeader>
+              <ModalHeader className="font-black text-default-900">{t("review.delete_review")}</ModalHeader>
               <ModalBody>
-                <p className="text-sm text-default-600">Bạn có chắc chắn muốn xóa đánh giá này không?</p>
+                <p className="text-sm text-default-600">{t("review.delete_confirm")}</p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" radius="lg" onPress={onClose}>Hủy</Button>
+                <Button variant="light" radius="lg" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button color="danger" radius="lg" onPress={() => { handleDelete(); }}>
-                  Xóa
+                  {t("common.delete")}
                 </Button>
               </ModalFooter>
             </>

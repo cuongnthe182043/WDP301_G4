@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Input, Chip, Spinner,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea,
 } from "@heroui/react";
-import { Search, CheckCircle, XCircle, Eye, Clock } from "lucide-react";
+import { Search, CheckCircle, XCircle, Eye } from "lucide-react";
 import apiClient from "../../services/apiClient";
 
 const STATUS_COLOR = { pending: "warning", active: "success", inactive: "default", out_of_stock: "danger" };
-const STATUS_LABEL = { pending: "Chờ duyệt", active: "Đang bán", inactive: "Từ chối", out_of_stock: "Hết hàng" };
 
 const api = {
   list:    (p) => apiClient.get("/admin/products", { params: p }).then(r => r.data.data),
@@ -19,6 +19,15 @@ const api = {
 const LIMIT = 20;
 
 export default function AdminPendingProducts() {
+  const { t } = useTranslation();
+
+  const STATUS_LABEL = {
+    pending:      t("shop.product_status_pending"),
+    active:       t("shop.product_status_active"),
+    inactive:     t("shop.product_status_inactive"),
+    out_of_stock: t("shop.product_status_out_of_stock"),
+  };
+
   const [loading,       setLoading]       = useState(true);
   const [products,      setProducts]      = useState([]);
   const [total,         setTotal]         = useState(0);
@@ -29,7 +38,7 @@ export default function AdminPendingProducts() {
   const [rejectReason,  setRejectReason]  = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
-  const fetch = useCallback(async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
       const params = { page, limit: LIMIT, status: "pending" };
@@ -44,15 +53,15 @@ export default function AdminPendingProducts() {
     }
   }, [page, query]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { loadProducts(); }, [loadProducts]);
   useEffect(() => {
-    const t = setTimeout(() => { setPage(1); }, 400);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => { setPage(1); }, 400);
+    return () => clearTimeout(timer);
   }, [query]);
 
   const handleApprove = async (id) => {
     setActionLoading(true);
-    try { await api.approve(id); fetch(); }
+    try { await api.approve(id); loadProducts(); }
     catch (err) { console.error(err); }
     finally { setActionLoading(false); }
   };
@@ -62,7 +71,7 @@ export default function AdminPendingProducts() {
     setActionLoading(true);
     try {
       await api.reject(rejectTarget._id, rejectReason.trim());
-      setRejectTarget(null); setRejectReason(""); fetch();
+      setRejectTarget(null); setRejectReason(""); loadProducts();
     } catch (err) { console.error(err); }
     finally { setActionLoading(false); }
   };
@@ -79,17 +88,17 @@ export default function AdminPendingProducts() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-black text-gray-900">Sản phẩm chờ duyệt</h1>
+            <h1 className="text-xl font-black text-gray-900">{t("admin.admin_pending_title")}</h1>
             {total > 0 && (
               <Chip size="sm" color="warning" variant="solid" className="text-white">
                 {total}
               </Chip>
             )}
           </div>
-          <p className="text-sm text-gray-400">Phê duyệt hoặc từ chối sản phẩm mới của người bán</p>
+          <p className="text-sm text-gray-400">{t("admin.admin_pending_subtitle")}</p>
         </div>
         <Input
-          size="sm" placeholder="Tìm kiếm sản phẩm..." value={query}
+          size="sm" placeholder={t("admin.admin_pending_search")} value={query}
           onValueChange={(v) => setQuery(v)}
           radius="lg" className="w-64"
           startContent={<Search size={14} className="text-gray-400" />}
@@ -108,14 +117,21 @@ export default function AdminPendingProducts() {
                   <CheckCircle size={28} className="text-success-400" />
                 </div>
               </div>
-              <p className="text-gray-500 font-medium">Không có sản phẩm nào chờ duyệt</p>
-              <p className="text-sm text-gray-400">Tất cả sản phẩm đã được xử lý</p>
+              <p className="text-gray-500 font-medium">{t("admin.admin_pending_none")}</p>
+              <p className="text-sm text-gray-400">{t("admin.admin_pending_all_done")}</p>
             </div>
           ) : (
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  {["Ảnh", "Sản phẩm", "Shop", "Giá", "Ngày tạo", "Thao tác"].map((h) => (
+                  {[
+                    t("admin.admin_pending_col_img"),
+                    t("admin.admin_pending_col_product"),
+                    t("admin.admin_pending_col_shop"),
+                    t("admin.admin_pending_col_price"),
+                    t("admin.admin_pending_col_date"),
+                    t("admin.admin_pending_col_actions"),
+                  ].map((h) => (
                     <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">{h}</th>
                   ))}
                 </tr>
@@ -144,7 +160,7 @@ export default function AdminPendingProducts() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1.5">
-                        <Button size="sm" variant="bordered" radius="lg" isIconOnly onPress={() => openDetail(p)} title="Xem chi tiết">
+                        <Button size="sm" variant="bordered" radius="lg" isIconOnly onPress={() => openDetail(p)} title={t("common.details")}>
                           <Eye size={14} />
                         </Button>
                         <Button
@@ -153,14 +169,14 @@ export default function AdminPendingProducts() {
                           isLoading={actionLoading}
                           onPress={() => handleApprove(p._id)}
                         >
-                          Duyệt
+                          {t("admin.approve")}
                         </Button>
                         <Button
                           size="sm" color="danger" variant="flat" radius="lg"
                           startContent={<XCircle size={13} />}
                           onPress={() => { setRejectTarget(p); setRejectReason(""); }}
                         >
-                          Từ chối
+                          {t("admin.admin_reject_title")}
                         </Button>
                       </div>
                     </td>
@@ -174,9 +190,13 @@ export default function AdminPendingProducts() {
 
       {totalPages > 1 && (
         <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>← Trước</Button>
-          <span className="text-sm text-gray-500 self-center">Trang {page}/{totalPages}</span>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>Sau →</Button>
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
+            {t("shop.product_prev")}
+          </Button>
+          <span className="text-sm text-gray-500 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
+          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
+            {t("shop.product_next")}
+          </Button>
         </div>
       )}
 
@@ -200,16 +220,16 @@ export default function AdminPendingProducts() {
                   </div>
                 )}
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <InfoRow label="Giá bán"     value={`${(detailProd.base_price||0).toLocaleString("vi-VN")}₫`} />
-                  <InfoRow label="Tồn kho"     value={detailProd.stock_total ?? 0} />
-                  <InfoRow label="Danh mục"    value={detailProd.category?.name || "—"} />
-                  <InfoRow label="Thương hiệu" value={detailProd.brand?.name   || "—"} />
-                  <InfoRow label="Shop"        value={detailProd.shop?.shop_name || "—"} />
-                  <InfoRow label="Xuất xứ"     value={detailProd.detail_info?.origin_country || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_price")}    value={`${(detailProd.base_price||0).toLocaleString("vi-VN")}₫`} />
+                  <InfoRow label={t("admin.admin_products_detail_stock")}    value={detailProd.stock_total ?? 0} />
+                  <InfoRow label={t("admin.admin_products_detail_category")} value={detailProd.category?.name || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_brand")}    value={detailProd.brand?.name   || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_shop")}     value={detailProd.shop?.shop_name || "—"} />
+                  <InfoRow label={t("admin.admin_products_detail_origin")}   value={detailProd.detail_info?.origin_country || "—"} />
                 </div>
                 {detailProd.description && (
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 mb-1">Mô tả</p>
+                    <p className="text-xs font-semibold text-gray-500 mb-1">{t("admin.admin_products_detail_desc")}</p>
                     <p className="text-sm text-gray-700 whitespace-pre-wrap">{detailProd.description}</p>
                   </div>
                 )}
@@ -217,13 +237,13 @@ export default function AdminPendingProducts() {
               <ModalFooter>
                 <Button color="success" variant="flat" radius="lg" startContent={<CheckCircle size={14} />}
                   isLoading={actionLoading} onPress={async () => { await handleApprove(detailProd._id); onClose(); }}>
-                  Duyệt
+                  {t("admin.approve")}
                 </Button>
                 <Button color="danger" variant="flat" radius="lg" startContent={<XCircle size={14} />}
                   onPress={() => { setDetailProd(null); setRejectTarget(detailProd); setRejectReason(""); }}>
-                  Từ chối
+                  {t("admin.admin_reject_title")}
                 </Button>
-                <Button variant="light" onPress={onClose}>Đóng</Button>
+                <Button variant="light" onPress={onClose}>{t("common.close")}</Button>
               </ModalFooter>
             </>
           )}
@@ -235,26 +255,26 @@ export default function AdminPendingProducts() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Từ chối sản phẩm</ModalHeader>
+              <ModalHeader>{t("admin.admin_reject_title")}</ModalHeader>
               <ModalBody>
-                <p className="text-sm text-gray-500 mb-2">
-                  Từ chối sản phẩm <strong className="text-gray-800">"{rejectTarget?.name}"</strong>. Lý do sẽ hiển thị cho người bán.
-                </p>
+                <p className="text-sm text-gray-500 mb-2"
+                  dangerouslySetInnerHTML={{ __html: t("admin.admin_reject_body", { name: rejectTarget?.name }) }}
+                />
                 <Textarea
-                  isRequired label="Lý do từ chối" placeholder="VD: Hình ảnh không đạt yêu cầu, thiếu mô tả..."
+                  isRequired label={t("admin.admin_reject_reason_label")} placeholder={t("admin.admin_reject_reason_placeholder")}
                   value={rejectReason} onValueChange={setRejectReason}
                   radius="lg" minRows={3}
                 />
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>Hủy</Button>
+                <Button variant="light" onPress={onClose}>{t("common.cancel")}</Button>
                 <Button
                   color="danger" radius="lg"
                   isDisabled={!rejectReason.trim()}
                   onPress={async () => { await handleReject(); onClose(); }}
                   isLoading={actionLoading}
                 >
-                  Xác nhận từ chối
+                  {t("admin.admin_reject_confirm_btn")}
                 </Button>
               </ModalFooter>
             </>

@@ -124,6 +124,8 @@ exports.importProductsFromExcel = async (buffer, shopId) => {
     if (variantDims.length > 0) {
       const dimEntries = variantDims.map(d => variantValuesMap[d]);
       const combos = cartesian(dimEntries);
+      const perVariant = combos.length > 0 ? Math.floor(stock / combos.length) : 0;
+      const remainder  = stock - perVariant * combos.length;
       const variantRows = combos.map((combo, i) => {
         const attrs = {};
         variantDims.forEach((d, j) => { attrs[d] = combo[j]; });
@@ -132,7 +134,7 @@ exports.importProductsFromExcel = async (buffer, shopId) => {
           shop_id: shopId,
           sku: i === 0 ? sku : `${sku}-${i + 1}`,
           price,
-          stock: i === 0 ? stock : 0,
+          stock: perVariant + (i === 0 ? remainder : 0),
           variant_attributes: attrs,
           is_active: true,
         };

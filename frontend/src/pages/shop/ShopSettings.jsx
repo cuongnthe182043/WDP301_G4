@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Card, CardBody, CardHeader, Input, Textarea, Button, Avatar,
@@ -10,9 +11,9 @@ import { getMyShop, updateMyShop } from "../../services/shopService";
 import { Link } from "react-router-dom";
 
 const STATUS_COLOR = { pending: "warning", approved: "success", suspended: "danger" };
-const STATUS_LABEL = { pending: "Đang chờ duyệt", approved: "Đang hoạt động", suspended: "Đã tạm khóa" };
 
 export default function ShopSettings() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [shop, setShop] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,16 +52,16 @@ export default function ShopSettings() {
 
   const handleSave = async () => {
     if (!form.shop_name.trim()) {
-      toast.error("Tên shop không được để trống");
+      toast.error(t("shop.shop_name_required"));
       return;
     }
     setSaving(true);
     try {
       const updated = await updateMyShop(form);
       setShop(updated);
-      toast.success("Đã lưu thông tin shop");
+      toast.success(t("common.success"));
     } catch (err) {
-      toast.error(err.response?.data?.message || "Lưu thất bại");
+      toast.error(err.response?.data?.message || t("common.error"));
     } finally {
       setSaving(false);
     }
@@ -78,7 +79,7 @@ export default function ShopSettings() {
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-20 text-gray-500">
         <Store size={40} className="text-gray-300" />
-        <p>Bạn chưa có shop. <Link to="/register-shop" className="text-blue-500 hover:underline">Đăng ký ngay</Link></p>
+        <p>{t("shop.register_page_title")}. <Link to="/register-shop" className="text-blue-500 hover:underline">{t("shop.register_cta")}</Link></p>
       </div>
     );
   }
@@ -86,15 +87,15 @@ export default function ShopSettings() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-gray-900">Cài đặt shop</h1>
+        <h1 className="text-xl font-black text-gray-900">{t("shop.settings")}</h1>
         <div className="flex items-center gap-2">
           <Chip color={STATUS_COLOR[shop.status] || "default"} variant="flat" size="sm">
-            {STATUS_LABEL[shop.status] || shop.status}
+            {shop.status === "pending" ? t("shop.status_pending") : shop.status === "approved" ? t("shop.status_approved") : t("shop.status_suspended")}
           </Chip>
           {shop.status === "approved" && (
             <Link to={`/shops/${shop.shop_slug}`} target="_blank">
               <Button size="sm" variant="bordered" radius="lg" endContent={<ExternalLink size={13} />}>
-                Xem shop
+                {t("product.view_shop")}
               </Button>
             </Link>
           )}
@@ -105,7 +106,7 @@ export default function ShopSettings() {
         {/* Left: Avatar & Banner */}
         <Card radius="xl" shadow="sm">
           <CardHeader className="px-5 pt-5 pb-0">
-            <h3 className="font-bold text-gray-800">Hình ảnh shop</h3>
+            <h3 className="font-bold text-gray-800">{t("common.image")}</h3>
           </CardHeader>
           <CardBody className="p-5 flex flex-col items-center gap-4">
             <div className="relative">
@@ -149,18 +150,18 @@ export default function ShopSettings() {
         {/* Right: Info form */}
         <Card radius="xl" shadow="sm" className="lg:col-span-2">
           <CardHeader className="px-5 pt-5 pb-0">
-            <h3 className="font-bold text-gray-800">Thông tin shop</h3>
+            <h3 className="font-bold text-gray-800">{t("common.info")}</h3>
           </CardHeader>
           <CardBody className="p-5 flex flex-col gap-4">
             <Input
-              label="Tên shop *"
+              label={t("shop.shop_name_label")}
               value={form.shop_name}
               onValueChange={set("shop_name")}
               variant="bordered"
               radius="lg"
             />
             <Textarea
-              label="Mô tả shop"
+              label={t("shop.description_label")}
               value={form.description}
               onValueChange={set("description")}
               variant="bordered"
@@ -169,14 +170,14 @@ export default function ShopSettings() {
             />
             <div className="grid grid-cols-2 gap-3">
               <Input
-                label="Số điện thoại"
+                label={t("shop.phone_label")}
                 value={form.phone}
                 onValueChange={set("phone")}
                 variant="bordered"
                 radius="lg"
               />
               <Input
-                label="Email"
+                label={t("shop.email_label")}
                 value={form.email}
                 onValueChange={set("email")}
                 variant="bordered"
@@ -184,7 +185,7 @@ export default function ShopSettings() {
               />
             </div>
             <Input
-              label="Địa chỉ shop"
+              label={t("shop.address_label")}
               value={form.address}
               onValueChange={set("address")}
               variant="bordered"
@@ -193,7 +194,7 @@ export default function ShopSettings() {
 
             {shop.status !== "approved" && (
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
-                Shop chưa được duyệt. Thông tin sẽ được lưu nhưng shop chưa hoạt động công khai.
+                {t("shop.approval_notice")}
               </div>
             )}
 
@@ -206,7 +207,7 @@ export default function ShopSettings() {
                 startContent={!saving && <Save size={16} />}
                 className="font-bold"
               >
-                Lưu thay đổi
+                {t("common.save")}
               </Button>
             </div>
           </CardBody>
@@ -218,9 +219,8 @@ export default function ShopSettings() {
         <CardBody className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-gray-700">Địa chỉ shop</p>
+              <p className="text-sm font-semibold text-gray-700">{t("shop.address_label")}</p>
               <p className="text-sm text-gray-500 mt-0.5">
-                Shop của bạn có thể được truy cập tại:{" "}
                 <span className="text-blue-600 font-mono">/shops/{shop.shop_slug}</span>
               </p>
             </div>

@@ -1,9 +1,10 @@
 // components/home/ProductCard.jsx — Premium product card (HeroUI + framer-motion)
 import React, { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, ShoppingBag, Flame, PackageX, Store } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { useTranslation } from "react-i18next";
 
 /* ─── Animation variant (exported for stagger grids) ──────────────────────── */
 export const cardVariants = {
@@ -45,7 +46,7 @@ function StarRow({ value = 0, size = 10 }) {
           className={
             i < filled
               ? "text-amber-400 fill-amber-400"
-              : "text-gray-200 fill-gray-200"
+              : "text-gray-200 fill-gray-200 dark:text-zinc-600 dark:fill-zinc-600"
           }
         />
       ))}
@@ -55,24 +56,25 @@ function StarRow({ value = 0, size = 10 }) {
 
 /** Stock status pill — rendered below rating row */
 function StockBadge({ stock }) {
+  const { t } = useTranslation();
   if (stock == null) return null;
   if (stock === 0) {
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-red-500 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full leading-none">
-        Hết hàng
+        {t("product.out_of_stock")}
       </span>
     );
   }
   if (stock <= 10) {
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-500 bg-orange-50 border border-orange-200 px-1.5 py-0.5 rounded-full leading-none">
-        Còn {stock} sp
+        {t("product.low_stock", { n: stock })}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full leading-none">
-      Còn hàng
+      {t("product.in_stock")}
     </span>
   );
 }
@@ -94,11 +96,13 @@ function StockBadge({ stock }) {
  *   index   — stagger delay position
  */
 const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   // ── Normalise shape ──────────────────────────────────────────────────────
   const p    = item?.product || item || {};
   const id   = p._id || p.id || "";
   const href = p.slug ? `/product/${p.slug}` : `/product/${id}`;
-  const name = p.name || "Sản phẩm";
+  const name = p.name || t("product.default_name");
   const img  = p.images?.[0] || p.image || p.thumbnail || "";
 
   // ── Prices ───────────────────────────────────────────────────────────────
@@ -152,23 +156,25 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
       transition={{ type: "spring", stiffness: 360, damping: 24 }}
       className="h-full"
     >
-      <Link
-        to={href}
-        className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
+      <div
+        role="link"
         tabIndex={0}
+        onClick={() => navigate(href)}
+        onKeyDown={(e) => e.key === "Enter" && navigate(href)}
+        className="block h-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl cursor-pointer"
       >
         <div
           className={[
-            "h-full flex flex-col rounded-2xl overflow-hidden bg-white",
-            "border border-gray-100 shadow-sm",
-            "hover:shadow-xl hover:border-blue-200",
+            "h-full flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900",
+            "border border-gray-100 dark:border-zinc-700 shadow-sm",
+            "hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700",
             "transition-all duration-300 ease-in-out",
             isOutOfStock ? "opacity-70" : "",
           ].join(" ")}
         >
 
           {/* ────────────────── Thumbnail ───────────────────────────────── */}
-          <div className="relative aspect-square overflow-hidden bg-gray-50 flex-shrink-0">
+          <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-zinc-800 flex-shrink-0">
             {img ? (
               <img
                 src={img}
@@ -178,9 +184,9 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-gray-50 to-gray-100">
-                <PackageX size={32} className="text-gray-300" />
-                <span className="text-[10px] text-gray-400 font-medium">Chưa có ảnh</span>
+              <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-800 dark:to-zinc-700">
+                <PackageX size={32} className="text-gray-300 dark:text-zinc-600" />
+                <span className="text-[10px] text-gray-400 dark:text-zinc-500 font-medium">{t("product.no_image")}</span>
               </div>
             )}
 
@@ -205,8 +211,8 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
             {/* Out of stock overlay */}
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black/35 flex items-center justify-center backdrop-blur-[1px]">
-                <span className="bg-white/90 text-gray-700 text-xs font-black px-3 py-1 rounded-full shadow-md">
-                  Hết hàng
+                <span className="bg-white/90 dark:bg-zinc-800/90 text-gray-700 dark:text-zinc-300 text-xs font-black px-3 py-1 rounded-full shadow-md">
+                  {t("product.out_of_stock")}
                 </span>
               </div>
             )}
@@ -217,7 +223,7 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
 
             {/* Product name */}
             <p
-              className="text-[13px] font-semibold text-gray-800 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors duration-200 flex-1"
+              className="text-[13px] font-semibold text-gray-800 dark:text-zinc-100 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors duration-200 flex-1"
               title={name}
             >
               {name}
@@ -227,11 +233,11 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
             {rating > 0 ? (
               <div className="flex items-center gap-1.5 flex-wrap">
                 <StarRow value={rating} />
-                <span className="text-[11px] font-bold text-gray-700 leading-none tabular-nums">
+                <span className="text-[11px] font-bold text-gray-700 dark:text-zinc-300 leading-none tabular-nums">
                   {rating.toFixed(1)}
                 </span>
                 {reviewCount > 0 && (
-                  <span className="text-[11px] text-gray-400 leading-none">
+                  <span className="text-[11px] text-gray-400 dark:text-zinc-500 leading-none">
                     ({fmtReview(reviewCount)})
                   </span>
                 )}
@@ -240,9 +246,9 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
               /* No rating yet — thin placeholder keeps height consistent */
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }, (_, i) => (
-                  <Star key={i} size={10} className="text-gray-200 fill-gray-200" />
+                  <Star key={i} size={10} className="text-gray-200 fill-gray-200 dark:text-zinc-600 dark:fill-zinc-600" />
                 ))}
-                <span className="text-[10px] text-gray-400 ml-0.5">Chưa có đánh giá</span>
+                <span className="text-[10px] text-gray-400 dark:text-zinc-500 ml-0.5">{t("product.no_reviews")}</span>
               </div>
             )}
 
@@ -251,8 +257,8 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
               {sold > 0 ? (
                 <div className="flex items-center gap-1">
                   <ShoppingBag size={11} className="text-blue-400 flex-shrink-0" />
-                  <span className="text-[11px] text-gray-500 font-medium">
-                    {fmtSold(sold)} đã bán
+                  <span className="text-[11px] text-gray-500 dark:text-zinc-400 font-medium">
+                    {t("product.sold_count", { n: fmtSold(sold) })}
                   </span>
                 </div>
               ) : (
@@ -269,7 +275,7 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
                 {formatCurrency(salePrice)}
               </span>
               {showStrikethrough && (
-                <span className="text-[11px] text-gray-400 line-through leading-none">
+                <span className="text-[11px] text-gray-400 dark:text-zinc-500 line-through leading-none">
                   {formatCurrency(basePrice)}
                 </span>
               )}
@@ -282,8 +288,8 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
                 onClick={(e) => e.stopPropagation()}
                 className="flex items-center gap-1 mt-1 group/shop"
               >
-                <Store size={10} className="text-gray-400 group-hover/shop:text-blue-500 flex-shrink-0" />
-                <span className="text-[10px] text-gray-400 group-hover/shop:text-blue-500 truncate leading-none transition-colors">
+                <Store size={10} className="text-gray-400 dark:text-zinc-500 group-hover/shop:text-blue-500 flex-shrink-0" />
+                <span className="text-[10px] text-gray-400 dark:text-zinc-500 group-hover/shop:text-blue-500 truncate leading-none transition-colors">
                   {shop.shop_name}
                 </span>
               </Link>
@@ -291,7 +297,7 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
 
           </div>
         </div>
-      </Link>
+      </div>
     </motion.div>
   );
 });
