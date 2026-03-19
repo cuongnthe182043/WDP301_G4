@@ -98,6 +98,9 @@ exports.login = async (identifier, password) => {
 const safe = user.toObject();
 delete safe.password_hash;
 delete safe.refresh_token;
+delete safe.wishlist;
+delete safe.recently_viewed;
+delete safe.violation_history;
 
 safe.role_name = role?.name || null;
 safe.permissions = Array.isArray(role?.permissions) ? role.permissions : [];
@@ -138,7 +141,12 @@ exports.googleLogin = async (idToken) => {
 
 
   const role = await Role.findById(user.role_id).lean();
-  const safe = user.toObject(); delete safe.password_hash; delete safe.refresh_token;
+  const safe = user.toObject();
+  delete safe.password_hash;
+  delete safe.refresh_token;
+  delete safe.wishlist;
+  delete safe.recently_viewed;
+  delete safe.violation_history;
   safe.role_name = role?.name || null;
   safe.permissions = Array.isArray(role?.permissions) ? role.permissions : [];
 
