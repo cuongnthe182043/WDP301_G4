@@ -72,6 +72,9 @@ import AuditLogs from "../pages/admin/AuditLogs";
 import Reconciliation from "../pages/admin/Reconciliation";
 import ApiKeyManager from "../pages/admin/ApiKeyManager";
 
+/* ===== Landing Page ===== */
+import LandingPage from "../pages/LandingPage";
+
 /* ===== Other Roles ===== */
 import SalesOrders from "../pages/sales/SalesOrders";
 import NotFound from "../pages/errors/NotFound";
@@ -116,6 +119,9 @@ export default function AppRouter() {
       <Route path="/terms"     element={<TermsOfService />} />
       {/* ===== Auth Required ===== */}
       <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+
+      {/* ===== Landing Page ===== */}
+      <Route path="/landing"            element={<LandingPage />} />
 
       {/* ===== Customer — Public ===== */}
       <Route path="/"                   element={<HomePage />} />
