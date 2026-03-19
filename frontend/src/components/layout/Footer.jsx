@@ -260,7 +260,7 @@ export default function Footer() {
               {t("footer.payment_methods")}
             </p>
             <div className="flex flex-wrap gap-2">
-              {["VISA", "MasterCard", "PayPal", "COD"].map((method) => (
+              {["VISA", "MasterCard", "PayPal", "VNPay","COD"].map((method) => (
                 <span
                   key={method}
                   className="text-[11px] font-bold px-2.5 py-1 rounded-lg"

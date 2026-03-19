@@ -76,9 +76,10 @@ export default function PersonalInfoForm({ me, onUpdated }) {
   const [err, setErr] = useState("");
   const [previewUrl, setPreviewUrl] = useState(me?.avatar_url || "");
   const [avatarHover, setAvatarHover] = useState(false);
+  const [pendingFile, setPendingFile] = useState(null);
   const fileRef = useRef(null);
 
-  useEffect(() => { setPreviewUrl(form.avatar_url || ""); }, [form.avatar_url]);
+  useEffect(() => { setPreviewUrl(me?.avatar_url || ""); }, [me?.avatar_url]);
 
   const setField = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
   const setPref  = (k, v) => setForm(prev => ({ ...prev, preferences: { ...prev.preferences, [k]: v } }));
@@ -89,12 +90,9 @@ export default function PersonalInfoForm({ me, onUpdated }) {
     if (!f) return;
     if (!/image\/(jpeg|png)/i.test(f.type)) return setErr(t("profile.avatar_type_error"));
     if (f.size > 1024 * 1024) return setErr(t("profile.avatar_size_error"));
+    setPendingFile(f);
     const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = String(reader.result || "");
-      setField("avatar_url", dataUrl);
-      setPreviewUrl(dataUrl);
-    };
+    reader.onload = () => setPreviewUrl(String(reader.result || ""));
     reader.readAsDataURL(f);
   };
 
@@ -102,10 +100,23 @@ export default function PersonalInfoForm({ me, onUpdated }) {
     e.preventDefault();
     setSaving(true); setSaved(false); setErr("");
     try {
-      const payload = { ...form };
+      let updatedUser;
+
+      // Upload avatar first (multipart) if a new file was picked
+      if (pendingFile) {
+        const result = await userService.uploadAvatar(pendingFile);
+        setPendingFile(null);
+        updatedUser = result.user;
+      }
+
+      // Update text fields — never send a base64 data URL as avatar_url
+      const { avatar_url, ...rest } = form;
+      const payload = { ...rest };
       if (!payload.dob) delete payload.dob;
       const { user } = await userService.update(payload);
-      onUpdated?.(user);
+      updatedUser = user;
+
+      onUpdated?.(updatedUser);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
