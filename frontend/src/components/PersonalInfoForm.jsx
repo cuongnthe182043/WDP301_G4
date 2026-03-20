@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { userService } from "../services/userService";
 import { Camera, Check, AlertCircle, User, Mail, Phone, Calendar, Ruler, Weight, Shirt } from "lucide-react";
+import ShopRegisterDialog from "./ShopRegisterDialog";
 
 /* ── Reusable styled input ── */
 function Field({ label, icon: Icon, error, hint, children, full = false }) {
@@ -78,11 +79,12 @@ export default function PersonalInfoForm({ me, onUpdated }) {
   const [avatarHover, setAvatarHover] = useState(false);
   const [pendingFile, setPendingFile] = useState(null);
   const fileRef = useRef(null);
+  const [registeringShop, setRegisteringShop] = useState(false);
 
   useEffect(() => { setPreviewUrl(me?.avatar_url || ""); }, [me?.avatar_url]);
 
   const setField = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
-  const setPref  = (k, v) => setForm(prev => ({ ...prev, preferences: { ...prev.preferences, [k]: v } }));
+  const setPref = (k, v) => setForm(prev => ({ ...prev, preferences: { ...prev.preferences, [k]: v } }));
 
   const onPickFile = (e) => {
     setErr("");
@@ -129,246 +131,266 @@ export default function PersonalInfoForm({ me, onUpdated }) {
   const initial = (me?.name || me?.email || "U").charAt(0).toUpperCase();
 
   return (
-    <form onSubmit={onSubmit} className="space-y-0">
+    <>
+      <form onSubmit={onSubmit} className="space-y-0">
 
-      {/* ── Avatar + Basic info layout ── */}
-      <div className="flex flex-col sm:flex-row gap-6 items-start">
+        {/* ── Avatar + Basic info layout ── */}
+        <div className="flex flex-col sm:flex-row gap-6 items-start">
 
-        {/* Avatar */}
-        <div className="flex flex-col items-center gap-3 flex-shrink-0">
-          <motion.div
-            className="relative cursor-pointer"
-            onHoverStart={() => setAvatarHover(true)}
-            onHoverEnd={() => setAvatarHover(false)}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => fileRef.current?.click()}
-          >
-            {/* Animated ring */}
+          {/* Avatar */}
+          <div className="flex flex-col items-center gap-3 flex-shrink-0">
             <motion.div
-              animate={avatarHover ? { scale: 1.08, opacity: 1 } : { scale: 1, opacity: 0.5 }}
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                margin: -4,
-                background: "linear-gradient(135deg, #2563EB, #6366F1)",
-                borderRadius: "50%",
-              }}
-            />
-            <div
-              className="relative w-24 h-24 rounded-full overflow-hidden flex-shrink-0 z-10"
-              style={{ boxShadow: "0 0 0 3px #fff, 0 4px 16px rgba(29,78,216,0.25)" }}
+              className="relative cursor-pointer"
+              onHoverStart={() => setAvatarHover(true)}
+              onHoverEnd={() => setAvatarHover(false)}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => fileRef.current?.click()}
             >
-              {previewUrl ? (
-                <img src={previewUrl} alt="avatar" className="w-full h-full object-cover" />
-              ) : (
-                <div
-                  className="w-full h-full flex items-center justify-center text-white font-black text-3xl"
-                  style={{ background: "linear-gradient(135deg, #1D4ED8, #4F46E5)" }}
-                >
-                  {initial}
-                </div>
-              )}
-              {/* Hover overlay */}
-              <AnimatePresence>
-                {avatarHover && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 flex flex-col items-center justify-center gap-1"
-                    style={{ background: "rgba(29,78,216,0.75)" }}
+              {/* Animated ring */}
+              <motion.div
+                animate={avatarHover ? { scale: 1.08, opacity: 1 } : { scale: 1, opacity: 0.5 }}
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  margin: -4,
+                  background: "linear-gradient(135deg, #2563EB, #6366F1)",
+                  borderRadius: "50%",
+                }}
+              />
+              <div
+                className="relative w-24 h-24 rounded-full overflow-hidden flex-shrink-0 z-10"
+                style={{ boxShadow: "0 0 0 3px #fff, 0 4px 16px rgba(29,78,216,0.25)" }}
+              >
+                {previewUrl ? (
+                  <img src={previewUrl} alt="avatar" className="w-full h-full object-cover" />
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center text-white font-black text-3xl"
+                    style={{ background: "linear-gradient(135deg, #1D4ED8, #4F46E5)" }}
                   >
-                    <Camera size={18} className="text-white" />
-                    <span className="text-white text-[10px] font-bold">{t("profile.change_avatar")}</span>
-                  </motion.div>
+                    {initial}
+                  </div>
                 )}
-              </AnimatePresence>
+                {/* Hover overlay */}
+                <AnimatePresence>
+                  {avatarHover && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 flex flex-col items-center justify-center gap-1"
+                      style={{ background: "rgba(29,78,216,0.75)" }}
+                    >
+                      <Camera size={18} className="text-white" />
+                      <span className="text-white text-[10px] font-bold">{t("profile.change_avatar")}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
+            <input ref={fileRef} type="file" accept="image/png,image/jpeg" hidden onChange={onPickFile} />
+
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => fileRef.current?.click()}
+              className="text-xs font-bold px-4 py-1.5 rounded-full transition-all"
+              style={{
+                background: "#EFF6FF",
+                border: "1.5px solid #BFDBFE",
+                color: "#2563EB",
+              }}
+            >
+              {t("profile.pick_photo")}
+            </motion.button>
+            <p className="text-[10px] text-blue-300 text-center leading-relaxed">
+              {t("profile.avatar_hint")}
+            </p>
+          </div>
+
+          {/* Right: form fields */}
+          <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-4 min-w-0">
+            <Field label={t("profile.username_label")} icon={User} hint={t("profile.username_hint")}>
+              <input className={disabledInputCls} value={me?.username || ""} disabled />
+            </Field>
+
+            <Field label={t("profile.name")} icon={User}>
+              <input
+                className={inputCls(false)}
+                value={form.name}
+                onChange={e => setField("name", e.target.value)}
+                placeholder={t("profile.name_placeholder")}
+                required
+              />
+            </Field>
+
+            <Field label={t("profile.email")} icon={Mail}>
+              <input
+                className={inputCls(false)}
+                type="email"
+                value={form.email}
+                onChange={e => setField("email", e.target.value)}
+                placeholder="email@example.com"
+                required
+              />
+            </Field>
+
+            <Field label={t("profile.phone")} icon={Phone}>
+              <input
+                className={inputCls(false)}
+                value={form.phone || ""}
+                onChange={e => setField("phone", e.target.value)}
+                placeholder="0912 345 678"
+              />
+            </Field>
+
+            <Field label={t("profile.birthday")} icon={Calendar}>
+              <input
+                className={inputCls(false)}
+                type="date"
+                value={form.dob}
+                onChange={e => setField("dob", e.target.value)}
+              />
+            </Field>
+
+            <Field label={t("profile.gender")} full={false}>
+              <div className="flex gap-2 mt-1">
+                {[
+                  { v: "male", labelKey: "profile.gender_male" },
+                  { v: "female", labelKey: "profile.gender_female" },
+                  { v: "other", labelKey: "profile.gender_other" },
+                ].map(({ v, labelKey }) => (
+                  <motion.button
+                    key={v}
+                    type="button"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => setField("gender", v)}
+                    className="flex-1 h-10 rounded-xl text-sm font-bold transition-all duration-200 border-2"
+                    style={form.gender === v ? {
+                      background: "linear-gradient(135deg, #1D4ED8, #2563EB)",
+                      borderColor: "#1D4ED8",
+                      color: "#ffffff",
+                      boxShadow: "0 3px 10px rgba(29,78,216,0.3)",
+                    } : {
+                      background: "#EFF6FF",
+                      borderColor: "#BFDBFE",
+                      color: "#3B82F6",
+                    }}
+                  >
+                    {t(labelKey)}
+                  </motion.button>
+                ))}
+              </div>
+            </Field>
+          </div>
+        </div>
+
+        {/* ── Body measurements ── */}
+        <SectionLabel>{t("profile.measurements_section")}</SectionLabel>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { key: "height", labelKey: "profile.height", icon: Ruler, placeholder: "175", unit: "cm" },
+            { key: "weight", labelKey: "profile.weight", icon: Weight, placeholder: "65", unit: "kg" },
+            { key: "size_top", labelKey: "profile.size_top", icon: Shirt, placeholder: "M" },
+            { key: "size_bottom", labelKey: "profile.size_bottom", icon: Shirt, placeholder: "32" },
+          ].map(({ key, labelKey, icon: Icon, placeholder, unit }) => (
+            <div key={key}>
+              <span className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                <Icon size={12} className="text-blue-400" />
+                {t(labelKey)}
+              </span>
+              <div className="relative">
+                <input
+                  type={key === "height" || key === "weight" ? "number" : "text"}
+                  className={inputCls(false) + " pr-10"}
+                  value={form.preferences[key]}
+                  onChange={e => setPref(key, key === "height" || key === "weight" ? Number(e.target.value) : e.target.value)}
+                  placeholder={placeholder}
+                />
+                {unit && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-300 pointer-events-none">
+                    {unit}
+                  </span>
+                )}
+              </div>
             </div>
-          </motion.div>
+          ))}
+        </div>
 
-          <input ref={fileRef} type="file" accept="image/png,image/jpeg" hidden onChange={onPickFile} />
-
+        {/* ── Actions ── */}
+        <div className="flex items-center gap-3 mt-7 pt-5" style={{ borderTop: "1.5px solid #EFF6FF" }}>
+          {/* Primary Blue Save Button */}
           <motion.button
-            type="button"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => fileRef.current?.click()}
-            className="text-xs font-bold px-4 py-1.5 rounded-full transition-all"
+            type="submit"
+            disabled={saving}
+            whileHover={!saving ? { scale: 1.02, y: -1 } : {}}
+            whileTap={!saving ? { scale: 0.98 } : {}}
+            className="h-10 px-7 rounded-xl text-sm font-black text-white disabled:opacity-60 disabled:cursor-not-allowed transition-all"
             style={{
-              background: "#EFF6FF",
-              border: "1.5px solid #BFDBFE",
-              color: "#2563EB",
+              background: saving ? "#93C5FD" : "linear-gradient(135deg, #1E40AF, #2563EB)",
+              boxShadow: saving ? "none" : "0 4px 14px rgba(29,78,216,0.35)",
             }}
           >
-            {t("profile.pick_photo")}
+            {saving ? (
+              <span className="flex items-center gap-2">
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                  className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full inline-block"
+                />
+                {t("common.saving")}
+              </span>
+            ) : t("profile.save_changes")}
           </motion.button>
-          <p className="text-[10px] text-blue-300 text-center leading-relaxed">
-            {t("profile.avatar_hint")}
-          </p>
+
+          {/* Status Indicators */}
+          <AnimatePresence>
+            {saved && (
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                className="flex items-center gap-1.5 text-sm font-bold text-green-600"
+              >
+                <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+                  <Check size={12} className="text-green-600" />
+                </div>
+                {t("profile.saved")}
+              </motion.div>
+            )}
+            {err && (
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-1.5 text-sm font-bold text-red-500"
+              >
+                <AlertCircle size={14} />
+                {err}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* New Green Register Shop Button */}
+          <motion.button
+            type="button"
+            onClick={() => { setRegisteringShop(true); }}
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            className="h-10 px-7 rounded-xl text-sm font-black text-white transition-all ml-auto"
+            style={{
+              background: "linear-gradient(135deg, #059669, #10B981)",
+              boxShadow: "0 4px 14px rgba(16, 185, 129, 0.35)",
+            }}
+          >
+            {t("nav.register_shop")}
+          </motion.button>
         </div>
-
-        {/* Right: form fields */}
-        <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-4 min-w-0">
-          <Field label={t("profile.username_label")} icon={User} hint={t("profile.username_hint")}>
-            <input className={disabledInputCls} value={me?.username || ""} disabled />
-          </Field>
-
-          <Field label={t("profile.name")} icon={User}>
-            <input
-              className={inputCls(false)}
-              value={form.name}
-              onChange={e => setField("name", e.target.value)}
-              placeholder={t("profile.name_placeholder")}
-              required
-            />
-          </Field>
-
-          <Field label={t("profile.email")} icon={Mail}>
-            <input
-              className={inputCls(false)}
-              type="email"
-              value={form.email}
-              onChange={e => setField("email", e.target.value)}
-              placeholder="email@example.com"
-              required
-            />
-          </Field>
-
-          <Field label={t("profile.phone")} icon={Phone}>
-            <input
-              className={inputCls(false)}
-              value={form.phone || ""}
-              onChange={e => setField("phone", e.target.value)}
-              placeholder="0912 345 678"
-            />
-          </Field>
-
-          <Field label={t("profile.birthday")} icon={Calendar}>
-            <input
-              className={inputCls(false)}
-              type="date"
-              value={form.dob}
-              onChange={e => setField("dob", e.target.value)}
-            />
-          </Field>
-
-          <Field label={t("profile.gender")} full={false}>
-            <div className="flex gap-2 mt-1">
-              {[
-                { v: "male",   labelKey: "profile.gender_male" },
-                { v: "female", labelKey: "profile.gender_female" },
-                { v: "other",  labelKey: "profile.gender_other" },
-              ].map(({ v, labelKey }) => (
-                <motion.button
-                  key={v}
-                  type="button"
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => setField("gender", v)}
-                  className="flex-1 h-10 rounded-xl text-sm font-bold transition-all duration-200 border-2"
-                  style={form.gender === v ? {
-                    background: "linear-gradient(135deg, #1D4ED8, #2563EB)",
-                    borderColor: "#1D4ED8",
-                    color: "#ffffff",
-                    boxShadow: "0 3px 10px rgba(29,78,216,0.3)",
-                  } : {
-                    background: "#EFF6FF",
-                    borderColor: "#BFDBFE",
-                    color: "#3B82F6",
-                  }}
-                >
-                  {t(labelKey)}
-                </motion.button>
-              ))}
-            </div>
-          </Field>
-        </div>
-      </div>
-
-      {/* ── Body measurements ── */}
-      <SectionLabel>{t("profile.measurements_section")}</SectionLabel>
-
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { key: "height",      labelKey: "profile.height",      icon: Ruler,  placeholder: "175", unit: "cm" },
-          { key: "weight",      labelKey: "profile.weight",      icon: Weight, placeholder: "65",  unit: "kg" },
-          { key: "size_top",    labelKey: "profile.size_top",    icon: Shirt,  placeholder: "M" },
-          { key: "size_bottom", labelKey: "profile.size_bottom", icon: Shirt,  placeholder: "32" },
-        ].map(({ key, labelKey, icon: Icon, placeholder, unit }) => (
-          <div key={key}>
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-              <Icon size={12} className="text-blue-400" />
-              {t(labelKey)}
-            </span>
-            <div className="relative">
-              <input
-                type={key === "height" || key === "weight" ? "number" : "text"}
-                className={inputCls(false) + " pr-10"}
-                value={form.preferences[key]}
-                onChange={e => setPref(key, key === "height" || key === "weight" ? Number(e.target.value) : e.target.value)}
-                placeholder={placeholder}
-              />
-              {unit && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-300 pointer-events-none">
-                  {unit}
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Actions ── */}
-      <div className="flex items-center gap-3 mt-7 pt-5" style={{ borderTop: "1.5px solid #EFF6FF" }}>
-        <motion.button
-          type="submit"
-          disabled={saving}
-          whileHover={!saving ? { scale: 1.02, y: -1 } : {}}
-          whileTap={!saving ? { scale: 0.98 } : {}}
-          className="h-10 px-7 rounded-xl text-sm font-black text-white disabled:opacity-60 disabled:cursor-not-allowed transition-all"
-          style={{
-            background: saving ? "#93C5FD" : "linear-gradient(135deg, #1E40AF, #2563EB)",
-            boxShadow: saving ? "none" : "0 4px 14px rgba(29,78,216,0.35)",
-          }}
-        >
-          {saving ? (
-            <span className="flex items-center gap-2">
-              <motion.span
-                animate={{ rotate: 360 }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full inline-block"
-              />
-              {t("common.saving")}
-            </span>
-          ) : t("profile.save_changes")}
-        </motion.button>
-
-        <AnimatePresence>
-          {saved && (
-            <motion.div
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
-              className="flex items-center gap-1.5 text-sm font-bold text-green-600"
-            >
-              <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
-                <Check size={12} className="text-green-600" />
-              </div>
-              {t("profile.saved")}
-            </motion.div>
-          )}
-          {err && (
-            <motion.div
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0 }}
-              className="flex items-center gap-1.5 text-sm font-bold text-red-500"
-            >
-              <AlertCircle size={14} />
-              {err}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </form>
+      </form>
+      <ShopRegisterDialog open={registeringShop} onClose={() => setRegisteringShop(false)} user={me} />
+    </>
   );
 }
