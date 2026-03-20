@@ -56,7 +56,6 @@ import ManageCredits from "../pages/shop/ManageCredits";
 import SizeChartsPage from "../pages/shop/SizeChartsPage";
 
 /* ===== New Vendor / Admin Pages ===== */
-import RegisterShop from "../pages/customer/RegisterShop";
 import ShopPage from "../pages/customer/ShopPage";
 import ShopSettings from "../pages/shop/ShopSettings";
 import AdminShops from "../pages/admin/AdminShops";
@@ -92,7 +91,7 @@ function RoleRoute({ children, roles = [], permAny = [], permAll = [] }) {
   if (!user) return <Navigate to="/login" replace />;
   const roleName = user.role_name || user.role || user.role_id;
   const perms = Array.isArray(user.permissions) ? user.permissions : [];
-  const roleOK    = roles.length   === 0 ? true : roles.includes(roleName);
+  const roleOK = roles.length === 0 ? true : roles.includes(roleName);
   const permAnyOK = permAny.length === 0 ? true : permAny.some((p) => perms.includes(p));
   const permAllOK = permAll.length === 0 ? true : permAll.every((p) => perms.includes(p));
   return roleOK && permAnyOK && permAllOK ? children : <Navigate to="/" replace />;
@@ -112,11 +111,11 @@ export default function AppRouter() {
   return (
     <Routes>
       {/* ===== Public ===== */}
-      <Route path="/login"           element={<Login />} />
-      <Route path="/register"        element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/privacy"   element={<PrivacyPolicy />} />
-      <Route path="/terms"     element={<TermsOfService />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfService />} />
       {/* ===== Auth Required ===== */}
       <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
@@ -124,76 +123,75 @@ export default function AppRouter() {
       <Route path="/landing"            element={<LandingPage />} />
 
       {/* ===== Customer — Public ===== */}
-      <Route path="/"                   element={<HomePage />} />
-      <Route path="/product/:idOrSlug"  element={<ProductDetail />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/product/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products/:idOrSlug" element={<ProductDetail />} />
-      <Route path="/products"           element={<AllProductsPages />} />
-      <Route path="/search"             element={<SearchPage />} />
-      <Route path="/categories/:slug"   element={<CategoryProductsPage />} />
-      <Route path="/shops/:shopSlug"    element={<ShopPage />} />
+      <Route path="/products" element={<AllProductsPages />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/categories/:slug" element={<CategoryProductsPage />} />
+      <Route path="/shops/:shopSlug" element={<ShopPage />} />
 
       {/* ===== Customer — Protected ===== */}
-      <Route path="/register-shop" element={<ProtectedRoute><RegisterShop /></ProtectedRoute>} />
-      <Route path="/profile"  element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="/cart"     element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
       <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
       <Route path="/payment/return" element={<ProtectedRoute><PaymentReturn /></ProtectedRoute>} />
-      <Route path="/orders"         element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-      <Route path="/orders/:id"     element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
-      <Route path="/wishlist"       element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-      <Route path="/wallet"         element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
-      <Route path="/notifications"  element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
-      <Route path="/vouchers"       element={<ProtectedRoute><VouchersPage /></ProtectedRoute>} />
-      <Route path="/my-reviews"     element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
+      <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+      <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+      <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
+      <Route path="/wallet" element={<ProtectedRoute><Wallet /></ProtectedRoute>} />
+      <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+      <Route path="/vouchers" element={<ProtectedRoute><VouchersPage /></ProtectedRoute>} />
+      <Route path="/my-reviews" element={<ProtectedRoute><MyReviews /></ProtectedRoute>} />
 
       {/* ===== Customer Support / Tickets ===== */}
-      <Route path="/tickets"         element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
-      <Route path="/tickets/:id"     element={<ProtectedRoute><TicketDetail /></ProtectedRoute>} />
+      <Route path="/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+      <Route path="/tickets/:id" element={<ProtectedRoute><TicketDetail /></ProtectedRoute>} />
       <Route path="/support/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
 
       {/* ===== SHOP AREA ===== */}
       <Route path="/shop" element={<ShopGuard><ShopLayout /></ShopGuard>}>
-        <Route index                              element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard"                   element={<Dashboard />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
 
         {/* Orders */}
-        <Route path="orders"                      element={<ManageOrders />} />
-        <Route path="refunds"                     element={<ManageRefunds />} />
-        <Route path="customers"                   element={<ManageCustomers />} />
+        <Route path="orders" element={<ManageOrders />} />
+        <Route path="refunds" element={<ManageRefunds />} />
+        <Route path="customers" element={<ManageCustomers />} />
 
         {/* Products */}
-        <Route path="admin/products"              element={<ManageProducts />} />
-        <Route path="admin/products/new"          element={<AddProduct />} />
-        <Route path="admin/products/:id"          element={<AddProduct mode="edit" />} />
+        <Route path="admin/products" element={<ManageProducts />} />
+        <Route path="admin/products/new" element={<AddProduct />} />
+        <Route path="admin/products/:id" element={<AddProduct mode="edit" />} />
         <Route path="admin/products/:id/variants" element={<VariantsPage />} />
-        <Route path="inventory/low-stock"         element={<LowStockPage />} />
+        <Route path="inventory/low-stock" element={<LowStockPage />} />
 
         {/* Catalog */}
-        <Route path="catalog/categories"          element={<CategoriesPage />} />
-        <Route path="catalog/attributes"          element={<AttributesPage />} />
-        <Route path="catalog/brands"              element={<BrandsPage />} />
-        <Route path="size-charts"                 element={<SizeChartsPage />} />
+        <Route path="catalog/categories" element={<CategoriesPage />} />
+        <Route path="catalog/attributes" element={<AttributesPage />} />
+        <Route path="catalog/brands" element={<BrandsPage />} />
+        <Route path="size-charts" element={<SizeChartsPage />} />
 
         {/* Reviews & Marketing */}
-        <Route path="reviews"                     element={<ManageReviews />} />
-        <Route path="marketing"                   element={<ManageMarketing />} />
-        <Route path="marketing/vouchers"          element={<ManageVoucher />} />
-        <Route path="marketing/flashsale"         element={<ManageFlashsale />} />
-        <Route path="marketing/banners"           element={<ManageBanner />} />
-        <Route path="marketing/campaigns"         element={<ManageCampaigns />} />
-        <Route path="marketing/credits"           element={<ManageCredits />} />
+        <Route path="reviews" element={<ManageReviews />} />
+        <Route path="marketing" element={<ManageMarketing />} />
+        <Route path="marketing/vouchers" element={<ManageVoucher />} />
+        <Route path="marketing/flashsale" element={<ManageFlashsale />} />
+        <Route path="marketing/banners" element={<ManageBanner />} />
+        <Route path="marketing/campaigns" element={<ManageCampaigns />} />
+        <Route path="marketing/credits" element={<ManageCredits />} />
 
         {/* Finance */}
-        <Route path="wallet"                      element={<ShopWallet />} />
+        <Route path="wallet" element={<ShopWallet />} />
 
         {/* Settings */}
-        <Route path="settings"                    element={<ShopSettings />} />
+        <Route path="settings" element={<ShopSettings />} />
       </Route>
 
       {/* Backward-compat shop redirects */}
-      <Route path="/shop/products"     element={<Navigate to="/shop/admin/products" replace />} />
+      <Route path="/shop/products" element={<Navigate to="/shop/admin/products" replace />} />
       <Route path="/shop/products/new" element={<Navigate to="/shop/admin/products/new" replace />} />
-      <Route path="/shop/dashboard"    element={<Navigate to="/shop" replace />} />
+      <Route path="/shop/dashboard" element={<Navigate to="/shop" replace />} />
 
       {/* ===== Sales ===== */}
       <Route path="/sales/orders" element={<RoleRoute roles={["sales"]}><SalesOrders /></RoleRoute>} />
@@ -201,15 +199,15 @@ export default function AppRouter() {
       {/* ===== Admin ===== */}
       <Route path="/admin" element={<RoleRoute roles={["system_admin"]}><AdminLayout /></RoleRoute>}>
         <Route index element={<Navigate to="/admin/shops" replace />} />
-        <Route path="shops"            element={<AdminShops />} />
-        <Route path="products"         element={<AdminProducts />} />
+        <Route path="shops" element={<AdminShops />} />
+        <Route path="products" element={<AdminProducts />} />
         <Route path="products/pending" element={<AdminPendingProducts />} />
-        <Route path="reviews"        element={<AdminReviews />} />
-        <Route path="users"          element={<AdminUsers />} />
-        <Route path="system-config"  element={<SystemConfig />} />
-        <Route path="audit-logs"     element={<AuditLogs />} />
+        <Route path="reviews" element={<AdminReviews />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="system-config" element={<SystemConfig />} />
+        <Route path="audit-logs" element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />
-        <Route path="api-keys"       element={<ApiKeyManager />} />
+        <Route path="api-keys" element={<ApiKeyManager />} />
       </Route>
 
       {/* ===== 404 ===== */}

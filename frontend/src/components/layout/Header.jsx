@@ -43,19 +43,19 @@ function useScrolled(threshold = 12) {
 
 /* ── Notification meta ── */
 const NOTIF_META = {
-  "order.placed":    { Icon: Package,    color: "#2563EB", bg: "#EFF6FF" },
-  "order.confirmed": { Icon: Package,    color: "#7C3AED", bg: "#EDE9FE" },
-  "order.shipped":   { Icon: Package,    color: "#0284C7", bg: "#E0F2FE" },
-  "order.delivered": { Icon: Package,    color: "#16A34A", bg: "#DCFCE7" },
-  "order.cancelled": { Icon: Package,    color: "#DC2626", bg: "#FEE2E2" },
+  "order.placed": { Icon: Package, color: "#2563EB", bg: "#EFF6FF" },
+  "order.confirmed": { Icon: Package, color: "#7C3AED", bg: "#EDE9FE" },
+  "order.shipped": { Icon: Package, color: "#0284C7", bg: "#E0F2FE" },
+  "order.delivered": { Icon: Package, color: "#16A34A", bg: "#DCFCE7" },
+  "order.cancelled": { Icon: Package, color: "#DC2626", bg: "#FEE2E2" },
   "payment.success": { Icon: CreditCard, color: "#16A34A", bg: "#DCFCE7" },
-  "payment.failed":  { Icon: CreditCard, color: "#DC2626", bg: "#FEE2E2" },
-  "system.password": { Icon: Settings,   color: "#D97706", bg: "#FEF3C7" },
-  "system.security": { Icon: Settings,   color: "#DC2626", bg: "#FEE2E2" },
-  promotion:         { Icon: Tag,        color: "#DB2777", bg: "#FCE7F3" },
-  order:             { Icon: Package,    color: "#2563EB", bg: "#EFF6FF" },
-  payment:           { Icon: CreditCard, color: "#16A34A", bg: "#DCFCE7" },
-  system:            { Icon: Settings,   color: "#D97706", bg: "#FEF3C7" },
+  "payment.failed": { Icon: CreditCard, color: "#DC2626", bg: "#FEE2E2" },
+  "system.password": { Icon: Settings, color: "#D97706", bg: "#FEF3C7" },
+  "system.security": { Icon: Settings, color: "#DC2626", bg: "#FEE2E2" },
+  promotion: { Icon: Tag, color: "#DB2777", bg: "#FCE7F3" },
+  order: { Icon: Package, color: "#2563EB", bg: "#EFF6FF" },
+  payment: { Icon: CreditCard, color: "#16A34A", bg: "#DCFCE7" },
+  system: { Icon: Settings, color: "#D97706", bg: "#FEF3C7" },
 };
 function getNotifMeta(n) {
   return NOTIF_META[n.subtype] || NOTIF_META[n.type] || NOTIF_META.system;
@@ -296,11 +296,11 @@ function NotificationDropdown({ scrolled, isDark }) {
 
 /* ── Profile links ── */
 const PROFILE_LINKS = [
-  { key: "profile",  icon: User,    labelKey: "nav.profile",  path: "/profile",  iconBg: "#EFF6FF", iconColor: "#2563EB" },
-  { key: "orders",   icon: Receipt, labelKey: "nav.orders",   path: "/orders",   iconBg: "#F0FDF4", iconColor: "#16A34A" },
-  { key: "wishlist", icon: Heart,   labelKey: "nav.wishlist", path: "/wishlist", iconBg: "#FFF1F2", iconColor: "#E11D48" },
-  { key: "wallet",   icon: Wallet,  labelKey: "nav.wallet",   path: "/wallet",   iconBg: "#FFFBEB", iconColor: "#D97706" },
-  { key: "vouchers", icon: Tag,     labelKey: "nav.vouchers", path: "/vouchers", iconBg: "#FDF4FF", iconColor: "#9333EA" },
+  { key: "profile", icon: User, labelKey: "nav.profile", path: "/profile", iconBg: "#EFF6FF", iconColor: "#2563EB" },
+  { key: "orders", icon: Receipt, labelKey: "nav.orders", path: "/orders", iconBg: "#F0FDF4", iconColor: "#16A34A" },
+  { key: "wishlist", icon: Heart, labelKey: "nav.wishlist", path: "/wishlist", iconBg: "#FFF1F2", iconColor: "#E11D48" },
+  { key: "wallet", icon: Wallet, labelKey: "nav.wallet", path: "/wallet", iconBg: "#FFFBEB", iconColor: "#D97706" },
+  { key: "vouchers", icon: Tag, labelKey: "nav.vouchers", path: "/vouchers", iconBg: "#FDF4FF", iconColor: "#9333EA" },
 ];
 
 const AUTH_PATHS = ["/login", "/register", "/forgot-password", "/change-password"];
@@ -324,13 +324,13 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
   const location = useLocation();
   const navigate = useNavigate();
   const scrolled = useScrolled();
-  const isAuth   = AUTH_PATHS.some(p => location.pathname.startsWith(p));
+  const isAuth = AUTH_PATHS.some(p => location.pathname.startsWith(p));
   const { theme, toggleTheme } = useTheme();
-  const isDark   = theme === "dark";
-  const { t }    = useTranslation();
+  const isDark = theme === "dark";
+  const { t } = useTranslation();
 
-  const [searchQ,     setSearchQ]     = useState("");
-  const [menuOpen,    setMenuOpen]    = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [searchFocus, setSearchFocus] = useState(false);
 
   useEffect(() => setMenuOpen(false), [location.pathname]);
@@ -622,7 +622,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
                   {/* Shop */}
                   <DropdownItem key="shop" className="opacity-100 px-0 py-0">
-                    <div
+                    {user?.role_name === "shop_owner" && <div
                       className="flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors"
                       onClick={() => navigate(user?.role_name === "shop_owner" ? "/shop/dashboard" : "/register-shop")}
                       onMouseEnter={e => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.04)" : "#F0FDF4"}
@@ -633,10 +633,10 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                         <Store size={15} style={{ color: isDark ? "#94a3b8" : "#16a34a" }} />
                       </div>
                       <span className="font-semibold text-[13px]" style={{ color: isDark ? "#e2e8f0" : "#1e293b" }}>
-                        {user?.role_name === "shop_owner" ? t("nav.manage_shop") : t("nav.register_shop")}
+                        {("nav.manage_shop")}
                       </span>
                       <ChevronRight size={13} className="ml-auto" style={{ color: isDark ? "#475569" : "#CBD5E1" }} />
-                    </div>
+                    </div>}
                   </DropdownItem>
 
                   {/* Logout */}
@@ -731,12 +731,12 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
 
             <div className="px-3">
               {[
-                { icon: User,    label: t("nav.profile"),       path: "/profile",       iconBg: "#EFF6FF", ic: "#2563EB" },
-                { icon: Receipt, label: t("nav.orders"),        path: "/orders",        iconBg: "#F0FDF4", ic: "#16A34A" },
-                { icon: Heart,   label: t("nav.wishlist"),      path: "/wishlist",      iconBg: "#FFF1F2", ic: "#E11D48" },
-                { icon: Wallet,  label: t("nav.wallet"),        path: "/wallet",        iconBg: "#FFFBEB", ic: "#D97706" },
-                { icon: Tag,     label: t("nav.vouchers"),      path: "/vouchers",      iconBg: "#FDF4FF", ic: "#9333EA" },
-                { icon: Bell,    label: t("nav.notifications"), path: "/notifications", iconBg: "#EFF6FF", ic: "#2563EB", badge: notifyCount },
+                { icon: User, label: t("nav.profile"), path: "/profile", iconBg: "#EFF6FF", ic: "#2563EB" },
+                { icon: Receipt, label: t("nav.orders"), path: "/orders", iconBg: "#F0FDF4", ic: "#16A34A" },
+                { icon: Heart, label: t("nav.wishlist"), path: "/wishlist", iconBg: "#FFF1F2", ic: "#E11D48" },
+                { icon: Wallet, label: t("nav.wallet"), path: "/wallet", iconBg: "#FFFBEB", ic: "#D97706" },
+                { icon: Tag, label: t("nav.vouchers"), path: "/vouchers", iconBg: "#FDF4FF", ic: "#9333EA" },
+                { icon: Bell, label: t("nav.notifications"), path: "/notifications", iconBg: "#EFF6FF", ic: "#2563EB", badge: notifyCount },
               ].map(({ icon: Icon, label, path, iconBg, ic, badge }) => (
                 <NavbarMenuItem key={path}>
                   <RouterLink to={path}

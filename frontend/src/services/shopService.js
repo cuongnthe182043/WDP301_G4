@@ -15,7 +15,7 @@ export const getShopProducts = async (slug, params = {}) => {
 // ─── Shop Owner ───────────────────────────────────────────────────────────────
 
 export const registerShop = async (payload) => {
-  const res = await apiClient.post("/vendor/shops/register", payload);
+  const res = await apiClient.post("/users/registershop", payload);
   return res.data;
 };
 
