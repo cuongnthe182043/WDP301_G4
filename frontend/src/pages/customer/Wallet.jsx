@@ -1,25 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Card, CardBody, Button, Chip, Skeleton } from "@heroui/react";
-import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Clock, TrendingUp, TrendingDown } from "lucide-react";
+import { Card, CardBody, Button, Chip, Skeleton, Select, SelectItem } from "@heroui/react";
+import {
+  Wallet as WalletIcon,
+  ArrowUpRight,
+  ArrowDownLeft,
+  Clock,
+  TrendingUp,
+  TrendingDown,
+  RotateCcw,
+  ShoppingBag,
+  Banknote,
+  RefreshCw,
+} from "lucide-react";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 import { walletService } from "../../services/walletService";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 const TOKEN_KEY = "DFS_TOKEN";
 
+const TXN_TYPE_ICON = {
+  refund:   <RotateCcw   size={16} className="text-success" />,
+  payment:  <ShoppingBag size={16} className="text-danger"  />,
+  deposit:  <ArrowUpRight  size={16} className="text-primary" />,
+  withdraw: <ArrowDownLeft size={16} className="text-warning" />,
+  transfer: <Banknote      size={16} className="text-secondary" />,
+};
+
 function txnIcon(type, direction) {
-  if (direction === "in") return <TrendingUp size={16} className="text-success" />;
-  return <TrendingDown size={16} className="text-danger" />;
+  if (TXN_TYPE_ICON[type]) return TXN_TYPE_ICON[type];
+  return direction === "in"
+    ? <TrendingUp  size={16} className="text-success" />
+    : <TrendingDown size={16} className="text-danger" />;
 }
 
 export default function Wallet() {
   const { t } = useTranslation();
   const isLoggedIn = !!localStorage.getItem(TOKEN_KEY);
-  const [wallet, setWallet] = useState(null);
-  const [txns, setTxns] = useState([]);
+
+  const [wallet,  setWallet]  = useState(null);
+  const [txns,    setTxns]    = useState([]);
+  const [total,   setTotal]   = useState(0);
+  const [page,    setPage]    = useState(1);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [typeFilter, setTypeFilter] = useState("all");
+
+  const LIMIT = 20;
 
   const TXN_LABELS = {
     payment:  t("wallet.type_payment"),
@@ -31,23 +60,51 @@ export default function Wallet() {
 
   const txnLabel = (type) => TXN_LABELS[type] || type;
 
-  useEffect(() => {
+  const loadWallet = useCallback(async () => {
     if (!isLoggedIn) { setLoading(false); return; }
+    try {
+      const w = await walletService.getWallet();
+      setWallet(w);
+    } catch { /* wallet may not exist yet */ }
+  }, [isLoggedIn]);
+
+  const loadTxns = useCallback(async (pageNum = 1, type = "all", append = false) => {
+    if (!isLoggedIn) return;
+    try {
+      const result = await walletService.getTransactions(pageNum, LIMIT, type !== "all" ? type : undefined);
+      const items = result?.transactions || [];
+      setTxns(prev => append ? [...prev, ...items] : items);
+      setTotal(result?.total || 0);
+    } catch { /* ignore */ }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
     (async () => {
-      try {
-        const [w, tx] = await Promise.all([
-          walletService.getWallet(),
-          walletService.getTransactions(1, 20),
-        ]);
-        setWallet(w);
-        setTxns(tx?.transactions || []);
-      } catch { /* wallet may not exist yet */ }
-      finally { setLoading(false); }
+      setLoading(true);
+      await Promise.all([loadWallet(), loadTxns(1, typeFilter)]);
+      setLoading(false);
     })();
   }, [isLoggedIn]);
 
+  const handleTypeFilter = async (type) => {
+    setTypeFilter(type);
+    setPage(1);
+    setLoading(true);
+    await loadTxns(1, type);
+    setLoading(false);
+  };
+
+  const handleLoadMore = async () => {
+    const nextPage = page + 1;
+    setLoadingMore(true);
+    await loadTxns(nextPage, typeFilter, true);
+    setPage(nextPage);
+    setLoadingMore(false);
+  };
+
   const balance = wallet?.balance_available ?? 0;
-  const pending = wallet?.balance_pending ?? 0;
+  const pending = wallet?.balance_pending  ?? 0;
+  const hasMore = txns.length < total;
 
   return (
     <PageContainer wide={false}>
@@ -118,21 +175,47 @@ export default function Wallet() {
         >
           <Card radius="xl" shadow="sm" className="border border-default-100">
             <CardBody className="p-5">
-              <h3 className="font-bold text-default-900 mb-4 flex items-center gap-2">
-                <Clock size={16} className="text-default-400" />
-                {t("wallet.history")}
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-default-900 flex items-center gap-2">
+                  <Clock size={16} className="text-default-400" />
+                  {t("wallet.history")}
+                  {total > 0 && (
+                    <Chip size="sm" variant="flat" className="text-xs">{total}</Chip>
+                  )}
+                </h3>
+
+                {/* Type filter */}
+                <div className="flex gap-2">
+                  {["all", "refund", "payment"].map(type => (
+                    <Chip
+                      key={type}
+                      size="sm"
+                      variant={typeFilter === type ? "solid" : "flat"}
+                      color={typeFilter === type ? "primary" : "default"}
+                      className="cursor-pointer select-none"
+                      onClick={() => handleTypeFilter(type)}
+                    >
+                      {type === "all"
+                        ? t("wallet.filter_all") || "Tất cả"
+                        : type === "refund"
+                        ? t("wallet.type_refund") || "Hoàn tiền"
+                        : t("wallet.type_payment") || "Thanh toán"}
+                    </Chip>
+                  ))}
+                </div>
+              </div>
 
               {loading ? (
                 <div className="space-y-3">
-                  {[1, 2, 3].map(i => <Skeleton key={i} className="h-12 w-full rounded-xl" />)}
+                  {[1, 2, 3].map(i => <Skeleton key={i} className="h-14 w-full rounded-xl" />)}
                 </div>
               ) : txns.length === 0 ? (
                 <div className="py-10 text-center">
+                  <RefreshCw size={32} className="text-default-200 mx-auto mb-3" />
                   <p className="text-default-400 text-sm">{t("wallet.no_transactions")}</p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {txns.map((txn) => (
                     <motion.div
                       key={txn._id}
@@ -140,22 +223,58 @@ export default function Wallet() {
                       animate={{ opacity: 1, x: 0 }}
                       className="flex items-center justify-between py-3 border-b border-default-50 last:border-0"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-default-50 flex items-center justify-center">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-9 h-9 rounded-full bg-default-50 flex-shrink-0 flex items-center justify-center">
                           {txnIcon(txn.type, txn.direction)}
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <p className="text-sm font-semibold text-default-800">{txnLabel(txn.type)}</p>
-                          <p className="text-xs text-default-400">
-                            {new Date(txn.createdAt).toLocaleDateString("vi-VN")}
-                          </p>
+                          {txn.note && (
+                            <p className="text-xs text-default-500 truncate max-w-[220px]">{txn.note}</p>
+                          )}
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <p className="text-xs text-default-400">
+                              {new Date(txn.createdAt).toLocaleString("vi-VN")}
+                            </p>
+                            {txn.order_id && (
+                              <Link
+                                to={`/orders/${txn.order_id}`}
+                                className="text-xs text-primary underline-offset-2 hover:underline"
+                              >
+                                {t("wallet.view_order") || "Xem đơn"}
+                              </Link>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <p className={`font-bold text-sm ${txn.direction === "in" ? "text-success" : "text-danger"}`}>
-                        {txn.direction === "in" ? "+" : "-"}{formatCurrency(txn.amount)}
-                      </p>
+                      <div className="text-right flex-shrink-0 ml-3">
+                        <p className={`font-bold text-sm ${txn.direction === "in" ? "text-success" : "text-danger"}`}>
+                          {txn.direction === "in" ? "+" : "-"}{formatCurrency(txn.amount)}
+                        </p>
+                        <Chip
+                          size="sm"
+                          variant="flat"
+                          color={txn.status === "success" ? "success" : txn.status === "pending" ? "warning" : "danger"}
+                          className="text-xs mt-1"
+                        >
+                          {txn.status === "success" ? "Thành công" : txn.status === "pending" ? "Đang xử lý" : txn.status}
+                        </Chip>
+                      </div>
                     </motion.div>
                   ))}
+
+                  {hasMore && (
+                    <div className="pt-3 text-center">
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        isLoading={loadingMore}
+                        onClick={handleLoadMore}
+                      >
+                        {t("wallet.load_more") || "Xem thêm"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </CardBody>

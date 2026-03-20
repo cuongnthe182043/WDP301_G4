@@ -1,6 +1,7 @@
-const Refund = require("../models/Refund");
-const Order  = require("../models/Order");
-const notif  = require("../services/dbNotificationService");
+const Refund        = require("../models/Refund");
+const Order         = require("../models/Order");
+const notif         = require("../services/dbNotificationService");
+const refundSvc     = require("../services/refundService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -128,7 +129,8 @@ exports.rejectRefund = async (req, res, next) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // completeRefund  POST /api/shop/refunds/:id/complete
-// Shop confirms receipt of returned item and finalises refund/exchange
+// Shop confirms receipt of returned item, finalises refund/exchange, and
+// credits the customer's wallet (debits shop wallet if funded).
 // ─────────────────────────────────────────────────────────────────────────────
 exports.completeRefund = async (req, res, next) => {
   try {
@@ -151,7 +153,23 @@ exports.completeRefund = async (req, res, next) => {
     order.payment_status = "refunded";
     await order.save();
 
-    notif.refundCompleted(order.user_id, order.order_code).catch(() => {});
-    res.json({ success: true, data: { refund_id: refund._id, order_status: order.status } });
+    // Credit customer wallet and deduct shop wallet
+    let walletResult = null;
+    try {
+      walletResult = await refundSvc.processManagedRefund(refund, order, req.userId);
+    } catch (walletErr) {
+      // Wallet error must not rollback the refund completion — log and continue
+      console.error("[completeRefund] Wallet credit failed:", walletErr.message);
+    }
+
+    notif.refundCompleted(order.user_id, order.order_code, refund.amount).catch(() => {});
+    res.json({
+      success: true,
+      data: {
+        refund_id:    refund._id,
+        order_status: order.status,
+        wallet_credited: walletResult ? Number(refund.amount) : 0,
+      },
+    });
   } catch (e) { next(e); }
 };

@@ -633,7 +633,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                         <Store size={15} style={{ color: isDark ? "#94a3b8" : "#16a34a" }} />
                       </div>
                       <span className="font-semibold text-[13px]" style={{ color: isDark ? "#e2e8f0" : "#1e293b" }}>
-                        {("nav.manage_shop")}
+                        {t("nav.manage_shop")}
                       </span>
                       <ChevronRight size={13} className="ml-auto" style={{ color: isDark ? "#475569" : "#CBD5E1" }} />
                     </div>}

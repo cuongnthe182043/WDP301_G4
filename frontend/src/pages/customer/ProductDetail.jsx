@@ -9,11 +9,14 @@ import {
 import {
   ShoppingCart, Zap, Star, ChevronLeft, ChevronRight, Ruler, Package,
   AlertCircle, CheckCircle2, Heart, Sparkles, Save, RefreshCw,
+  Store, MessageCircle, BadgeCheck, Users, ExternalLink,
 } from "lucide-react";
 import { productService } from "../../services/productService";
 import { cartService } from "../../services/cartService";
 import { userService } from "../../services/userService";
+import chatService from "../../services/chatService";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { useToast } from "../../components/common/ToastProvider";
 import ProductCard from "../../components/home/ProductCard.jsx";
@@ -219,6 +222,7 @@ export default function ProductDetail() {
   const location = useLocation();
   const toast = useToast();
   const { refresh: refreshCartBadge } = useCart();
+  const { isAuthenticated } = useAuth();
   const mainImgRef = useRef(null);
 
   const [detail, setDetail] = useState(null);
@@ -326,6 +330,7 @@ export default function ProductDetail() {
   const category = detail?.category;
   const flash_sale = detail?.flash_sale;
   const sizeChart = detail?.size_chart;
+  const shopInfo = detail?.shop_info || null;
 
   const rawImages = selectedVar?.images?.length ? selectedVar.images : p.images || [];
   const images = Array.isArray(rawImages)
@@ -472,6 +477,18 @@ export default function ProductDetail() {
       });
       setTimeout(() => ghost.remove(), 700);
     } catch {}
+  };
+
+  /* ── Chat with shop ── */
+  const handleChat = async () => {
+    if (!isAuthenticated) return navigate(`/login?returnUrl=${encodeURIComponent(location.pathname)}`);
+    if (!shopInfo?._id) return;
+    try {
+      const conv = await chatService.startConversation(shopInfo._id);
+      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv } }));
+    } catch (e) {
+      toast.error("Không thể mở chat");
+    }
   };
 
   /* ── Cart actions ── */
@@ -848,6 +865,82 @@ export default function ProductDetail() {
           )}
         </div>
       </div>
+
+      {/* ══ SHOP CARD ══ */}
+      {shopInfo && (
+        <div className="mb-8 rounded-2xl border border-default-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
+          <div className="flex items-center gap-4">
+            {/* Logo */}
+            <div
+              className="w-16 h-16 rounded-xl overflow-hidden bg-default-100 dark:bg-zinc-700 flex-shrink-0 border border-default-100 dark:border-zinc-600 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate(`/shops/${shopInfo.shop_slug}`)}
+            >
+              {shopInfo.shop_logo
+                ? <img src={shopInfo.shop_logo} alt={shopInfo.shop_name} className="w-full h-full object-cover" />
+                : <div className="w-full h-full flex items-center justify-center"><Store size={24} className="text-default-300" /></div>
+              }
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div
+                className="flex items-center gap-1.5 cursor-pointer group w-fit"
+                onClick={() => navigate(`/shops/${shopInfo.shop_slug}`)}
+              >
+                <span className="font-black text-base text-default-900 dark:text-zinc-100 group-hover:text-primary transition-colors truncate">
+                  {shopInfo.shop_name}
+                </span>
+                <BadgeCheck size={15} className="text-primary flex-shrink-0" />
+              </div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-xs text-default-500">
+                {shopInfo.rating_avg > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Star size={11} fill="#f59e0b" color="#f59e0b" strokeWidth={0} />
+                    <b className="text-default-700">{Number(shopInfo.rating_avg).toFixed(1)}</b>
+                    <span>Đánh giá</span>
+                  </span>
+                )}
+                {shopInfo.total_products > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Package size={11} />
+                    {shopInfo.total_products.toLocaleString("vi-VN")} sản phẩm
+                  </span>
+                )}
+                {shopInfo.followers > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Users size={11} />
+                    {shopInfo.followers.toLocaleString("vi-VN")} theo dõi
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Button
+                size="sm"
+                variant="bordered"
+                radius="lg"
+                startContent={<MessageCircle size={14} />}
+                onPress={handleChat}
+                className="font-semibold"
+              >
+                Chat ngay
+              </Button>
+              <Button
+                size="sm"
+                variant="flat"
+                radius="lg"
+                startContent={<ExternalLink size={14} />}
+                onPress={() => navigate(`/shops/${shopInfo.shop_slug}`)}
+                className="font-semibold"
+              >
+                Xem shop
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ══ SIZE ADVISOR + SIZE CHART ══ */}
       <section id="size-section" className="mb-8">

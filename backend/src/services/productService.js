@@ -7,6 +7,7 @@ const ProductVariant = require('../models/ProductVariant');
 let Review; try { Review = require('../models/Review'); } catch (_) {}
 const Attribute = require('../models/Attribute');
 const ProductSizeChart = require('../models/ProductSizeChart');
+let Shop; try { Shop = require('../models/Shop'); } catch (_) {}
 
 async function findProductByIdOrSlug(idOrSlug) {
   return Product.findOne({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] }).lean();
@@ -70,10 +71,15 @@ async function getProductDetail(idOrSlug) {
     .sort({ price: 1 })
     .lean();
 
-  const [brand, category, flashItem] = await Promise.all([
+  const [brand, category, flashItem, shopInfo] = await Promise.all([
     prodDoc.brand_id ? Brand.findById(prodDoc.brand_id).select('_id name slug logo_url logo_public_id').lean() : null,
     prodDoc.category_id ? Category.findById(prodDoc.category_id).select('_id name slug parent_id gender_hint').lean() : null,
     getFlashSaleItemForProduct(prodDoc._id),
+    (Shop && prodDoc.shop_id)
+      ? Shop.findById(prodDoc.shop_id)
+          .select('_id shop_name shop_slug shop_logo description rating_avg total_products followers phone')
+          .lean()
+      : null,
   ]);
 
   // ===== Size chart lookup — most-specific to least-specific
@@ -147,7 +153,8 @@ async function getProductDetail(idOrSlug) {
     category,
     flash_sale: flashItem,
     variant_options,
-    size_chart: sizeChart, // 👈 FE dùng để gợi ý size
+    size_chart: sizeChart,
+    shop_info: shopInfo || null,
   };
 }
 
