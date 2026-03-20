@@ -20,17 +20,19 @@ exports.getTransactions = async (req, res) => {
     const wallet = await Wallet.findOne({ user_id: req.user._id, type: "customer" }).lean();
     if (!wallet) return ok(res, { transactions: [], total: 0 });
 
-    const page = Math.max(1, Number(req.query.page) || 1);
+    const page  = Math.max(1, Number(req.query.page) || 1);
     const limit = Math.min(Number(req.query.limit) || 20, 50);
-    const skip = (page - 1) * limit;
+    const skip  = (page - 1) * limit;
+
+    const cond = { wallet_id: wallet._id };
+    const VALID_TYPES = ["payment", "refund", "transfer", "withdraw", "deposit"];
+    if (req.query.type && VALID_TYPES.includes(req.query.type)) {
+      cond.type = req.query.type;
+    }
 
     const [transactions, total] = await Promise.all([
-      Transaction.find({ wallet_id: wallet._id })
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Transaction.countDocuments({ wallet_id: wallet._id }),
+      Transaction.find(cond).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Transaction.countDocuments(cond),
     ]);
 
     ok(res, { transactions, total, page, limit });

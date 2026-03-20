@@ -2,10 +2,11 @@
 //
 // Shop order management with GHN shipping integration.
 
-const Order   = require("../models/Order");
-const User    = require("../models/User");
-const notif   = require("../services/dbNotificationService");
-const ghn     = require("../services/ghnService");
+const Order      = require("../models/Order");
+const User       = require("../models/User");
+const notif      = require("../services/dbNotificationService");
+const ghn        = require("../services/ghnService");
+const refundSvc  = require("../services/refundService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -165,14 +166,32 @@ exports.cancelOrder = async (req, res, next) => {
       }
     }
 
+    const wasRefundable = refundSvc.isRefundable(order);
+
     pushStatusHistory(order, "cancelled_by_shop", "shop", reason.trim());
     order.status        = "cancelled_by_shop";
     order.cancel_reason = reason.trim();
-    if (order.payment_status === "paid") order.payment_status = "refunded";
     await order.save();
 
+    // Auto-refund to customer wallet for prepaid orders
+    let walletCredited = 0;
+    if (wasRefundable) {
+      try {
+        // req.userId is the shop owner — used to deduct shop wallet
+        const result = await refundSvc.processAutoRefund(order, req.userId);
+        if (result) {
+          walletCredited = order.total_price;
+          order.payment_status = "refunded";
+          await order.save();
+          notif.walletRefunded(order.user_id, order.order_code, walletCredited).catch(() => {});
+        }
+      } catch (refundErr) {
+        console.error("[cancelOrder] Auto-refund failed:", refundErr.message);
+      }
+    }
+
     notif.orderCancelled(order.user_id, order.order_code).catch(() => {});
-    res.json({ success: true, data: { order_id: order._id, status: order.status } });
+    res.json({ success: true, data: { order_id: order._id, status: order.status, wallet_credited: walletCredited } });
   } catch (e) { next(e); }
 };
 

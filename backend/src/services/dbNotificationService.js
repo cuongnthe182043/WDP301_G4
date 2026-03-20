@@ -202,13 +202,22 @@ const helpers = {
       link:    `/orders`,
     }),
 
-  refundCompleted: (userId, orderCode) =>
+  refundCompleted: (userId, orderCode, amount) =>
     create(userId, {
       title:   "Hoàn tiền/đổi hàng hoàn tất",
-      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã được xử lý hoàn tất.`,
+      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã hoàn tất${amount ? `. ${Number(amount).toLocaleString("vi-VN")} ₫ đã được cộng vào ví của bạn.` : "."}`,
       type:    "refund",
       subtype: "refund.completed",
-      link:    `/orders`,
+      link:    `/wallet`,
+    }),
+
+  walletRefunded: (userId, orderCode, amount) =>
+    create(userId, {
+      title:   "Hoàn tiền vào ví thành công",
+      message: `${Number(amount).toLocaleString("vi-VN")} ₫ đã được hoàn vào ví từ đơn hàng #${orderCode} bị hủy.`,
+      type:    "payment",
+      subtype: "payment.refund",
+      link:    `/wallet`,
     }),
 
   // ── Review Moderation ────────────────────────────────────────────────────

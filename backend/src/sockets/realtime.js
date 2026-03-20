@@ -17,6 +17,14 @@ module.exports = (io) => {
     socket.on("leave-user", ({ userId }) => {
       if (userId) socket.leave(`user:${userId}`);
     });
+
+    // Conversation room for real-time chat
+    socket.on("join-conversation", ({ conversationId }) => {
+      if (conversationId) socket.join(`conv:${conversationId}`);
+    });
+    socket.on("leave-conversation", ({ conversationId }) => {
+      if (conversationId) socket.leave(`conv:${conversationId}`);
+    });
   });
 
   function broadcastOrderUpdate(shopId, payload) {
@@ -28,5 +36,10 @@ module.exports = (io) => {
     nsp.to(`user:${String(userId)}`).emit(event, data);
   }
 
-  return { broadcastOrderUpdate, emitToUser };
+  /** Emit an event to all sockets in a conversation room */
+  function emitToConversation(convId, event, data) {
+    nsp.to(`conv:${convId}`).emit(event, data);
+  }
+
+  return { broadcastOrderUpdate, emitToUser, emitToConversation };
 };

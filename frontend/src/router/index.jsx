@@ -54,6 +54,8 @@ import ManageBanner from "../pages/shop/ManageBanner";
 import ManageCampaigns from "../pages/shop/ManageCampaigns";
 import ManageCredits from "../pages/shop/ManageCredits";
 import SizeChartsPage from "../pages/shop/SizeChartsPage";
+import ShopInbox from "../pages/shop/ShopInbox";
+import ChatWidget from "../components/chat/ChatWidget";
 
 /* ===== New Vendor / Admin Pages ===== */
 import ShopPage from "../pages/customer/ShopPage";
@@ -109,6 +111,7 @@ function ShopGuard({ children }) {
 
 export default function AppRouter() {
   return (
+    <>
     <Routes>
       {/* ===== Public ===== */}
       <Route path="/login" element={<Login />} />
@@ -172,6 +175,9 @@ export default function AppRouter() {
         <Route path="catalog/brands" element={<BrandsPage />} />
         <Route path="size-charts" element={<SizeChartsPage />} />
 
+        {/* Messages */}
+        <Route path="messages" element={<ShopInbox />} />
+
         {/* Reviews & Marketing */}
         <Route path="reviews" element={<ManageReviews />} />
         <Route path="marketing" element={<ManageMarketing />} />
@@ -213,5 +219,7 @@ export default function AppRouter() {
       {/* ===== 404 ===== */}
       <Route path="*" element={<NotFound />} />
     </Routes>
+    <ChatWidget />
+    </>
   );
 }

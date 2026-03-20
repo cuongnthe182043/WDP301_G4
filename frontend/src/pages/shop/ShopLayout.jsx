@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Package, PackagePlus, AlertTriangle,
   FolderTree, Tag, Award, ChevronLeft, ChevronRight, Store, Settings,
   ShoppingCart, RefreshCw, Users, Star, Wallet, Megaphone, Ruler,
+  MessageCircle,
 } from "lucide-react";
 
 export default function ShopLayout() {
@@ -31,6 +32,7 @@ export default function ShopLayout() {
     { to: "/shop/catalog/brands",      label: t("shop.nav_brands"),           icon: Award,           color: "#f43f5e", bg: "rgba(244,63,94,0.1)"   },
     { to: "/shop/size-charts",         label: t("shop.nav_size_charts"),      icon: Ruler,           color: "#0ea5e9", bg: "rgba(14,165,233,0.1)"  },
     { divider: true, label: t("shop.section_engagement") },
+    { to: "/shop/messages",            label: "Tin nhắn",                     icon: MessageCircle,   color: "#06b6d4", bg: "rgba(6,182,212,0.1)"   },
     { to: "/shop/reviews",             label: t("shop.nav_reviews"),          icon: Star,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { to: "/shop/marketing",           label: t("shop.nav_marketing"),        icon: Megaphone,       color: "#d946ef", bg: "rgba(217,70,239,0.1)"  },
     { divider: true, label: t("shop.section_finance") },
