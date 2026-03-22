@@ -268,6 +268,32 @@ export default function OrderDetail() {
     });
   };
 
+  const handleChatShop = async () => {
+    if (!isAuthenticated) { nav("/login"); return; }
+    const shopId = ord?.shop_info?._id || ord?.shop_id;
+    if (!shopId) return toast.error("Đơn hàng này không có thông tin shop");
+    try {
+      const context = {
+        type: "order",
+        data: {
+          _id:         ord._id,
+          order_code:  ord.order_code,
+          total_price: ord.total_price,
+          status:      ord.status,
+          items:       (ord.items || []).slice(0, 3).map(it => ({
+            name:      it.name,
+            qty:       it.qty,
+            image_url: it.image_url,
+          })),
+        },
+      };
+      const conv = await chatService.startConversation(shopId, context);
+      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv, context } }));
+    } catch {
+      toast.error("Không thể mở chat với shop");
+    }
+  };
+
   // ── Helpers ───────────────────────────────────────────────────────────────
   const refundDeadlinePassed = () => {
     if (!ord?.updatedAt) return false;
@@ -337,6 +363,19 @@ export default function OrderDetail() {
           >
             {STATUS_LABEL[ord.status] || ord.status}
           </Chip>
+          {(ord.shop_id || ord.shop_info) && (
+            <Button
+              size="sm"
+              color="primary"
+              variant="bordered"
+              radius="lg"
+              startContent={<MessageCircle size={14} />}
+              onPress={handleChatShop}
+              className="font-semibold"
+            >
+              Chat với shop
+            </Button>
+          )}
         </div>
       </div>
 
@@ -611,14 +650,24 @@ export default function OrderDetail() {
                                           )}
                                         </div>
                                       </div>
-                                      <Button
-                                        size="sm" variant="bordered" radius="lg"
-                                        startContent={<ExternalLink size={12} />}
-                                        className="text-xs flex-shrink-0"
-                                        onPress={() => nav(`/shop/${ord.shop_info.shop_slug}`)}
-                                      >
-                                        Xem shop
-                                      </Button>
+                                      <div className="flex flex-col gap-1.5 flex-shrink-0">
+                                        <Button
+                                          size="sm" color="primary" variant="bordered" radius="lg"
+                                          startContent={<MessageCircle size={11} />}
+                                          className="text-xs"
+                                          onPress={handleChatShop}
+                                        >
+                                          Chat
+                                        </Button>
+                                        <Button
+                                          size="sm" variant="flat" radius="lg"
+                                          startContent={<ExternalLink size={11} />}
+                                          className="text-xs"
+                                          onPress={() => nav(`/shops/${ord.shop_info.shop_slug}`)}
+                                        >
+                                          Xem shop
+                                        </Button>
+                                      </div>
                                     </div>
                                   )}
 
@@ -998,14 +1047,22 @@ export default function OrderDetail() {
                     <p className="text-xs text-default-400 mt-1 line-clamp-2">{ord.shop_info.description}</p>
                   )}
                 </div>
-                <Button
-                  size="sm" variant="bordered" radius="lg"
-                  startContent={<ExternalLink size={13} />}
-                  className="flex-shrink-0"
-                  onPress={() => nav(`/shop/${ord.shop_info.shop_slug}`)}
-                >
-                  Xem shop
-                </Button>
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  <Button
+                    size="sm" color="primary" variant="bordered" radius="lg"
+                    startContent={<MessageCircle size={13} />}
+                    onPress={handleChatShop}
+                  >
+                    Chat với shop
+                  </Button>
+                  <Button
+                    size="sm" variant="flat" radius="lg"
+                    startContent={<ExternalLink size={13} />}
+                    onPress={() => nav(`/shops/${ord.shop_info.shop_slug}`)}
+                  >
+                    Xem shop
+                  </Button>
+                </div>
               </div>
             </CardBody>
           </Card>

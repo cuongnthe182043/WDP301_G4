@@ -4,16 +4,54 @@ const Shop         = require("../models/Shop");
 const User         = require("../models/User");
 
 // ─── Customer: start or get conversation with a shop ──────────────────────────
-// POST /api/conversations  { shop_id }
+// POST /api/conversations  { shop_id, context?: { type: "product"|"order", data: {} } }
 exports.customerStartConversation = async (req, res, next) => {
   try {
     const customerId = req.userId || req.user?._id;
-    const { shop_id } = req.body;
+    const { shop_id, context } = req.body;
     if (!shop_id) return res.status(400).json({ message: "shop_id is required" });
 
     let conv = await Conversation.findOne({ customer_id: customerId, shop_id });
+    const isNew = !conv;
     if (!conv) {
       conv = await Conversation.create({ customer_id: customerId, shop_id });
+    }
+
+    // Auto-send a context message when a new conversation is started from a product or order page
+    if (isNew && context?.type && context?.data) {
+      const ctxMsg = await Message.create({
+        conversation_id: conv._id,
+        sender_id:       customerId,
+        sender_type:     "customer",
+        content:         "",
+        context_type:    context.type,
+        context_data:    context.data,
+      });
+      // Increment shop unread so they notice the new conversation
+      conv.unread_shop = 1;
+      conv.last_message = context.type === "product"
+        ? `[Sản phẩm] ${context.data?.name || ""}`
+        : `[Đơn hàng] ${context.data?.order_code || ""}`;
+      conv.last_message_at = new Date();
+      await conv.save();
+
+      // Notify shop in real time
+      const realtime = req.app.get("realtime");
+      if (realtime) {
+        if (realtime.emitToConversation) {
+          realtime.emitToConversation(conv._id, "message:new", {
+            conversation_id: conv._id,
+            message: ctxMsg.toObject(),
+          });
+        }
+        if (realtime.emitToUser) {
+          realtime.emitToUser(String(conv.shop_id), "chat:new_message", {
+            conversation_id: conv._id,
+            message: ctxMsg.toObject(),
+            sender_type: "customer",
+          });
+        }
+      }
     }
 
     // Enrich with shop info
