@@ -1194,6 +1194,7 @@
     "mod_auto_approved": "Auto-approved",
     "mod_auto_rejected": "Auto-rejected",
     "mod_stat_total": "Total",
+    "mod_needs_review": "Needs review",
     "mod_auto_rejected_stat": "Auto-rejected (7d)",
     "admin_reviews_title": "Review Moderation",
     "admin_reviews_subtitle": "Manage violation reports and user accounts",

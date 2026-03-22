@@ -56,21 +56,32 @@ exports.createProduct = async (payload, shopId) => {
   doc.moderation_score = modResult.score;
   doc.moderation_flags = modResult.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field }));
 
-  if (!modResult.approved) {
-    // Auto-reject: set inactive immediately with reason
+  if (modResult.decision === "approved") {
+    // Clean product → auto-approve, no admin action needed
+    doc.status           = "active";
+    doc.rejection_reason = "";
+  } else if (modResult.decision === "rejected") {
+    // Severe violations → auto-reject
     doc.status           = "inactive";
     doc.rejection_reason = modResult.summary;
+  } else {
+    // "needs_review" → stay pending for admin manual review
+    doc.status           = "pending";
+    doc.rejection_reason = modResult.summary;
   }
-  // If approved, stay "pending" — admin can still manually review or auto-approve via batch
 
   const product = await Product.create(doc);
 
-  // Notify shop owner if auto-rejected
-  if (!modResult.approved) {
-    const Shop = require("../models/Shop");
-    const shop = await Shop.findById(shopId).select("owner_id").lean();
-    if (shop?.owner_id) {
+  // Notify shop owner about the outcome
+  const Shop = require("../models/Shop");
+  const shop = await Shop.findById(shopId).select("owner_id").lean();
+  if (shop?.owner_id) {
+    if (modResult.decision === "approved") {
+      notif.productApproved(shop.owner_id, product.name).catch(() => {});
+    } else if (modResult.decision === "rejected") {
       notif.productRejected(shop.owner_id, product.name, modResult.summary).catch(() => {});
+    } else {
+      notif.productFlagged(shop.owner_id, product.name).catch(() => {});
     }
   }
 
@@ -122,8 +133,23 @@ exports.updateProduct = async (id, payload, shopId) => {
       patch.moderation_score = modResult.score;
       patch.moderation_flags = modResult.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field }));
 
-      if (!modResult.approved && current.status === "active") {
-        // Product was active but now fails moderation → revert to pending for admin review
+      if (modResult.decision === "approved") {
+        // Clean product → auto-approve, clear flags
+        patch.status           = "active";
+        patch.rejection_reason = "";
+        patch.moderation_flags = [];
+      } else if (modResult.decision === "rejected") {
+        // Severe violations → auto-reject
+        patch.status           = "inactive";
+        patch.rejection_reason = modResult.summary;
+
+        const Shop = require("../models/Shop");
+        const shop = await Shop.findById(shopId).select("owner_id").lean();
+        if (shop?.owner_id) {
+          notif.productRejected(shop.owner_id, merged.name, modResult.summary).catch(() => {});
+        }
+      } else {
+        // "needs_review" → pending for admin manual review
         patch.status           = "pending";
         patch.rejection_reason = modResult.summary;
 
@@ -132,9 +158,6 @@ exports.updateProduct = async (id, payload, shopId) => {
         if (shop?.owner_id) {
           notif.productFlagged(shop.owner_id, merged.name).catch(() => {});
         }
-      } else if (modResult.approved && modResult.score === 0) {
-        // Clean moderation — clear any flags
-        patch.moderation_flags = [];
       }
     }
   }

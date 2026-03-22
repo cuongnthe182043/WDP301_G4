@@ -1194,6 +1194,7 @@
     "mod_auto_approved": "Tự động duyệt",
     "mod_auto_rejected": "Tự động từ chối",
     "mod_stat_total": "Tổng SP",
+    "mod_needs_review": "Cần xem xét",
     "mod_auto_rejected_stat": "Tự động từ chối (7 ngày)",
     "admin_reviews_title": "Kiểm duyệt đánh giá",
     "admin_reviews_subtitle": "Quản lý nội dung vi phạm và tài khoản người dùng",

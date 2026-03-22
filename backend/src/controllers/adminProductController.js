@@ -171,18 +171,23 @@ exports.moderateProduct = async (req, res, next) => {
     p.moderation_score = result.score;
     p.moderation_flags = result.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field }));
 
-    if (!result.approved) {
-      p.status           = "inactive";
-      p.rejection_reason = result.summary;
-    } else if (p.status === "pending") {
-      // Auto-approve clean products
+    if (result.decision === "approved") {
       p.status           = "active";
       p.rejection_reason = "";
+    } else if (result.decision === "rejected") {
+      p.status           = "inactive";
+      p.rejection_reason = result.summary;
+    } else {
+      // "needs_review" → stay pending for admin manual review
+      p.status           = "pending";
+      p.rejection_reason = result.summary;
     }
 
     await p.save();
 
-    _audit(req, result.approved ? "product.auto_approve" : "product.auto_reject", p, {
+    const auditAction = { approved: "product.auto_approve", rejected: "product.auto_reject", needs_review: "product.auto_flag" }[result.decision];
+    _audit(req, auditAction, p, {
+      decision: result.decision,
       score: result.score,
       flagCount: result.flags.length,
       reason: result.summary || "Auto-approved",
@@ -191,10 +196,12 @@ exports.moderateProduct = async (req, res, next) => {
     // Notify shop owner about the outcome
     const ownerId = await _shopOwner(p.shop_id);
     if (ownerId) {
-      if (result.approved) {
+      if (result.decision === "approved") {
         notif.productApproved(ownerId, p.name).catch(() => {});
-      } else {
+      } else if (result.decision === "rejected") {
         notif.productRejected(ownerId, p.name, result.summary).catch(() => {});
+      } else {
+        notif.productFlagged(ownerId, p.name).catch(() => {});
       }
     }
 
@@ -208,12 +215,12 @@ exports.moderatePending = async (req, res, next) => {
   try {
     const pending = await Product.find({ status: "pending" }).lean();
     if (pending.length === 0) {
-      return res.json({ success: true, data: { processed: 0, approved: 0, rejected: 0, results: [] } });
+      return res.json({ success: true, data: { processed: 0, approved: 0, rejected: 0, needsReview: 0, results: [] } });
     }
 
     const { results, stats } = moderateBatch(pending);
 
-    // Apply results in bulk
+    // Apply results in bulk using three-way decision
     const bulkOps = results.map((r) => {
       const update = {
         auto_moderated: true,
@@ -221,12 +228,16 @@ exports.moderatePending = async (req, res, next) => {
         moderation_flags: r.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field })),
       };
 
-      if (!r.approved) {
+      if (r.decision === "approved") {
+        update.status = "active";
+        update.rejection_reason = "";
+      } else if (r.decision === "rejected") {
         update.status = "inactive";
         update.rejection_reason = r.summary;
       } else {
-        update.status = "active";
-        update.rejection_reason = "";
+        // "needs_review" → stays pending
+        update.status = "pending";
+        update.rejection_reason = r.summary;
       }
 
       return {
@@ -257,10 +268,12 @@ exports.moderatePending = async (req, res, next) => {
       const ownerId = await _shopOwner(prod.shop_id);
       if (!ownerId) continue;
 
-      if (r.approved) {
+      if (r.decision === "approved") {
         notif.productApproved(ownerId, r.productName).catch(() => {});
-      } else {
+      } else if (r.decision === "rejected") {
         notif.productRejected(ownerId, r.productName, r.summary).catch(() => {});
+      } else {
+        notif.productFlagged(ownerId, r.productName).catch(() => {});
       }
     }
 
@@ -270,9 +283,11 @@ exports.moderatePending = async (req, res, next) => {
         processed: stats.total,
         approved: stats.approved,
         rejected: stats.rejected,
+        needsReview: stats.needsReview,
         results: results.map((r) => ({
           productId: r.productId,
           productName: r.productName,
+          decision: r.decision,
           approved: r.approved,
           score: r.score,
           flagCount: r.flags.length,

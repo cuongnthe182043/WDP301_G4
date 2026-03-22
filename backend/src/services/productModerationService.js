@@ -326,24 +326,39 @@ function moderateProduct(product) {
 
   // ── Build result ──────────────────────────────────────────────────────
   const hasHigh = flags.some((f) => f.severity === "high");
-  const hasMedium = flags.some((f) => f.severity === "medium");
 
-  // Auto-reject if any high severity flag or score >= 50
-  const approved = !hasHigh && score < 50;
+  // Decision logic — three outcomes:
+  //   "approved"       — score = 0, no flags → auto-approve (active)
+  //   "needs_review"   — score > 0 but < 50, no high severity → pending for admin
+  //   "rejected"       — score >= 50 OR any high severity → auto-reject (inactive)
+  let decision;
+  if (hasHigh || score >= 50) {
+    decision = "rejected";
+  } else if (score > 0) {
+    decision = "needs_review";
+  } else {
+    decision = "approved";
+  }
 
-  // Build summary for rejection_reason
+  // Build summary for rejection / review reason
   let summary = "";
-  if (!approved) {
+  if (decision === "rejected") {
     const highFlags = flags.filter((f) => f.severity === "high");
     const medFlags  = flags.filter((f) => f.severity === "medium");
     const reasons   = [...highFlags, ...medFlags].map((f) => f.message);
     summary = reasons.length > 0
       ? `Tự động từ chối: ${reasons.join("; ")}`
       : "Sản phẩm không đạt yêu cầu kiểm duyệt tự động";
+  } else if (decision === "needs_review") {
+    const reasons = flags.map((f) => f.message);
+    summary = reasons.length > 0
+      ? `Cần xem xét: ${reasons.join("; ")}`
+      : "";
   }
 
   return {
-    approved,
+    approved: decision === "approved",
+    decision,          // "approved" | "needs_review" | "rejected"
     flags,
     score: Math.min(score, 100),
     summary,
@@ -374,8 +389,9 @@ function moderateBatch(products) {
 
   const stats = {
     total: results.length,
-    approved: results.filter((r) => r.approved).length,
-    rejected: results.filter((r) => !r.approved).length,
+    approved: results.filter((r) => r.decision === "approved").length,
+    rejected: results.filter((r) => r.decision === "rejected").length,
+    needsReview: results.filter((r) => r.decision === "needs_review").length,
     avgScore: results.length > 0
       ? Math.round(results.reduce((sum, r) => sum + r.score, 0) / results.length)
       : 0,

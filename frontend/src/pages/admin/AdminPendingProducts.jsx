@@ -522,7 +522,7 @@ export default function AdminPendingProducts() {
             <>
               <ModalHeader>{t("admin.mod_result_title")}</ModalHeader>
               <ModalBody>
-                <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-4 gap-3 mb-4">
                   <div className="text-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl">
                     <p className="text-2xl font-bold text-gray-900 dark:text-zinc-100">{moderateResult.processed}</p>
                     <p className="text-xs text-gray-500">{t("admin.mod_processed")}</p>
@@ -531,6 +531,10 @@ export default function AdminPendingProducts() {
                     <p className="text-2xl font-bold text-success-600">{moderateResult.approved}</p>
                     <p className="text-xs text-success-700">{t("admin.mod_auto_approved")}</p>
                   </div>
+                  <div className="text-center p-3 bg-warning-50 dark:bg-warning-900/20 rounded-xl">
+                    <p className="text-2xl font-bold text-warning-600">{moderateResult.needsReview || 0}</p>
+                    <p className="text-xs text-warning-700">{t("admin.mod_needs_review")}</p>
+                  </div>
                   <div className="text-center p-3 bg-danger-50 dark:bg-danger-900/20 rounded-xl">
                     <p className="text-2xl font-bold text-danger-600">{moderateResult.rejected}</p>
                     <p className="text-xs text-danger-700">{t("admin.mod_auto_rejected")}</p>
@@ -538,17 +542,22 @@ export default function AdminPendingProducts() {
                 </div>
                 {moderateResult.results?.length > 0 && (
                   <div className="space-y-2 max-h-60 overflow-auto">
-                    {moderateResult.results.map((r) => (
-                      <div key={r.productId} className={`flex items-center justify-between p-2 rounded-lg text-sm ${r.approved ? "bg-success-50 dark:bg-success-900/10" : "bg-danger-50 dark:bg-danger-900/10"}`}>
+                    {moderateResult.results.map((r) => {
+                      const decColor = { approved: "success", needs_review: "warning", rejected: "danger" }[r.decision] || "default";
+                      const decLabel = { approved: t("admin.mod_auto_approved"), needs_review: t("admin.mod_needs_review"), rejected: t("admin.mod_auto_rejected") }[r.decision] || r.decision;
+                      const bgClass = { approved: "bg-success-50 dark:bg-success-900/10", needs_review: "bg-warning-50 dark:bg-warning-900/10", rejected: "bg-danger-50 dark:bg-danger-900/10" }[r.decision] || "";
+                      return (
+                      <div key={r.productId} className={`flex items-center justify-between p-2 rounded-lg text-sm ${bgClass}`}>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium truncate text-gray-800 dark:text-zinc-200">{r.productName}</p>
                           {r.summary && <p className="text-xs text-gray-500 dark:text-zinc-400 truncate">{r.summary}</p>}
                         </div>
-                        <Chip size="sm" color={r.approved ? "success" : "danger"} variant="flat" className="ml-2 shrink-0">
-                          {r.approved ? t("admin.approve") : t("admin.admin_reject_title")}
+                        <Chip size="sm" color={decColor} variant="flat" className="ml-2 shrink-0">
+                          {decLabel}
                         </Chip>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </ModalBody>
