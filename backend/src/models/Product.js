@@ -45,6 +45,19 @@ const ProductSchema = new mongoose.Schema(
     },
     rejection_reason: { type: String, default: "" },
 
+    // ── Auto-moderation fields ──────────────────────────────────────────
+    auto_moderated: { type: Boolean, default: false },
+    moderation_score: { type: Number, default: 0 },
+    moderation_flags: [
+      {
+        _id: false,
+        type: { type: String },           // e.g. "inappropriate_language", "banned_product"
+        severity: { type: String, enum: ["low", "medium", "high"] },
+        message: String,
+        field: String,
+      },
+    ],
+
     base_price: { type: Number, required: true },
     currency: { type: String, default: "VND" },
 

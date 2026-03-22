@@ -6,6 +6,8 @@ const Attribute = require("../models/Attribute");
 const Brand = require("../models/Brand");
 const { uploadImages, uploadVideo } = require("./mediaService");
 const { importProductsFromExcel } = require("./importService");
+const { moderateProduct } = require("./productModerationService");
+const notif = require("./dbNotificationService");
 
 const slugify = (s) => String(s||"").toLowerCase().trim().replace(/[^\w\-]+/g,"-").replace(/\-+/g,"-");
 exports.getProduct = async (id, shopId) => {
@@ -48,7 +50,31 @@ exports.createProduct = async (payload, shopId) => {
     const cat = await Category.findById(doc.category_id).lean();
     doc.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
   }
-  return Product.create(doc);
+  // ── Auto-moderation on creation ──
+  const modResult = moderateProduct(doc);
+  doc.auto_moderated   = true;
+  doc.moderation_score = modResult.score;
+  doc.moderation_flags = modResult.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field }));
+
+  if (!modResult.approved) {
+    // Auto-reject: set inactive immediately with reason
+    doc.status           = "inactive";
+    doc.rejection_reason = modResult.summary;
+  }
+  // If approved, stay "pending" — admin can still manually review or auto-approve via batch
+
+  const product = await Product.create(doc);
+
+  // Notify shop owner if auto-rejected
+  if (!modResult.approved) {
+    const Shop = require("../models/Shop");
+    const shop = await Shop.findById(shopId).select("owner_id").lean();
+    if (shop?.owner_id) {
+      notif.productRejected(shop.owner_id, product.name, modResult.summary).catch(() => {});
+    }
+  }
+
+  return product;
 };
 
 exports.deleteProduct = async (id, shopId) => {
@@ -81,6 +107,36 @@ exports.updateProduct = async (id, payload, shopId) => {
   if (patch.category_id) {
     const cat = await Category.findById(patch.category_id).lean();
     patch.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
+  }
+
+  // ── Re-run moderation when key fields change ──
+  const moderatableFields = ["name", "description", "tags", "images", "base_price"];
+  const needsReModeration = moderatableFields.some((f) => f in patch);
+  if (needsReModeration) {
+    // Merge current product with patch to get full picture
+    const current = await Product.findOne({ _id: id, shop_id: shopId }).lean();
+    if (current) {
+      const merged = { ...current, ...patch };
+      const modResult = moderateProduct(merged);
+      patch.auto_moderated   = true;
+      patch.moderation_score = modResult.score;
+      patch.moderation_flags = modResult.flags.map(({ type, severity, message, field }) => ({ type, severity, message, field }));
+
+      if (!modResult.approved && current.status === "active") {
+        // Product was active but now fails moderation → revert to pending for admin review
+        patch.status           = "pending";
+        patch.rejection_reason = modResult.summary;
+
+        const Shop = require("../models/Shop");
+        const shop = await Shop.findById(shopId).select("owner_id").lean();
+        if (shop?.owner_id) {
+          notif.productFlagged(shop.owner_id, merged.name).catch(() => {});
+        }
+      } else if (modResult.approved && modResult.score === 0) {
+        // Clean moderation — clear any flags
+        patch.moderation_flags = [];
+      }
+    }
   }
 
   await Product.findOneAndUpdate({ _id: id, shop_id: shopId }, { $set: patch }, { new: true });
