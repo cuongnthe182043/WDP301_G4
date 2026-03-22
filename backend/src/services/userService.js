@@ -16,7 +16,7 @@ exports.updateById = async (id, payload) => {
     const e = new Error("username is immutable"); e.status = 400; throw e;
   }
   const allow = [
-    "name", "email", "phone", "gender", "dob", "avatar_url",
+    "name", "email", "phone", "gender", "dob",
     "preferences.height", "preferences.weight", "preferences.size_top", "preferences.size_bottom",
   ];
   const $set = {};
@@ -156,7 +156,7 @@ exports.registerShop = async (userId, payload) => {
     shop_slug: slug,
     shop_logo: user.avatar_url || "",
     description: description || "",
-    address_id, // 🔥 NEW
+    address_id,
     phone: phone || user.phone || "",
     email: email || user.email || "",
     status: "pending",
