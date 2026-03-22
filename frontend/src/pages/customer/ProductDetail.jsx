@@ -482,10 +482,21 @@ export default function ProductDetail() {
   /* ── Chat with shop ── */
   const handleChat = async () => {
     if (!isAuthenticated) return navigate(`/login?returnUrl=${encodeURIComponent(location.pathname)}`);
-    if (!shopInfo?._id) return;
+    const shopId = shopInfo?._id || p.shop_id;
+    if (!shopId) return toast.error("Sản phẩm này không có shop bán");
     try {
-      const conv = await chatService.startConversation(shopInfo._id);
-      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv } }));
+      const context = p._id ? {
+        type: "product",
+        data: {
+          _id:   p._id,
+          name:  p.name,
+          image: images[0] || "",
+          price: displayPrice,
+          slug:  p.slug || idOrSlug,
+        },
+      } : null;
+      const conv = await chatService.startConversation(shopId, context);
+      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv, context } }));
     } catch (e) {
       toast.error("Không thể mở chat");
     }
@@ -861,6 +872,50 @@ export default function ProductDetail() {
             <div className="flex gap-2 flex-wrap pt-2">
               {brand?.name && <Chip size="sm" variant="flat" color="default">🏷 {brand.name}</Chip>}
               {category?.name && <Chip size="sm" variant="flat" color="default">📁 {category.name}</Chip>}
+            </div>
+          )}
+
+          {/* ── Mini shop bar ── */}
+          {(shopInfo || p.shop_id) && (
+            <div className="flex items-center gap-3 pt-3 mt-1 border-t border-default-100 dark:border-zinc-700">
+              {/* Logo — only clickable when we have the slug */}
+              <div
+                className={`w-9 h-9 rounded-lg overflow-hidden bg-default-100 dark:bg-zinc-700 border border-default-100 flex-shrink-0 ${shopInfo?.shop_slug ? "cursor-pointer" : ""}`}
+                onClick={() => shopInfo?.shop_slug && navigate(`/shops/${shopInfo.shop_slug}`)}
+              >
+                {shopInfo?.shop_logo
+                  ? <img src={shopInfo.shop_logo} alt={shopInfo.shop_name} className="w-full h-full object-cover" />
+                  : <div className="w-full h-full flex items-center justify-center"><Store size={16} className="text-default-300" /></div>
+                }
+              </div>
+              {/* Shop name / stats */}
+              <div
+                className={`flex-1 min-w-0 ${shopInfo?.shop_slug ? "cursor-pointer" : ""}`}
+                onClick={() => shopInfo?.shop_slug && navigate(`/shops/${shopInfo.shop_slug}`)}
+              >
+                <p className="text-sm font-bold text-default-900 dark:text-zinc-100 flex items-center gap-1 truncate">
+                  {shopInfo?.shop_name || "Shop"}
+                  <BadgeCheck size={13} className="text-primary flex-shrink-0" />
+                </p>
+                {shopInfo?.rating_avg > 0 && (
+                  <p className="text-xs text-default-400 flex items-center gap-1">
+                    <Star size={10} fill="#f59e0b" color="#f59e0b" strokeWidth={0} />
+                    {Number(shopInfo.rating_avg).toFixed(1)}
+                    {shopInfo.total_products > 0 && <span>· {shopInfo.total_products} sp</span>}
+                  </p>
+                )}
+              </div>
+              <Button
+                size="sm"
+                color="primary"
+                variant="bordered"
+                radius="lg"
+                startContent={<MessageCircle size={14} />}
+                onPress={handleChat}
+                className="font-semibold flex-shrink-0"
+              >
+                Chat
+              </Button>
             </div>
           )}
         </div>

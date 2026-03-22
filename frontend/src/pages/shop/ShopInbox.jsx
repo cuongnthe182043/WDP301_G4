@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 import { useAuth } from "../../context/AuthContext";
 import chatService from "../../services/chatService";
 import { Avatar, Button, Skeleton } from "@heroui/react";
-import { MessageCircle, Send, Loader2, Users } from "lucide-react";
+import { MessageCircle, Send, Loader2, Users, Package, ShoppingBag, ExternalLink } from "lucide-react";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL ||
   (import.meta.env.VITE_API_URL || "http://localhost:5000").replace("/api", "");
@@ -15,6 +16,70 @@ function timeAgo(date) {
   if (diff < 3600000) return `${Math.floor(diff / 60000)} phút`;
   if (diff < 86400000) return `${Math.floor(diff / 3600000)} giờ`;
   return new Date(date).toLocaleDateString("vi-VN");
+}
+
+/* ── Context card shown in message thread ── */
+function ContextCard({ ctx }) {
+  if (!ctx?.type || !ctx?.data) return null;
+
+  if (ctx.type === "product") {
+    const { name, image, price, slug } = ctx.data;
+    return (
+      <div
+        className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden cursor-pointer hover:border-primary transition-colors"
+        onClick={() => slug && window.open(`/products/${slug}`, "_blank")}
+      >
+        <div className="flex items-center gap-2.5 p-2.5">
+          {image
+            ? <img src={image} alt={name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
+            : <div className="w-12 h-12 rounded-lg bg-default-100 flex items-center justify-center flex-shrink-0"><Package size={20} className="text-default-300" /></div>
+          }
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] text-primary font-semibold mb-0.5">Sản phẩm được hỏi</p>
+            <p className="text-sm text-default-800 dark:text-zinc-100 line-clamp-2 font-medium leading-tight">{name}</p>
+            {price > 0 && <p className="text-xs text-danger font-semibold mt-0.5">{formatCurrency(price)}</p>}
+          </div>
+          <ExternalLink size={14} className="text-default-300 flex-shrink-0" />
+        </div>
+      </div>
+    );
+  }
+
+  if (ctx.type === "order") {
+    const { order_code, total_price, status, items = [] } = ctx.data;
+    const STATUS_VI = {
+      order_created: "Đặt hàng", confirmed: "Đã xác nhận", processing: "Đang xử lý",
+      in_transit: "Đang giao", delivered: "Đã giao", cancelled_by_customer: "Đã hủy",
+    };
+    return (
+      <div className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 p-3">
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <ShoppingBag size={14} className="text-primary flex-shrink-0" />
+          <p className="text-[10px] text-primary font-semibold">Đơn hàng được hỏi</p>
+        </div>
+        <p className="text-sm font-bold text-default-800 dark:text-zinc-100">#{order_code}</p>
+        <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+          {total_price > 0 && <span className="text-sm text-danger font-semibold">{formatCurrency(total_price)}</span>}
+          {status && <span className="text-xs text-default-400">{STATUS_VI[status] || status}</span>}
+        </div>
+        {items.length > 0 && (
+          <div className="flex gap-2 mt-2">
+            {items.slice(0, 3).map((it, i) => (
+              <div key={i} className="flex items-center gap-1.5 flex-1 min-w-0">
+                {it.image_url
+                  ? <img src={it.image_url} alt={it.name} className="w-8 h-8 object-cover rounded-md flex-shrink-0" />
+                  : <div className="w-8 h-8 rounded-md bg-default-100 flex-shrink-0" />
+                }
+                <p className="text-xs text-default-500 truncate">{it.name}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export default function ShopInbox() {
@@ -278,6 +343,28 @@ export default function ShopInbox() {
             ) : (
               messages.map(msg => {
                 const isMe = msg.sender_type === "shop";
+
+                // Context card message (product / order reference)
+                if (msg.context_type && msg.context_data) {
+                  return (
+                    <div key={msg._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                      {!isMe && (
+                        <Avatar
+                          src={activeConv.customer?.avatar}
+                          size="sm"
+                          className="w-7 h-7 mr-2 mt-auto flex-shrink-0"
+                        />
+                      )}
+                      <div className="max-w-[75%]">
+                        <ContextCard ctx={{ type: msg.context_type, data: msg.context_data }} />
+                        <p className={`text-[10px] text-default-300 mt-0.5 ${isMe ? "text-right" : "text-left"}`}>
+                          {timeAgo(msg.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={msg._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
                     {!isMe && (

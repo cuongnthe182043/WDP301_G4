@@ -4,7 +4,8 @@ import { io } from "socket.io-client";
 import { useAuth } from "../../context/AuthContext";
 import chatService from "../../services/chatService";
 import { Button, Avatar, Badge } from "@heroui/react";
-import { MessageCircle, X, ChevronLeft, Send, Loader2 } from "lucide-react";
+import { MessageCircle, X, ChevronLeft, Send, Loader2, Package, ShoppingBag, ExternalLink } from "lucide-react";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL ||
   (import.meta.env.VITE_API_URL || "http://localhost:5000").replace("/api", "");
@@ -16,6 +17,86 @@ function timeAgo(date) {
   if (diff < 3600000) return `${Math.floor(diff / 60000)} phút`;
   if (diff < 86400000) return `${Math.floor(diff / 3600000)} giờ`;
   return new Date(date).toLocaleDateString("vi-VN");
+}
+
+/* ── Context card rendered inside the chat thread ── */
+function ContextCard({ ctx, compact = false }) {
+  if (!ctx?.type || !ctx?.data) return null;
+
+  if (ctx.type === "product") {
+    const { name, image, price, slug } = ctx.data;
+    return (
+      <div
+        className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden cursor-pointer hover:border-primary transition-colors ${compact ? "flex items-center gap-2 p-2" : ""}`}
+        onClick={() => slug && window.open(`/products/${slug}`, "_blank")}
+      >
+        {compact ? (
+          <>
+            {image
+              ? <img src={image} alt={name} className="w-10 h-10 object-cover rounded-lg flex-shrink-0" />
+              : <div className="w-10 h-10 rounded-lg bg-default-100 flex items-center justify-center flex-shrink-0"><Package size={16} className="text-default-300" /></div>
+            }
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] text-primary font-semibold">Đang hỏi về sản phẩm</p>
+              <p className="text-xs text-default-700 dark:text-zinc-200 truncate font-medium">{name}</p>
+              {price > 0 && <p className="text-[10px] text-default-500">{formatCurrency(price)}</p>}
+            </div>
+            <ExternalLink size={12} className="text-default-300 flex-shrink-0" />
+          </>
+        ) : (
+          <div className="flex items-center gap-2.5 p-2.5">
+            {image
+              ? <img src={image} alt={name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
+              : <div className="w-12 h-12 rounded-lg bg-default-100 flex items-center justify-center flex-shrink-0"><Package size={20} className="text-default-300" /></div>
+            }
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] text-primary font-semibold mb-0.5">Sản phẩm được hỏi</p>
+              <p className="text-xs text-default-800 dark:text-zinc-100 line-clamp-2 font-medium leading-tight">{name}</p>
+              {price > 0 && <p className="text-xs text-danger font-semibold mt-0.5">{formatCurrency(price)}</p>}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (ctx.type === "order") {
+    const { order_code, total_price, status, items = [] } = ctx.data;
+    const STATUS_VI = {
+      order_created: "Đặt hàng", confirmed: "Đã xác nhận", processing: "Đang xử lý",
+      in_transit: "Đang giao", delivered: "Đã giao", cancelled_by_customer: "Đã hủy",
+    };
+    return (
+      <div className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden ${compact ? "p-2" : "p-2.5"}`}>
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <ShoppingBag size={compact ? 11 : 13} className="text-primary flex-shrink-0" />
+          <p className="text-[10px] text-primary font-semibold">
+            {compact ? "Đang hỏi về đơn hàng" : "Đơn hàng được hỏi"}
+          </p>
+        </div>
+        <p className="text-xs font-bold text-default-800 dark:text-zinc-100">#{order_code}</p>
+        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+          {total_price > 0 && <span className="text-xs text-danger font-semibold">{formatCurrency(total_price)}</span>}
+          {status && <span className="text-[10px] text-default-400">{STATUS_VI[status] || status}</span>}
+        </div>
+        {!compact && items.length > 0 && (
+          <div className="flex gap-1.5 mt-2">
+            {items.slice(0, 3).map((it, i) => (
+              <div key={i} className="flex items-center gap-1 flex-1 min-w-0">
+                {it.image_url
+                  ? <img src={it.image_url} alt={it.name} className="w-7 h-7 object-cover rounded-md flex-shrink-0" />
+                  : <div className="w-7 h-7 rounded-md bg-default-100 flex-shrink-0" />
+                }
+                <p className="text-[10px] text-default-500 truncate">{it.name}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export default function ChatWidget() {
@@ -31,6 +112,8 @@ export default function ChatWidget() {
   const [loadingConvs, setLoadingConvs] = useState(false);
   const [loadingMsgs, setLoadingMsgs]   = useState(false);
   const [totalUnread, setTotalUnread]   = useState(0);
+  // Context from the current chat trigger (product / order page)
+  const [pendingContext, setPendingContext] = useState(null);
 
   const socketRef     = useRef(null);
   const messagesEndRef = useRef(null);
@@ -130,12 +213,14 @@ export default function ChatWidget() {
     loadMessages(conv);
   }, [loadMessages]);
 
-  // ── Listen for openChat custom DOM event (from ShopPage "Chat với shop") ──
+  // ── Listen for openChat custom DOM event (from ProductDetail / OrderDetail) ──
   useEffect(() => {
     const handler = (e) => {
-      const conv = e.detail?.conversation;
+      const conv    = e.detail?.conversation;
+      const context = e.detail?.context || null;
       if (!conv) return;
       setOpen(true);
+      setPendingContext(context);
       openConversation(conv);
     };
     window.addEventListener("openChat", handler);
@@ -222,7 +307,7 @@ export default function ChatWidget() {
               <div className="flex items-center gap-2">
                 {view === "chat" && (
                   <button
-                    onClick={() => { setView("list"); setActiveConv(null); setMessages([]); }}
+                    onClick={() => { setView("list"); setActiveConv(null); setMessages([]); setPendingContext(null); }}
                     className="hover:opacity-70 transition-opacity"
                   >
                     <ChevronLeft size={18} />
@@ -315,6 +400,13 @@ export default function ChatWidget() {
                     </div>
                   </div>
 
+                  {/* Pending context banner — shown for existing convs when context not yet in history */}
+                  {pendingContext && !messages.some(m => m.context_type === pendingContext.type) && (
+                    <div className="px-3 pt-2 flex-shrink-0">
+                      <ContextCard ctx={pendingContext} compact />
+                    </div>
+                  )}
+
                   {/* Messages */}
                   <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2">
                     {loadingMsgs ? (
@@ -328,6 +420,28 @@ export default function ChatWidget() {
                     ) : (
                       messages.map(msg => {
                         const isMe = msg.sender_type === "customer";
+
+                        // Context card message (product / order reference)
+                        if (msg.context_type && msg.context_data) {
+                          return (
+                            <div key={msg._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                              {!isMe && (
+                                <Avatar
+                                  src={activeConv?.shop?.shop_logo}
+                                  size="sm"
+                                  className="w-6 h-6 mr-1.5 mt-auto flex-shrink-0"
+                                />
+                              )}
+                              <div className="max-w-[80%]">
+                                <ContextCard ctx={{ type: msg.context_type, data: msg.context_data }} />
+                                <p className={`text-[10px] text-default-300 mt-0.5 ${isMe ? "text-right" : "text-left"}`}>
+                                  {timeAgo(msg.createdAt)}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        }
+
                         return (
                           <div key={msg._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
                             {!isMe && (

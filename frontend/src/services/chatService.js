@@ -3,9 +3,11 @@ import apiClient from "./apiClient";
 const chatService = {
   // ─── Customer ───────────────────────────────────────────────────────────────
 
-  /** Start or retrieve an existing conversation with a shop */
-  startConversation: (shopId) =>
-    apiClient.post("/conversations", { shop_id: shopId }).then(r => r.data.data),
+  /** Start or retrieve an existing conversation with a shop.
+   *  context: optional { type: "product"|"order", data: {...} }
+   *  On new conversations the context is auto-saved as an opening card message. */
+  startConversation: (shopId, context = null) =>
+    apiClient.post("/conversations", { shop_id: shopId, context }).then(r => r.data.data),
 
   /** List all conversations for the current customer */
   listConversations: () =>
