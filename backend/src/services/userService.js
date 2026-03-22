@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const Address = require("../models/Address");
+const Shop = require("../models/Shop");
 const cloudinary = require("../config/cloudinary");
 
 exports.getById = async (id) => {
@@ -14,8 +16,8 @@ exports.updateById = async (id, payload) => {
     const e = new Error("username is immutable"); e.status = 400; throw e;
   }
   const allow = [
-    "name","email","phone","gender","dob","avatar_url",
-    "preferences.height","preferences.weight","preferences.size_top","preferences.size_bottom",
+    "name", "email", "phone", "gender", "dob",
+    "preferences.height", "preferences.weight", "preferences.size_top", "preferences.size_bottom",
   ];
   const $set = {};
   for (const k of allow) {
@@ -38,8 +40,8 @@ exports.changePassword = async (id, current_password, new_password) => {
   const ok = u.password_hash ? await bcrypt.compare(current_password, u.password_hash) : false;
   if (!ok) { const e = new Error("Current password is incorrect"); e.status = 400; throw e; }
   const salt = await bcrypt.genSalt(10);
-  u.password_hash  = await bcrypt.hash(new_password, salt);
-  u.refresh_token  = undefined;  // invalidate existing session
+  u.password_hash = await bcrypt.hash(new_password, salt);
+  u.refresh_token = undefined;  // invalidate existing session
   await u.save();
   return true;
 };
@@ -104,3 +106,61 @@ exports.uploadAvatarFromBuffer = (id, buf) => new Promise((resolve, reject) => {
   );
   stream.end(buf);
 });
+
+exports.registerShop = async (userId, payload) => {
+  const { shop_name, slug, phone, email, description, address_id } = payload;
+  console.log("Registering shop with payload:", shop_name, slug, phone, email, description, address_id);
+
+  if (!shop_name || !slug || !phone || !address_id) {
+    const e = new Error("Missing required fields");
+    e.status = 400;
+    throw e;
+  }
+
+  // 1. Check user
+  const user = await User.findById(userId).lean();
+  if (!user) {
+    const e = new Error("User not found");
+    e.status = 404;
+    throw e;
+  }
+
+  // 2. Check already has shop
+  const existing = await Shop.findOne({ owner_id: userId });
+  if (existing) {
+    const e = new Error("User already owns a shop");
+    e.status = 400;
+    throw e;
+  }
+
+  // 3. Validate address belongs to user
+  const addr = await Address.findOne({ _id: address_id, user_id: userId }).lean();
+  if (!addr) {
+    const e = new Error("Invalid address");
+    e.status = 400;
+    throw e;
+  }
+
+  // 4. Check slug
+  const slugExists = await Shop.findOne({ slug });
+  if (slugExists) {
+    const e = new Error("Shop slug already exists");
+    e.status = 400;
+    throw e;
+  }
+
+  // 5. Create shop
+  const shop = await Shop.create({
+    owner_id: userId,
+    shop_name,
+    shop_slug: slug,
+    shop_logo: user.avatar_url || "",
+    description: description || "",
+    address_id,
+    phone: phone || user.phone || "",
+    email: email || user.email || "",
+    status: "pending",
+  });
+
+  return shop.toObject();
+};

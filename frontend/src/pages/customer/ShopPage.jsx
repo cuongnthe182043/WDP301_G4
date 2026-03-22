@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Avatar, Button, Chip, Input, Select, SelectItem, Skeleton,
   Card, CardBody,
 } from "@heroui/react";
-import { Star, Package, Users, Search, Store, ShoppingBag } from "lucide-react";
+import { Star, Package, Users, Search, Store, ShoppingBag, MessageCircle } from "lucide-react";
 import { getShopBySlug, getShopProducts } from "../../services/shopService";
 import ProductCard, { cardVariants } from "../../components/home/ProductCard";
+import chatService from "../../services/chatService";
+import { useAuth } from "../../context/AuthContext";
 
 function ShopBannerSkeleton() {
   return (
@@ -31,6 +33,8 @@ function StatItem({ icon: Icon, label, value }) {
 export default function ShopPage() {
   const { t } = useTranslation();
   const { shopSlug } = useParams();
+  const nav = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const SORT_OPTIONS = [
     { key: "newest",     label: t("product.sort_newest") },
@@ -81,6 +85,17 @@ export default function ShopPage() {
     if (shop) loadProducts(true);
   }, [shop, q, sort]);
 
+  const handleChat = async () => {
+    if (!isAuthenticated) { nav("/login"); return; }
+    if (!shop?._id) return;
+    try {
+      const conv = await chatService.startConversation(shop._id);
+      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv } }));
+    } catch (e) {
+      console.error("Failed to start conversation:", e);
+    }
+  };
+
   if (notFound) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-gray-500">
@@ -126,6 +141,18 @@ export default function ShopPage() {
                     <StatItem icon={Package} label={t("shop.shop_products")} value={total} />
                     <StatItem icon={ShoppingBag} label={t("shop.shop_orders")} value={shop?.total_orders || 0} />
                     <StatItem icon={Users} label={t("shop.shop_followers")} value={shop?.followers || 0} />
+                  </div>
+                  <div className="flex items-center gap-2 mt-3">
+                    <Button
+                      size="sm"
+                      color="primary"
+                      radius="lg"
+                      variant="bordered"
+                      startContent={<MessageCircle size={14} />}
+                      onPress={handleChat}
+                    >
+                      Chat với shop
+                    </Button>
                   </div>
                 </div>
               </div>

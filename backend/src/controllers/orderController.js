@@ -1,17 +1,18 @@
 const { getRevenueByCategory } = require("../services/orderService");
 
-const Order = require("../models/Order");
-const Role = require("../models/Role");
-const Cart = require("../models/Cart");
-const Refund = require("../models/Refund");
-const Ticket = require("../models/Ticket");
+const Order      = require("../models/Order");
+const Role       = require("../models/Role");
+const Cart       = require("../models/Cart");
+const Refund     = require("../models/Refund");
+const Ticket     = require("../models/Ticket");
+const Shop       = require("../models/Shop");
+const User       = require("../models/User");
 const shippingSvc = require("../services/shippingService");
-const invoiceSvc = require("../services/invoiceService");
-const { v4: uuidv4 } = require("uuid");
-const notification = require("../services/notificationService");
-const notif        = require("../services/dbNotificationService");
-const User = require("../models/User");
-const Shop = require("../models/Shop");
+const invoiceSvc  = require("../services/invoiceService");
+const refundSvc   = require("../services/refundService");
+const { v4: uuidv4 }   = require("uuid");
+const notification     = require("../services/notificationService");
+const notif            = require("../services/dbNotificationService");
 
 const SAFE_FIELDS =
   "_id order_code items address_id voucher_id payment_method payment_status shipping_provider shipping_fee total_price note status inventory_adjusted createdAt updatedAt";
@@ -77,17 +78,35 @@ exports.detail = async (req, res, next) => {
 
     ord.status_text = STATUS_MAP[ord.status] || ord.status;
 
-    res.json({ status: "success", data: ord });
+    // Attach shop info for display in order detail
+    let shop_info = null;
+    if (ord.shop_id) {
+      try {
+        shop_info = await Shop.findById(ord.shop_id)
+          .select("_id shop_name shop_slug shop_logo description rating_avg total_products followers phone")
+          .lean();
+      } catch {}
+    }
+
+    res.json({ status: "success", data: { ...ord, shop_info } });
   } catch (e) {
     next(e);
   }
 };
 
 // ================== CANCEL ==================
+// Statuses a customer can cancel from (before shop starts shipping)
+const CUSTOMER_CANCELLABLE = new Set([
+  "order_created", "payment_pending", "payment_failed", "payment_confirmed",
+  "confirmed", "processing",
+  "pending", // legacy
+]);
+
 exports.cancel = async (req, res, next) => {
   try {
     const userId = req.userId || req.user?._id;
-    const id = req.params.id;
+    const id     = req.params.id;
+    const { reason = "" } = req.body || {};
 
     const ord = await Order.findOne({
       user_id: userId,
@@ -95,36 +114,46 @@ exports.cancel = async (req, res, next) => {
     });
 
     if (!ord)
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Không tìm thấy đơn" });
+      return res.status(404).json({ status: "fail", message: "Không tìm thấy đơn" });
 
-    if (["shipping", "delivered"].includes(ord.status)) {
+    if (!CUSTOMER_CANCELLABLE.has(ord.status)) {
       return res.status(400).json({
         status: "fail",
-        message: "Đơn đang giao/đã giao, không thể hủy.",
+        message: "Đơn hàng không thể hủy ở trạng thái hiện tại.",
       });
     }
 
-    const user = await User.findById(userId).populate('role_id').lean();
+    const wasRefundable = refundSvc.isRefundable(ord);
 
-    if (!user) {
-      return res.status(404).json({ status: "fail", message: "Không tìm thấy người dùng" });
-    } else {
-      const role_id = user.role_id;
-      const role = await Role.findById(role_id).lean();
-      if (role.name === "shop_owner") {
-        ord.status = "canceled_by_shop";
-        if (ord.payment_status === "paid") {
-          ord.payment_status = "refund_pending";
+    ord.status = "canceled_by_customer";
+    if (!ord.status_history) ord.status_history = [];
+    ord.status_history.push({
+      status: "canceled_by_customer",
+      at:     new Date(),
+      by:     "customer",
+      note:   reason.trim() || "Khách hàng hủy đơn",
+    });
+    await ord.save();
+
+    // Auto-refund to wallet for prepaid orders
+    let walletCredited = 0;
+    if (wasRefundable) {
+      try {
+        // Look up shop owner to deduct their wallet too
+        let shopOwnerId = null;
+        if (ord.shop_id) {
+          const shop = await Shop.findById(ord.shop_id).lean();
+          shopOwnerId = shop?.owner_id || null;
         }
-        await ord.save();
-      } else if (role.name === "customer") {
-        ord.status = "canceled_by_customer";
-        if (ord.payment_status === "paid") {
-          ord.payment_status = "refund_pending";
+        const result = await refundSvc.processAutoRefund(ord, shopOwnerId);
+        if (result) {
+          walletCredited = ord.total_price;
+          ord.payment_status = "refunded";
+          await ord.save();
+          notif.walletRefunded(userId, ord.order_code, walletCredited).catch(() => {});
         }
-        await ord.save();
+      } catch (refundErr) {
+        console.error("[cancel] Auto-refund failed:", refundErr.message);
       }
     }
 
@@ -132,7 +161,7 @@ exports.cancel = async (req, res, next) => {
 
     res.json({
       status: "success",
-      data: { order_id: ord._id, status: ord.status },
+      data: { order_id: ord._id, status: ord.status, wallet_credited: walletCredited },
     });
   } catch (e) {
     next(e);
