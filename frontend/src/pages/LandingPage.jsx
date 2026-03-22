@@ -152,39 +152,39 @@ const ico = (d, o = {}) =>
     </svg>
   );
 
-const IcoBrain    = ico(<path fill="currentColor" d="M13.5 4.5c.513 0 1.012.065 1.488.186a3.75 3.75 0 0 1 6.262 2.814v.2c0 .604-.153 1.186-.422 1.7a3.751 3.751 0 0 1-.54 6.553A3.752 3.752 0 0 1 16.5 18c0 .386-.029.765-.086 1.135a3.75 3.75 0 0 1-6.426 1.74 3.752 3.752 0 0 1-4.814-4.042A3.752 3.752 0 0 1 2.75 13.5a3.751 3.751 0 0 1-.54-6.553 3.752 3.752 0 0 1 6.262-2.814c.476-.12.975-.186 1.488-.186h3.54Z"/>, { fill: true });
-const IcoArrow    = ico(<path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>);
-const IcoChevR    = ico(<path d="m8.25 4.5 7.5 7.5-7.5 7.5"/>);
-const IcoChevL    = ico(<path d="M15.75 19.5 8.25 12l7.5-7.5"/>);
-const IcoStar     = ico(<path fill="currentColor" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"/>, { fill: true });
-const IcoHeart    = ico(<path strokeLinecap="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>);
-const IcoCart     = ico(<path fill="currentColor" d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"/>, { fill: true });
-const IcoCheck    = ico(<path fill="currentColor" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"/>, { fill: true });
-const IcoShip     = ico(<path fill="currentColor" d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875H3.75a3 3 0 1 0 5.99-.375h3.01a3 3 0 1 0 5.99.375h.375a1.875 1.875 0 0 0 1.875-1.875v-6H15a1.5 1.5 0 0 1-1.5-1.5V15Zm5.625-4.5h-4.875V12h3.914l.961-1.5ZM6.75 19.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm10.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>, { fill: true });
-const IcoFire     = ico(<path fill="currentColor" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/>, { fill: true });
-const IcoSparkle  = ico(<path fill="currentColor" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/>, { fill: true });
-const IcoUser     = ico(<path fill="currentColor" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"/>, { fill: true });
-const IcoQuote    = ico(<path fill="currentColor" d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Z"/>, { fill: true });
-const IcoRefresh  = ico(<path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>);
+const IcoBrain = ico(<path fill="currentColor" d="M13.5 4.5c.513 0 1.012.065 1.488.186a3.75 3.75 0 0 1 6.262 2.814v.2c0 .604-.153 1.186-.422 1.7a3.751 3.751 0 0 1-.54 6.553A3.752 3.752 0 0 1 16.5 18c0 .386-.029.765-.086 1.135a3.75 3.75 0 0 1-6.426 1.74 3.752 3.752 0 0 1-4.814-4.042A3.752 3.752 0 0 1 2.75 13.5a3.751 3.751 0 0 1-.54-6.553 3.752 3.752 0 0 1 6.262-2.814c.476-.12.975-.186 1.488-.186h3.54Z" />, { fill: true });
+const IcoArrow = ico(<path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />);
+const IcoChevR = ico(<path d="m8.25 4.5 7.5 7.5-7.5 7.5" />);
+const IcoChevL = ico(<path d="M15.75 19.5 8.25 12l7.5-7.5" />);
+const IcoStar = ico(<path fill="currentColor" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" />, { fill: true });
+const IcoHeart = ico(<path strokeLinecap="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />);
+const IcoCart = ico(<path fill="currentColor" d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />, { fill: true });
+const IcoCheck = ico(<path fill="currentColor" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" />, { fill: true });
+const IcoShip = ico(<path fill="currentColor" d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875H3.75a3 3 0 1 0 5.99-.375h3.01a3 3 0 1 0 5.99.375h.375a1.875 1.875 0 0 0 1.875-1.875v-6H15a1.5 1.5 0 0 1-1.5-1.5V15Zm5.625-4.5h-4.875V12h3.914l.961-1.5ZM6.75 19.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm10.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />, { fill: true });
+const IcoFire = ico(<path fill="currentColor" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />, { fill: true });
+const IcoSparkle = ico(<path fill="currentColor" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />, { fill: true });
+const IcoUser = ico(<path fill="currentColor" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" />, { fill: true });
+const IcoQuote = ico(<path fill="currentColor" d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Z" />, { fill: true });
+const IcoRefresh = ico(<path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />);
 
 /* ══════════════════════════════════════════════════════
    DATA — REAL BRANDS & PRODUCTS FROM SYSTEM
 ══════════════════════════════════════════════════════ */
 const STATIC_BRANDS = [
-  { _id: "brd-adcd511e", name: "Nike",          slug: "nike",      logo_url: "https://inkythuatso.com/uploads/images/2021/11/logo-nike-inkythuatso-2-01-04-15-42-44.jpg" },
-  { _id: "brd-ec799272", name: "Adidas",         slug: "adidas",    logo_url: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" },
-  { _id: "brd-17cdcb35", name: "Uniqlo",         slug: "uniqlo",    logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/UNIQLO_logo.svg/1029px-UNIQLO_logo.svg.png" },
-  { _id: "brd-9cf5112b", name: "Zara",           slug: "zara",      logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/1280px-Zara_Logo.svg.png" },
-  { _id: "brd-b5d4fc21", name: "H&M",            slug: "h-m",       logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/1200px-H%26M-Logo.svg.png" },
-  { _id: "brd-010e9e76", name: "Levi's",         slug: "levi-s",    logo_url: "https://static.vecteezy.com/system/resources/previews/023/869/641/non_2x/levis-brand-clothes-logo-symbol-design-fashion-illustration-free-vector.jpg" },
-  { _id: "brd-adcbe7ec", name: "Mango",          slug: "mango",     logo_url: "https://logos-world.net/wp-content/uploads/2023/01/Mango-Logo.png" },
-  { _id: "brd-4a3d2f11", name: "Converse",       slug: "converse",  logo_url: "https://upload.wikimedia.org/wikipedia/commons/3/30/Converse_logo.svg" },
-  { _id: "brd-puma001",  name: "Puma",           slug: "puma",      logo_url: "https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" },
-  { _id: "brd-tnf001",   name: "The North Face", slug: "the-north-face", logo_url: "https://upload.wikimedia.org/wikipedia/commons/e/e1/The_North_Face.png" },
-  { _id: "brd-ua001",    name: "Under Armour",   slug: "under-armour", logo_url: "https://logos-world.net/wp-content/uploads/2020/04/Under-Armour-Logo-2005-present.png" },
-  { _id: "brd-nb001",    name: "New Balance",    slug: "new-balance",  logo_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPGBiMbRwibmsgshiBoC6zlN2h7wvUT4KZVW-NySGAq2ROJYmL1Y4IkFGYmwB5SNEjoXw&usqp=CAU" },
-  { _id: "brd-lacoste",  name: "Lacoste",        slug: "lacoste",   logo_url: "https://inkythuatso.com/uploads/images/2021/12/logo-lacoste-inkythuatso-22-13-35-14.jpg" },
-  { _id: "brd-ck001",    name: "Calvin Klein",   slug: "calvin-klein", logo_url: "https://images.seeklogo.com/logo-png/31/2/calvin-klein-logo-png_seeklogo-311014.png" },
+  { _id: "brd-adcd511e", name: "Nike", slug: "nike", logo_url: "https://inkythuatso.com/uploads/images/2021/11/logo-nike-inkythuatso-2-01-04-15-42-44.jpg" },
+  { _id: "brd-ec799272", name: "Adidas", slug: "adidas", logo_url: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" },
+  { _id: "brd-17cdcb35", name: "Uniqlo", slug: "uniqlo", logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/UNIQLO_logo.svg/1029px-UNIQLO_logo.svg.png" },
+  { _id: "brd-9cf5112b", name: "Zara", slug: "zara", logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/1280px-Zara_Logo.svg.png" },
+  { _id: "brd-b5d4fc21", name: "H&M", slug: "h-m", logo_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/1200px-H%26M-Logo.svg.png" },
+  { _id: "brd-010e9e76", name: "Levi's", slug: "levi-s", logo_url: "https://static.vecteezy.com/system/resources/previews/023/869/641/non_2x/levis-brand-clothes-logo-symbol-design-fashion-illustration-free-vector.jpg" },
+  { _id: "brd-adcbe7ec", name: "Mango", slug: "mango", logo_url: "https://logos-world.net/wp-content/uploads/2023/01/Mango-Logo.png" },
+  { _id: "brd-4a3d2f11", name: "Converse", slug: "converse", logo_url: "https://upload.wikimedia.org/wikipedia/commons/3/30/Converse_logo.svg" },
+  { _id: "brd-puma001", name: "Puma", slug: "puma", logo_url: "https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" },
+  { _id: "brd-tnf001", name: "The North Face", slug: "the-north-face", logo_url: "https://upload.wikimedia.org/wikipedia/commons/e/e1/The_North_Face.png" },
+  { _id: "brd-ua001", name: "Under Armour", slug: "under-armour", logo_url: "https://logos-world.net/wp-content/uploads/2020/04/Under-Armour-Logo-2005-present.png" },
+  { _id: "brd-nb001", name: "New Balance", slug: "new-balance", logo_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPGBiMbRwibmsgshiBoC6zlN2h7wvUT4KZVW-NySGAq2ROJYmL1Y4IkFGYmwB5SNEjoXw&usqp=CAU" },
+  { _id: "brd-lacoste", name: "Lacoste", slug: "lacoste", logo_url: "https://inkythuatso.com/uploads/images/2021/12/logo-lacoste-inkythuatso-22-13-35-14.jpg" },
+  { _id: "brd-ck001", name: "Calvin Klein", slug: "calvin-klein", logo_url: "https://images.seeklogo.com/logo-png/31/2/calvin-klein-logo-png_seeklogo-311014.png" },
 ];
 
 const STATIC_PRODUCTS = [
@@ -263,11 +263,11 @@ const TESTIMONIALS = [
 /* ══════════════════════════════════════════════════════
    ANIMATION VARIANTS
 ══════════════════════════════════════════════════════ */
-const vFadeUp    = (d = 0) => ({ initial: { opacity: 0, y: 44 }, whileInView: { opacity: 1, y: 0 },    viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
-const vFadeLeft  = (d = 0) => ({ initial: { opacity: 0, x: -56 }, whileInView: { opacity: 1, x: 0 },  viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
-const vFadeRight = (d = 0) => ({ initial: { opacity: 0, x: 56 },  whileInView: { opacity: 1, x: 0 },  viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
-const vScale     = (d = 0) => ({ initial: { opacity: 0, scale: .84 }, whileInView: { opacity: 1, scale: 1 }, viewport: { once: false, margin: "-60px" }, transition: { duration: .6, delay: d, ease: [.34, 1.56, .64, 1] } });
-const vSlideUp   = (d = 0) => ({ initial: { opacity: 0, y: 28 },  whileInView: { opacity: 1, y: 0 },   viewport: { once: false, margin: "-50px" }, transition: { duration: .5, delay: d, ease: "easeOut" } });
+const vFadeUp = (d = 0) => ({ initial: { opacity: 0, y: 44 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
+const vFadeLeft = (d = 0) => ({ initial: { opacity: 0, x: -56 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
+const vFadeRight = (d = 0) => ({ initial: { opacity: 0, x: 56 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: false, margin: "-70px" }, transition: { duration: .65, delay: d, ease: [.22, 1, .36, 1] } });
+const vScale = (d = 0) => ({ initial: { opacity: 0, scale: .84 }, whileInView: { opacity: 1, scale: 1 }, viewport: { once: false, margin: "-60px" }, transition: { duration: .6, delay: d, ease: [.34, 1.56, .64, 1] } });
+const vSlideUp = (d = 0) => ({ initial: { opacity: 0, y: 28 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: false, margin: "-50px" }, transition: { duration: .5, delay: d, ease: "easeOut" } });
 
 /* ══════════════════════════════════════════════════════
    HELPERS
@@ -275,7 +275,7 @@ const vSlideUp   = (d = 0) => ({ initial: { opacity: 0, y: 28 },  whileInView: {
 const fmt = (n) => new Intl.NumberFormat("vi-VN").format(n) + "₫";
 const Stars = ({ rating, size = 12 }) => (
   <span className="flex gap-0.5 items-center">
-    {[1,2,3,4,5].map(i => (
+    {[1, 2, 3, 4, 5].map(i => (
       <IcoStar key={i} size={size}
         className={i <= Math.round(rating) ? "text-amber-400" : "text-gray-200"} />
     ))}
@@ -305,16 +305,16 @@ function Counter({ end, suffix = "", duration = 1800 }) {
 
 /* ── 3D Tilt card with glare (ref-based — zero re-renders on mousemove) ── */
 function TiltCard({ children, className = "", intensity = 8 }) {
-  const x  = useMotionValue(0), y  = useMotionValue(0);
+  const x = useMotionValue(0), y = useMotionValue(0);
   const rX = useSpring(useTransform(y, [-.5, .5], [intensity, -intensity]), { stiffness: 300, damping: 28 });
   const rY = useSpring(useTransform(x, [-.5, .5], [-intensity, intensity]), { stiffness: 300, damping: 28 });
   const sc = useSpring(1, { stiffness: 280, damping: 26 });
   const glareRef = useRef(null);
 
   const handleMove = useCallback((e) => {
-    const r  = e.currentTarget.getBoundingClientRect();
+    const r = e.currentTarget.getBoundingClientRect();
     const nx = (e.clientX - r.left) / r.width;
-    const ny = (e.clientY - r.top)  / r.height;
+    const ny = (e.clientY - r.top) / r.height;
     x.set(nx - .5); y.set(ny - .5); sc.set(1.03);
     if (glareRef.current) {
       glareRef.current.style.background =
@@ -354,8 +354,8 @@ function MagneticButton({ children, strength = 0.35, className = "" }) {
     <motion.div className={`inline-flex ${className}`} style={{ x: sx, y: sy }}
       onMouseMove={e => {
         const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left - r.width  / 2) * strength);
-        y.set((e.clientY - r.top  - r.height / 2) * strength);
+        x.set((e.clientX - r.left - r.width / 2) * strength);
+        y.set((e.clientY - r.top - r.height / 2) * strength);
       }}
       onMouseLeave={() => { x.set(0); y.set(0); }}>
       {children}
@@ -375,18 +375,18 @@ const GBadge = ({ children, className = "", style }) => (
 ══════════════════════════════════════════════════════ */
 export default function LandingPage() {
   /* ── State ── */
-  const [hpData, setHpData]       = useState({ brands: [], men: [], women: [], unisex: [], flashSale: null });
-  const [loading, setLoading]     = useState(true);
-  const [activeSz, setActiveSz]   = useState(1);
-  const [timer, setTimer]         = useState({ h: "08", m: "24", s: "59" });
-  const [email, setEmail]         = useState("");
+  const [hpData, setHpData] = useState({ brands: [], men: [], women: [], unisex: [], flashSale: null });
+  const [loading, setLoading] = useState(true);
+  const [activeSz, setActiveSz] = useState(1);
+  const [timer, setTimer] = useState({ h: "08", m: "24", s: "59" });
+  const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const [wishlist, setWishlist]   = useState(new Set());
+  const [wishlist, setWishlist] = useState(new Set());
   const [imgErrors, setImgErrors] = useState(new Set());
 
   /* ── Cursor spotlight (spring-smoothed) ── */
-  const cursorX  = useMotionValue(-600);
-  const cursorY  = useMotionValue(-600);
+  const cursorX = useMotionValue(-600);
+  const cursorY = useMotionValue(-600);
   const cursorSX = useSpring(cursorX, { stiffness: 650, damping: 48 });
   const cursorSY = useSpring(cursorY, { stiffness: 650, damping: 48 });
 
@@ -394,33 +394,33 @@ export default function LandingPage() {
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
   /* Hero blobs */
-  const blobX1 = useSpring(useTransform(mouseX, [0, 1], [-24,  24]), { stiffness: 88, damping: 28 });
-  const blobY1 = useSpring(useTransform(mouseY, [0, 1], [-18,  18]), { stiffness: 88, damping: 28 });
-  const blobX2 = useSpring(useTransform(mouseX, [0, 1], [ 20, -20]), { stiffness: 68, damping: 24 });
-  const blobY2 = useSpring(useTransform(mouseY, [0, 1], [ 14, -14]), { stiffness: 68, damping: 24 });
+  const blobX1 = useSpring(useTransform(mouseX, [0, 1], [-24, 24]), { stiffness: 88, damping: 28 });
+  const blobY1 = useSpring(useTransform(mouseY, [0, 1], [-18, 18]), { stiffness: 88, damping: 28 });
+  const blobX2 = useSpring(useTransform(mouseX, [0, 1], [20, -20]), { stiffness: 68, damping: 24 });
+  const blobY2 = useSpring(useTransform(mouseY, [0, 1], [14, -14]), { stiffness: 68, damping: 24 });
   /* Decorative orb in AI section */
-  const orbX   = useSpring(useTransform(mouseX, [0, 1], [-16,  16]), { stiffness: 60, damping: 22 });
-  const orbY   = useSpring(useTransform(mouseY, [0, 1], [-10,  10]), { stiffness: 60, damping: 22 });
+  const orbX = useSpring(useTransform(mouseX, [0, 1], [-16, 16]), { stiffness: 60, damping: 22 });
+  const orbY = useSpring(useTransform(mouseY, [0, 1], [-10, 10]), { stiffness: 60, damping: 22 });
 
   /* ── Hero scroll-parallax ── */
-  const heroRef     = useRef(null);
+  const heroRef = useRef(null);
   const { scrollYProgress: heroSY } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroImgParY = useScrollTransform(heroSY, [0, 1], [0,  90]);
-  const heroCopyParY= useScrollTransform(heroSY, [0, 1], [0, -45]);
+  const heroImgParY = useScrollTransform(heroSY, [0, 1], [0, 90]);
+  const heroCopyParY = useScrollTransform(heroSY, [0, 1], [0, -45]);
 
   /* ── Fetch homepage data ── */
   useEffect(() => {
     homeService.fetchHomepage()
       .then(raw => {
         setHpData({
-          brands:   raw?.brands || raw?.brand_list || [],
-          men:      raw?.men    || [],
-          women:    raw?.women  || [],
-          unisex:   raw?.unisex || [],
+          brands: raw?.brands || raw?.brand_list || [],
+          men: raw?.men || [],
+          women: raw?.women || [],
+          unisex: raw?.unisex || [],
           flashSale: raw?.flashSale || raw?.flash_sale || null,
         });
       })
-      .catch(() => {/* use static fallback */})
+      .catch(() => {/* use static fallback */ })
       .finally(() => setLoading(false));
   }, []);
 
@@ -438,7 +438,7 @@ export default function LandingPage() {
   /* ── Countdown ── */
   useEffect(() => {
     const end = Date.now() + (8 * 3_600_000 + 24 * 60_000 + 59_000);
-    const id  = setInterval(() => {
+    const id = setInterval(() => {
       const d = Math.max(0, end - Date.now());
       const p = n => String(n).padStart(2, "0");
       setTimer({ h: p(Math.floor(d / 3_600_000)), m: p(Math.floor(d % 3_600_000 / 60_000)), s: p(Math.floor(d % 60_000 / 1000)) });
@@ -585,7 +585,7 @@ export default function LandingPage() {
               <div className="rounded-[2.5rem] overflow-hidden shadow-[0_32px_80px_-16px_rgba(11,116,229,.35)]">
                 <div className="relative">
                   <motion.img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80"
-                    onError={e => { e.target.onerror=null; e.target.src="https://picsum.photos/seed/herof/460/520"; }}
+                    onError={e => { e.target.onerror = null; e.target.src = "https://picsum.photos/seed/herof/460/520"; }}
                     alt="Fashion hero" className="w-full h-[500px] object-cover object-top"
                     style={{ y: heroImgParY }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-transparent" />
@@ -672,9 +672,9 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { end: 50000, suffix: "+", lbl: "Khách hàng hài lòng", unit: "K", raw: 50 },
-              { end: 500,   suffix: "+", lbl: "Thương hiệu thời trang" },
-              { end: 99,    suffix: ".2%", lbl: "Độ chính xác size AI" },
-              { end: 24,    suffix: "/7", lbl: "Hỗ trợ khách hàng" },
+              { end: 500, suffix: "+", lbl: "Thương hiệu thời trang" },
+              { end: 99, suffix: ".2%", lbl: "Độ chính xác size AI" },
+              { end: 24, suffix: "/7", lbl: "Hỗ trợ khách hàng" },
             ].map(({ end, suffix, lbl, unit }, i) => (
               <motion.div key={lbl} {...vScale(i * .09)} className="group cursor-default">
                 <p className="syne font-black text-4xl md:text-5xl text-blue-600 leading-none group-hover:scale-110 transition-transform duration-300">
@@ -725,7 +725,7 @@ export default function LandingPage() {
                     <div>
                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-[.15em] mb-2">Số đo của bạn</p>
                       <div className="grid grid-cols-2 gap-2">
-                        {[["Chiều cao","175 cm"],["Cân nặng","70 kg"],["Vòng ngực","92 cm"],["Vòng eo","78 cm"]].map(([k, v]) => (
+                        {[["Chiều cao", "175 cm"], ["Cân nặng", "70 kg"], ["Vòng ngực", "92 cm"], ["Vòng eo", "78 cm"]].map(([k, v]) => (
                           <motion.div key={k} whileHover={{ scale: 1.03 }}
                             className="bg-white/80 rounded-xl p-3 shadow-sm border border-blue-50 cursor-default">
                             <p className="text-[9px] text-gray-400 font-semibold">{k}</p>
@@ -763,11 +763,10 @@ export default function LandingPage() {
                         <div className="flex flex-col gap-1.5">
                           {SIZES.map((sz, i) => (
                             <button key={sz} onClick={() => setActiveSz(i)}
-                              className={`w-9 h-7 rounded-lg text-[11px] font-black border transition-all duration-200 ${
-                                activeSz === i
-                                  ? "bg-white text-blue-700 border-white scale-110 shadow-lg"
-                                  : "border-white/25 text-white/50 hover:border-white/50 hover:text-white/80"
-                              }`}>{sz}</button>
+                              className={`w-9 h-7 rounded-lg text-[11px] font-black border transition-all duration-200 ${activeSz === i
+                                ? "bg-white text-blue-700 border-white scale-110 shadow-lg"
+                                : "border-white/25 text-white/50 hover:border-white/50 hover:text-white/80"
+                                }`}>{sz}</button>
                           ))}
                         </div>
                       </div>
@@ -812,9 +811,9 @@ export default function LandingPage() {
 
             <div className="space-y-4">
               {[
-                { icon: IcoUser,  title: "Tạo hồ sơ cơ thể",    desc: "Nhập số đo một lần — AI nhớ mãi cho mọi sản phẩm.",     bg: "#EFF6FF", c: "#0B74E5", d: .18 },
+                { icon: IcoUser, title: "Tạo hồ sơ cơ thể", desc: "Nhập số đo một lần — AI nhớ mãi cho mọi sản phẩm.", bg: "#EFF6FF", c: "#0B74E5", d: .18 },
                 { icon: IcoBrain, title: "AI phân tích tức thì", desc: "Model đối chiếu hồ sơ với size chart riêng từng hãng.", bg: "#F5F3FF", c: "#7C3AED", d: .24 },
-                { icon: IcoCheck, title: "Mua sắm tự tin 100%",  desc: "Nhận gợi ý cá nhân hoá, độ chính xác đến 99.2%.",       bg: "#ECFDF5", c: "#059669", d: .30 },
+                { icon: IcoCheck, title: "Mua sắm tự tin 100%", desc: "Nhận gợi ý cá nhân hoá, độ chính xác đến 99.2%.", bg: "#ECFDF5", c: "#059669", d: .30 },
               ].map(({ icon: Icon, title, desc, bg, c, d }) => (
                 <motion.div key={title} {...vFadeRight(d)}
                   className="flex items-start gap-4 group cursor-default">
@@ -855,9 +854,9 @@ export default function LandingPage() {
         <div className="overflow-hidden">
           <div className="flex lp-ticker" style={{ width: "max-content" }}>
             {tickerBrands.map((b, i) => {
-              const name  = b.name  || b._id;
-              const logo  = b.logo_url;
-              const slug  = b.slug  || "#";
+              const name = b.name || b._id;
+              const logo = b.logo_url;
+              const slug = b.slug || "#";
               return (
                 <Link key={`${name}-${i}`} to={`/products?brand=${slug}`}
                   className="flex-shrink-0 mx-4 flex items-center gap-3 px-6 py-4 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/60 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group min-w-[120px]">
@@ -900,7 +899,7 @@ export default function LandingPage() {
             {/* Men's — big card */}
             <motion.div {...vFadeLeft(0)} className="md:col-span-7 md:row-span-1 group relative overflow-hidden rounded-[2rem] cursor-pointer lp-img-zoom">
               <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=900&q=80"
-                onError={e=>{e.target.onerror=null;e.target.src="https://picsum.photos/seed/mens/800/560";}}
+                onError={e => { e.target.onerror = null; e.target.src = "https://picsum.photos/seed/mens/800/560"; }}
                 alt="Men's collection" className="absolute inset-0 w-full h-full object-cover object-top" />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/85 via-gray-900/20 to-transparent" />
               <motion.div className="absolute inset-0 flex flex-col justify-end p-9 text-white"
@@ -922,7 +921,7 @@ export default function LandingPage() {
             <motion.div {...vFadeRight(0)} className="md:col-span-5 md:row-span-1 group relative overflow-hidden rounded-[2rem] cursor-pointer lp-img-zoom"
               style={{ background: "linear-gradient(145deg,#FAF5FF,#EDE9FE)" }}>
               <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&q=80"
-                onError={e=>{e.target.onerror=null;e.target.src="https://picsum.photos/seed/womens/600/560";}}
+                onError={e => { e.target.onerror = null; e.target.src = "https://picsum.photos/seed/womens/600/560"; }}
                 alt="Women's collection" className="absolute inset-0 w-full h-full object-cover opacity-65" />
               <div className="absolute inset-0 bg-gradient-to-t from-violet-900/75 via-transparent to-transparent" />
               <div className="absolute inset-0 flex flex-col justify-between p-8">
@@ -1043,7 +1042,10 @@ export default function LandingPage() {
                         )}
                         <Chip size="sm" variant="flat"
                           className="absolute top-3 font-black text-[9px] bg-white/90 text-gray-700 shadow-sm"
-                          style={{ right: p.orig_price ? undefined : undefined, left: p.orig_price ? "auto" : "12px", right: p.orig_price ? "12px" : "auto" }}>
+                          style={{
+                            left: p.orig_price ? "auto" : "12px",
+                            right: p.orig_price ? "12px" : "auto"
+                          }}>
                           {p.brand || "DFS"}
                         </Chip>
 
@@ -1133,9 +1135,9 @@ export default function LandingPage() {
               style={{ background: "linear-gradient(90deg, #0B74E5, #7C3AED)", opacity: .35 }} />
 
             {[
-              { n: 1, icon: IcoUser,  title: "Tạo Hồ Sơ Cơ Thể", desc: "Nhập chiều cao, cân nặng, số đo vòng ngực, eo, hông — chỉ một lần duy nhất.", bg: "#EFF6FF", c: "#0B74E5", d: 0   },
-              { n: 2, icon: IcoBrain, title: "AI Phân Tích",       desc: "XGBoost đối chiếu hồ sơ với size chart riêng từng thương hiệu trong hệ thống.",  bg: "#F5F3FF", c: "#7C3AED", d: .1  },
-              { n: 3, icon: IcoCheck, title: "Mua Sắm Tự Tin",     desc: "Nhận size cá nhân hoá với độ tin cậy 99.2%. Thanh toán VNPay, MoMo, PayPal, COD.",   bg: "#ECFDF5", c: "#059669", d: .2  },
+              { n: 1, icon: IcoUser, title: "Tạo Hồ Sơ Cơ Thể", desc: "Nhập chiều cao, cân nặng, số đo vòng ngực, eo, hông — chỉ một lần duy nhất.", bg: "#EFF6FF", c: "#0B74E5", d: 0 },
+              { n: 2, icon: IcoBrain, title: "AI Phân Tích", desc: "XGBoost đối chiếu hồ sơ với size chart riêng từng thương hiệu trong hệ thống.", bg: "#F5F3FF", c: "#7C3AED", d: .1 },
+              { n: 3, icon: IcoCheck, title: "Mua Sắm Tự Tin", desc: "Nhận size cá nhân hoá với độ tin cậy 99.2%. Thanh toán VNPay, MoMo, PayPal, COD.", bg: "#ECFDF5", c: "#059669", d: .2 },
             ].map(({ n, icon: Icon, title, desc, bg, c, d }) => (
               <motion.div key={n} {...vScale(d)} className="flex flex-col items-center text-center group cursor-default">
                 <div className="relative mb-7">
@@ -1232,7 +1234,7 @@ export default function LandingPage() {
             {/* Floating glass badges */}
             {[
               { icon: IcoFire, text: "10% OFF", sub: "Đơn đầu tiên", side: "left", delay: 0 },
-              { icon: IcoShip, text: "Free Ship", sub: "Toàn quốc",   side: "right", delay: .5 },
+              { icon: IcoShip, text: "Free Ship", sub: "Toàn quốc", side: "right", delay: .5 },
             ].map(({ icon: Icon, text, sub, side, delay }) => (
               <motion.div key={text}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}

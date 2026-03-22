@@ -138,7 +138,6 @@ exports.registerShop = async (req, res) => {
     return res.status(statusCode).json({
       success: false,
       message: message,
-      // Only send stack trace in development mode
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
