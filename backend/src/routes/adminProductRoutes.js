@@ -8,9 +8,14 @@ const router = express.Router();
 // All admin product routes require system_admin role
 router.use(verifyToken, ...requireAnyRole("system_admin"));
 
-router.get("/",            ctrl.listProducts);
-router.get("/:id",         ctrl.getProduct);
-router.patch("/:id/approve", ctrl.approveProduct);
-router.patch("/:id/reject",  ctrl.rejectProduct);
+router.get("/stats",              ctrl.getStats);
+router.get("/",                   ctrl.listProducts);
+router.get("/:id",                ctrl.getProduct);
+router.patch("/:id/approve",      ctrl.approveProduct);
+router.patch("/:id/reject",       ctrl.rejectProduct);
+router.post("/:id/moderate",      ctrl.moderateProduct);
+router.post("/moderate-pending",  ctrl.moderatePending);
+router.post("/bulk-approve",      ctrl.bulkApprove);
+router.post("/bulk-reject",       ctrl.bulkReject);
 
 module.exports = router;

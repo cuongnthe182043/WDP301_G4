@@ -48,15 +48,47 @@ function normalize(text) {
  * @param {string} text
  * @returns {{ clean: boolean, severity: 0|1|2, matched: string[] }}
  */
+/**
+ * Check whether `word` (original, un-normalised) appears in `text`.
+ *
+ * Strategy:
+ *  1. For short Vietnamese words (≤ 3 chars) that are ambiguous once
+ *     diacritics are stripped (e.g. đụ → du  vs  đủ → du), first attempt
+ *     an exact lowercase match with word boundaries on the ORIGINAL text.
+ *  2. Fall back to normalised matching with word boundaries for everything
+ *     else (multi-word phrases, longer words, Latin profanity).
+ */
+function _matches(text, lowerText, normText, word) {
+  const lw   = word.toLowerCase();
+  const nw   = normalize(word);
+
+  // Short Vietnamese words: match on the original lowered text first so
+  // diacritics are preserved and "đủ" ≠ "đụ".
+  if (lw.length <= 3) {
+    const re = new RegExp(`(?:^|[\\s,;.!?])${lw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:[\\s,;.!?]|$)`, "i");
+    return re.test(lowerText);
+  }
+
+  // Multi-word phrase: use includes on normalised text
+  if (nw.includes(" ")) {
+    return normText.includes(nw);
+  }
+
+  // Longer single word: word-boundary regex on normalised text
+  const escaped = nw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escaped}\\b`, "i").test(normText);
+}
+
 function moderate(text) {
   if (!text || typeof text !== "string") return { clean: true, severity: 0, matched: [] };
 
-  const norm    = normalize(text);
-  const matched = [];
-  let severity  = 0;
+  const lowerText = text.toLowerCase();
+  const normText  = normalize(text);
+  const matched   = [];
+  let severity    = 0;
 
   for (const word of SEVERE) {
-    if (norm.includes(normalize(word))) {
+    if (_matches(text, lowerText, normText, word)) {
       matched.push(word);
       severity = 2;
     }
@@ -64,7 +96,7 @@ function moderate(text) {
 
   if (severity < 2) {
     for (const word of MILD) {
-      if (norm.includes(normalize(word))) {
+      if (_matches(text, lowerText, normText, word)) {
         matched.push(word);
         severity = Math.max(severity, 1);
       }
