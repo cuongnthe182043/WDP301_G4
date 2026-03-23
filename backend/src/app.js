@@ -36,6 +36,7 @@ const notificationRoutes     = require("./routes/notificationRoutes");
 const adminProductRoutes     = require("./routes/adminProductRoutes");
 const conversationRoutes     = require("./routes/conversationRoutes");
 const shopConversationRoutes = require("./routes/shopConversationRoutes");
+const uploadRoutes           = require("./routes/uploadRoutes");
 // const adminRoutes = require("./routes/adminRoutes");
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
@@ -132,6 +133,7 @@ app.use("/api/analytics",          analyticsRoutes);
 app.use("/api/tickets",            ticketRoutes);
 app.use("/api/notifications",      notificationRoutes);
 app.use("/api/conversations",      conversationRoutes);
+app.use("/api/uploads",            uploadRoutes);
 app.use("/api/size-charts",  require("./routes/sizeChartRoutes"));
 app.use("/api/admin/products",      adminProductRoutes);
 app.use("/api/admin/moderation",    require("./routes/adminModerationRoutes"));
