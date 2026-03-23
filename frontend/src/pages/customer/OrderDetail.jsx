@@ -268,6 +268,32 @@ export default function OrderDetail() {
     });
   };
 
+  const handleChatShop = async () => {
+    if (!isAuthenticated) { nav("/login"); return; }
+    const shopId = ord?.shop_info?._id || ord?.shop_id;
+    if (!shopId) return toast.error("Đơn hàng này không có thông tin shop");
+    try {
+      const context = {
+        type: "order",
+        data: {
+          _id:         ord._id,
+          order_code:  ord.order_code,
+          total_price: ord.total_price,
+          status:      ord.status,
+          items:       (ord.items || []).slice(0, 3).map(it => ({
+            name:      it.name,
+            qty:       it.qty,
+            image_url: it.image_url,
+          })),
+        },
+      };
+      const conv = await chatService.startConversation(shopId, context);
+      window.dispatchEvent(new CustomEvent("openChat", { detail: { conversation: conv, context } }));
+    } catch {
+      toast.error("Không thể mở chat với shop");
+    }
+  };
+
   // ── Helpers ───────────────────────────────────────────────────────────────
   const refundDeadlinePassed = () => {
     if (!ord?.updatedAt) return false;
@@ -303,48 +329,73 @@ export default function OrderDetail() {
 
   return (
     <PageContainer wide={false}>
-      {/* ── Header ────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <Button as={Link} to="/orders" isIconOnly variant="bordered" radius="lg" size="sm">
-            <ArrowLeft size={16} />
-          </Button>
-          <div>
-            <h1 className="text-xl font-black text-default-900 dark:text-zinc-100">
-              #{ord.order_code}
-            </h1>
-            <p className="text-xs text-default-400">
-              {new Date(ord.createdAt).toLocaleString("vi-VN")}
-            </p>
+      {/* ── Header banner ─────────────────────────────────────────────────── */}
+      <div className="relative rounded-2xl overflow-hidden mb-5 bg-gradient-to-br from-primary via-violet-500 to-indigo-600 text-white shadow-lg">
+        <div className="absolute inset-0 opacity-10"
+          style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "20px 20px" }}
+        />
+        <div className="relative p-4 sm:p-5">
+          {/* Back + order code row */}
+          <div className="flex items-center gap-3 mb-3">
+            <Button
+              as={Link} to="/orders"
+              isIconOnly variant="flat"
+              radius="lg" size="sm"
+              className="bg-white/20 text-white hover:bg-white/30"
+            >
+              <ArrowLeft size={16} />
+            </Button>
+            <div>
+              <h1 className="text-xl font-black">#{ord.order_code}</h1>
+              <p className="text-white/60 text-xs">{new Date(ord.createdAt).toLocaleString("vi-VN")}</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Chip color={PAYMENT_COLOR[ord.payment_method] || "default"} variant="bordered" size="sm">
-            {ord.payment_method}
-          </Chip>
-          <Chip
-            color={PAY_STATUS_COLOR[ord.payment_status] || "warning"}
-            variant="flat" size="sm" className="font-semibold"
-          >
-            {ord.payment_status === "paid" ? "Đã thanh toán"
-              : ord.payment_status === "refunded" ? "Đã hoàn tiền"
-              : ord.payment_status === "failed" ? "Thanh toán lỗi"
-              : "Chờ thanh toán"}
-          </Chip>
-          <Chip
-            color={STATUS_COLOR[ord.status] || "default"}
-            variant="flat" size="md" className="font-bold"
-          >
-            {STATUS_LABEL[ord.status] || ord.status}
-          </Chip>
+
+          {/* Chips + chat button row */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Chip
+              color={STATUS_COLOR[ord.status] || "default"}
+              variant="flat" size="sm" className="font-bold bg-white/20 text-white border-white/30"
+            >
+              {STATUS_LABEL[ord.status] || ord.status}
+            </Chip>
+            <Chip
+              color={PAYMENT_COLOR[ord.payment_method] || "default"}
+              variant="bordered" size="sm" className="border-white/40 text-white/80"
+            >
+              {ord.payment_method}
+            </Chip>
+            <Chip
+              color={PAY_STATUS_COLOR[ord.payment_status] || "warning"}
+              variant="flat" size="sm" className="font-semibold bg-white/20 text-white border-white/30"
+            >
+              {ord.payment_status === "paid" ? "Đã thanh toán"
+                : ord.payment_status === "refunded" ? "Đã hoàn tiền"
+                : ord.payment_status === "failed" ? "Thanh toán lỗi"
+                : "Chờ thanh toán"}
+            </Chip>
+            {(ord.shop_id || ord.shop_info) && (
+              <Button
+                size="sm"
+                variant="flat"
+                radius="lg"
+                startContent={<MessageCircle size={14} />}
+                onPress={handleChatShop}
+                className="bg-white text-primary font-bold shadow-sm ml-auto"
+              >
+                Chat với shop
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
       {/* ── Progress bar (normal flow only) ───────────────────────────────── */}
       {!isCancelled && !isReturning && (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          <Card radius="xl" shadow="none" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
-            <CardBody className="px-5 py-4">
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+            <div className="h-1 bg-gradient-to-r from-primary via-violet-400 to-indigo-500" />
+            <CardBody className="px-4 py-4">
               <div className="flex items-center gap-0">
                 {PROGRESS_STEPS.map((step, i) => {
                   const done    = currentRank >= i;
@@ -352,12 +403,12 @@ export default function OrderDetail() {
                   return (
                     <React.Fragment key={step.key}>
                       <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm ${
                           done
                             ? current
-                              ? "bg-primary text-white ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-zinc-900"
-                              : "bg-success text-white"
-                            : "bg-default-100 text-default-300"
+                              ? "bg-gradient-to-br from-primary to-violet-500 text-white ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 shadow-primary/30"
+                              : "bg-gradient-to-br from-success to-emerald-400 text-white"
+                            : "bg-default-100 dark:bg-zinc-800 text-default-300"
                         }`}>
                           {step.icon}
                         </div>
@@ -407,11 +458,17 @@ export default function OrderDetail() {
 
       {/* ── Products ──────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+          <div className="h-0.5 bg-gradient-to-r from-primary to-violet-500" />
           <CardBody className="p-5">
             <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <Package size={16} className="text-default-500" />
-              Sản phẩm ({(ord.items || []).length})
+              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Package size={14} className="text-primary" />
+              </div>
+              Sản phẩm
+              <span className="text-xs font-normal text-default-400 bg-default-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">
+                {(ord.items || []).length} sản phẩm
+              </span>
             </h3>
 
             <div className="space-y-5">
@@ -611,14 +668,24 @@ export default function OrderDetail() {
                                           )}
                                         </div>
                                       </div>
-                                      <Button
-                                        size="sm" variant="bordered" radius="lg"
-                                        startContent={<ExternalLink size={12} />}
-                                        className="text-xs flex-shrink-0"
-                                        onPress={() => nav(`/shop/${ord.shop_info.shop_slug}`)}
-                                      >
-                                        Xem shop
-                                      </Button>
+                                      <div className="flex flex-col gap-1.5 flex-shrink-0">
+                                        <Button
+                                          size="sm" color="primary" variant="bordered" radius="lg"
+                                          startContent={<MessageCircle size={11} />}
+                                          className="text-xs"
+                                          onPress={handleChatShop}
+                                        >
+                                          Chat
+                                        </Button>
+                                        <Button
+                                          size="sm" variant="flat" radius="lg"
+                                          startContent={<ExternalLink size={11} />}
+                                          className="text-xs"
+                                          onPress={() => nav(`/shops/${ord.shop_info.shop_slug}`)}
+                                        >
+                                          Xem shop
+                                        </Button>
+                                      </div>
                                     </div>
                                   )}
 
@@ -870,10 +937,13 @@ export default function OrderDetail() {
 
       {/* ── Order Info ────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+          <div className="h-0.5 bg-gradient-to-r from-sky-400 to-blue-500" />
           <CardBody className="p-5">
             <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-              <FileText size={16} className="text-default-500" />
+              <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+                <FileText size={14} className="text-sky-500" />
+              </div>
               Thông tin đơn hàng
             </h3>
             <div className="space-y-2.5 text-sm">
@@ -927,10 +997,13 @@ export default function OrderDetail() {
       {/* ── Shipping Address ──────────────────────────────────────────────── */}
       {ord.shipping_address && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+            <div className="h-0.5 bg-gradient-to-r from-emerald-400 to-teal-500" />
             <CardBody className="p-5">
               <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                <MapPin size={16} className="text-default-500" />
+                <div className="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                  <MapPin size={14} className="text-emerald-500" />
+                </div>
                 Địa chỉ giao hàng
               </h3>
               <div className="space-y-1.5 text-sm">
@@ -959,25 +1032,22 @@ export default function OrderDetail() {
       {/* ── Shop info ─────────────────────────────────────────────────────── */}
       {ord.shop_info && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.11 }}>
-          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
-            <CardBody className="p-5">
-              <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                <Store size={16} className="text-default-500" />
-                Thông tin shop bán
-              </h3>
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 overflow-hidden">
+            {/* Gradient header */}
+            <div className="px-5 py-4 bg-gradient-to-r from-violet-500/10 via-primary/5 to-indigo-500/10 dark:from-violet-900/30 dark:to-indigo-900/20 border-b border-default-100 dark:border-zinc-700">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl overflow-hidden bg-default-100 dark:bg-zinc-700 flex-shrink-0 border border-default-100">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden bg-white dark:bg-zinc-700 flex-shrink-0 border-2 border-white dark:border-zinc-600 shadow-md">
                   {ord.shop_info.shop_logo
                     ? <img src={ord.shop_info.shop_logo} alt={ord.shop_info.shop_name} className="w-full h-full object-cover" />
-                    : <div className="w-full h-full flex items-center justify-center"><Store size={18} className="text-default-300" /></div>
+                    : <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-violet-500/20"><Store size={20} className="text-primary" /></div>
                   }
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-default-900 dark:text-zinc-100 flex items-center gap-1.5">
+                  <p className="font-bold text-default-900 dark:text-zinc-100 flex items-center gap-1.5 text-base">
                     {ord.shop_info.shop_name}
-                    <BadgeCheck size={14} className="text-primary" />
+                    <BadgeCheck size={15} className="text-primary flex-shrink-0" />
                   </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-xs text-default-500">
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1 text-xs text-default-500">
                     {ord.shop_info.rating_avg > 0 && (
                       <span className="flex items-center gap-1">
                         <Star size={11} className="text-warning fill-warning" />
@@ -995,30 +1065,44 @@ export default function OrderDetail() {
                     )}
                   </div>
                   {ord.shop_info.description && (
-                    <p className="text-xs text-default-400 mt-1 line-clamp-2">{ord.shop_info.description}</p>
+                    <p className="text-xs text-default-400 mt-1 line-clamp-1">{ord.shop_info.description}</p>
                   )}
                 </div>
-                <Button
-                  size="sm" variant="bordered" radius="lg"
-                  startContent={<ExternalLink size={13} />}
-                  className="flex-shrink-0"
-                  onPress={() => nav(`/shop/${ord.shop_info.shop_slug}`)}
-                >
-                  Xem shop
-                </Button>
               </div>
-            </CardBody>
+            </div>
+            {/* Action row */}
+            <div className="flex gap-2 px-5 py-3">
+              <Button
+                color="primary" variant="solid" radius="lg" size="sm"
+                startContent={<MessageCircle size={13} />}
+                onPress={handleChatShop}
+                className="font-bold flex-1 sm:flex-none"
+              >
+                Chat với shop
+              </Button>
+              <Button
+                variant="bordered" radius="lg" size="sm"
+                startContent={<ExternalLink size={13} />}
+                onPress={() => nav(`/shops/${ord.shop_info.shop_slug}`)}
+                className="font-medium"
+              >
+                Xem shop
+              </Button>
+            </div>
           </Card>
         </motion.div>
       )}
 
       {/* ── Tracking ──────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+          <div className="h-0.5 bg-gradient-to-r from-indigo-400 to-blue-400" />
           <CardBody className="p-5">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-default-900 dark:text-zinc-100 flex items-center gap-2">
-                <Truck size={16} className="text-default-500" />
+                <div className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                  <Truck size={14} className="text-indigo-500" />
+                </div>
                 Lịch sử vận chuyển
               </h3>
               {(track?.steps?.length ?? 0) > 3 && (
@@ -1130,55 +1214,74 @@ export default function OrderDetail() {
       )}
 
       {/* ── Actions ───────────────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.16 }}
-        className="flex gap-2 flex-wrap"
-      >
-        {/* Cancel */}
-        {CANCELLABLE.has(ord.status) && (
-          <Button color="danger" variant="bordered" radius="lg" size="sm"
-            onPress={() => { setCancelReason(""); setCancelOpen(true); }}>
-            <XCircle size={14} /> Hủy đơn
-          </Button>
-        )}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}>
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-default-100 dark:border-zinc-700 shadow-sm overflow-hidden mb-4">
+          <div className="h-0.5 bg-gradient-to-r from-primary to-violet-500" />
+          <div className="px-5 py-4">
+            <p className="text-xs font-semibold text-default-400 uppercase tracking-wide mb-3">Thao tác</p>
+            <div className="flex gap-2 flex-wrap">
+              {/* Chat with shop — prominent */}
+              {(ord.shop_id || ord.shop_info) && (
+                <Button color="primary" variant="solid" radius="lg" size="sm"
+                  startContent={<MessageCircle size={14} />}
+                  onPress={handleChatShop}
+                  className="font-bold">
+                  Chat với shop
+                </Button>
+              )}
 
-        {/* Refund/Return/Exchange */}
-        {REFUND_ALLOWED.has(ord.status) && !refundInfo && !refundDeadlinePassed() && (
-          <Button variant="bordered" radius="lg" size="sm"
-            onPress={() => { setRefundType("refund"); setRefundReason(""); setRefundImages([]); setRefundOpen(true); }}>
-            <RotateCcw size={14} /> Hoàn/Đổi hàng
-          </Button>
-        )}
+              {/* Reorder */}
+              <Button color="primary" variant="flat" radius="lg" size="sm" isLoading={actionLoad}
+                startContent={<RefreshCw size={14} />}
+                onPress={handleReorder}>
+                Mua lại
+              </Button>
 
-        {/* Resubmit if rejected */}
-        {ord.status === "return_rejected" && (
-          <Button variant="bordered" color="warning" radius="lg" size="sm"
-            onPress={() => { setRefundType("refund"); setRefundReason(""); setRefundImages([]); setRefundOpen(true); }}>
-            <RotateCcw size={14} /> Gửi lại yêu cầu
-          </Button>
-        )}
+              {/* Invoice */}
+              <Button variant="bordered" radius="lg" size="sm" isLoading={actionLoad}
+                startContent={<Download size={14} />}
+                onPress={handleInvoice}>
+                Hóa đơn
+              </Button>
 
-        {/* Invoice */}
-        <Button variant="bordered" radius="lg" size="sm" isLoading={actionLoad}
-          onPress={handleInvoice}>
-          <Download size={14} /> Hóa đơn
-        </Button>
+              {/* Refund/Return/Exchange */}
+              {REFUND_ALLOWED.has(ord.status) && !refundInfo && !refundDeadlinePassed() && (
+                <Button variant="bordered" radius="lg" size="sm"
+                  startContent={<RotateCcw size={14} />}
+                  onPress={() => { setRefundType("refund"); setRefundReason(""); setRefundImages([]); setRefundOpen(true); }}>
+                  Hoàn/Đổi hàng
+                </Button>
+              )}
 
-        {/* Reorder */}
-        <Button color="primary" variant="flat" radius="lg" size="sm" isLoading={actionLoad}
-          onPress={handleReorder}>
-          <RefreshCw size={14} /> Mua lại
-        </Button>
+              {/* Resubmit if rejected */}
+              {ord.status === "return_rejected" && (
+                <Button variant="bordered" color="warning" radius="lg" size="sm"
+                  startContent={<RotateCcw size={14} />}
+                  onPress={() => { setRefundType("refund"); setRefundReason(""); setRefundImages([]); setRefundOpen(true); }}>
+                  Gửi lại yêu cầu
+                </Button>
+              )}
 
-        {/* Complaint */}
-        {(isDelivered || isCancelled || isReturning) && (
-          <Button variant="bordered" color="warning" radius="lg" size="sm"
-            onPress={() => { setTicketSubject(""); setTicketMessage(""); setTicketOpen(true); }}>
-            <MessageSquare size={14} /> Khiếu nại
-          </Button>
-        )}
+              {/* Complaint */}
+              {(isDelivered || isCancelled || isReturning) && (
+                <Button variant="bordered" color="warning" radius="lg" size="sm"
+                  startContent={<MessageSquare size={14} />}
+                  onPress={() => { setTicketSubject(""); setTicketMessage(""); setTicketOpen(true); }}>
+                  Khiếu nại
+                </Button>
+              )}
+
+              {/* Cancel */}
+              {CANCELLABLE.has(ord.status) && (
+                <Button color="danger" variant="light" radius="lg" size="sm"
+                  startContent={<XCircle size={14} />}
+                  onPress={() => { setCancelReason(""); setCancelOpen(true); }}>
+                  Hủy đơn
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       {/* ═══════════ MODALS ═══════════ */}
