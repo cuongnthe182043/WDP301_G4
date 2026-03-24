@@ -50,4 +50,15 @@ export const productService = {
     const res = await apiClient.post(`/products/${id}/size-match`, measurements);
     return res.data.data;
   },
+  async styleAdvice(id, { profession, recommended_size, fit, product_name, product_category, lang }) {
+    const res = await apiClient.post(`/products/${id}/style-advice`, {
+      profession,
+      recommended_size,
+      fit,
+      product_name,
+      product_category,
+      lang,
+    });
+    return res.data.data;
+  },
 };

@@ -1,5 +1,6 @@
 const productService = require('../services/productService');
 const aiSizeService = require('../services/aiSizeService');
+const styleAdvisorService = require('../services/styleAdvisorService');
 
 exports.getDetail = async (req, res, next) => {
   try {
@@ -100,6 +101,36 @@ exports.sizeMatch = async (req, res, next) => {
     const measurements = req.body || {};
     const result = await aiSizeService.matchSize(id, measurements);
     res.status(200).json({ status: "success", data: result });
+  } catch (err) { next(err); }
+};
+
+exports.styleAdvice = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { profession, recommended_size, fit, product_name, product_category, lang } = req.body || {};
+
+    // If size not provided, run size match first
+    let size = recommended_size;
+    let fitQuality = fit;
+    let productName = product_name;
+    const productCategory = product_category;
+
+    if (!size && req.body.measurements) {
+      const sizeResult = await aiSizeService.matchSize(id, req.body.measurements);
+      size = sizeResult.recommended_size;
+      fitQuality = sizeResult.fit;
+    }
+
+    const advice = await styleAdvisorService.getStyleAdvice({
+      profession,
+      fit: fitQuality || "good",
+      size: size || "M",
+      productName: productName || "This product",
+      productCategory,
+      lang: lang || "vi",
+    });
+
+    res.status(200).json({ status: "success", data: advice });
   } catch (err) { next(err); }
 };
 
