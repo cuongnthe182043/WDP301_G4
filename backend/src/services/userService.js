@@ -111,7 +111,7 @@ exports.registerShop = async (userId, payload) => {
   const { shop_name, slug, phone, email, description, address_id } = payload;
   console.log("Registering shop with payload:", shop_name, slug, phone, email, description, address_id);
 
-  if (!shop_name || !slug || !phone || !address_id) {
+  if (!shop_name || !slug) {
     const e = new Error("Missing required fields");
     e.status = 400;
     throw e;
@@ -122,6 +122,10 @@ exports.registerShop = async (userId, payload) => {
   if (!user) {
     const e = new Error("User not found");
     e.status = 404;
+    throw e;
+  } else if (!user.email && !email) {
+    const e = new Error("User does not have an email address");
+    e.status = 400;
     throw e;
   }
 
@@ -139,10 +143,14 @@ exports.registerShop = async (userId, payload) => {
     const e = new Error("Invalid address");
     e.status = 400;
     throw e;
+  } else if (!addr.phone && !user.phone && !phone) {
+    const e = new Error("No valid phone number available");
+    e.status = 400;
+    throw e;
   }
 
   // 4. Check slug
-  const slugExists = await Shop.findOne({ slug });
+  const slugExists = await Shop.findOne({ shop_slug: slug });
   if (slugExists) {
     const e = new Error("Shop slug already exists");
     e.status = 400;
@@ -157,8 +165,8 @@ exports.registerShop = async (userId, payload) => {
     shop_logo: user.avatar_url || "",
     description: description || "",
     address_id,
-    phone: phone || user.phone || "",
-    email: email || user.email || "",
+    phone: phone || user.phone || addr.phone,
+    email: email || user.email,
     status: "pending",
   });
 
