@@ -9,6 +9,9 @@ const MessageSchema = new mongoose.Schema({
   content:         { type: String, default: "" },
   images:          [{ type: String }],
   read_at:         { type: Date, default: null },
+  // Context card — attached when customer opens chat from a product or order page
+  context_type:    { type: String, enum: ["product", "order", null], default: null },
+  context_data:    { type: mongoose.Schema.Types.Mixed, default: null },
 }, { timestamps: true, versionKey: false, collection: "messages" });
 
 module.exports = mongoose.model("Message", MessageSchema);

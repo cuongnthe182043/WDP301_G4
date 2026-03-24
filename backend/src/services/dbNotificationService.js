@@ -286,6 +286,35 @@ const helpers = {
       subtype: "shop.announcement",
       link:    `/`,
     }),
+
+  // ── Product Moderation ─────────────────────────────────────────────────
+
+  productApproved: (userId, productName) =>
+    create(userId, {
+      title:   "Sản phẩm đã được duyệt",
+      message: `Sản phẩm "${productName}" đã được phê duyệt và hiển thị trên sàn.`,
+      type:    "system",
+      subtype: "product.approved",
+      link:    `/shop/products`,
+    }),
+
+  productRejected: (userId, productName, reason) =>
+    create(userId, {
+      title:   "Sản phẩm bị từ chối",
+      message: `Sản phẩm "${productName}" đã bị từ chối${reason ? `: ${reason}` : ". Vui lòng chỉnh sửa và gửi lại."}`,
+      type:    "system",
+      subtype: "product.rejected",
+      link:    `/shop/products`,
+    }),
+
+  productFlagged: (userId, productName) =>
+    create(userId, {
+      title:   "Sản phẩm cần chỉnh sửa",
+      message: `Sản phẩm "${productName}" đã bị gắn cờ do vi phạm chính sách nội dung. Vui lòng chỉnh sửa để được phê duyệt.`,
+      type:    "system",
+      subtype: "product.flagged",
+      link:    `/shop/products`,
+    }),
 };
 
 // Safe wrappers (non-fatal)
