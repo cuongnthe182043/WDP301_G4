@@ -248,6 +248,9 @@ export default function ProductDetail() {
   const [sizeResultFit, setSizeResultFit] = useState(null);
   const [sizeReason, setSizeReason] = useState(null);    // "xgboost_model" | "rule_based"
   const [sizeFeatures, setSizeFeatures] = useState([]);  // features used by XGBoost
+  const [profession, setProfession] = useState("");
+  const [styleAdvice, setStyleAdvice] = useState(null);  // { fit_message, style_tip, source }
+  const [styleAdviceLoading, setStyleAdviceLoading] = useState(false);
   const [sizeLoading, setSizeLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
@@ -403,9 +406,31 @@ export default function ProductDetail() {
     } finally { setProfileSaving(false); }
   };
 
+  const fetchStyleAdvice = async (label, fit) => {
+    if (!label) return;
+    setStyleAdviceLoading(true);
+    try {
+      const lang = localStorage.getItem("i18nextLng")?.startsWith("en") ? "en" : "vi";
+      const advice = await productService.styleAdvice(p._id, {
+        profession: profession || undefined,
+        recommended_size: label,
+        fit,
+        product_name: p.name,
+        product_category: detail?.category?.name,
+        lang,
+      });
+      setStyleAdvice(advice);
+    } catch {
+      setStyleAdvice(null);
+    } finally {
+      setStyleAdviceLoading(false);
+    }
+  };
+
   const runSuggest = async () => {
     if (!canSuggest) return;
     setSizeLoading(true);
+    setStyleAdvice(null);
     try {
       const result = await productService.sizeMatch(p._id, {
         height:   Number(height)   || undefined,
@@ -420,9 +445,10 @@ export default function ProductDetail() {
         return;
       }
       const label = result?.recommended_size || null;
+      const fit = result?.fit || null;
       setSizeSuggest(label);
       setSizeScores(result?.all_sizes || []);
-      setSizeResultFit(result?.fit || null);
+      setSizeResultFit(fit);
       setSizeReason(result?.reason || null);
       setSizeFeatures(result?.features_used || []);
       if (label && (p.variant_dimensions || []).map(norm).includes("size")) {
@@ -436,6 +462,8 @@ export default function ProductDetail() {
           hip:    Number(hip)    || undefined, shoulder: Number(shoulder) || undefined,
         }).catch(() => {});
       }
+      // Fetch personalized style advice
+      fetchStyleAdvice(label, fit);
     } catch {
       // Fallback to local computation when API unavailable
       let label = pickSizeByHeightWeight(sizeChart?.rows || [], Number(height), Number(weight));
@@ -1001,18 +1029,23 @@ export default function ProductDetail() {
       <section id="size-section" className="mb-8">
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-zinc-700 rounded-2xl p-5">
           <div className="flex items-center justify-between gap-4">
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="font-bold text-default-800 flex items-center gap-2">
                 <Sparkles size={16} className="text-primary" /> {t("product.ai_size_heading")}
               </p>
               <p className="text-sm text-default-500 mt-0.5">
                 {sizeSuggest
-                  ? <>{t("product.best_size_label")}: <b className="text-primary">{sizeSuggest}</b> {sizeResultFit && <span className="text-xs text-default-400">({fitLabel(sizeResultFit, t)})</span>}</>
+                  ? <>{t("product.best_size_label")}: <b className="text-primary">{sizeSuggest}</b> {sizeResultFit && <span className="text-xs text-default-400 ml-1">({fitLabel(sizeResultFit, t)})</span>}</>
                   : t("product.enter_measurements_hint")}
               </p>
+              {styleAdvice?.fit_message && (
+                <p className="text-xs text-default-500 mt-1.5 leading-relaxed italic line-clamp-2">
+                  {styleAdvice.fit_message}
+                </p>
+              )}
             </div>
             <Button size="sm" color="primary" variant="flat" radius="lg" onPress={() => setSizeOpen(true)}
-              startContent={<Ruler size={14} />}>
+              startContent={<Ruler size={14} />} className="flex-shrink-0">
               {sizeSuggest ? t("product.update_measurements") : t("product.enter_measurements_cta")}
             </Button>
           </div>
@@ -1259,7 +1292,7 @@ export default function ProductDetail() {
                   </div>
                   <div>
                     <p className="font-black text-default-900 leading-tight">{t("product.modal_ai_title")}</p>
-                    <p className="text-xs text-default-400 font-normal">{t("product.modal_ai_subtitle")}</p>
+                    <p className="text-xs text-default-400 font-normal">{t("product.modal_ai_subtitle")} {profession && <span className="text-primary font-medium">· {t(`product.profession_${profession}`)}</span>}</p>
                   </div>
                 </div>
               </ModalHeader>
@@ -1297,6 +1330,29 @@ export default function ProductDetail() {
                     </div>
                     <p className="text-xs text-default-400">{t("product.measure_required_hint")}</p>
 
+                    {/* Profession selector */}
+                    <div className="mt-1">
+                      <p className="text-xs font-semibold text-default-600 mb-1.5 flex items-center gap-1">
+                        <Sparkles size={12} className="text-primary" />
+                        {t("product.profession_label")}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {["office","student","creative","athletic","fashion","business","casual"].map((key) => (
+                          <button
+                            key={key}
+                            onClick={() => setProfession((p) => p === key ? "" : key)}
+                            className={`px-2.5 py-1 rounded-full text-xs font-semibold border transition-all duration-150 ${
+                              profession === key
+                                ? "border-primary bg-primary text-white shadow-sm"
+                                : "border-default-200 text-default-500 hover:border-primary hover:text-primary"
+                            }`}
+                          >
+                            {t(`product.profession_${key}`)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
                     {/* Result — shown after scoring */}
                     {sizeSuggest && sizeScores.length > 0 && (
                       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
@@ -1304,17 +1360,17 @@ export default function ProductDetail() {
                         <div className="flex items-center gap-2 mb-3 flex-wrap">
                           <CheckCircle2 size={16} className="text-success" />
                           <p className="font-bold text-sm text-default-800">
-                            {t("product.recommend_for_you")}: <span className="text-primary">{sizeSuggest}</span>
+                            {t("product.recommend_for_you")}: <span className="text-primary text-base">{sizeSuggest}</span>
                           </p>
                           {sizeResultFit && (
-                            <Chip size="sm" color={sizeResultFit === "perfect" ? "success" : sizeResultFit === "good" ? "primary" : "warning"} variant="flat" className="text-xs">
+                            <Chip size="sm" color={sizeResultFit === "perfect" ? "success" : sizeResultFit === "good" ? "primary" : "warning"} variant="flat" className="text-xs font-semibold">
                               {fitLabel(sizeResultFit, t)}
                             </Chip>
                           )}
                           {sizeReason === "xgboost_model" ? (
-                            <Chip size="sm" color="secondary" variant="flat" className="text-xs">🤖 XGBoost AI</Chip>
+                            <Chip size="sm" color="secondary" variant="flat" className="text-xs">🤖 AI Model</Chip>
                           ) : sizeReason === "rule_based" ? (
-                            <Chip size="sm" color="default" variant="flat" className="text-xs">📐 Rule-based</Chip>
+                            <Chip size="sm" color="default" variant="flat" className="text-xs">📐 Smart Match</Chip>
                           ) : null}
                         </div>
                         {sizeFeatures.length > 0 && (
@@ -1328,7 +1384,7 @@ export default function ProductDetail() {
                             const isBest = s.label === sizeSuggest;
                             const color = score >= 80 ? "success" : score >= 60 ? "warning" : "danger";
                             return (
-                              <div key={s.label} className={`flex items-center gap-3 px-3 py-2 rounded-xl ${isBest ? "bg-primary/5 border border-primary/20" : ""}`}>
+                              <div key={s.label} className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${isBest ? "bg-primary/5 border border-primary/20 shadow-sm" : ""}`}>
                                 <span className={`w-10 text-sm font-black flex-shrink-0 ${isBest ? "text-primary" : "text-default-600"}`}>
                                   {s.label}
                                 </span>
@@ -1341,6 +1397,45 @@ export default function ProductDetail() {
                             );
                           })}
                         </div>
+
+                        {/* AI Style Advice Card */}
+                        {(styleAdviceLoading || styleAdvice) && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 p-4"
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #1D4ED8, #7C3AED)" }}>
+                                <Sparkles size={12} className="text-white" />
+                              </div>
+                              <p className="text-xs font-black text-primary uppercase tracking-wide">{t("product.style_advice_title")}</p>
+                            </div>
+                            {styleAdviceLoading ? (
+                              <div className="space-y-2">
+                                <div className="h-3 bg-default-200 rounded-full animate-pulse w-full" />
+                                <div className="h-3 bg-default-200 rounded-full animate-pulse w-4/5" />
+                              </div>
+                            ) : (
+                              <>
+                                <p className="text-sm text-default-700 leading-relaxed font-medium">
+                                  {styleAdvice.fit_message}
+                                </p>
+                                {styleAdvice.style_tip && (
+                                  <div className="mt-2.5 pt-2.5 border-t border-primary/10">
+                                    <p className="text-xs font-semibold text-primary mb-1">{t("product.style_tip_label")}</p>
+                                    <p className="text-xs text-default-600 leading-relaxed">{styleAdvice.style_tip}</p>
+                                  </div>
+                                )}
+                                <div className="mt-2.5 flex items-center gap-1">
+                                  <span className="text-[10px] text-default-400">
+                                    {styleAdvice.source === "claude" ? t("product.powered_by_claude") : t("product.powered_by_ai")}
+                                  </span>
+                                </div>
+                              </>
+                            )}
+                          </motion.div>
+                        )}
                       </motion.div>
                     )}
 
