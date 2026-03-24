@@ -7,7 +7,7 @@ const Address = require("../models/Address");
 const Product = require("../models/Product");
 const ProductVariant = require("../models/ProductVariant");
 const Shop = require("../models/Shop");
-const ShopCredit  = require("../models/ShopCredit");
+const ShopCredit = require("../models/ShopCredit");
 const { v4: uuidv4 } = require("uuid");
 const shippingSvc = require("./shippingService");
 
@@ -216,20 +216,20 @@ exports.preview = async ({
     const shopVoucherDiscount = Math.round(discount * ratio);
 
     const availableCredits = creditBalanceMap.get(String(shopId)) || 0;
-    const requestedCredits  = Number((credits_to_use || {})[shopId] || 0);
-    const creditsUsed       = Math.min(requestedCredits, availableCredits, shopSubtotal - shopVoucherDiscount);
+    const requestedCredits = Number((credits_to_use || {})[shopId] || 0);
+    const creditsUsed = Math.min(requestedCredits, availableCredits, shopSubtotal - shopVoucherDiscount);
 
     totalCreditsDiscount += creditsUsed;
 
     const shopInfo = shopMap.get(shopId);
     shopGroups.push({
-      shop_id:           shopId,
-      shop_name:         shopInfo?.shop_name || "Cửa hàng",
-      shop_logo:         shopInfo?.shop_logo || null,
-      items:             shopItems,
-      subtotal:          shopSubtotal,
+      shop_id: shopId,
+      shop_name: shopInfo?.shop_name || "Cửa hàng",
+      shop_logo: shopInfo?.shop_logo || null,
+      items: shopItems,
+      subtotal: shopSubtotal,
       available_credits: availableCredits,
-      credits_used:      creditsUsed,
+      credits_used: creditsUsed,
     });
   }
 
@@ -284,16 +284,16 @@ exports.confirm = async ({
     );
   }
   const shipping_address = {
-    name:          address.name,
-    phone:         address.phone,
-    city:          address.city,
-    district:      address.district || "",
-    ward:          address.ward,
-    street:        address.street,
-    source:        address.source,
+    name: address.name,
+    phone: address.phone,
+    city: address.city,
+    district: address.district || "",
+    ward: address.ward,
+    street: address.street,
+    source: address.source,
     province_code: address.province_code || null,
     district_code: address.district_code || null,
-    ward_code:     address.ward_code || null,
+    ward_code: address.ward_code || null,
   };
 
   // ── Resolve & validate items ──────────────────────────────────────────────
@@ -313,8 +313,8 @@ exports.confirm = async ({
     const shopSubtotal = shopItems.reduce((s, i) => s + i.total, 0);
     // Proportional voucher discount and shipping per shop
     const ratio = subtotal > 0 ? shopSubtotal / subtotal : 1;
-    const shopDiscount  = Math.round(discount * ratio);
-    const shopShipping  = Math.round(shipping_fee * ratio);
+    const shopDiscount = Math.round(discount * ratio);
+    const shopShipping = Math.round(shipping_fee * ratio);
 
     // Shop credits deduction (per-shop, validate balance)
     const requestedCredits = Number((credits_to_use || {})[shopId] || 0);
@@ -335,11 +335,11 @@ exports.confirm = async ({
       items: shopItems,
       address_id,
       shipping_address,
-      voucher_id:        voucher?._id || null,
-      discount:          shopDiscount,
-      credits_used:      shopCreditsUsed,
+      voucher_id: voucher?._id || null,
+      discount: shopDiscount,
+      credits_used: shopCreditsUsed,
       shipping_provider: ship_provider || "GHN",
-      shipping_fee:      shopShipping,
+      shipping_fee: shopShipping,
       total_price,
       payment_method: method,
       payment_status: "pending",
@@ -355,11 +355,11 @@ exports.confirm = async ({
           $inc: { balance: -shopCreditsUsed, total_spent: shopCreditsUsed },
           $push: {
             history: {
-              type:          "spend",
-              amount:        -shopCreditsUsed,
+              type: "spend",
+              amount: -shopCreditsUsed,
               balance_after: 0, // approximate; will be slightly off — acceptable
-              reason:        `Đơn hàng #${orderCode}`,
-              order_id:      order._id,
+              reason: `Đơn hàng #${orderCode}`,
+              order_id: order._id,
             },
           },
         }
@@ -369,6 +369,7 @@ exports.confirm = async ({
     createdOrders.push({
       order_id: order._id,
       order_code: order.order_code,
+      credits_used: shopCreditsUsed,
       shop_id: shopId,
       total_price,
     });
@@ -376,7 +377,7 @@ exports.confirm = async ({
 
   // ── Increment voucher usage counter ──────────────────────────────────────
   if (voucher) {
-    Voucher.updateOne({ _id: voucher._id }, { $inc: { used_count: 1 } }).catch(() => {});
+    Voucher.updateOne({ _id: voucher._id }, { $inc: { used_count: 1 } }).catch(() => { });
   }
 
   // ── Clear purchased items from cart ──────────────────────────────────────
@@ -394,7 +395,7 @@ exports.confirm = async ({
 
   // Fire order-placed notifications (non-fatal, one per shop order)
   for (const ord of createdOrders) {
-    notif.orderPlaced(userId, ord.order_code).catch(() => {});
+    notif.orderPlaced(userId, ord.order_code).catch(() => { });
   }
 
   // Return the first order for single-shop compatibility, plus full array

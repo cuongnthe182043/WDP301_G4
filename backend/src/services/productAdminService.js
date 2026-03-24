@@ -9,7 +9,7 @@ const { importProductsFromExcel } = require("./importService");
 const { moderateProduct } = require("./productModerationService");
 const notif = require("./dbNotificationService");
 
-const slugify = (s) => String(s||"").toLowerCase().trim().replace(/[^\w\-]+/g,"-").replace(/\-+/g,"-");
+const slugify = (s) => String(s || "").toLowerCase().trim().replace(/[^\w\-]+/g, "-").replace(/\-+/g, "-");
 exports.getProduct = async (id, shopId) => {
   const p = await Product.findOne({ _id: id, shop_id: shopId }).lean();
   if (!p) return null;
@@ -17,7 +17,7 @@ exports.getProduct = async (id, shopId) => {
   return { ...p, variants: vars };
 };
 
-exports.listProducts = async ({ shopId, q, page=1, limit=20, category_id, status }) => {
+exports.listProducts = async ({ shopId, q, page = 1, limit = 20, category_id, status }) => {
   const filter = { shop_id: shopId };
   if (q) filter.name = { $regex: q, $options: "i" };
   if (category_id) filter.category_id = category_id;
@@ -26,10 +26,10 @@ exports.listProducts = async ({ shopId, q, page=1, limit=20, category_id, status
   const agg = [
     { $match: filter },
     { $sort: { createdAt: -1 } },
-    { $skip: (page-1)*limit }, { $limit: Number(limit) },
+    { $skip: (page - 1) * limit }, { $limit: Number(limit) },
     { $lookup: { from: "categories", localField: "category_id", foreignField: "_id", as: "cat" } },
-    { $addFields: { category_name: { $ifNull: [ { $arrayElemAt: ["$cat.name", 0] }, null ] } } },
-    { $project: { cat:0 } }
+    { $addFields: { category_name: { $ifNull: [{ $arrayElemAt: ["$cat.name", 0] }, null] } } },
+    { $project: { cat: 0 } }
   ];
   const [items, total] = await Promise.all([
     Product.aggregate(agg),
@@ -48,7 +48,7 @@ exports.createProduct = async (payload, shopId) => {
   if (existing) doc.slug = `${doc.slug}-${Date.now()}`;
   if (doc.category_id) {
     const cat = await Category.findById(doc.category_id).lean();
-    doc.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
+    doc.category_path = cat ? [...(cat.path || []), cat.slug] : [];
   }
   // ── Auto-moderation on creation ──
   const modResult = moderateProduct(doc);
@@ -89,8 +89,19 @@ exports.createProduct = async (payload, shopId) => {
 };
 
 exports.deleteProduct = async (id, shopId) => {
-  await ProductVariant.deleteMany({ product_id: id, shop_id: shopId });
-  return Product.findOneAndDelete({ _id: id, shop_id: shopId });
+  // 1. Deactivate all variants so they stop appearing in "In Stock" filters
+  await ProductVariant.updateMany(
+    { product_id: id, shop_id: shopId },
+    { $set: { is_active: false, stock: 0 } }
+  );
+
+  // 2. Mark the product as 'inactive'
+  // This allows Carts/Orders to still find the document by ID
+  return Product.findOneAndUpdate(
+    { _id: id, shop_id: shopId },
+    { $set: { status: "inactive" } },
+    { new: true }
+  );
 };
 
 exports.updateProduct = async (id, payload, shopId) => {
@@ -117,7 +128,7 @@ exports.updateProduct = async (id, payload, shopId) => {
   }
   if (patch.category_id) {
     const cat = await Category.findById(patch.category_id).lean();
-    patch.category_path = cat ? [ ...(cat.path||[]), cat.slug ] : [];
+    patch.category_path = cat ? [...(cat.path || []), cat.slug] : [];
   }
 
   // ── Re-run moderation when key fields change ──
@@ -198,8 +209,8 @@ exports.createVariantsBulk = async (product_id, rows = [], shopId) => {
   const docs = rows.map(r => ({
     product_id, shop_id: shopId,
     sku: r.sku,
-    price: Number(r.price||0),
-    stock: Number(r.stock||0),
+    price: Number(r.price || 0),
+    stock: Number(r.stock || 0),
     variant_attributes: r.variant_attributes || {}, // ví dụ: { color: "Đỏ", size: "M" }
     is_active: true,
   }));
@@ -217,7 +228,7 @@ exports.recomputeStockTotal = async (product_id, shopId) => {
 };
 
 /* ===== Catalog basic ===== */
-exports.listCategories = () => Category.find({ is_active: true }).sort({ level:1, name:1 }).lean();
+exports.listCategories = () => Category.find({ is_active: true }).sort({ level: 1, name: 1 }).lean();
 exports.listAttributes = () => Attribute.find({ is_active: true }).lean();
 exports.listBrands = () => Brand.find({ is_active: true }).lean();
 exports.createCategory = (payload) => Category.create({ ...payload, slug: payload.slug || undefined, is_active: true });
@@ -237,11 +248,11 @@ exports.deleteBrand = (id) => Brand.findByIdAndDelete(id);
 
 /* ===== Media & Import giữ nguyên ===== */
 exports.uploadImages = (files, shopId) => uploadImages(files, shopId);
-exports.uploadVideo  = (file, shopId)  => uploadVideo(file, shopId);
+exports.uploadVideo = (file, shopId) => uploadVideo(file, shopId);
 exports.importExcel = (fileBuffer, shopId) => importProductsFromExcel(fileBuffer, shopId);
 
 /* ===== Low stock giữ nguyên ===== */
-exports.lowStock = async (shopId, threshold=5) => {
-  const rows = await ProductVariant.find({ is_active: true, shop_id: shopId, stock: { $lte: Number(threshold) } }, { product_id:1, stock:1, variant_attributes:1, sku:1 }).limit(200).lean();
+exports.lowStock = async (shopId, threshold = 5) => {
+  const rows = await ProductVariant.find({ is_active: true, shop_id: shopId, stock: { $lte: Number(threshold) } }, { product_id: 1, stock: 1, variant_attributes: 1, sku: 1 }).limit(200).lean();
   return rows;
 };
