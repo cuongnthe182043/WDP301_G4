@@ -15,7 +15,7 @@ const notification     = require("../services/notificationService");
 const notif            = require("../services/dbNotificationService");
 
 const SAFE_FIELDS =
-  "_id order_code items address_id voucher_id payment_method payment_status shipping_provider shipping_fee total_price note status inventory_adjusted createdAt updatedAt";
+  "_id order_code items shop_id address_id voucher_id payment_method payment_status shipping_provider shipping_fee total_price note status cancel_reason inventory_adjusted createdAt updatedAt";
 
 const STATUS_MAP = {
   pending: "Chờ xác nhận",
@@ -36,12 +36,19 @@ exports.list = async (req, res, next) => {
     const { status, page = 1, limit = 10, q } = req.query;
 
     const cond = { user_id: userId };
-    if (status) cond.status = status;
+    if (status === "__refund_view__") {
+      // "Hoàn tiền" tab: orders with payment_status=refunded (auto-refund on cancel)
+      // OR status=refund_pending (managed refund in progress)
+      cond.$or = [{ payment_status: "refunded" }, { status: "refund_pending" }];
+    } else if (status) {
+      const statuses = status.split(",").map((s) => s.trim()).filter(Boolean);
+      cond.status = statuses.length === 1 ? statuses[0] : { $in: statuses };
+    }
     if (q) cond.order_code = new RegExp(q, "i");
 
     const skip = (Number(page) - 1) * Number(limit);
 
-    const [items, total] = await Promise.all([
+    const [orders, total] = await Promise.all([
       Order.find(cond)
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -50,6 +57,17 @@ exports.list = async (req, res, next) => {
         .lean(),
       Order.countDocuments(cond),
     ]);
+
+    // Enrich with shop info
+    const shopIds = [...new Set(orders.map((o) => o.shop_id).filter(Boolean))];
+    const shops   = await Shop.find({ _id: { $in: shopIds } })
+      .select("_id shop_name shop_logo")
+      .lean();
+    const shopMap = new Map(shops.map((s) => [String(s._id), s]));
+    const items = orders.map((o) => ({
+      ...o,
+      shop_info: shopMap.get(String(o.shop_id)) || null,
+    }));
 
     res.json({
       status: "success",

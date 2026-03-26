@@ -75,6 +75,7 @@ const OrderSchema = new mongoose.Schema(
         "return_requested",
         "return_approved",
         "return_rejected",
+        "return_completed",
         "refund_pending",
         "refund_completed",
         // Legacy statuses (backward compat)

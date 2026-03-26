@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate, Link as RouterLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button, Chip, Divider } from "@heroui/react";
+import { Button, Chip, Divider, Spinner } from "@heroui/react";
 import {
   CheckCircle2,
   XCircle,
@@ -83,7 +83,7 @@ export default function PaymentReturn() {
     "99": t("payment.vnpay_99"),
   };
 
-  const status    = params.get("status")     || "fail";
+  const rawStatus = params.get("status")     || "";
   const orderCode = params.get("order_code") || params.get("orderId") || "";
   const txnNo     = params.get("txn_no")     || "";
   const bank      = params.get("bank")       || "";
@@ -92,20 +92,63 @@ export default function PaymentReturn() {
   const code      = params.get("code")       || "";
   const reason    = params.get("reason")     || "";
 
+  // polling state — used when VNPay didn't pass status params (sandbox restriction)
+  const [polledStatus, setPolledStatus] = useState(null); // "success" | "fail" | null
+  const [polling, setPolling]           = useState(!rawStatus && !!orderCode);
+  const pollRef = useRef(null);
+
+  useEffect(() => {
+    if (!orderCode || rawStatus) return; // no need to poll if we already have a status
+    let attempts = 0;
+    pollRef.current = setInterval(async () => {
+      attempts++;
+      try {
+        const API = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/+$/, "");
+        const res  = await fetch(`${API}/payment/vnpay/check?order_code=${encodeURIComponent(orderCode)}`);
+        const json = await res.json();
+        const ps   = json?.data?.payment_status;
+        if (ps === "paid") {
+          clearInterval(pollRef.current);
+          setPolledStatus("success");
+          setPolling(false);
+        } else if (ps === "failed" || attempts >= 12) {
+          clearInterval(pollRef.current);
+          setPolledStatus(ps === "failed" ? "fail" : "fail");
+          setPolling(false);
+        }
+      } catch { /* ignore network errors during poll */ }
+    }, 5000); // poll every 5s, max 12 times (1 min)
+    return () => clearInterval(pollRef.current);
+  }, [orderCode, rawStatus]);
+
+  const status     = polledStatus || rawStatus || "fail";
   const isSuccess  = status === "success";
   const payDateStr = parseVNDate(payDate);
   const errorMsg   = code ? (VNPAY_RESPONSE_CODES[code] || `${t("common.error")}: ${code}`) : "";
 
   const [count, setCount] = useState(isSuccess ? 8 : 15);
   useEffect(() => {
+    if (polling) return; // don't countdown while polling
     const timer = setInterval(() => setCount((c) => Math.max(0, c - 1)), 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [polling]);
   useEffect(() => {
     if (count === 0) nav(isSuccess ? "/orders" : "/");
   }, [count, nav, isSuccess]);
 
   const hasDetails = !!(orderCode || txnNo || amount || bank || payDateStr);
+
+  if (polling) {
+    return (
+      <div className="min-h-dvh grid place-items-center p-4 bg-gradient-to-br from-blue-50 to-white">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <Spinner size="lg" color="primary" />
+          <p className="text-default-600 font-medium">Đang kiểm tra kết quả thanh toán VNPay…</p>
+          {orderCode && <p className="text-xs text-default-400">Mã đơn: {orderCode}</p>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
