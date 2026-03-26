@@ -1,4 +1,3 @@
-// components/home/ProductCard.jsx — Premium product card (HeroUI + framer-motion)
 import React, { memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,8 +14,6 @@ export const cardVariants = {
     transition: { duration: 0.35, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] },
   }),
 };
-
-/* ─── Helpers ─────────────────────────────────────────────────────────────── */
 
 /** 1200 → "1.2k" · 999 → "999" */
 const fmtSold = (n) => {
@@ -79,22 +76,7 @@ function StockBadge({ stock }) {
   );
 }
 
-/* ─── ProductCard ─────────────────────────────────────────────────────────── */
-/**
- * Accepts `item.product` (carousel wrapper shape) OR a flat product object.
- *
- * Backend field contract (from homeService):
- *   name, slug, images[], base_price, currency
- *   rating_avg, rating_count, sold_count, stock_total    ← all now selected
- *
- * Flash-sale extra fields (on the wrapper `item`, NOT on `item.product`):
- *   flash_price, original_price, discount_percent, remaining
- *
- * Props:
- *   item    — product/wrapper object
- *   type    — "flash" | undefined
- *   index   — stagger delay position
- */
+
 const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -112,10 +94,6 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
       ? Number(item?.flash_price ?? basePrice) || 0
       : basePrice;
 
-  // Discount %:
-  //   1. item.discount_percent  — flash-sale item level  (BUG FIX ✓)
-  //   2. p.discount_percent     — product-level discount
-  //   3. calculate from flash prices
   const discountPct =
     Number(item?.discount_percent ?? p.discount_percent ?? 0) ||
     (type === "flash" && basePrice > 0
@@ -125,18 +103,14 @@ const ProductCard = memo(function ProductCard({ item, type, index = 0 }) {
   const showStrikethrough =
     discountPct > 0 && basePrice > 0 && basePrice !== salePrice;
 
-  // ── Shop info ─────────────────────────────────────────────────────────────
   const shop = p.shop || item?.shop || null;
 
-  // ── Social proof ─────────────────────────────────────────────────────────
-  // rating_count is the review count from the Product model  (BUG FIX ✓)
+
   const rating      = Number(p.rating_avg ?? 0) || 0;
   const reviewCount = Number(p.rating_count ?? p.review_count ?? 0) || 0;
   const sold        = Number(p.sold_count ?? 0) || 0;
 
-  // ── Stock ─────────────────────────────────────────────────────────────────
-  // stock_total is the field on the Product model             (BUG FIX ✓)
-  // For flash items, prefer item.remaining (flash-specific stock)
+
   const stockRaw =
     type === "flash" && item?.remaining != null
       ? Number(item.remaining)

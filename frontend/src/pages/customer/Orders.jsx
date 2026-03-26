@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { orderService } from "../../services/orderService";
+import { checkoutService } from "../../services/checkoutService";
 import chatService from "../../services/chatService";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -11,7 +12,7 @@ import {
 import {
   Printer, RefreshCw, Receipt, Search, XCircle, PackageCheck,
   RotateCcw, Wallet, AlertCircle, MessageCircle, Eye,
-  ShoppingBag, Package, Clock, CheckCircle2, Truck,
+  ShoppingBag, Package, Clock, CheckCircle2, Truck, CreditCard,
 } from "lucide-react";
 import { formatCurrency } from "../../utils/formatCurrency";
 import EmptyState from "../../components/ui/EmptyState.jsx";
@@ -111,7 +112,7 @@ const STATUS_TABS = [
   { key: "delivered",                                                           label: "Đã giao",       icon: <CheckCircle2 size={14} /> },
   { key: "return_requested,return_approved,return_rejected,return_completed",  label: "Hoàn/Đổi",      icon: <RotateCcw size={14} /> },
   { key: "cancelled_by_customer,cancelled_by_shop,canceled_by_customer,canceled_by_shop", label: "Đã hủy", icon: <XCircle size={14} /> },
-  { key: "refund_completed",                                                    label: "Hoàn tiền",     icon: <Wallet size={14} /> },
+  { key: "__refund_view__",                                                      label: "Hoàn tiền",     icon: <Wallet size={14} /> },
 ];
 
 const CUSTOMER_CANCELLABLE = new Set([
@@ -139,6 +140,9 @@ export default function Orders() {
 
   // Reorder
   const [reorderLoading, setReorderLoading] = useState(null);
+
+  // Repay
+  const [repayLoading, setRepayLoading] = useState(null);
 
   // Chat
   const [chatLoading, setChatLoading] = useState(null); // orderId
@@ -172,6 +176,20 @@ export default function Orders() {
     } finally {
       setCancelling(false);
     }
+  };
+
+  const handleRepay = async (o) => {
+    setRepayLoading(o._id);
+    try {
+      if ((o.payment_method || "").toUpperCase() === "VNPAY") {
+        const { payUrl } = await checkoutService.createVNPayUrl(o._id);
+        window.location.href = payUrl;
+      } else {
+        // PayPal / other — navigate to checkout with the existing order
+        nav(`/checkout?repay=${o._id}`);
+      }
+    } catch { toast.error("Không thể tạo liên kết thanh toán"); }
+    finally { setRepayLoading(null); }
   };
 
   const handleReorder = async (orderId) => {
@@ -217,6 +235,11 @@ export default function Orders() {
 
   const isPrepaid    = (o) => PREPAID_METHODS.has((o.payment_method || "").toUpperCase());
   const isCancellable= (o) => CUSTOMER_CANCELLABLE.has(o.status);
+  const needsRepay   = (o) =>
+    isPrepaid(o) &&
+    o.payment_status !== "paid" &&
+    !["cancelled_by_customer","cancelled_by_shop","canceled_by_customer","canceled_by_shop",
+      "delivered","refund_completed","return_completed"].includes(o.status);
 
   return (
     <PageContainer wide={false}>
@@ -456,16 +479,28 @@ export default function Orders() {
                           </Button>
                         )}
 
-                        {/* Reorder */}
-                        <Button
-                          size="sm" variant="bordered" radius="lg"
-                          startContent={<RefreshCw size={13} />}
-                          isLoading={reorderLoading === o._id}
-                          onPress={() => handleReorder(o._id)}
-                          className="font-medium"
-                        >
-                          Mua lại
-                        </Button>
+                        {/* Repay or Reorder */}
+                        {needsRepay(o) ? (
+                          <Button
+                            size="sm" color="warning" variant="solid" radius="lg"
+                            startContent={<CreditCard size={13} />}
+                            isLoading={repayLoading === o._id}
+                            onPress={() => handleRepay(o)}
+                            className="font-semibold text-white"
+                          >
+                            Thanh toán lại
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm" variant="bordered" radius="lg"
+                            startContent={<RefreshCw size={13} />}
+                            isLoading={reorderLoading === o._id}
+                            onPress={() => handleReorder(o._id)}
+                            className="font-medium"
+                          >
+                            Mua lại
+                          </Button>
+                        )}
 
                         {/* Invoice */}
                         <Button
