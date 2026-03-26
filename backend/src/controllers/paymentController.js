@@ -1,5 +1,6 @@
 const paypalSvc = require("../services/paypalService");
 const vnpaySvc  = require("../services/vnpayService");
+const Order     = require("../models/Order");
 
 const ok  = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb = "Bad request") =>
@@ -56,10 +57,12 @@ exports.vnpayCreate = async (req, res) => {
     if (!orderId) {
       return res.status(400).json({ status: "fail", message: "orderId is required" });
     }
-    const ip =
+    const rawIp =
       (req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
       req.ip ||
       "127.0.0.1";
+    // VNPay requires IPv4 — strip IPv6-mapped prefix (::ffff:x.x.x.x → x.x.x.x)
+    const ip = rawIp.replace(/^::ffff:/, "") || "127.0.0.1";
     const { payUrl } = await vnpaySvc.createVNPayUrl(orderId, ip);
     ok(res, { payUrl });
   } catch (e) {
@@ -161,5 +164,20 @@ exports.vnpayReturn = async (req, res) => {
   } catch (e) {
     console.error("[VNPAY Return] Error:", e.message, e.stack);
     return res.redirect(`${frontendUrl}/payment/return?status=fail&reason=server_error`);
+  }
+};
+
+// GET /api/payment/vnpay/check?order_code=XXX
+// Frontend polls this to check if VNPAY settled the order
+// (fallback when IPN/return URL didn't fire due to sandbox restrictions)
+exports.vnpayCheck = async (req, res) => {
+  try {
+    const { order_code } = req.query;
+    if (!order_code) return res.status(400).json({ status: "fail", message: "order_code is required" });
+    const order = await Order.findOne({ order_code }).select("payment_status status order_code total_price").lean();
+    if (!order) return res.status(404).json({ status: "fail", message: "Order not found" });
+    ok(res, { payment_status: order.payment_status, status: order.status, order_code: order.order_code, total_price: order.total_price });
+  } catch (e) {
+    bad(res, e);
   }
 };

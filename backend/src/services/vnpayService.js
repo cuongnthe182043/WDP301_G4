@@ -123,6 +123,8 @@ async function createVNPayUrl(orderId, ipAddr) {
   const createDate = formatVNDate();
   const expireDate = formatVNDate(new Date(Date.now() + 15 * 60 * 1000)); // +15 min
 
+  const isLocalhostIpn = /localhost|127\.0\.0\.1/.test(vnpayCfg.ipnUrl);
+
   const params = {
     vnp_Version:    "2.1.0",
     vnp_Command:    "pay",
@@ -130,15 +132,19 @@ async function createVNPayUrl(orderId, ipAddr) {
     vnp_Amount:     String(Math.round(order.total_price) * 100),
     vnp_CurrCode:   "VND",
     vnp_TxnRef:     txnRef,
-    vnp_OrderInfo:  `Thanh toan don hang ${order.order_code}`,
+    vnp_OrderInfo:  `Thanh toan don hang ${order.order_code}`.replace(/[^\x00-\x7F]/g, ""),
     vnp_OrderType:  "other",
     vnp_Locale:     "vn",
-    vnp_ReturnUrl:  vnpayCfg.returnUrl,  // browser redirect (display only)
-    vnp_IpnUrl:     vnpayCfg.ipnUrl,     // server-to-server (source of truth)
-    vnp_IpAddr:     ipAddr || "127.0.0.1",
+    vnp_ReturnUrl:  vnpayCfg.returnUrl,
+    vnp_IpAddr:     (ipAddr || "127.0.0.1").replace(/^::ffff:/, ""),
     vnp_CreateDate: createDate,
     vnp_ExpireDate: expireDate,
   };
+
+  // Only include IPN URL if it's publicly reachable (skip localhost in dev)
+  if (!isLocalhostIpn) {
+    params.vnp_IpnUrl = vnpayCfg.ipnUrl;
+  }
 
   // Hash computed on raw sorted string (before URL-encoding)
   const secureHash   = createSecureHash(params, vnpayCfg.hashSecret);

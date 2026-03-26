@@ -18,4 +18,7 @@ router.get("/vnpay/ipn",                   ctrl.vnpayIpn);
 // No auth: VNPAY redirects user's browser here after payment (browser redirect)
 router.get("/vnpay/return",                ctrl.vnpayReturn);
 
+// No auth: frontend polls to check if VNPAY settled the order
+router.get("/vnpay/check",                 ctrl.vnpayCheck);
+
 module.exports = router;
