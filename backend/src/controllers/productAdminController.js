@@ -1,6 +1,7 @@
 const svc = require("../services/productAdminService");
 const categorySvc = require("../services/categoryService");
 const { generateTemplate } = require("../services/importService");
+const auditLog = require("../services/auditLogService");
 
 // Resolve the shopId from req.shop (set by shopMiddleware) with fallback to req.user._id
 // for backward-compat during migration (when shop was not yet created).
@@ -55,15 +56,15 @@ exports.deleteVariant = async (req, res, next) => {
 exports.listCategories = async (req, res, next) => { try { res.json({ success: true, data: await svc.listCategories() }); } catch (e) { next(e); } };
 exports.listAttributes = async (req, res, next) => { try { res.json({ success: true, data: await svc.listAttributes() }); } catch (e) { next(e); } };
 exports.listBrands = async (req, res, next) => { try { res.json({ success: true, data: await svc.listBrands() }); } catch (e) { next(e); } };
-exports.createCategory = async (req, res, next) => { try { res.json({ success: true, data: await svc.createCategory(req.body) }); } catch (e) { next(e); } };
-exports.updateCategory = async (req, res, next) => { try { res.json({ success: true, data: await svc.updateCategory(req.params.id, req.body) }); } catch (e) { next(e); } };
-exports.deleteCategory = async (req, res, next) => { try { res.json({ success: true, data: await svc.deleteCategory(req.params.id) }); } catch (e) { next(e); } };
+exports.createCategory = async (req, res, next) => { try { const d = await svc.createCategory(req.body); auditLog.log({ actorId: req.user._id, action: "category.create", targetCollection: "categories", targetId: d._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: req.body.name } }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
+exports.updateCategory = async (req, res, next) => { try { const d = await svc.updateCategory(req.params.id, req.body); auditLog.log({ actorId: req.user._id, action: "category.update", targetCollection: "categories", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: req.body.name } }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
+exports.deleteCategory = async (req, res, next) => { try { const d = await svc.deleteCategory(req.params.id); auditLog.log({ actorId: req.user._id, action: "category.delete", targetCollection: "categories", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
 exports.createAttribute = async (req, res, next) => { try { res.json({ success: true, data: await svc.createAttribute(req.body) }); } catch (e) { next(e); } };
 exports.updateAttribute = async (req, res, next) => { try { res.json({ success: true, data: await svc.updateAttribute(req.params.id, req.body) }); } catch (e) { next(e); } };
 exports.deleteAttribute = async (req, res, next) => { try { res.json({ success: true, data: await svc.deleteAttribute(req.params.id) }); } catch (e) { next(e); } };
-exports.createBrand = async (req, res, next) => { try { res.json({ success: true, data: await svc.createBrand(req.body) }); } catch (e) { next(e); } };
-exports.updateBrand = async (req, res, next) => { try { res.json({ success: true, data: await svc.updateBrand(req.params.id, req.body) }); } catch (e) { next(e); } };
-exports.deleteBrand = async (req, res, next) => { try { res.json({ success: true, data: await svc.deleteBrand(req.params.id) }); } catch (e) { next(e); } };
+exports.createBrand = async (req, res, next) => { try { const d = await svc.createBrand(req.body); auditLog.log({ actorId: req.user._id, action: "brand.create", targetCollection: "brands", targetId: d._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: req.body.name } }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
+exports.updateBrand = async (req, res, next) => { try { const d = await svc.updateBrand(req.params.id, req.body); auditLog.log({ actorId: req.user._id, action: "brand.update", targetCollection: "brands", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { name: req.body.name } }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
+exports.deleteBrand = async (req, res, next) => { try { const d = await svc.deleteBrand(req.params.id); auditLog.log({ actorId: req.user._id, action: "brand.delete", targetCollection: "brands", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) }); res.json({ success: true, data: d }); } catch (e) { next(e); } };
 
 /* Media */
 exports.uploadImages = async (req, res, next) => {

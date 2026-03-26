@@ -1,5 +1,6 @@
 const paypalSvc = require("../services/paypalService");
 const vnpaySvc  = require("../services/vnpayService");
+const auditLog  = require("../services/auditLogService");
 
 const ok  = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb = "Bad request") =>
@@ -13,6 +14,7 @@ exports.createOrder = async (req, res) => {
     const { orderId } = req.body;
     if (!orderId) return res.status(400).json({ status: "fail", message: "orderId is required" });
     const paypalOrderId = await paypalSvc.createPayPalOrder(orderId);
+    auditLog.log({ actorId: req.user?._id || req.userId, action: "payment.create", targetCollection: "orders", targetId: orderId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "paypal", paypalOrderId } });
     ok(res, { paypalOrderId });
   } catch (e) {
     bad(res, e, "Failed to create PayPal order");
@@ -27,6 +29,7 @@ exports.captureOrder = async (req, res) => {
       return res.status(400).json({ status: "fail", message: "paypalOrderId and orderId are required" });
     }
     const result = await paypalSvc.capturePayPalOrder(paypalOrderId, orderId);
+    auditLog.log({ actorId: req.user?._id || req.userId, action: "payment.capture", targetCollection: "orders", targetId: orderId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "paypal", captureId: result.captureId } });
     ok(res, { order: result.order, captureId: result.captureId });
   } catch (e) {
     bad(res, e, "Failed to capture PayPal payment");
@@ -39,6 +42,7 @@ exports.refund = async (req, res) => {
     const { orderId } = req.body;
     if (!orderId) return res.status(400).json({ status: "fail", message: "orderId is required" });
     const result = await paypalSvc.refundPayPal(orderId);
+    auditLog.log({ actorId: req.user?._id || req.userId, action: "payment.refund", targetCollection: "orders", targetId: orderId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "paypal", refundId: result.refundId } });
     ok(res, { refund: result.refund, refundId: result.refundId });
   } catch (e) {
     bad(res, e, "Failed to process PayPal refund");
@@ -61,6 +65,7 @@ exports.vnpayCreate = async (req, res) => {
       req.ip ||
       "127.0.0.1";
     const { payUrl } = await vnpaySvc.createVNPayUrl(orderId, ip);
+    auditLog.log({ actorId: req.user?._id || req.userId, action: "payment.create", targetCollection: "orders", targetId: orderId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "vnpay" } });
     ok(res, { payUrl });
   } catch (e) {
     bad(res, e, "Failed to create VNPAY payment URL");

@@ -13,6 +13,7 @@ const refundSvc   = require("../services/refundService");
 const { v4: uuidv4 }   = require("uuid");
 const notification     = require("../services/notificationService");
 const notif            = require("../services/dbNotificationService");
+const auditLog         = require("../services/auditLogService");
 
 const SAFE_FIELDS =
   "_id order_code items address_id voucher_id payment_method payment_status shipping_provider shipping_fee total_price note status inventory_adjusted createdAt updatedAt";
@@ -158,6 +159,7 @@ exports.cancel = async (req, res, next) => {
     }
 
     notif.orderCancelled(userId, ord.order_code).catch(() => {});
+    auditLog.log({ actorId: userId, action: "order.cancel_by_customer", targetCollection: "orders", targetId: ord._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: ord.order_code, reason: reason.trim() || "Khách hàng hủy đơn", wallet_credited: walletCredited } });
 
     res.json({
       status: "success",
@@ -299,6 +301,7 @@ exports.requestRefund = async (req, res, next) => {
       }
     }
 
+    auditLog.log({ actorId: userId, action: "refund.request", targetCollection: "refunds", targetId: refund._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: ord.order_code, type, reason: reason.trim(), amount: ord.total_price } });
     res.json({
       status: "success",
       data: { refund_id: refund._id, order_status: ord.status },
