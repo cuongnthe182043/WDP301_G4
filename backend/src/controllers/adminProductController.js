@@ -3,6 +3,7 @@ const Shop     = require("../models/Shop");
 const auditLog = require("../services/auditLogService");
 const notif    = require("../services/dbNotificationService");
 const { moderateProduct, moderateBatch } = require("../services/productModerationService");
+const { uploadImages: uploadImagesMedia } = require("../services/mediaService");
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 const _audit = (req, action, product, meta = {}) =>
@@ -350,5 +351,13 @@ exports.bulkReject = async (req, res, next) => {
     }
 
     res.json({ success: true, data: { modified: result.modifiedCount } });
+  } catch (e) { next(e); }
+};
+
+// ─── POST /api/admin/products/media/images ────────────────────────────────
+exports.uploadImages = async (req, res, next) => {
+  try {
+    const data = await uploadImagesMedia(req.files || [], "admin");
+    res.json({ success: true, data });
   } catch (e) { next(e); }
 };
