@@ -2691,86 +2691,24 @@
   }
 },
 {
-  "_id": "ord-931cfe6d-bd9e-4918-bbc3-c72168dad66a",
-  "order_code": "DFS1000",
-  "user_id": "user-acd80ed5-dfda-4e0d-9387-ba077d6a1d78",
-  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
-  "items": [
-    {
-      "product_id": "prd-4d911a61-6139-463c-bcae-538851235340",
-      "variant_id": "var-e293d539-758a-471c-a91e-36549153f66d",
-      "name": "Quần Lót Nam-Mens Organic Cotton Trunks",
-      "qty": 1,
-      "price": 299000,
-      "discount": 0,
-      "total": 299000,
-      "currency": "VND",
-      "refunded_qty": 0,
-      "shipped_qty": 1,
-      "status": "delivered"
-    }
-  ],
-  "voucher_id": "vou-7295536e-1a94-43f4-b2e3-a2fbbb23bd3c",
-  "payment_method": "COD",
-  "payment_status": "paid",
-  "shipping_provider": "NONE",
-  "shipping_fee": 0,
-  "expected_delivery": {
-    "$date": "2025-10-23T09:59:51.064Z"
-  },
-  "total_price": 299000,
-  "note": "Leave at reception",
-  "status": "delivered",
-  "inventory_adjusted": false,
-  "createdAt": {
-    "$date": "2025-10-20T09:59:51.067Z"
-  },
-  "updatedAt": {
-    "$date": "2025-10-20T09:59:51.067Z"
-  }
-},
-{
-  "_id": "cat-1001",
-  "name": "Áo sơ mi nam",
-  "description": "Các mẫu áo sơ mi nam cao cấp",
+  "_id": "cat-acc00001-0000-4000-a000-000000000001",
+  "name": "Phụ kiện",
+  "description": "Phụ kiện thời trang",
   "parent_id": null,
   "level": 0,
   "path": [],
   "ancestors": [],
   "children_count": 0,
   "seo": {
-    "keywords": [
-      "áo sơ mi",
-      "thời trang nam"
-    ]
+    "keywords": ["phụ kiện", "accessories"]
   },
-  "gender_hint": "men",
+  "gender_hint": "unisex",
   "is_active": true,
-  "slug": "ao-so-mi-nam",
-  "createdAt": "2025-11-05T17:30:00.000Z",
-  "updatedAt": "2025-11-05T17:30:00.000Z"
-},
-{
-  "_id": {
-    "$oid": "690b9a8003169d7555856c40"
-  },
-  "name": "Thời trang gay",
-  "description": "",
-  "parent_id": null,
-  "level": 0,
-  "path": [],
-  "ancestors": [],
-  "children_count": 5,
-  "seo": {
-    "keywords": []
-  },
-  "gender_hint": "men",
-  "is_active": true,
-  "slug": "thoi-trang-gay",
+  "slug": "phu-kien",
   "createdAt": {
-    "$date": "2025-11-05T14:33:39.505Z"
+    "$date": "2025-11-05T14:33:40.500Z"
   },
   "updatedAt": {
-    "$date": "2025-11-05T14:33:44.323Z"
+    "$date": "2025-11-05T14:33:40.500Z"
   }
 }]
