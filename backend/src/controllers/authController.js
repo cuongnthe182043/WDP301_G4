@@ -1,6 +1,7 @@
 const authService = require("../services/authService");
 const { successResponse, errorResponse } = require("../utils/constants");
 const User = require("../models/User");
+const auditLog = require("../services/auditLogService");
 
 // ─── MIDDLEWARE: Set COOP header đúng cho tất cả auth routes ───
 // FIX: "same-origin" chặn window.postMessage của Google OAuth popup
@@ -26,6 +27,7 @@ exports.verifyRegisterOTP = async (req, res) => {
   try {
     const { email, otp, name, username, password } = req.body;
     const result = await authService.verifyRegister({ email, otp, name, username, password });
+    auditLog.log({ actorId: result.user?._id || email, action: "auth.register", targetCollection: "users", targetId: result.user?._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { email } });
     res.json(successResponse(result, "Đăng ký thành công"));
   } catch (err) {
     res.status(400).json(errorResponse(err.message));
@@ -33,11 +35,13 @@ exports.verifyRegisterOTP = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  const { identifier, password } = req.body || {};
   try {
-    const { identifier, password } = req.body;
     const result = await authService.login(identifier, password);
+    auditLog.log({ actorId: result.user?._id || identifier, action: "auth.login", targetCollection: "users", targetId: result.user?._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "password" } });
     res.json(successResponse(result, "Đăng nhập thành công"));
   } catch (err) {
+    auditLog.log({ actorId: identifier, action: "auth.login_failed", targetCollection: "users", ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { reason: err.message } });
     res.status(401).json(errorResponse(err.message));
   }
 };
@@ -52,9 +56,7 @@ exports.googleLogin = async (req, res) => {
     }
 
     const result = await authService.googleLogin(token);
-
-    // FIX: KHÔNG echo lại Google token trong response
-    // Chỉ trả về accessToken nội bộ + thông tin user cần thiết
+    auditLog.log({ actorId: result.user?._id, action: "auth.login", targetCollection: "users", targetId: result.user?._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { method: "google" } });
     res.json(successResponse(result, "Đăng nhập Google thành công"));
   } catch (err) {
     res.status(400).json(errorResponse(err.message));
@@ -86,6 +88,7 @@ exports.changePassword = async (req, res) => {
     const userId = req.user._id;
     const { oldPassword, newPassword } = req.body;
     const result = await authService.changePassword(userId, oldPassword, newPassword);
+    auditLog.log({ actorId: userId, action: "auth.change_password", targetCollection: "users", targetId: userId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) });
     res.json(successResponse(result, "Đổi mật khẩu thành công"));
   } catch (err) {
     res.status(400).json(errorResponse(err.message));
@@ -116,6 +119,7 @@ exports.logout = async (req, res) => {
     res.clearCookie("dfs_token", cookieOptions);
     res.clearCookie("connect.sid", cookieOptions);
 
+    auditLog.log({ actorId: req.user._id, action: "auth.logout", targetCollection: "users", targetId: req.user._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) });
     return res.json(successResponse(null, "Đã đăng xuất"));
   } catch (err) {
     return res.status(500).json(errorResponse("Lỗi khi đăng xuất"));

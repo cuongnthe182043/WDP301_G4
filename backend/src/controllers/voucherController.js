@@ -1,7 +1,8 @@
 // controllers/voucherController.js
-const Voucher = require("../models/Voucher");
-const Order   = require("../models/Order");
+const Voucher  = require("../models/Voucher");
+const Order    = require("../models/Order");
 const { v4: uuidv4 } = require("uuid");
+const auditLog = require("../services/auditLogService");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function validateDiscount(type, value) {
@@ -211,6 +212,7 @@ exports.createVoucher = async (req, res, next) => {
       created_by: req.userId,
     });
 
+    auditLog.log({ actorId: req.userId, action: "voucher.create", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: normalizedCode, discount_type, discount_value: Number(discount_value) } });
     res.status(201).json({ success: true, message: "Tạo voucher thành công", data: voucher });
   } catch (err) { next(err); }
 };
@@ -285,6 +287,7 @@ exports.updateVoucher = async (req, res, next) => {
     }
 
     await voucher.save();
+    auditLog.log({ actorId: req.userId, action: "voucher.update", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: voucher.code } });
     res.json({ success: true, message: "Cập nhật voucher thành công", data: voucher });
   } catch (err) { next(err); }
 };
@@ -303,6 +306,7 @@ exports.toggleVoucher = async (req, res, next) => {
 
     voucher.is_active = !voucher.is_active;
     await voucher.save();
+    auditLog.log({ actorId: req.userId, action: "voucher.toggle", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: voucher.code, is_active: voucher.is_active } });
     res.json({ success: true, data: { is_active: voucher.is_active } });
   } catch (err) { next(err); }
 };
@@ -321,7 +325,10 @@ exports.deleteVoucher = async (req, res, next) => {
     if (voucher.used_count > 0)
       return res.status(400).json({ message: "Không thể xóa voucher đã được sử dụng. Hãy vô hiệu hóa thay thế." });
 
+    const vCode = voucher.code;
+    const vId = voucher._id;
     await voucher.deleteOne();
+    auditLog.log({ actorId: req.userId, action: "voucher.delete", targetCollection: "vouchers", targetId: vId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: vCode } });
     res.json({ success: true, message: "Xóa voucher thành công" });
   } catch (err) { next(err); }
 };

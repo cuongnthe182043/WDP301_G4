@@ -1330,7 +1330,7 @@
     "all_products": "Tất cả sản phẩm",
     "pending_products": "Chờ duyệt",
     "moderation": "Kiểm duyệt nội dung",
-    "audit_logs": "Nhật ký kiểm toán",
+    "audit_logs": "Nhật ký hoạt động",
     "reconciliation": "Đối soát",
     "api_keys": "API Keys",
     "system_config": "Cấu hình hệ thống",

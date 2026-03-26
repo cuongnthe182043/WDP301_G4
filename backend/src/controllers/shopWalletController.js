@@ -1,5 +1,6 @@
-const Wallet = require("../models/Wallet");
+const Wallet      = require("../models/Wallet");
 const Transaction = require("../models/Transaction");
+const auditLog    = require("../services/auditLogService");
 
 // GET /api/shop/wallet
 exports.getWallet = async (req, res, next) => {
@@ -63,6 +64,7 @@ exports.requestWithdraw = async (req, res, next) => {
     wallet.last_transaction_id = txn._id;
     await wallet.save();
 
+    auditLog.log({ actorId: req.userId, action: "wallet.withdraw", targetCollection: "transactions", targetId: txn._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { amount: Number(amount), bank_account_id: bank_account_id || null, balance_after: wallet.balance_available } });
     res.json({
       success: true,
       data: { transaction: txn, balance_available: wallet.balance_available },

@@ -1,5 +1,6 @@
 const FlashSale = require("../models/FlashSale");
 const { v4: uuidv4 } = require("uuid");
+const auditLog  = require("../services/auditLogService");
 
 // [GET] /api/flashsales?page=1&limit=10
 exports.getAllFlashSales = async (req, res, next) => {
@@ -112,6 +113,7 @@ exports.createFlashSale = async (req, res, next) => {
     });
 
     await newFlashSale.save();
+    auditLog.log({ actorId: req.user._id, action: "flashsale.create", targetCollection: "flashsales", targetId: newFlashSale._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: title.trim(), discount_type, discount_value } });
     res.status(201).json({
       message: "Tạo Flash Sale thành công",
       data: newFlashSale,
@@ -176,6 +178,7 @@ exports.updateFlashSale = async (req, res, next) => {
 
     flashSale.updatedAt = new Date();
     await flashSale.save();
+    auditLog.log({ actorId: req.user._id, action: "flashsale.update", targetCollection: "flashsales", targetId: flashSale._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: flashSale.title } });
 
     res.json({ message: "Cập nhật Flash Sale thành công", data: flashSale });
   } catch (err) {
@@ -196,7 +199,10 @@ exports.deleteFlashSale = async (req, res, next) => {
         .json({ message: "Bạn không có quyền xóa Flash Sale này" });
     }
 
+    const fsId = flashSale._id;
+    const fsTitle = flashSale.title;
     await flashSale.deleteOne();
+    auditLog.log({ actorId: req.user._id, action: "flashsale.delete", targetCollection: "flashsales", targetId: fsId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: fsTitle } });
     res.json({ message: "Xóa Flash Sale thành công" });
   } catch (err) {
     next(err);
