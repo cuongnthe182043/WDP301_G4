@@ -72,6 +72,8 @@ import SystemConfig from "../pages/admin/SystemConfig";
 import AuditLogs from "../pages/admin/AuditLogs";
 import Reconciliation from "../pages/admin/Reconciliation";
 import ApiKeyManager from "../pages/admin/ApiKeyManager";
+import AdminCategories from "../pages/admin/AdminCategories";
+import AdminBrands from "../pages/admin/AdminBrands";
 
 /* ===== Landing Page ===== */
 import LandingPage from "../pages/LandingPage";
@@ -210,6 +212,8 @@ export default function AppRouter() {
         <Route path="products/pending" element={<AdminPendingProducts />} />
         <Route path="reviews" element={<AdminReviews />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="categories" element={<AdminCategories />} />
+        <Route path="brands" element={<AdminBrands />} />
         <Route path="system-config" element={<SystemConfig />} />
         <Route path="audit-logs" element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />

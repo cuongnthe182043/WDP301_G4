@@ -25,9 +25,9 @@ router.put("/attributes/:id",    ...auth, ctrl.updateAttribute);
 router.delete("/attributes/:id", ...auth, ctrl.deleteAttribute);
 
 router.get("/brands",            ...auth, ctrl.listBrands);
-router.post("/brands",           ...auth, ctrl.createBrand);
-router.put("/brands/:id",        ...auth, ctrl.updateBrand);
-router.delete("/brands/:id",     ...auth, ctrl.deleteBrand);
+router.post("/brands",           verifyToken, ...requireAnyRole("system_admin"), ctrl.createBrand);
+router.put("/brands/:id",        verifyToken, ...requireAnyRole("system_admin"), ctrl.updateBrand);
+router.delete("/brands/:id",     verifyToken, ...requireAnyRole("system_admin"), ctrl.deleteBrand);
 
 // ── Inventory (shop required) ──────────────────────────────────────
 router.get("/inventory/low-stock", ...authShop, ctrl.lowStock);

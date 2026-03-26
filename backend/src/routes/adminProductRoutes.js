@@ -1,6 +1,7 @@
 const express = require("express");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const { requireAnyRole } = require("../middlewares/rbacMiddleware");
+const { uploadImagesMw } = require("../middlewares/uploadMiddleware");
 const ctrl = require("../controllers/adminProductController");
 
 const router = express.Router();
@@ -17,5 +18,8 @@ router.post("/:id/moderate",      ctrl.moderateProduct);
 router.post("/moderate-pending",  ctrl.moderatePending);
 router.post("/bulk-approve",      ctrl.bulkApprove);
 router.post("/bulk-reject",       ctrl.bulkReject);
+
+// Admin media upload (no shop required)
+router.post("/media/images",      uploadImagesMw, ctrl.uploadImages);
 
 module.exports = router;
