@@ -45,8 +45,8 @@ exports.verifyRegister = async ({ email, otp, name, username, password }) => {
     throw new Error("OTP không hợp lệ hoặc đã hết hạn");
   }
 
-  const existing = await User.findOne({ 
-    $or: [{ email: normEmail }, { username: normUsername }] 
+  const existing = await User.findOne({
+    $or: [{ email: normEmail }, { username: normUsername }]
   });
   if (existing) throw new Error("Email hoặc username đã tồn tại");
 
@@ -66,7 +66,7 @@ exports.verifyRegister = async ({ email, otp, name, username, password }) => {
     username: normUsername,
     email: normEmail,
     password_hash: hash,
-    role_id: role._id, 
+    role_id: role._id,
     status: "active",
   });
 
@@ -80,7 +80,7 @@ exports.verifyRegister = async ({ email, otp, name, username, password }) => {
 exports.login = async (identifier, password) => {
   const id = String(identifier).trim().toLowerCase();
   const user = await User.findOne({
-    $or: [{ email: identifier }, { username: identifier }, { phone: identifier }],
+    $or: [{ email: id }, { username: id }, { phone: id }],
   });
   if (!user) throw new Error("Tài khoản không tồn tại");
 
@@ -95,14 +95,17 @@ exports.login = async (identifier, password) => {
 
   const role = await Role.findById(user.role_id).lean();
 
-const safe = user.toObject();
-delete safe.password_hash;
-delete safe.refresh_token;
+  const safe = user.toObject();
+  delete safe.password_hash;
+  delete safe.refresh_token;
+  delete safe.wishlist;
+  delete safe.recently_viewed;
+  delete safe.violation_history;
 
-safe.role_name = role?.name || null;
-safe.permissions = Array.isArray(role?.permissions) ? role.permissions : [];
+  safe.role_name = role?.name || null;
+  safe.permissions = Array.isArray(role?.permissions) ? role.permissions : [];
 
-return { accessToken, refreshToken, user: safe };
+  return { accessToken, refreshToken, user: safe };
 };
 
 exports.googleLogin = async (idToken) => {
@@ -112,7 +115,7 @@ exports.googleLogin = async (idToken) => {
 
   let user = await User.findOne({ email });
   if (!user) {
-    const role = await Role.findOne({ name: "customer" }); 
+    const role = await Role.findOne({ name: "customer" });
     if (!role) throw new Error("Role 'customer' chưa được seed");
 
 
@@ -125,12 +128,12 @@ exports.googleLogin = async (idToken) => {
       email,
       username,
       avatar_url: payload.picture,
-      role_id: role._id, 
+      role_id: role._id,
       status: "active",
     });
   }
 
-  const accessToken  = await generateAccessToken(user);
+  const accessToken = await generateAccessToken(user);
   const refreshToken = await generateRefreshToken(user);
   user.refresh_token = refreshToken;
   user.last_login = new Date();
@@ -138,7 +141,12 @@ exports.googleLogin = async (idToken) => {
 
 
   const role = await Role.findById(user.role_id).lean();
-  const safe = user.toObject(); delete safe.password_hash; delete safe.refresh_token;
+  const safe = user.toObject();
+  delete safe.password_hash;
+  delete safe.refresh_token;
+  delete safe.wishlist;
+  delete safe.recently_viewed;
+  delete safe.violation_history;
   safe.role_name = role?.name || null;
   safe.permissions = Array.isArray(role?.permissions) ? role.permissions : [];
 
@@ -162,7 +170,7 @@ exports.resetPassword = async (email, otp, newPassword) => {
   user.password_hash = await bcrypt.hash(newPassword, salt);
   await user.save();
   await redis.del(`otp:forgot:${email}`);
-  dbNotif.passwordReset(user._id).catch(() => {});
+  dbNotif.passwordReset(user._id).catch(() => { });
 
   return { message: "Mật khẩu đã được đặt lại" };
 };
@@ -181,7 +189,7 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
   user.password_hash = await bcrypt.hash(newPassword, salt);
   user.refresh_token = undefined;  // invalidate existing session
   await user.save();
-  dbNotif.passwordChanged(userId).catch(() => {});
+  dbNotif.passwordChanged(userId).catch(() => { });
 
   return { message: "Đổi mật khẩu thành công" };
 };

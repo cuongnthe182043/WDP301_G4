@@ -23,13 +23,12 @@ async function buildJwtPayload(userDoc) {
     return o;
   }, {});
 
+  // NOTE: permissions is intentionally excluded from JWT to keep token size small.
+  // Permissions are returned in the login response body and stored in localStorage.
   return {
     ...base,
     role_id: roleId || null,
-    role_name: roleDoc?.name || null,                  // VD: "shop_owner"
-    permissions: Array.isArray(roleDoc?.permissions)
-      ? roleDoc.permissions
-      : [],                                            // VD: ["shop:access", ...]
+    role_name: roleDoc?.name || null,
   };
 }
 

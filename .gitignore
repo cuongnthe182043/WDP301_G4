@@ -11,6 +11,8 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
+.claude
+
 # Logs
 logs
 *.log

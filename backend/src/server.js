@@ -7,8 +7,8 @@ const FE_ORIGIN = process.env.FE_ORIGIN || "http://localhost:5173";
 const PORT = process.env.PORT || 5000;
 
 // Tạo httpServer từ app (thay vì app.listen)
-// maxHeaderSize: tăng từ 8 KB mặc định lên 32 KB để tránh 431 khi JWT token lớn
-const server = http.createServer({ maxHeaderSize: 32768 }, app);
+// maxHeaderSize: tăng lên 64 KB để tránh 431 khi headers lớn
+const server = http.createServer({ maxHeaderSize: 65536 }, app);
 
 // === Socket.IO v4 gắn vào httpServer ===
 const { Server } = require("socket.io");

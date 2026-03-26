@@ -202,13 +202,22 @@ const helpers = {
       link:    `/orders`,
     }),
 
-  refundCompleted: (userId, orderCode) =>
+  refundCompleted: (userId, orderCode, amount) =>
     create(userId, {
       title:   "Hoàn tiền/đổi hàng hoàn tất",
-      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã được xử lý hoàn tất.`,
+      message: `Yêu cầu hoàn/đổi cho đơn hàng #${orderCode} đã hoàn tất${amount ? `. ${Number(amount).toLocaleString("vi-VN")} ₫ đã được cộng vào ví của bạn.` : "."}`,
       type:    "refund",
       subtype: "refund.completed",
-      link:    `/orders`,
+      link:    `/wallet`,
+    }),
+
+  walletRefunded: (userId, orderCode, amount) =>
+    create(userId, {
+      title:   "Hoàn tiền vào ví thành công",
+      message: `${Number(amount).toLocaleString("vi-VN")} ₫ đã được hoàn vào ví từ đơn hàng #${orderCode} bị hủy.`,
+      type:    "payment",
+      subtype: "payment.refund",
+      link:    `/wallet`,
     }),
 
   // ── Review Moderation ────────────────────────────────────────────────────
@@ -276,6 +285,35 @@ const helpers = {
       type:    "promotion",
       subtype: "shop.announcement",
       link:    `/`,
+    }),
+
+  // ── Product Moderation ─────────────────────────────────────────────────
+
+  productApproved: (userId, productName) =>
+    create(userId, {
+      title:   "Sản phẩm đã được duyệt",
+      message: `Sản phẩm "${productName}" đã được phê duyệt và hiển thị trên sàn.`,
+      type:    "system",
+      subtype: "product.approved",
+      link:    `/shop/products`,
+    }),
+
+  productRejected: (userId, productName, reason) =>
+    create(userId, {
+      title:   "Sản phẩm bị từ chối",
+      message: `Sản phẩm "${productName}" đã bị từ chối${reason ? `: ${reason}` : ". Vui lòng chỉnh sửa và gửi lại."}`,
+      type:    "system",
+      subtype: "product.rejected",
+      link:    `/shop/products`,
+    }),
+
+  productFlagged: (userId, productName) =>
+    create(userId, {
+      title:   "Sản phẩm cần chỉnh sửa",
+      message: `Sản phẩm "${productName}" đã bị gắn cờ do vi phạm chính sách nội dung. Vui lòng chỉnh sửa để được phê duyệt.`,
+      type:    "system",
+      subtype: "product.flagged",
+      link:    `/shop/products`,
     }),
 };
 
