@@ -56,6 +56,33 @@ export const adminRejectShop = async (id, reason = "") => {
   return res.data;
 };
 
+// ─── GHN Pickup Address ───────────────────────────────────────────────────────
+
+export const getPickupAddress = async () => {
+  const res = await apiClient.get("/shop/pickup-address");
+  return res.data.data;
+};
+
+export const updatePickupAddress = async (payload) => {
+  const res = await apiClient.put("/shop/pickup-address", payload);
+  return res.data.data;
+};
+
+export const ghnGetProvinces = async () => {
+  const res = await apiClient.get("/shop/ghn/provinces");
+  return res.data.data;
+};
+
+export const ghnGetDistricts = async (provinceId) => {
+  const res = await apiClient.get("/shop/ghn/districts", { params: { province_id: provinceId } });
+  return res.data.data;
+};
+
+export const ghnGetWards = async (districtId) => {
+  const res = await apiClient.get("/shop/ghn/wards", { params: { district_id: districtId } });
+  return res.data.data;
+};
+
 // ─── Legacy (analytics) ───────────────────────────────────────────────────────
 
 export const getAnalytics = async () => {

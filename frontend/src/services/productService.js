@@ -61,4 +61,10 @@ export const productService = {
     });
     return res.data.data;
   },
+  async lowStock(threshold = 5, page = 1, limit = 20) {
+    const res = await apiClient.get("/shop/inventory/low-stock", {
+      params: { threshold, page, limit },
+    });
+    return res.data.data;
+  },
 };

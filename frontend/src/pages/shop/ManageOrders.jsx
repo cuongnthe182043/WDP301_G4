@@ -36,7 +36,7 @@ export const STATUS_CONFIG = {
   refund_completed:      { labelKey: "order.status_refund_completed", color: "success",   group: "done" },
   // legacy
   pending:               { labelKey: "order.status_order_created",    color: "warning",   group: "pending" },
-  confirmed:             { labelKey: "order.status_payment_confirmed",color: "primary",   group: "processing" },
+  confirmed:             { labelKey: "order.status_confirmed",       color: "primary",   group: "processing" },
   shipping:              { labelKey: "order.status_in_transit",       color: "secondary", group: "shipping" },
   canceled_by_customer:  { labelKey: "order.status_cancelled_customer",color: "default",  group: "cancelled" },
   canceled_by_shop:      { labelKey: "order.status_cancelled_shop",   color: "default",   group: "cancelled" },
@@ -83,7 +83,7 @@ const IN_SHIPPING  = new Set(["picking", "in_transit", "out_for_delivery", "ship
 // ─────────────────────────────────────────────────────────────────────────────
 const TIMELINE_STEPS = [
   { status: "order_created",     labelKey: "order.status_order_created" },
-  { status: "confirmed",         labelKey: "order.status_payment_confirmed" },
+  { status: "confirmed",         labelKey: "order.status_confirmed" },
   { status: "processing",        labelKey: "order.status_processing" },
   { status: "packed",            labelKey: "order.status_packed" },
   { status: "picking",           labelKey: "order.status_picking" },
@@ -159,6 +159,10 @@ export default function ManageOrders() {
   // GHN push modal
   const [ghnTarget, setGhnTarget]   = useState(null); // order object
   const [ghnLoading, setGhnLoading] = useState(false);
+
+  // GHN dev simulator
+  const [simStatus,  setSimStatus]  = useState("picking");
+  const [simLoading, setSimLoading] = useState(false);
 
   // Tracking modal
   const [trackData, setTrackData]   = useState(null);
@@ -295,6 +299,66 @@ export default function ManageOrders() {
       toast.error(e?.response?.data?.message || t("common.error"));
     } finally {
       setGhnLoading(false);
+    }
+  };
+
+  // ── GHN dev simulate ─────────────────────────────────────────────────────
+  const handleSimulateGhn = async () => {
+    if (!detail?.ghn_order_code) return;
+    setSimLoading(true);
+    try {
+      await shopOrderApi.simulateGhn(detail.ghn_order_code, simStatus);
+      toast.success(`Simulated GHN: ${simStatus}`);
+      const r = await shopOrderApi.getById(detail._id);
+      setDetail(r.data);
+      load(page);
+    } catch (e) {
+      toast.error(e?.response?.data?.message || e.message);
+    } finally {
+      setSimLoading(false);
+    }
+  };
+
+  const handleDevResetGhn = async () => {
+    if (!detail?._id) return;
+    setSimLoading(true);
+    try {
+      await shopOrderApi.devResetGhn(detail._id);
+      toast.success("Reset về processing — có thể push GHN lại");
+      const r = await shopOrderApi.getById(detail._id);
+      setDetail(r.data);
+      load(page);
+    } catch (e) {
+      toast.error(e?.response?.data?.message || e.message);
+    } finally {
+      setSimLoading(false);
+    }
+  };
+
+  // ── Sync from GHN ────────────────────────────────────────────────────────
+  const [syncLoading, setSyncLoading] = useState(false);
+
+  const handleSyncGhn = async (orderId) => {
+    const id = orderId || detail?._id;
+    if (!id) return;
+    setSyncLoading(true);
+    try {
+      const res = await shopOrderApi.syncGhn(id);
+      const d = res.data;
+      if (d.updated) {
+        toast.success(`Đã đồng bộ: GHN "${d.ghn_status}" → "${d.internal_status}"`);
+      } else {
+        toast.success(`Trạng thái đã đúng: ${d.internal_status} (GHN: ${d.ghn_status})`);
+      }
+      if (detail?._id === id) {
+        const r = await shopOrderApi.getById(id);
+        setDetail(r.data);
+      }
+      load(page);
+    } catch (e) {
+      toast.error(e?.response?.data?.message || e.message);
+    } finally {
+      setSyncLoading(false);
     }
   };
 
@@ -436,6 +500,16 @@ export default function ManageOrders() {
                             <Button isIconOnly size="sm" variant="light" color="secondary"
                               onPress={() => openGhnModal(o)} isDisabled={actionLoading}>
                               <Truck size={14} />
+                            </Button>
+                          </Tooltip>
+                        )}
+
+                        {o.ghn_order_code && (
+                          <Tooltip content="Sync trạng thái từ GHN">
+                            <Button isIconOnly size="sm" variant="light" color="default"
+                              isLoading={syncLoading}
+                              onPress={() => handleSyncGhn(o._id)}>
+                              <RefreshCw size={14} />
                             </Button>
                           </Tooltip>
                         )}
@@ -627,6 +701,44 @@ export default function ManageOrders() {
                       </div>
                     )}
 
+                    {/* DEV: GHN test tools */}
+                    <div className="border-2 border-dashed border-warning-300 bg-warning-50 dark:bg-zinc-800 rounded-xl p-3 space-y-2">
+                      <p className="text-xs font-bold text-warning-700 uppercase">🧪 Dev — GHN Test Tools</p>
+                      {detail.ghn_order_code ? (
+                        <div className="flex gap-2 flex-wrap items-center">
+                          <select
+                            value={simStatus}
+                            onChange={e => setSimStatus(e.target.value)}
+                            className="flex-1 min-w-0 h-8 px-2 rounded-lg border border-warning-300 bg-white dark:bg-zinc-700 text-sm font-medium text-gray-800 dark:text-zinc-200 outline-none"
+                          >
+                            {[
+                              ["ready_to_pick",            "ready_to_pick → processing"],
+                              ["picking",                  "picking → picking"],
+                              ["storing",                  "storing → packed"],
+                              ["transporting",             "transporting → in_transit"],
+                              ["delivering",               "delivering → out_for_delivery"],
+                              ["money_collect_delivering", "money_collect_delivering → out_for_delivery (COD)"],
+                              ["delivered",                "delivered → delivered ✓ (COD gets paid)"],
+                              ["delivery_fail",            "delivery_fail → delivery_failed"],
+                              ["cancel",                   "cancel → cancelled_by_shop"],
+                            ].map(([val, label]) => (
+                              <option key={val} value={val}>{label}</option>
+                            ))}
+                          </select>
+                          <Button size="sm" color="warning" radius="lg" isLoading={simLoading} onPress={handleSimulateGhn}>
+                            Apply
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-warning-600 flex-1">Đơn chưa có mã GHN. Reset về "processing" để push lại.</p>
+                          <Button size="sm" color="warning" variant="bordered" radius="lg" isLoading={simLoading} onPress={handleDevResetGhn}>
+                            Reset → processing
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
                     {/* Status history */}
                     {(detail.status_history || []).length > 0 && (
                       <div>
@@ -684,6 +796,13 @@ export default function ManageOrders() {
                       <Button size="sm" color="secondary" variant="bordered" radius="lg"
                         onPress={() => { onClose(); openTrackModal(detail._id); }}>
                         <MapPin size={14} /> {t("shop.order_tracking")}
+                      </Button>
+                    )}
+                    {detail.ghn_order_code && (
+                      <Button size="sm" color="default" variant="bordered" radius="lg"
+                        isLoading={syncLoading}
+                        onPress={() => handleSyncGhn(detail._id)}>
+                        <RefreshCw size={14} /> Sync GHN
                       </Button>
                     )}
                     {CANCELLABLE.has(detail.status) && (

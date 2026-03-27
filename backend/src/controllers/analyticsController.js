@@ -6,7 +6,14 @@ async function resolveShopId(userId) {
   return shop?._id ?? null;
 }
 
-const EMPTY_OVERVIEW = { today_revenue: 0, processing_orders: 0, total_orders: 0, total_customers: 0 };
+const EMPTY_OVERVIEW = {
+  today_revenue: 0, yesterday_revenue: 0, today_pct: 0,
+  this_month_revenue: 0, last_month_revenue: 0, month_pct: 0, month_order_count: 0,
+  processing_orders: 0, new_orders_today: 0,
+  total_orders: 0, total_customers: 0,
+  low_stock_count: 0, total_products: 0, pending_reviews: 0,
+  sparkline: [],
+};
 
 // GET /api/analytics/overview
 exports.overview = async (req, res, next) => {

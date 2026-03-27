@@ -27,7 +27,7 @@ export function useCheckout() {
   const [addresses,      setAddresses]     = useState([]);
   const [addressId,      setAddressId]     = useState("");
   const [shipper,        setShipper]       = useState("GHN");
-  const [voucherCode,    setVoucherCode]   = useState("");
+  const [voucherCode,    setVoucherCode]   = useState(loc.state?.voucher_code || "");
   const [creditsToUse,   setCreditsToUse]  = useState({});  // { [shopId]: amount }
   const [note,           setNote]          = useState("");
   const [method,         setMethod]        = useState("COD");

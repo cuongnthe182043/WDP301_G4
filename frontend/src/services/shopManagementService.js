@@ -9,6 +9,12 @@ export const shopOrderApi = {
   updateStatus: (id, status)  => apiClient.put(`/shop/orders/${id}/status`, { status }).then((r) => r.data),
   pushToGhn:    (id)          => apiClient.post(`/shop/orders/${id}/ghn`).then((r) => r.data),
   track:        (id)          => apiClient.get(`/shop/orders/${id}/track`).then((r) => r.data),
+  simulateGhn:  (ghnCode, ghnStatus) =>
+    apiClient.post("/shipping/webhooks/ghn/simulate", { ghn_order_code: ghnCode, ghn_status: ghnStatus }).then((r) => r.data),
+  devResetGhn:  (id) =>
+    apiClient.post(`/shop/orders/${id}/dev-reset-ghn`).then((r) => r.data),
+  syncGhn:      (id) =>
+    apiClient.post(`/shop/orders/${id}/sync-ghn`).then((r) => r.data),
 };
 
 // ── Refunds ──────────────────────────────────────────────────────────────────

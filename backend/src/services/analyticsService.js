@@ -1,5 +1,7 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const ProductVariant = require("../models/ProductVariant");
+const Review = require("../models/Review");
 const User = require("../models/User");
 const dayjs = require("dayjs");
 const ExcelJS = require("exceljs");
@@ -15,26 +17,102 @@ exports.offRealtime = (fn) => emitter.off("event", fn);
 // Gợi ý tích hợp trong Order controller khi có hành động:
 // emitter.emit("event", { type:"order_updated", payload: { order_id, status, ts: Date.now() } });
 
+// Statuses that mean the order is active/in-progress (not yet done or cancelled)
+const PROCESSING_STATUSES = [
+  "order_created", "payment_pending", "payment_confirmed",
+  "processing", "packed", "picking", "in_transit", "out_for_delivery",
+  // legacy
+  "pending", "confirmed", "shipping",
+];
+
+// Revenue is counted when payment_status = "paid" — most reliable regardless of order status
+const PAID_PAYMENT_STATUS = "paid";
+
 exports.getOverview = async (shopId) => {
   const now = new Date();
-  const from = dayjs(now).startOf("day").toDate();
-  const to   = dayjs(now).endOf("day").toDate();
+  const todayStart     = dayjs(now).startOf("day").toDate();
+  const todayEnd       = dayjs(now).endOf("day").toDate();
+  const ydayStart      = dayjs(now).subtract(1, "day").startOf("day").toDate();
+  const ydayEnd        = dayjs(now).subtract(1, "day").endOf("day").toDate();
+  const monthStart     = dayjs(now).startOf("month").toDate();
+  const monthEnd       = dayjs(now).endOf("month").toDate();
+  const lastMonthStart = dayjs(now).subtract(1, "month").startOf("month").toDate();
+  const lastMonthEnd   = dayjs(now).subtract(1, "month").endOf("month").toDate();
+  const weekStart      = dayjs(now).subtract(6, "day").startOf("day").toDate();
 
-  const [todayRevenue, processingCount, totalOrders, totalCustomers] = await Promise.all([
+  const [
+    todayRevArr, ydayRevArr, monthRevArr, lastMonthRevArr,
+    weekRevArr,
+    processingCount, newOrdersToday, totalOrders, totalCustomers,
+    lowStockCount, totalProducts,
+    pendingReviews,
+  ] = await Promise.all([
     Order.aggregate([
-      { $match: { shop_id: shopId, createdAt: { $gte: from, $lte: to }, status: { $in: ["confirmed","shipping","delivered"] } } },
-      { $group: { _id: null, sum: { $sum: "$total_price" } } }
+      { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: todayStart, $lte: todayEnd } } },
+      { $group: { _id: null, sum: { $sum: "$total_price" } } },
     ]),
-    Order.countDocuments({ shop_id: shopId, status: { $in: ["pending","confirmed","shipping"] } }),
+    Order.aggregate([
+      { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: ydayStart, $lte: ydayEnd } } },
+      { $group: { _id: null, sum: { $sum: "$total_price" } } },
+    ]),
+    Order.aggregate([
+      { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: monthStart, $lte: monthEnd } } },
+      { $group: { _id: null, sum: { $sum: "$total_price" }, count: { $sum: 1 } } },
+    ]),
+    Order.aggregate([
+      { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: lastMonthStart, $lte: lastMonthEnd } } },
+      { $group: { _id: null, sum: { $sum: "$total_price" } } },
+    ]),
+    Order.aggregate([
+      { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: weekStart, $lte: todayEnd } } },
+      { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, rev: { $sum: "$total_price" }, cnt: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]),
+    Order.countDocuments({ shop_id: shopId, status: { $in: PROCESSING_STATUSES } }),
+    Order.countDocuments({ shop_id: shopId, createdAt: { $gte: todayStart, $lte: todayEnd } }),
     Order.countDocuments({ shop_id: shopId }),
-    Order.distinct("user_id", { shop_id: shopId }).then(ids => ids.length)
+    Order.distinct("user_id", { shop_id: shopId }).then((ids) => ids.length),
+    ProductVariant.countDocuments({
+      shop_id: shopId,
+      is_active: true,
+      $expr: { $lte: ["$stock", "$low_stock_threshold"] },
+    }),
+    Product.countDocuments({ shop_id: shopId, status: "active" }),
+    Review.countDocuments({ shop_id: shopId, reply: null, status: "visible" }).catch(() => 0),
   ]);
 
+  const today_revenue      = todayRevArr?.[0]?.sum    || 0;
+  const yesterday_revenue  = ydayRevArr?.[0]?.sum     || 0;
+  const this_month_revenue = monthRevArr?.[0]?.sum    || 0;
+  const last_month_revenue = lastMonthRevArr?.[0]?.sum || 0;
+  const month_order_count  = monthRevArr?.[0]?.count  || 0;
+
+  const pct = (a, b) => (b === 0 ? (a > 0 ? 100 : 0) : Math.round(((a - b) / b) * 100));
+
+  // Build 7-day sparkline (fill zeros for missing days)
+  const sparkline = [];
+  for (let i = 6; i >= 0; i--) {
+    const key = dayjs(now).subtract(i, "day").format("YYYY-MM-DD");
+    const found = weekRevArr.find((r) => r._id === key);
+    sparkline.push({ date: key, revenue: found?.rev || 0, orders: found?.cnt || 0 });
+  }
+
   return {
-    today_revenue: todayRevenue?.[0]?.sum || 0,
-    processing_orders: processingCount,
-    total_orders: totalOrders,
-    total_customers: totalCustomers
+    today_revenue,
+    yesterday_revenue,
+    today_pct:           pct(today_revenue, yesterday_revenue),
+    this_month_revenue,
+    last_month_revenue,
+    month_pct:           pct(this_month_revenue, last_month_revenue),
+    month_order_count,
+    processing_orders:   processingCount,
+    new_orders_today:    newOrdersToday,
+    total_orders:        totalOrders,
+    total_customers:     totalCustomers,
+    low_stock_count:     lowStockCount,
+    total_products:      totalProducts,
+    pending_reviews:     pendingReviews,
+    sparkline,
   };
 };
 
@@ -47,7 +125,7 @@ exports.getRevenueSeries = async (shopId, granularity="day", range=30) => {
              : "%Y";
 
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, createdAt: { $gte: start.toDate(), $lte: end.toDate() }, status: { $in: ["confirmed","shipping","delivered"] } } },
+    { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS, createdAt: { $gte: start.toDate(), $lte: end.toDate() } } },
     { $group: {
         _id: { $dateToString: { format: fmt, date: "$createdAt" } },
         revenue: { $sum: "$total_price" },
@@ -69,17 +147,16 @@ exports.getRevenueSeries = async (shopId, granularity="day", range=30) => {
 exports.getStatusSummary = async (shopId) => {
   const rows = await Order.aggregate([
     { $match: { shop_id: shopId } },
-    { $group: { _id: "$status", cnt: { $sum: 1 } } }
+    { $group: { _id: "$status", cnt: { $sum: 1 } } },
+    { $sort: { cnt: -1 } },
   ]);
-  // map friendly order
-  const order = ["pending","confirmed","packing","shipped","delivered","canceled","refunded"];
-  const map = new Map(rows.map(r => [r._id, r.cnt]));
-  return order.map(k => ({ status: k, count: map.get(k) || 0 }));
+  // Return only statuses that actually exist in this shop's orders
+  return rows.map((r) => ({ status: r._id, count: r.cnt }));
 };
 
 exports.getTopProducts = async (shopId, limit=10) => {
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, status: { $in: ["confirmed","shipping","delivered"] } } },
+    { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS } },
     { $unwind: "$items" },
     { $group: {
         _id: "$items.product_id",
@@ -97,7 +174,7 @@ exports.getTopProducts = async (shopId, limit=10) => {
 
 exports.getTopCustomers = async (shopId, limit=10) => {
   const rows = await Order.aggregate([
-    { $match: { shop_id: shopId, status: { $in: ["confirmed","shipping","delivered"] } } },
+    { $match: { shop_id: shopId, payment_status: PAID_PAYMENT_STATUS } },
     { $group: { _id: "$user_id", total_spent: { $sum: "$total_price" }, orders: { $sum: 1 } } },
     { $sort: { total_spent: -1 } },
     { $limit: limit },

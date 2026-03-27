@@ -1,19 +1,53 @@
 // services/checkoutService.js
 const notif = require("./dbNotificationService");
+const audit = require("./auditLogService");
 const Cart = require("../models/Cart");
 const Voucher = require("../models/Voucher");
 const Order = require("../models/Order");
 const Address = require("../models/Address");
 const Product = require("../models/Product");
 const ProductVariant = require("../models/ProductVariant");
+const FlashSale = require("../models/FlashSale");
 const Shop = require("../models/Shop");
 const ShopCredit = require("../models/ShopCredit");
 const { v4: uuidv4 } = require("uuid");
 const shippingSvc = require("./shippingService");
 
 // ─────────────────────────────────────────────────────────────────────────────
+// getActiveFlashMap — returns Map<variantId, flashItem> for any active flash sales
+// ─────────────────────────────────────────────────────────────────────────────
+async function getActiveFlashMap(variantIds, shopIds) {
+  if (!variantIds.length || !shopIds.length) return new Map();
+  const now = new Date();
+  const flashSales = await FlashSale.find({
+    shop_id: { $in: shopIds.map(String) },
+    status: "active",
+    start_time: { $lte: now },
+    end_time: { $gt: now },
+    "products.variant_id": { $in: variantIds.map(String) },
+  }).lean();
+
+  const map = new Map();
+  for (const fs of flashSales) {
+    for (const p of fs.products) {
+      const vid = String(p.variant_id);
+      if (!map.has(vid) && variantIds.map(String).includes(vid)) {
+        map.set(vid, {
+          flashsale_id: fs._id,
+          flash_price: p.flash_price,
+          quantity_total: p.quantity_total,
+          quantity_sold: p.quantity_sold,
+          max_per_user: fs.max_per_user,
+        });
+      }
+    }
+  }
+  return map;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // resolveItems — Unified item resolution with DB validation
-// Returns items enriched with shop_id from each product
+// Returns items enriched with shop_id from each product, plus flash sale map
 // ─────────────────────────────────────────────────────────────────────────────
 async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
   const isBuyNow = Array.isArray(buy_now_items) && buy_now_items.length > 0;
@@ -53,7 +87,26 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
         total: variant.price * qty,
       });
     }
-    return { items: result, cartItemIds: null };
+
+    // Apply active flash sale prices (buy-now path)
+    const variantIds = result.map((i) => String(i.variant_id));
+    const shopIds    = [...new Set(result.map((i) => i.shop_id).filter(Boolean))];
+    const flashMap   = await getActiveFlashMap(variantIds, shopIds);
+    for (const item of result) {
+      const fi = flashMap.get(String(item.variant_id));
+      if (fi) {
+        if (fi.quantity_sold + item.qty > fi.quantity_total) {
+          throw Object.assign(
+            new Error(`"${item.name}" đã hết suất Flash Sale (còn ${Math.max(0, fi.quantity_total - fi.quantity_sold)} suất)`),
+            { status: 400 }
+          );
+        }
+        item.discount = item.price - fi.flash_price;
+        item.total    = fi.flash_price * item.qty;
+      }
+    }
+
+    return { items: result, cartItemIds: null, flashMap };
   }
 
   // ── Cart-based ────────────────────────────────────────────────────────────
@@ -107,7 +160,25 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
     });
   }
 
-  return { items: result, cartItemIds: Array.from(ids) };
+  // Apply active flash sale prices (cart path)
+  const variantIds = result.map((i) => String(i.variant_id));
+  const shopIds    = [...new Set(result.map((i) => i.shop_id).filter(Boolean))];
+  const flashMap   = await getActiveFlashMap(variantIds, shopIds);
+  for (const item of result) {
+    const fi = flashMap.get(String(item.variant_id));
+    if (fi) {
+      if (fi.quantity_sold + item.qty > fi.quantity_total) {
+        throw Object.assign(
+          new Error(`"${item.name}" đã hết suất Flash Sale (còn ${Math.max(0, fi.quantity_total - fi.quantity_sold)} suất)`),
+          { status: 400 }
+        );
+      }
+      item.discount = item.price - fi.flash_price;
+      item.total    = fi.flash_price * item.qty;
+    }
+  }
+
+  return { items: result, cartItemIds: Array.from(ids), flashMap };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,7 +368,7 @@ exports.confirm = async ({
   };
 
   // ── Resolve & validate items ──────────────────────────────────────────────
-  const { items, cartItemIds } = await resolveItems(userId, { selected_item_ids, buy_now_items });
+  const { items, cartItemIds, flashMap } = await resolveItems(userId, { selected_item_ids, buy_now_items });
 
   // ── Apply voucher (applied to total subtotal, then split proportionally) ──
   const subtotal = items.reduce((s, it) => s + it.total, 0);
@@ -375,9 +446,34 @@ exports.confirm = async ({
     });
   }
 
-  // ── Increment voucher usage counter ──────────────────────────────────────
+  // ── Increment flash sale quantity_sold counters ───────────────────────────
+  if (flashMap && flashMap.size > 0) {
+    for (const item of items) {
+      const fi = flashMap.get(String(item.variant_id));
+      if (fi) {
+        FlashSale.updateOne(
+          { _id: fi.flashsale_id, "products.variant_id": String(item.variant_id) },
+          { $inc: { "products.$.quantity_sold": item.qty } }
+        ).catch((e) => console.error("[flashsale_qty_sold]", e.message));
+      }
+    }
+  }
+
+  // ── Increment voucher usage counter + audit ──────────────────────────────
   if (voucher) {
     Voucher.updateOne({ _id: voucher._id }, { $inc: { used_count: 1 } }).catch(() => { });
+    audit.log({
+      actorId: String(userId),
+      action: "VOUCHER_APPLIED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      metadata: {
+        code: voucher.code,
+        discount,
+        subtotal,
+        order_codes: createdOrders.map((o) => o.order_code),
+      },
+    });
   }
 
   // ── Clear purchased items from cart ──────────────────────────────────────

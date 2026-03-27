@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Input, Button, Select, SelectItem, Textarea, Checkbox, CheckboxGroup, Chip, Switch,
 } from "@heroui/react";
-import { X, Plus, Upload, AlertCircle } from "lucide-react";
+import { X, Plus, Upload, AlertCircle, Shuffle } from "lucide-react";
 import CategoryCascader from "./CategoryCascader";
+
+// Cartesian product helper
+function cartesian(arrays) {
+  return arrays.reduce(
+    (acc, arr) => acc.flatMap((combo) => arr.map((val) => [...combo, val])),
+    [[]]
+  );
+}
 
 const SEASON_KEYS = [
   { key: "spring",     labelKey: "product.season_spring" },
@@ -43,6 +51,10 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
   const [errors,    setErrors]    = useState({});
   // per-dimension input buffer
   const [dimInputs, setDimInputs] = useState({});
+  // per-variant-combo stock & price overrides (create mode only)
+  const [variantRows,     setVariantRows]     = useState({});
+  // input for "distribute evenly" total
+  const [distributeTotal, setDistributeTotal] = useState("");
 
   useEffect(() => {
     svc.listBrands().then((data) => setBrands(Array.isArray(data) ? data : data?.items || []));
@@ -66,6 +78,45 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
     }
   }, [initial?._id]);
 
+  // Derived flags (needed before hooks below)
+  const isEdit = !!initial?._id;
+
+  // Dimensions that have at least one value entered
+  const activeDims = useMemo(
+    () => form.variant_dimensions.filter((d) => (form.variant_values?.[d] || []).length > 0),
+    [form.variant_dimensions, form.variant_values]
+  );
+
+  // All cartesian-product combinations across active dims
+  const variantCombos = useMemo(() => {
+    if (activeDims.length === 0) return [];
+    const arrays = activeDims.map((d) => form.variant_values[d] || []);
+    return cartesian(arrays).map((combo) => {
+      const key = combo.join("\x00");
+      const attrs = {};
+      activeDims.forEach((d, j) => { attrs[d] = combo[j]; });
+      return { key, attrs };
+    });
+  }, [activeDims, form.variant_values]);
+
+  // Keep variantRows in sync with combos: preserve existing, add defaults for new, drop removed
+  useEffect(() => {
+    if (isEdit) return;
+    const basePrice = Number(form.base_price) || 0;
+    setVariantRows((prev) => {
+      const next = {};
+      for (const c of variantCombos) {
+        next[c.key] = prev[c.key] ?? { stock: 0, price: basePrice };
+      }
+      return next;
+    });
+  }, [variantCombos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Compute total stock from per-variant rows (used in submit payload)
+  const variantStockTotal = variantCombos.length > 0
+    ? Object.values(variantRows).reduce((s, r) => s + (Number(r?.stock) || 0), 0)
+    : null;
+
   const set       = (key, val) => setForm((f) => ({ ...f, [key]: val }));
   const setDetail = (key, val) => setForm((f) => ({ ...f, detail_info: { ...f.detail_info, [key]: val } }));
   const setSeo    = (key, val) => setForm((f) => ({ ...f, seo: { ...f.seo, [key]: val } }));
@@ -82,14 +133,35 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
   };
 
   const addDimValue = (dim) => {
-    const v = (dimInputs[dim] || "").trim();
-    if (!v) return;
+    const parts = (dimInputs[dim] || "").split(",").map((v) => v.trim()).filter(Boolean);
+    if (!parts.length) return;
     setForm((f) => {
       const existing = f.variant_values?.[dim] || [];
-      if (existing.includes(v)) return f;
-      return { ...f, variant_values: { ...f.variant_values, [dim]: [...existing, v] } };
+      const newVals = parts.filter((v) => !existing.includes(v));
+      if (!newVals.length) return f;
+      return { ...f, variant_values: { ...f.variant_values, [dim]: [...existing, ...newVals] } };
     });
     setDimInputs((p) => ({ ...p, [dim]: "" }));
+  };
+
+  // Auto-split on comma: immediately add completed values, keep the trailing part in input
+  const handleDimInputChange = (dim, value) => {
+    if (!value.includes(",")) {
+      setDimInputs((p) => ({ ...p, [dim]: value }));
+      return;
+    }
+    const parts = value.split(",").map((v) => v.trim());
+    const toAdd = parts.slice(0, -1).filter(Boolean);
+    const remaining = parts[parts.length - 1];
+    if (toAdd.length) {
+      setForm((f) => {
+        const existing = f.variant_values?.[dim] || [];
+        const newVals = toAdd.filter((v) => !existing.includes(v));
+        if (!newVals.length) return f;
+        return { ...f, variant_values: { ...f.variant_values, [dim]: [...existing, ...newVals] } };
+      });
+    }
+    setDimInputs((p) => ({ ...p, [dim]: remaining }));
   };
 
   const removeDimValue = (dim, val) => {
@@ -100,6 +172,25 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
         [dim]: (f.variant_values?.[dim] || []).filter((x) => x !== val),
       },
     }));
+  };
+
+  // Distribute a given total evenly across all variant combos
+  const distributeEvenly = () => {
+    const total = Math.max(0, parseInt(distributeTotal) || 0);
+    const n = variantCombos.length;
+    if (n === 0) return;
+    const per = Math.floor(total / n);
+    const rem = total - per * n;
+    setVariantRows((prev) => {
+      const next = {};
+      variantCombos.forEach((c, i) => {
+        next[c.key] = {
+          stock: per + (i === 0 ? rem : 0),
+          price: (prev[c.key]?.price ?? Number(form.base_price)) || 0,
+        };
+      });
+      return next;
+    });
   };
 
   // ── Tags ──────────────────────────────────────────────────────────
@@ -189,17 +280,17 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
     const payload = {
       ...form,
       base_price:  Number(form.base_price || 0),
-      stock_total: Number(form.stock_total || 0),
+      stock_total: variantStockTotal !== null ? variantStockTotal : Number(form.stock_total || 0),
+      ...(!isEdit && variantCombos.length > 0
+        ? { variant_overrides: variantRows }
+        : {}),
     };
     onSubmit(payload);
   };
 
-  const isEdit = !!initial?._id;
   // Product already has saved variants in DB (edit mode only)
   const hasExistingVariants = isEdit && (initial?.variants?.length ?? 0) > 0;
-  const hasVariantValues = form.variant_dimensions.some(
-    (d) => (form.variant_values?.[d] || []).length > 0
-  );
+  const hasVariantValues = activeDims.length > 0;
   // Show status toggle only when product is already approved (active or inactive)
   const canToggleStatus = isEdit && (initial?.status === "active" || initial?.status === "inactive");
 
@@ -236,19 +327,19 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
             isInvalid={!!errors.base_price}
             errorMessage={errors.base_price}
           />
-          <Input
-            label={t("product.stock_label")} placeholder="0" type="number" min="0"
-            value={String(form.stock_total)} onValueChange={(v) => set("stock_total", v)}
-            radius="lg"
-            isReadOnly={hasExistingVariants}
-            description={
-              hasExistingVariants
-                ? t("product.stock_from_variants")
-                : hasVariantValues
-                  ? t("product.stock_auto_desc")
+          {(!isEdit && variantCombos.length > 0) ? null : (
+            <Input
+              label={t("product.stock_label")} placeholder="0" type="number" min="0"
+              value={String(form.stock_total)} onValueChange={(v) => set("stock_total", v)}
+              radius="lg"
+              isReadOnly={hasExistingVariants}
+              description={
+                hasExistingVariants
+                  ? t("product.stock_from_variants")
                   : t("product.stock_desc")
-            }
-          />
+              }
+            />
+          )}
         </div>
       </Section>
 
@@ -358,9 +449,9 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
                     </p>
                     <div className="flex gap-2">
                       <Input
-                        placeholder={placeholder}
+                        placeholder={`${placeholder} — phân cách bằng dấu phẩy`}
                         value={dimInputs[d.key] || ""}
-                        onValueChange={(v) => setDimInputs((p) => ({ ...p, [d.key]: v }))}
+                        onValueChange={(v) => handleDimInputChange(d.key, v)}
                         onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addDimValue(d.key))}
                         radius="lg" size="sm" className="flex-1"
                       />
@@ -391,12 +482,113 @@ export default function ProductForm({ initial, onSubmit, svc, loading = false })
           })}
         </div>
 
-        {hasVariantValues && (
+        {hasVariantValues && isEdit && (
           <div className="flex items-start gap-2 p-3 bg-primary-50 rounded-xl border border-primary-100">
             <div className="text-primary-500 mt-0.5"><Plus size={14} /></div>
             <p className="text-xs text-primary-700">
               {t("product.variant_auto_notice")}
             </p>
+          </div>
+        )}
+
+        {/* Variant combo table — create mode only */}
+        {!isEdit && variantCombos.length > 0 && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <p className="text-sm font-semibold text-default-800">
+                Tồn kho &amp; giá mỗi biến thể
+                <span className="ml-1.5 text-xs font-normal text-default-400">
+                  ({variantCombos.length} tổ hợp)
+                </span>
+              </p>
+              <div className="flex items-center gap-2">
+                <Input
+                  size="sm" type="number" min="0" radius="lg" placeholder="Tổng KHo"
+                  value={distributeTotal}
+                  onValueChange={setDistributeTotal}
+                  onKeyDown={(e) => e.key === "Enter" && distributeEvenly()}
+                  className="w-28"
+                  aria-label="Tổng tồn kho để chia đều"
+                />
+                <Button
+                  size="sm" variant="flat" color="primary" radius="lg"
+                  startContent={<Shuffle size={13} />}
+                  onPress={distributeEvenly}
+                >
+                  Chia đều
+                </Button>
+              </div>
+            </div>
+            <div className="rounded-xl border border-default-100 overflow-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-default-50 border-b border-default-100">
+                  <tr>
+                    {activeDims.map((d) => {
+                      const dim = VARIANT_DIM_KEYS.find((x) => x.key === d);
+                      return (
+                        <th key={d} className="px-3 py-2 text-left text-xs font-semibold text-default-500 uppercase whitespace-nowrap">
+                          {dim ? t(dim.labelKey) : d}
+                        </th>
+                      );
+                    })}
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-default-500 uppercase whitespace-nowrap">Tồn kho</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-default-500 uppercase whitespace-nowrap">Giá (₫)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-default-100">
+                  {variantCombos.map((c) => {
+                    const row = variantRows[c.key] || { stock: 0, price: Number(form.base_price) || 0 };
+                    return (
+                      <tr key={c.key} className="hover:bg-default-50">
+                        {activeDims.map((d) => (
+                          <td key={d} className="px-3 py-2 text-xs text-default-700 whitespace-nowrap">{c.attrs[d]}</td>
+                        ))}
+                        <td className="px-3 py-2">
+                          <Input
+                            size="sm" type="number" min="0" radius="lg"
+                            value={String(row.stock)}
+                            onValueChange={(v) =>
+                              setVariantRows((prev) => ({
+                                ...prev,
+                                [c.key]: { ...(prev[c.key] ?? { price: Number(form.base_price) || 0 }), stock: Math.max(0, parseInt(v) || 0) },
+                              }))
+                            }
+                            className="w-24"
+                          />
+                        </td>
+                        <td className="px-3 py-2">
+                          <Input
+                            size="sm" type="number" min="0" radius="lg"
+                            value={String(row.price)}
+                            onValueChange={(v) =>
+                              setVariantRows((prev) => ({
+                                ...prev,
+                                [c.key]: { ...(prev[c.key] ?? { stock: 0 }), price: Math.max(0, parseInt(v) || 0) },
+                              }))
+                            }
+                            className="w-32"
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot className="border-t border-default-200 bg-default-50">
+                  <tr>
+                    <td
+                      colSpan={activeDims.length}
+                      className="px-3 py-2 text-xs font-semibold text-default-600 text-right"
+                    >
+                      Tổng tồn kho:
+                    </td>
+                    <td className="px-3 py-2 text-xs font-bold text-primary-600">
+                      {Object.values(variantRows).reduce((s, r) => s + (Number(r?.stock) || 0), 0)}
+                    </td>
+                    <td />
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         )}
       </Section>

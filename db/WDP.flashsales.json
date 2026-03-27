@@ -1,66 +1,4 @@
 [{
-  "_id": "fs-4ed9731d-bbbc-4c5c-bf22-4e2e6ae2bedb",
-  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
-  "title": "11.11 Mega Sale",
-  "description": "Biggest single day sale!",
-  "start_time": {
-    "$date": "2026-10-19T00:00:00.000Z"
-  },
-  "end_time": {
-    "$date": "2026-10-21T09:59:50.915Z"
-  },
-  "status": "scheduled",
-  "discount_type": "percentage",
-  "discount_value": 40,
-  "max_per_user": 2,
-  "total_limit": 500,
-  "products": [
-    {
-      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
-      "variant_id": "var-cdb0d330-7874-4e6b-994c-f4819f35375b",
-      "flash_price": 389400,
-      "original_price": 649000,
-      "quantity_total": 25,
-      "quantity_sold": 0
-    },
-    {
-      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
-      "variant_id": "var-045e5b88-9d5c-4dc4-b13b-8d9a382ddf5a",
-      "flash_price": 449400,
-      "original_price": 749000,
-      "quantity_total": 30,
-      "quantity_sold": 0
-    },
-    {
-      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
-      "variant_id": "var-f6fecb9d-a098-4623-bb75-2f97b484930f",
-      "flash_price": 389400,
-      "original_price": 649000,
-      "quantity_total": 20,
-      "quantity_sold": 0
-    },
-    {
-      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
-      "variant_id": "var-a8ab892e-c154-4c4e-81e8-255ba8ebdf38",
-      "flash_price": 329400,
-      "original_price": 549000,
-      "quantity_total": 30,
-      "quantity_sold": 0
-    }
-  ],
-  "banner_image": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
-  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
-  "approved_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
-  "createdAt": {
-    "$date": "2025-10-20T09:59:50.920Z"
-  },
-  "updatedAt": {
-    "$date": "2025-11-02T18:59:14.707Z"
-  },
-  "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
-  "__v": 3
-},
-{
   "_id": "fs-6d63232c-5bcf-4ad5-9d86-59041089d007",
   "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
   "title": "Black Friday 50%",
@@ -121,6 +59,68 @@
   },
   "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
   "__v": 2
+},
+{
+  "_id": "fs-4ed9731d-bbbc-4c5c-bf22-4e2e6ae2bedb",
+  "shop_id": "usr-1ecd6bd7-7e5e-4c16-8bc6-d3c64130c03d",
+  "title": "11.11 Mega Sale",
+  "description": "Biggest single day sale!",
+  "start_time": {
+    "$date": "2026-10-19T00:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-10-21T09:59:50.915Z"
+  },
+  "status": "scheduled",
+  "discount_type": "percentage",
+  "discount_value": 40,
+  "max_per_user": 2,
+  "total_limit": 500,
+  "products": [
+    {
+      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
+      "variant_id": "var-cdb0d330-7874-4e6b-994c-f4819f35375b",
+      "flash_price": 389400,
+      "original_price": 649000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-97df68aa-a685-4677-9253-014564dd435d",
+      "variant_id": "var-045e5b88-9d5c-4dc4-b13b-8d9a382ddf5a",
+      "flash_price": 449400,
+      "original_price": 749000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
+      "variant_id": "var-f6fecb9d-a098-4623-bb75-2f97b484930f",
+      "flash_price": 389400,
+      "original_price": 649000,
+      "quantity_total": 20,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prd-e302a4d0-dbbf-4dc4-aeb3-7e472168a34b",
+      "variant_id": "var-a8ab892e-c154-4c4e-81e8-255ba8ebdf38",
+      "flash_price": 329400,
+      "original_price": 549000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "https://res.cloudinary.com/db4ufwyxf/image/upload/v1762099641/dfs/banners/mlswhujqkqipqesyrd32.webp",
+  "created_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "approved_by": "user-3fb2aaa9-39f0-4367-974b-59114d8ccfd2",
+  "createdAt": {
+    "$date": "2025-10-20T09:59:50.920Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-02T18:59:14.707Z"
+  },
+  "banner_id": "ban-66710d09-565d-4095-b88c-e798df731939",
+  "__v": 3
 },
 {
   "_id": "fs-2c3c39ef-e90a-4c97-ab26-9b9f382275f7",
@@ -210,6 +210,495 @@
   },
   "updatedAt": {
     "$date": "2025-11-02T19:11:26.493Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "fs-seed-ended-summer",
+  "shop_id": "shop-955c6b11-2cf5-4fad-9169-f176fd002977",
+  "created_by": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "title": "Flash Sale Hè Rực Rỡ",
+  "description": "Giảm sốc lên đến 40% cho áo thun và sơ mi nam!",
+  "start_time": {
+    "$date": "2026-03-03T17:52:37.168Z"
+  },
+  "end_time": {
+    "$date": "2026-03-10T17:52:37.168Z"
+  },
+  "status": "ended",
+  "discount_type": "percentage",
+  "discount_value": 40,
+  "max_per_user": 2,
+  "total_limit": 200,
+  "products": [
+    {
+      "product_id": "prod-anv-ao-so-mi-nam",
+      "variant_id": "var-anv-ao-so-mi-nam-c0-s0",
+      "flash_price": 210000,
+      "original_price": 350000,
+      "quantity_total": 60,
+      "quantity_sold": 60
+    },
+    {
+      "product_id": "prod-anv-ao-so-mi-nam",
+      "variant_id": "var-anv-ao-so-mi-nam-c0-s1",
+      "flash_price": 210000,
+      "original_price": 350000,
+      "quantity_total": 50,
+      "quantity_sold": 48
+    },
+    {
+      "product_id": "prod-anv-ao-thun-oversize",
+      "variant_id": "var-anv-ao-thun-oversize-c0-s0",
+      "flash_price": 149000,
+      "original_price": 250000,
+      "quantity_total": 80,
+      "quantity_sold": 80
+    },
+    {
+      "product_id": "prod-anv-ao-thun-oversize",
+      "variant_id": "var-anv-ao-thun-oversize-c0-s1",
+      "flash_price": 149000,
+      "original_price": 250000,
+      "quantity_total": 60,
+      "quantity_sold": 55
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-03-24T17:52:37.242Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-24T17:52:37.242Z"
+  }
+},
+{
+  "_id": "fs-seed-active-weekend",
+  "shop_id": "shop-955c6b11-2cf5-4fad-9169-f176fd002977",
+  "created_by": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "title": "Flash Sale Cuối Tuần – Thời Trang Nữ",
+  "description": "Giảm 30% quần jean và đầm – chỉ hôm nay!",
+  "start_time": {
+    "$date": "2026-03-23T17:52:37.525Z"
+  },
+  "end_time": {
+    "$date": "2026-03-25T17:52:37.525Z"
+  },
+  "status": "ended",
+  "discount_type": "percentage",
+  "discount_value": 30,
+  "max_per_user": 1,
+  "total_limit": 150,
+  "products": [
+    {
+      "product_id": "prod-anv-quan-jean-nu",
+      "variant_id": "var-anv-quan-jean-nu-c0-s0",
+      "flash_price": 315000,
+      "original_price": 450000,
+      "quantity_total": 40,
+      "quantity_sold": 27
+    },
+    {
+      "product_id": "prod-anv-quan-jean-nu",
+      "variant_id": "var-anv-quan-jean-nu-c0-s1",
+      "flash_price": 315000,
+      "original_price": 450000,
+      "quantity_total": 30,
+      "quantity_sold": 19
+    },
+    {
+      "product_id": "prod-anv-dam-wrap-nu",
+      "variant_id": "var-anv-dam-wrap-nu-c0-s0",
+      "flash_price": 385000,
+      "original_price": 550000,
+      "quantity_total": 50,
+      "quantity_sold": 34
+    },
+    {
+      "product_id": "prod-anv-dam-wrap-nu",
+      "variant_id": "var-anv-dam-wrap-nu-c0-s1",
+      "flash_price": 385000,
+      "original_price": 550000,
+      "quantity_total": 30,
+      "quantity_sold": 12
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-03-24T17:52:37.613Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-26T23:02:44.072Z"
+  }
+},
+{
+  "_id": "fs-seed-scheduled-sale11",
+  "shop_id": "shop-955c6b11-2cf5-4fad-9169-f176fd002977",
+  "created_by": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "title": "Siêu Sale 11.11 – Thời Trang Nam",
+  "description": "Kaki và sơ mi giảm đến 35% – đặt lịch nhắc ngay!",
+  "start_time": {
+    "$date": "2026-03-25T17:52:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-04-01T17:52:00.000Z"
+  },
+  "status": "active",
+  "discount_type": "percentage",
+  "discount_value": 35,
+  "max_per_user": 2,
+  "total_limit": 300,
+  "products": [
+    {
+      "product_id": "prod-anv-quan-kaki-nam",
+      "variant_id": "var-anv-quan-kaki-nam-c0-s0",
+      "flash_price": 292500,
+      "original_price": 450000,
+      "quantity_total": 80,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-quan-kaki-nam",
+      "variant_id": "var-anv-quan-kaki-nam-c0-s1",
+      "flash_price": 292500,
+      "original_price": 450000,
+      "quantity_total": 60,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-so-mi-nam",
+      "variant_id": "var-anv-ao-so-mi-nam-c0-s2",
+      "flash_price": 247000,
+      "original_price": 380000,
+      "quantity_total": 100,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-82df36a3-221d-4d3f-ae6e-cf791933570c",
+      "flash_price": 78000,
+      "original_price": 120000,
+      "quantity_total": 100,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-7a583438-1ae4-410c-9c33-e501664a377a",
+      "flash_price": 78000,
+      "original_price": 120000,
+      "quantity_total": 50,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-14e7c599-2b74-47c9-bf7f-c0ef3e066c3a",
+      "flash_price": 78000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-cbef2353-2016-436e-aa56-1235d9be727a",
+      "flash_price": 78000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-9eedbadf-ac07-4a19-a312-ef7806edaa00",
+      "flash_price": 78000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-crop-tay-dai",
+      "variant_id": "var-anv-ao-crop-tay-dai-c0-s0",
+      "flash_price": 162500,
+      "original_price": 250000,
+      "quantity_total": 15,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-crop-tay-dai",
+      "variant_id": "var-anv-ao-crop-tay-dai-c0-s1",
+      "flash_price": 169000,
+      "original_price": 260000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-crop-tay-dai",
+      "variant_id": "var-anv-ao-crop-tay-dai-c0-s2",
+      "flash_price": 169000,
+      "original_price": 260000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-khoac-nu-nhe",
+      "variant_id": "var-anv-khoac-nu-nhe-c0-s0",
+      "flash_price": 305500,
+      "original_price": 470000,
+      "quantity_total": 15,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-khoac-nu-nhe",
+      "variant_id": "var-anv-khoac-nu-nhe-c0-s2",
+      "flash_price": 312000,
+      "original_price": 480000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-khoac-nu-nhe",
+      "variant_id": "var-anv-khoac-nu-nhe-c0-s3",
+      "flash_price": 318500,
+      "original_price": 490000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-len-chunky",
+      "variant_id": "var-anv-len-chunky-c0-s1",
+      "flash_price": 299000,
+      "original_price": 460000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-len-chunky",
+      "variant_id": "var-anv-len-chunky-c0-s2",
+      "flash_price": 305500,
+      "original_price": 470000,
+      "quantity_total": 45,
+      "quantity_sold": 0
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-03-24T17:52:37.873Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-27T18:07:14.770Z"
+  },
+  "__v": 3
+},
+{
+  "_id": "fs-68cde40a-1c4c-468e-b44c-2284cf6bbe3f",
+  "shop_id": "shop-955c6b11-2cf5-4fad-9169-f176fd002977",
+  "title": "Sale 30%",
+  "description": "Sale nhanh tay nào MN",
+  "start_time": {
+    "$date": "2026-03-27T18:10:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-03-30T18:10:00.000Z"
+  },
+  "status": "active",
+  "discount_type": "percentage",
+  "discount_value": 30,
+  "max_per_user": 1000,
+  "total_limit": 0,
+  "products": [
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-82df36a3-221d-4d3f-ae6e-cf791933570c",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 100,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-7a583438-1ae4-410c-9c33-e501664a377a",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 50,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-14e7c599-2b74-47c9-bf7f-c0ef3e066c3a",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-9eedbadf-ac07-4a19-a312-ef7806edaa00",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-1cdea274-d49d-40ee-9b21-327893ce7ab7",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-693fa394-ffbb-4aa9-984c-9e260d855b58",
+      "flash_price": 84000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-len-co-v-nu",
+      "variant_id": "var-anv-len-co-v-nu-c0-s2",
+      "flash_price": 294000,
+      "original_price": 420000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-len-co-v-nu",
+      "variant_id": "var-anv-len-co-v-nu-c0-s1",
+      "flash_price": 294000,
+      "original_price": 420000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-len-co-v-nu",
+      "variant_id": "var-anv-len-co-v-nu-c0-s3",
+      "flash_price": 301000,
+      "original_price": 430000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "",
+  "created_by": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "createdAt": {
+    "$date": "2026-03-27T18:11:23.782Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-27T18:11:23.782Z"
+  },
+  "__v": 0
+},
+{
+  "_id": "fs-c0acafca-fcff-4877-af92-10f9fc384c81",
+  "shop_id": "shop-955c6b11-2cf5-4fad-9169-f176fd002977",
+  "title": "Sale Tưng bừng",
+  "description": "",
+  "start_time": {
+    "$date": "2026-03-27T18:41:00.000Z"
+  },
+  "end_time": {
+    "$date": "2026-03-30T18:41:00.000Z"
+  },
+  "status": "active",
+  "discount_type": "percentage",
+  "discount_value": 40,
+  "max_per_user": 100000,
+  "total_limit": 0,
+  "products": [
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-82df36a3-221d-4d3f-ae6e-cf791933570c",
+      "name": "Tewsts triu",
+      "variant_name": "5be8ed4b-06a1-4007-acc9-3a19d7a696d8-1",
+      "flash_price": 72000,
+      "original_price": 120000,
+      "quantity_total": 100,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-7a583438-1ae4-410c-9c33-e501664a377a",
+      "name": "Tewsts triu",
+      "variant_name": "5be8ed4b-06a1-4007-acc9-3a19d7a696d8-2",
+      "flash_price": 72000,
+      "original_price": 120000,
+      "quantity_total": 50,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-5be8ed4b-06a1-4007-acc9-3a19d7a696d8",
+      "variant_id": "var-14e7c599-2b74-47c9-bf7f-c0ef3e066c3a",
+      "name": "Tewsts triu",
+      "variant_name": "5be8ed4b-06a1-4007-acc9-3a19d7a696d8-3",
+      "flash_price": 72000,
+      "original_price": 120000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-jacket-du",
+      "variant_id": "var-anv-jacket-du-c0-s0",
+      "name": "Jacket Dù Unisex ANV 2-Lớp",
+      "variant_name": "JACKETDU-C0S0",
+      "flash_price": 408000,
+      "original_price": 680000,
+      "quantity_total": 25,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-jacket-du",
+      "variant_id": "var-anv-jacket-du-c0-s1",
+      "name": "Jacket Dù Unisex ANV 2-Lớp",
+      "variant_name": "JACKETDU-C0S1",
+      "flash_price": 408000,
+      "original_price": 680000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-jacket-du",
+      "variant_id": "var-anv-jacket-du-c1-s1",
+      "name": "Jacket Dù Unisex ANV 2-Lớp",
+      "variant_name": "JACKETDU-C1S1",
+      "flash_price": 408000,
+      "original_price": 680000,
+      "quantity_total": 40,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-jacket-du",
+      "variant_id": "var-anv-jacket-du-c1-s2",
+      "name": "Jacket Dù Unisex ANV 2-Lớp",
+      "variant_name": "JACKETDU-C1S2",
+      "flash_price": 414000,
+      "original_price": 690000,
+      "quantity_total": 45,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-crop-tay-dai",
+      "variant_id": "var-anv-ao-crop-tay-dai-c0-s0",
+      "name": "Áo Crop Tay Dài Nữ ANV Long Sleeve",
+      "variant_name": "CROPTAYDAI-C0S0",
+      "flash_price": 150000,
+      "original_price": 250000,
+      "quantity_total": 15,
+      "quantity_sold": 0
+    },
+    {
+      "product_id": "prod-anv-ao-crop-tay-dai",
+      "variant_id": "var-anv-ao-crop-tay-dai-c0-s1",
+      "name": "Áo Crop Tay Dài Nữ ANV Long Sleeve",
+      "variant_name": "CROPTAYDAI-C0S1",
+      "flash_price": 156000,
+      "original_price": 260000,
+      "quantity_total": 30,
+      "quantity_sold": 0
+    }
+  ],
+  "banner_image": "",
+  "created_by": "user-58e7fe1d-f961-4522-8a15-c2231d963b81",
+  "createdAt": {
+    "$date": "2026-03-27T18:41:57.288Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-27T18:41:57.288Z"
   },
   "__v": 0
 }]
