@@ -21,105 +21,125 @@ jest.mock("../src/services/notificationService", () => ({
     deleteNotification: jest.fn(),
 }));
 
-describe("orderController.cancel", () => {
-    let req, res, next, mockOrder;
+describe("Order Controller - Test Case Specification", () => {
+    let mockReq, mockRes, mockNext, mockOrder;
 
     beforeEach(() => {
         jest.clearAllMocks();
-
-        // Setup request/response mocks
-        req = {
-            userId: "user_123",
-            params: { id: "ORD_999" },
-            body: { reason: "Tôi muốn đổi sản phẩm" }
-        };
-        res = {
+        mockRes = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn().mockReturnThis()
         };
-        next = jest.fn();
+        mockNext = jest.fn();
 
-        // Setup a fake Mongoose Order object
+        // Base mock order object
         mockOrder = {
-            _id: "654321",
-            order_code: "ORD_999",
-            user_id: "user_123",
-            status: "order_created", // A cancellable status
-            total_price: 150000,
-            shop_id: "shop_456",
+            _id: "ord_123",
+            order_code: "ORD-ABC",
+            user_id: "u1",
+            status: "pending",
+            total_price: 100000,
             status_history: [],
-            save: jest.fn().mockResolvedValue(true),
-            toObject: jest.fn().mockReturnThis()
+            save: jest.fn().mockResolvedValue(true)
         };
+
+        Order.findOne = jest.fn();
+        Shop.findById = jest.fn();
+        refundSvc.isRefundable = jest.fn().mockReturnValue(false); // Default: not refundable
+        refundSvc.processAutoRefund = jest.fn();
     });
 
-    it("should successfully cancel and process a refund for prepaid orders", async () => {
-        // 1. Mock Order found
-        Order.findOne.mockResolvedValue(mockOrder);
+    // ==========================================
+    // CONDITION: cancel()
+    // ==========================================
+    describe("Condition: cancel()", () => {
 
-        // 2. Mock Refund Service: Order is refundable
-        refundSvc.isRefundable.mockReturnValue(true);
+        // --- NORMAL (N) ---
+        describe("Precondition: Order Status Eligible, Payment Method: COD", () => {
+            it("Confirm: Return T, wallet_credited: 0 | Type: N", async () => {
+                // CONDITION:
+                mockOrder.payment_method = "COD";
+                mockOrder.total_price = 100000;
+                Order.findOne.mockResolvedValue(mockOrder);
 
-        // 3. Mock Shop lookup
-        Shop.findById.mockReturnValue({
-            lean: jest.fn().mockResolvedValue({ owner_id: "owner_789" })
+                // Logic: refundSvc.isRefundable should return false for COD
+                refundSvc.isRefundable.mockReturnValue(false);
+
+                mockReq = { userId: "u1", params: { id: "ord_123" } };
+
+                // EXECUTE:
+                await orderController.cancel(mockReq, mockRes, mockNext);
+
+                // CONFIRM:
+                expect(refundSvc.processAutoRefund).not.toHaveBeenCalled();
+                expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({
+                    data: expect.objectContaining({
+                        wallet_credited: 0, // No money back for COD
+                        status: "canceled_by_customer"
+                    })
+                }));
+            });
         });
 
-        // 4. Mock Auto-Refund success
-        refundSvc.processAutoRefund.mockResolvedValue({ customerTxn: {}, shopTxn: {} });
+        describe("Precondition: Order Status Eligible, Payment Method: WALLET", () => {
+            it("Confirm: Return T, wallet_credited: 100000 | Type: N", async () => {
+                // CONDITION:
+                mockOrder.payment_method = "WALLET";
+                mockOrder.total_price = 100000;
+                Order.findOne.mockResolvedValue(mockOrder);
 
-        await orderController.cancel(req, res, next);
+                // Logic: refundSvc.isRefundable returns true for Wallet
+                refundSvc.isRefundable.mockReturnValue(true);
+                refundSvc.processAutoRefund.mockResolvedValue(true);
 
-        expect(mockOrder.status).toBe("canceled_by_customer");
-        expect(mockOrder.payment_status).toBe("refunded");
+                mockReq = { userId: "u1", params: { id: "ord_123" } };
 
-        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-            status: "success",
-            data: expect.objectContaining({
-                wallet_credited: 150000,
-                status: "canceled_by_customer"
-            })
-        }));
+                // EXECUTE:
+                await orderController.cancel(mockReq, mockRes, mockNext);
 
-    });
+                // CONFIRM:
+                expect(refundSvc.processAutoRefund).toHaveBeenCalled();
+                expect(mockOrder.payment_status).toBe("refunded");
+                expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({
+                    data: expect.objectContaining({
+                        wallet_credited: 100000 // Full refund for Wallet
+                    })
+                }));
+            });
+        });
 
-    it("should cancel but NOT refund if order is not refundable (e.g. COD)", async () => {
-        Order.findOne.mockResolvedValue(mockOrder);
+        // --- ABNORMAL (A) ---
+        describe("Precondition: Connection OK, Order Query Failure", () => {
 
-        // Mock Refund Service: Not refundable
-        refundSvc.isRefundable.mockReturnValue(false);
+            it("Confirm: Return F, Status: 404, Message: 'Không tìm thấy đơn' | Type: A", async () => {
+                // Condition: Database returns null
+                Order.findOne.mockResolvedValue(null);
+                mockReq = { userId: "u1", params: { id: "invalid_id" } };
 
-        await orderController.cancel(req, res, next);
+                await orderController.cancel(mockReq, mockRes, mockNext);
 
-        expect(mockOrder.status).toBe("canceled_by_customer");
-        expect(mockOrder.payment_status).not.toBe("refunded"); // Should remain original
-        expect(mockOrder.save).toHaveBeenCalledTimes(1); // Only saved once
+                expect(mockRes.status).toHaveBeenCalledWith(404);
+                expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({
+                    message: "Không tìm thấy đơn"
+                }));
+            });
+        });
 
-        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-            data: expect.objectContaining({ wallet_credited: 0 })
-        }));
-    });
+        describe("Precondition: Order exists, Ineligible Status", () => {
 
-    it("should return 400 if order is in a non-cancellable state (e.g. shipping)", async () => {
-        mockOrder.status = "shipping"; // Not in the CUSTOMER_CANCELLABLE Set
-        Order.findOne.mockResolvedValue(mockOrder);
+            it("Confirm: Return F, Status: 400, Message: 'không thể hủy ở trạng thái hiện tại' | Type: A", async () => {
+                // Condition: Status is 'shipping' (NOT in CUSTOMER_CANCELLABLE set)
+                mockOrder.status = "shipping";
+                Order.findOne.mockResolvedValue(mockOrder);
+                mockReq = { userId: "u1", params: { id: "ord_123" } };
 
-        await orderController.cancel(req, res, next);
+                await orderController.cancel(mockReq, mockRes, mockNext);
 
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-            message: "Đơn hàng không thể hủy ở trạng thái hiện tại."
-        }));
-    });
-
-    it("should return 404 if order is not found for this user", async () => {
-        Order.findOne.mockResolvedValue(null);
-
-        await orderController.cancel(req, res, next);
-
-        expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-            message: "Không tìm thấy đơn"
-        }));
+                expect(mockRes.status).toHaveBeenCalledWith(400);
+                expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({
+                    message: "Đơn hàng không thể hủy ở trạng thái hiện tại."
+                }));
+            });
+        });
     });
 });

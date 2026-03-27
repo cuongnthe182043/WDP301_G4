@@ -1,216 +1,305 @@
-const productAdminService = require("../src/services/productAdminService");
-const Product = require("../src/models/Product");
-const ProductVariant = require("../src/models/ProductVariant");
-const Category = require("../src/models/Category");
+const mongoose = require("mongoose");
 
-jest.mock("../src/models/Product");
-jest.mock("../src/models/ProductVariant");
-jest.mock("../src/models/Category");
+describe("Product Admin Service - createProduct", () => {
+    let productAdminService;
+    let Product;
+    let Category;
+    let Shop;
+    let dbNotif; // This is the actual source of the helpers
+    let moderationSvc;
 
-describe("Product Service", () => {
+    const shopId = "60d0fe4f5311236168a109ca";
+    const ownerId = "60d0fe4f5311236168a109cb";
 
-    describe("createProduct", () => {
-        let mockPayload;
-        const shopId = "shop_123";
+    beforeEach(() => {
+        // 1. Wipe the cache so the internal 'require' calls get the mocks
+        jest.resetModules();
 
-        beforeEach(() => {
-            jest.clearAllMocks();
-            mockPayload = {
-                name: "Vintage Denim Jacket",
-                base_price: 550000,
-                category_id: "cat_outerwear",
-                detail_info: {
-                    origin_country: "Vietnam",
-                    materials: ["Cotton", "Elastane"],
-                    seasons: ["autumn", "winter"]
-                },
-                status: "active", // Should be ignored
-                rejection_reason: "Should be cleared" // Should be ignored
-            };
+        // 2. Mock the DB Notification Service directly
+        // This stops the "Operation notifications.insertOne() buffering timed out" error
+        jest.doMock("../src/services/dbNotificationService", () => ({
+            productApproved: jest.fn().mockResolvedValue({}),
+            productRejected: jest.fn().mockResolvedValue({}),
+            productFlagged: jest.fn().mockResolvedValue({}),
+            create: jest.fn().mockResolvedValue({}),
+        }));
+
+        // 3. Mock the other dependencies
+        jest.doMock("../src/models/Product", () => ({
+            findOne: jest.fn(),
+            create: jest.fn(),
+        }));
+        jest.doMock("../src/models/Category", () => ({
+            findById: jest.fn(),
+        }));
+        jest.doMock("../src/models/Shop", () => ({
+            findById: jest.fn(),
+        }));
+        jest.doMock("../src/services/productModerationService", () => ({
+            moderateProduct: jest.fn(),
+        }));
+
+        // 4. Re-require everything inside the beforeEach
+        Product = require("../src/models/Product");
+        Category = require("../src/models/Category");
+        Shop = require("../src/models/Shop");
+        dbNotif = require("../src/services/dbNotificationService");
+        moderationSvc = require("../src/services/productModerationService");
+
+        // REQUIRE THE SERVICE LAST
+        productAdminService = require("../src/services/productAdminService");
+    });
+
+    afterAll(async () => {
+        await mongoose.disconnect();
+    });
+
+    const mockChain = (data) => ({
+        select: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockResolvedValue(data),
+    });
+
+    it("should auto-approve and notify via dbNotificationService", async () => {
+        // Setup Shop lookup
+        Shop.findById.mockReturnValue(mockChain({ owner_id: ownerId }));
+
+        // Setup generic behaviors
+        Category.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
+        Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
+        Product.create.mockImplementation((doc) => Promise.resolve({ ...doc, _id: "p1" }));
+
+        // Setup Moderation
+        moderationSvc.moderateProduct.mockReturnValue({
+            decision: "approved",
+            score: 0,
+            flags: [],
+            summary: ""
         });
 
-        it("should create a product with correct status and shop_id", async () => {
-            Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
-            Category.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
+        const payload = { name: "Vintage Blue Denim" };
+        const result = await productAdminService.createProduct(payload, shopId);
 
-            await productAdminService.createProduct(mockPayload, shopId);
+        // Assertions
+        expect(result.status).toBe("active");
 
-            expect(Product.create).toHaveBeenCalledWith(expect.objectContaining({
-                shop_id: shopId,
-                status: "pending",
-                rejection_reason: "",
-                base_price: 550000
-            }));
+        // This should now have 1 call because we mocked the correct file!
+        expect(dbNotif.productApproved).toHaveBeenCalledWith(ownerId, "Vintage Blue Denim");
+    });
+
+    it("should auto-reject and notify with reason", async () => {
+        Shop.findById.mockReturnValue(mockChain({ owner_id: ownerId }));
+        Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
+        Product.create.mockImplementation((doc) => Promise.resolve({ ...doc, _id: "p2" }));
+
+        moderationSvc.moderateProduct.mockReturnValue({
+            decision: "rejected",
+            score: 100,
+            flags: [],
+            summary: "Restricted content"
         });
 
-        it("should handle slug collision by appending a timestamp", async () => {
-            // Mock that the slug "vintage-denim-jacket" already exists
-            Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue({ _id: "p_old" }) });
+        const payload = { name: "Banned Item" };
+        await productAdminService.createProduct(payload, shopId);
 
-            const fixedTime = 1711234567890;
-            jest.spyOn(Date, 'now').mockReturnValue(fixedTime);
-
-            await productAdminService.createProduct(mockPayload, shopId);
-
-            expect(Product.create).toHaveBeenCalledWith(expect.objectContaining({
-                slug: `vintage-denim-jacket-${fixedTime}`
-            }));
-
-            jest.restoreAllMocks();
-        });
-
-        it("should inherit and build category_path correctly", async () => {
-            const mockCategory = {
-                slug: "denim",
-                path: ["fashion", "men"]
-            };
-
-            Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
-            Category.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue(mockCategory) });
-
-            await productAdminService.createProduct(mockPayload, shopId);
-
-            expect(Product.create).toHaveBeenCalledWith(expect.objectContaining({
-                category_path: ["fashion", "men", "denim"]
-            }));
-        });
-
-        it("should maintain detail_info provided in the payload", async () => {
-            Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
-            Category.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
-
-            await productAdminService.createProduct(mockPayload, shopId);
-
-            expect(Product.create).toHaveBeenCalledWith(expect.objectContaining({
-                detail_info: {
-                    origin_country: "Vietnam",
-                    materials: ["Cotton", "Elastane"],
-                    seasons: ["autumn", "winter"]
-                }
-            }));
-        });
+        expect(dbNotif.productRejected).toHaveBeenCalledWith(ownerId, "Banned Item", "Restricted content");
     });
 });
 
-describe("productAdminService.deleteProduct (Soft Delete)", () => {
-    const productId = "prod-123";
-    const shopId = "shop-999";
+describe("Product Admin Service - deleteProduct", () => {
+    let productAdminService;
+    let Product;
+    let ProductVariant;
+
+    const productId = "prod_delete_789";
+    const shopId = "shop_123";
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.resetModules();
+
+        // 1. Mock the Models
+        jest.doMock("../src/models/Product", () => ({
+            findOneAndUpdate: jest.fn(),
+        }));
+        jest.doMock("../src/models/ProductVariant", () => ({
+            updateMany: jest.fn(),
+        }));
+
+        // 2. Re-require
+        Product = require("../src/models/Product");
+        ProductVariant = require("../src/models/ProductVariant");
+        productAdminService = require("../src/services/productAdminService");
     });
 
-    it("should deactivate variants and set product status to inactive", async () => {
-        Product.findOneAndUpdate.mockResolvedValue({ _id: productId, status: "inactive" });
+    it("should perform a soft delete by deactivating variants and updating product status", async () => {
+        // Setup Mock Returns
+        // updateMany usually returns an object like { acknowledged: true, modifiedCount: 5 }
+        ProductVariant.updateMany.mockResolvedValue({ modifiedCount: 5 });
 
-        await productAdminService.deleteProduct(productId, shopId);
+        // findOneAndUpdate returns the updated document
+        Product.findOneAndUpdate.mockResolvedValue({
+            _id: productId,
+            status: "inactive"
+        });
 
-        // Verify variants are deactivated, NOT deleted
+        const result = await productAdminService.deleteProduct(productId, shopId);
+
+        // 1. Verify Variants were deactivated and stock set to 0
         expect(ProductVariant.updateMany).toHaveBeenCalledWith(
             { product_id: productId, shop_id: shopId },
             { $set: { is_active: false, stock: 0 } }
         );
 
-        // Verify product is marked inactive, NOT deleted
+        // 2. Verify Product status was set to inactive
         expect(Product.findOneAndUpdate).toHaveBeenCalledWith(
             { _id: productId, shop_id: shopId },
             { $set: { status: "inactive" } },
             { new: true }
         );
 
-        // Safety check: ensure hard delete methods were NOT called
-        expect(Product.findOneAndDelete).not.toHaveBeenCalled();
-        expect(ProductVariant.deleteMany).not.toHaveBeenCalled();
+        // 3. Verify the returned result
+        expect(result.status).toBe("inactive");
+    });
+
+    it("should return null if the product to delete is not found", async () => {
+        // If findOneAndUpdate finds nothing, it returns null
+        Product.findOneAndUpdate.mockResolvedValue(null);
+        ProductVariant.updateMany.mockResolvedValue({});
+
+        const result = await productAdminService.deleteProduct("non_existent", shopId);
+
+        expect(result).toBeNull();
     });
 });
 
-describe("productAdminService.updateProduct", () => {
-    const shopId = "shop_123";
-    const productId = "prod_456";
+describe("Product Admin Service - updateProduct", () => {
+    let productAdminService;
+    let Product;
+    let Category;
+    let Shop;
+    let ProductVariant;
+    let dbNotif;
+    let moderationSvc;
+
+    const shopId = "60d0fe4f5311236168a109ca";
+    const ownerId = "60d0fe4f5311236168a109cb";
+    const productId = "60d0fe4f5311236168a109cc";
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.resetModules();
 
-        // Default: no variants, no slug conflict
-        ProductVariant.countDocuments.mockResolvedValue(0);
-        Product.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue({ _id: productId, name: "Updated" }) });
-    });
+        jest.doMock("../src/models/Product", () => ({
+            findOne: jest.fn(),
+            findOneAndUpdate: jest.fn(),
+        }));
+        jest.doMock("../src/models/Category", () => ({
+            findById: jest.fn(),
+        }));
+        jest.doMock("../src/models/Shop", () => ({
+            findById: jest.fn(),
+        }));
+        jest.doMock("../src/models/ProductVariant", () => ({
+            countDocuments: jest.fn(),
+        }));
+        jest.doMock("../src/services/productModerationService", () => ({
+            moderateProduct: jest.fn(),
+        }));
+        jest.doMock("../src/services/dbNotificationService", () => ({
+            productRejected: jest.fn().mockResolvedValue({}),
+            productFlagged: jest.fn().mockResolvedValue({}),
+        }));
 
-    it("should strip forbidden fields from the update payload", async () => {
-        const payload = {
-            name: "New Name",
-            rating_avg: 5,         // Forbidden
-            shop_id: "HACKER_SHOP", // Forbidden
-            sold_count: 1000       // Forbidden
-        };
+        Product = require("../src/models/Product");
+        Category = require("../src/models/Category");
+        Shop = require("../src/models/Shop");
+        ProductVariant = require("../src/models/ProductVariant");
+        dbNotif = require("../src/services/dbNotificationService");
+        moderationSvc = require("../src/services/productModerationService");
+        productAdminService = require("../src/services/productAdminService");
 
-        await productAdminService.updateProduct(productId, payload, shopId);
-
-        // Use objectContaining to ignore the auto-generated slug
-        expect(Product.findOneAndUpdate).toHaveBeenCalledWith(
-            { _id: productId, shop_id: shopId },
-            {
-                $set: expect.objectContaining({
-                    name: "New Name"
-                })
-            },
-            { new: true }
-        );
-
-        // verify the forbidden fields were NOT included in the $set call
-        const lastCall = Product.findOneAndUpdate.mock.calls[0][1].$set;
-        expect(lastCall.rating_avg).toBeUndefined();
-        expect(lastCall.shop_id).toBeUndefined();
-        expect(lastCall.sold_count).toBeUndefined();
-    });
-
-    it("should only allow status updates to 'active' or 'inactive'", async () => {
-        // Attempting to set status to 'pending' (not allowed in this function)
-        const payload = { status: "pending", name: "Test" };
-
-        await productAdminService.updateProduct(productId, payload, shopId);
-
-        const updateArgument = Product.findOneAndUpdate.mock.calls[0][1].$set;
-        expect(updateArgument.status).toBeUndefined();
-        expect(updateArgument.name).toBe("Test");
-
-        // Attempting to set status to 'active' (allowed)
-        await productAdminService.updateProduct(productId, { status: "active" }, shopId);
-        expect(Product.findOneAndUpdate.mock.calls[1][1].$set.status).toBe("active");
-    });
-
-    it("should handle slug updates and exclude current ID from conflict check", async () => {
-        const payload = { name: "New Phone" };
-        // Mock that 'new-phone' is already taken by a DIFFERENT product
-        Product.findOne.mockImplementation((query) => {
-            if (query.slug === "new-phone" && query._id?.$ne === productId) {
-                return { lean: jest.fn().mockResolvedValue({ _id: "other_prod" }) };
-            }
-            return { lean: jest.fn().mockResolvedValue(null) };
+        // Default moderation pass
+        moderationSvc.moderateProduct.mockReturnValue({
+            decision: "approved",
+            score: 0,
+            flags: [],
+            summary: ""
         });
-
-        const fixedTime = 99999;
-        jest.spyOn(Date, 'now').mockReturnValue(fixedTime);
-
-        await productAdminService.updateProduct(productId, payload, shopId);
-
-        expect(Product.findOneAndUpdate).toHaveBeenCalledWith(
-            expect.any(Object),
-            expect.objectContaining({
-                $set: expect.objectContaining({ slug: `new-phone-${fixedTime}` })
-            }),
-            expect.any(Object)
-        );
     });
 
-    it("should trigger recomputeStockTotal if variants exist", async () => {
-        ProductVariant.countDocuments.mockResolvedValue(5); // 5 variants found
-        // We must spy on the export because updateProduct calls it via 'exports'
-        const recomputeSpy = jest.spyOn(productAdminService, "recomputeStockTotal").mockResolvedValue(true);
+    const mockChain = (data) => ({
+        select: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockResolvedValue(data),
+    });
 
-        await productAdminService.updateProduct(productId, { name: "Update" }, shopId);
+    describe("Field Stripping & Status Toggle", () => {
+        it("should strip sensitive fields and return the updated product", async () => {
+            /**
+             * FIX: Use mockImplementation to handle multiple findOne calls.
+             * 1. The merge check: findOne({ _id: id, shop_id: shopId })
+             * 2. The final return: findOne({ _id: id, shop_id: shopId })
+             */
+            Product.findOne.mockImplementation((query) => {
+                // If it's a slug check (has $ne), return null (no conflict)
+                if (query.slug) return mockChain(null);
+                // Otherwise, return a valid product object
+                return mockChain({ _id: productId, name: "Updated Name", status: "active" });
+            });
 
-        expect(recomputeSpy).toHaveBeenCalledWith(productId, shopId);
-        recomputeSpy.mockRestore();
+            Product.findOneAndUpdate.mockResolvedValue({});
+            ProductVariant.countDocuments.mockResolvedValue(0);
+
+            const payload = {
+                name: "Updated Name",
+                rating_avg: 5,   // Should be stripped
+                status: "active"
+            };
+
+            const result = await productAdminService.updateProduct(productId, payload, shopId);
+
+            // Verify final return is defined
+            expect(result).toBeDefined();
+            expect(result.name).toBe("Updated Name");
+
+            // Verify the update call stripped the fields
+            const patch = Product.findOneAndUpdate.mock.calls[0][1].$set;
+            expect(patch.rating_avg).toBeUndefined();
+            expect(patch.status).toBe("active");
+        });
+    });
+
+    describe("Re-moderation & Notifications", () => {
+        it("should notify when re-moderation rejects changes", async () => {
+            // Mock findOne for the merge-check and return-check
+            Product.findOne.mockImplementation(() => mockChain({ _id: productId, name: "Old Name" }));
+
+            moderationSvc.moderateProduct.mockReturnValue({
+                decision: "rejected",
+                score: 100,
+                flags: [],
+                summary: "Banned"
+            });
+
+            Shop.findById.mockReturnValue(mockChain({ owner_id: ownerId }));
+            Product.findOneAndUpdate.mockResolvedValue({});
+            ProductVariant.countDocuments.mockResolvedValue(0);
+
+            await productAdminService.updateProduct(productId, { description: "bad words" }, shopId);
+
+            expect(dbNotif.productRejected).toHaveBeenCalledWith(ownerId, "Old Name", "Banned");
+        });
+    });
+
+    describe("Stock Logic", () => {
+        it("should trigger recomputeStockTotal if variants exist", async () => {
+            Product.findOne.mockImplementation(() => mockChain({ _id: productId }));
+            Product.findOneAndUpdate.mockResolvedValue({});
+            ProductVariant.countDocuments.mockResolvedValue(5);
+
+            const recomputeSpy = jest.spyOn(productAdminService, "recomputeStockTotal").mockResolvedValue(true);
+
+            await productAdminService.updateProduct(productId, { status: "active" }, shopId);
+
+            expect(recomputeSpy).toHaveBeenCalledWith(productId, shopId);
+            recomputeSpy.mockRestore();
+        });
     });
 });

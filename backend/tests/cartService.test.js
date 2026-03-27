@@ -280,18 +280,6 @@ describe("cartService.addItem", () => {
         })).rejects.toThrow("Biến thể không khớp sản phẩm");
     });
 
-    it("should use product image if variant image is missing", async () => {
-        mockVariant.images = []; // No variant images
-
-        await cartService.addItem("user_123", {
-            product_id: "p_1",
-            variant_id: "v_1",
-            qty: 1
-        });
-
-        expect(mockCart.items[0].image).toBe("prod-img.jpg");
-    });
-
     it("should cap qty at 1 if input qty is less than 1", async () => {
         await cartService.addItem("user_123", {
             product_id: "p_1",

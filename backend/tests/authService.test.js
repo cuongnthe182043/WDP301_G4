@@ -207,5 +207,18 @@ describe("Auth Service - Test Case Specification", () => {
                 });
             });
         });
+        it("11. should login existing user without creating a new one (Normal Path)", async () => {
+            // Condition: User already exists in the database
+            User.findOne.mockResolvedValue(mockUser);
+
+            const result = await authService.googleLogin("mock-google-token");
+
+            // Confirmation: User.create should NOT be called
+            expect(User.create).not.toHaveBeenCalled();
+
+            // Confirmation: Returns tokens for the existing user
+            expect(result.accessToken).toBe("access-token");
+            expect(mockUser.save).toHaveBeenCalled(); // Should still update refresh token/last login
+        });
     });
 });
