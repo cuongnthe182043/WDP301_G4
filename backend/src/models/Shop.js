@@ -18,6 +18,19 @@ const ShopSchema = new mongoose.Schema(
       enum: ["pending", "approved", "suspended"],
       default: "pending",
     },
+    // GHN pickup address — used as from_* in shipping orders
+    pickup_address: {
+      name:          { type: String, default: "" },
+      phone:         { type: String, default: "" },
+      address:       { type: String, default: "" },
+      province_id:   { type: Number, default: null },
+      province_name: { type: String, default: "" },
+      district_id:   { type: Number, default: null },
+      district_name: { type: String, default: "" },
+      ward_code:     { type: String, default: "" },
+      ward_name:     { type: String, default: "" },
+    },
+
     rating_avg: { type: Number, default: 0 },
     total_products: { type: Number, default: 0 },
     total_orders: { type: Number, default: 0 },
