@@ -42,26 +42,26 @@ export default function ShopLayout() {
   ];
 
   const S = {
-    sidebar:     isDark ? { background: "#18181b", borderRight: "1px solid #27272a", boxShadow: "2px 0 16px rgba(0,0,0,0.35)" }
+    sidebar:     isDark ? { background: "#1a1e2e", borderRight: "1px solid #2e3347", boxShadow: "2px 0 16px rgba(0,0,0,0.2)" }
                         : { background: "#ffffff",  borderRight: "1px solid #e8edf5", boxShadow: "2px 0 12px rgba(99,102,241,0.06)" },
-    topBorder:   isDark ? { borderBottom: "1px solid #27272a" } : { borderBottom: "1px solid #f0f4fb" },
-    brandText:   isDark ? "#f4f4f5" : "#1e293b",
-    collapseBtn: isDark ? { background: "#27272a", color: "#71717a" } : { background: "#f1f5f9", color: "#94a3b8" },
-    collapseBtnHover: isDark ? { background: "#3f3f46", color: "#d4d4d8" } : { background: "#e2e8f0", color: "#475569" },
-    divider:     isDark ? "#27272a" : "#f0f4fb",
-    divLabel:    isDark ? "#52525b" : "#b8c2d4",
-    navInactive: isDark ? "#71717a" : "#64748b",
-    navHoverBg:  isDark ? "#27272a" : "#f8fafc",
-    navHoverTxt: isDark ? "#f4f4f5" : "#1e293b",
-    footerBorder:isDark ? { borderTop: "1px solid #27272a" } : { borderTop: "1px solid #f0f4fb" },
-    footerText:  isDark ? "#52525b" : "#94a3b8",
-    main:        isDark ? "#09090b" : undefined,
+    topBorder:   isDark ? { borderBottom: "1px solid #2e3347" } : { borderBottom: "1px solid #f0f4fb" },
+    brandText:   isDark ? "#e8eaed" : "#1e293b",
+    collapseBtn: isDark ? { background: "#222738", color: "#6b7280" } : { background: "#f1f5f9", color: "#94a3b8" },
+    collapseBtnHover: isDark ? { background: "#2e3347", color: "#c8cbd4" } : { background: "#e2e8f0", color: "#475569" },
+    divider:     isDark ? "#2e3347" : "#f0f4fb",
+    divLabel:    isDark ? "#4b5263" : "#b8c2d4",
+    navInactive: isDark ? "#6b7280" : "#64748b",
+    navHoverBg:  isDark ? "#222738" : "#f8fafc",
+    navHoverTxt: isDark ? "#e8eaed" : "#1e293b",
+    footerBorder:isDark ? { borderTop: "1px solid #2e3347" } : { borderTop: "1px solid #f0f4fb" },
+    footerText:  isDark ? "#4b5263" : "#94a3b8",
+    main:        isDark ? "#131620" : undefined,
   };
 
   return (
     <div
       className="flex min-h-[calc(100dvh-var(--header-height))]"
-      style={{ background: isDark ? "#09090b" : "#f8fafc" }}
+      style={{ background: isDark ? "#131620" : "#f8fafc" }}
     >
 
       {/* ── Sidebar ── */}
@@ -201,7 +201,7 @@ export default function ShopLayout() {
       </aside>
 
       {/* ── Main ── */}
-      <main className="flex-1 overflow-auto p-6" style={{ background: isDark ? "#09090b" : undefined }}>
+      <main className="flex-1 overflow-auto p-6" style={{ background: isDark ? "#131620" : undefined }}>
         <Outlet />
       </main>
     </div>

@@ -147,7 +147,7 @@ export default function AdminBrands() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {[
-          { label: t("admin.mod_stat_total") || "Total brands", value: stats.total, color: "text-gray-900 dark:text-zinc-100", icon: Tag },
+          { label: t("admin.mod_stat_total") || "Total brands", value: stats.total, color: "text-gray-900 dark:text-[#e8eaed]", icon: Tag },
           { label: t("common.type") || "Countries",             value: stats.countries, color: "text-blue-600", icon: Globe },
           { label: "With logo",                                  value: stats.withLogo,  color: "text-green-600", icon: Upload },
         ].map((s) => {
@@ -165,7 +165,7 @@ export default function AdminBrands() {
                 </div>
                 <div className="ml-0">
                   <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
-                  <p className="text-[11px] text-gray-500 dark:text-zinc-400">{s.label}</p>
+                  <p className="text-[11px] text-gray-500 dark:text-[#9ea3b5]">{s.label}</p>
                 </div>
               </CardBody>
             </Card>
@@ -176,8 +176,8 @@ export default function AdminBrands() {
       {/* Header + Filters */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-gray-900 dark:text-zinc-100">{t("shop.brands")}</h1>
-          <p className="text-sm text-gray-400 dark:text-zinc-500">
+          <h1 className="text-xl font-black text-gray-900 dark:text-[#e8eaed]">{t("shop.brands")}</h1>
+          <p className="text-sm text-gray-400 dark:text-[#6b7280]">
             {filtered.length} / {rows.length} {t("shop.brands").toLowerCase()}
           </p>
         </div>
@@ -213,18 +213,18 @@ export default function AdminBrands() {
           {loading ? (
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-16 text-gray-400 dark:text-zinc-500">{t("common.no_data")}</div>
+            <div className="text-center py-16 text-gray-400 dark:text-[#6b7280]">{t("common.no_data")}</div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-100 dark:border-zinc-700">
+              <thead className="bg-gray-50 dark:bg-[#1a1e2e]/50 border-b border-gray-100 dark:border-[#2e3347]">
                 <tr>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider w-10">#</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Logo</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">{t("common.name")}</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">{t("common.type")}</th>
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">{t("common.gender")}</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">{t("common.description")}</th>
-                  <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wider w-28">{t("common.actions") || "Actions"}</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider w-10">#</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider">Logo</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider">{t("common.name")}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider">{t("common.type")}</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider">{t("common.gender")}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider">{t("common.description")}</th>
+                  <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase tracking-wider w-28">{t("common.actions") || "Actions"}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50 dark:divide-zinc-800">
@@ -232,29 +232,29 @@ export default function AdminBrands() {
                   const rowNum = (page - 1) * LIMIT + idx + 1;
                   return (
                     <tr key={r._id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/30 transition-colors">
-                      <td className="px-5 py-3 text-xs text-gray-400 dark:text-zinc-500 font-mono">{rowNum}</td>
+                      <td className="px-5 py-3 text-xs text-gray-400 dark:text-[#6b7280] font-mono">{rowNum}</td>
                       <td className="px-4 py-3">
                         {r.logo_url ? (
                           <img src={r.logo_url} alt={r.name}
-                            className="w-10 h-10 object-contain rounded-xl border border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-0.5" />
+                            className="w-10 h-10 object-contain rounded-xl border border-gray-100 dark:border-[#2e3347] bg-white dark:bg-[#131620] p-0.5" />
                         ) : (
                           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-zinc-800 dark:to-zinc-700 flex items-center justify-center">
-                            <span className="text-sm font-bold text-gray-400 dark:text-zinc-500">{r.name[0]}</span>
+                            <span className="text-sm font-bold text-gray-400 dark:text-[#6b7280]">{r.name[0]}</span>
                           </div>
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <p className="font-semibold text-gray-900 dark:text-zinc-100">{r.name}</p>
-                        {r.slug && <p className="text-[11px] text-gray-400 dark:text-zinc-500 font-mono mt-0.5">{r.slug}</p>}
+                        <p className="font-semibold text-gray-900 dark:text-[#e8eaed]">{r.name}</p>
+                        {r.slug && <p className="text-[11px] text-gray-400 dark:text-[#6b7280] font-mono mt-0.5">{r.slug}</p>}
                       </td>
-                      <td className="px-4 py-3 text-gray-500 dark:text-zinc-400">{r.country || "—"}</td>
+                      <td className="px-4 py-3 text-gray-500 dark:text-[#9ea3b5]">{r.country || "—"}</td>
                       <td className="px-4 py-3 text-center">
                         <Chip size="sm" variant="dot" color={GENDER_COLOR[r.gender_focus] || "default"} className="capitalize">
                           {r.gender_focus || "mixed"}
                         </Chip>
                       </td>
                       <td className="px-4 py-3">
-                        <p className="text-gray-500 dark:text-zinc-400 text-xs line-clamp-2 max-w-[200px]">{r.description || "—"}</p>
+                        <p className="text-gray-500 dark:text-[#9ea3b5] text-xs line-clamp-2 max-w-[200px]">{r.description || "—"}</p>
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex gap-1.5 justify-end">
@@ -282,7 +282,7 @@ export default function AdminBrands() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between px-1">
-          <p className="text-xs text-gray-400 dark:text-zinc-500">
+          <p className="text-xs text-gray-400 dark:text-[#6b7280]">
             {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, filtered.length)} / {filtered.length}
           </p>
           <div className="flex items-center gap-1.5">
@@ -327,13 +327,13 @@ export default function AdminBrands() {
               <ModalBody className="space-y-4">
                 {/* Logo Upload */}
                 <div>
-                  <p className="text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">Logo</p>
+                  <p className="text-sm font-medium text-gray-700 dark:text-[#c8cbd4] mb-2">Logo</p>
                   <div className="flex items-center gap-4">
                     {logoPreview ? (
                       <div className="relative group">
                         <img
                           src={logoPreview} alt="Logo preview"
-                          className="w-24 h-24 object-contain rounded-2xl border-2 border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-1"
+                          className="w-24 h-24 object-contain rounded-2xl border-2 border-gray-100 dark:border-[#2e3347] bg-white dark:bg-[#131620] p-1"
                         />
                         <button
                           type="button" onClick={removeLogo}
@@ -347,8 +347,8 @@ export default function AdminBrands() {
                         onClick={() => fileRef.current?.click()}
                         className="w-24 h-24 rounded-2xl border-2 border-dashed border-gray-300 dark:border-zinc-600 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
                       >
-                        <Upload size={20} className="text-gray-400 dark:text-zinc-500" />
-                        <span className="text-[10px] text-gray-400 dark:text-zinc-500 mt-1.5 font-medium">{t("common.upload") || "Upload"}</span>
+                        <Upload size={20} className="text-gray-400 dark:text-[#6b7280]" />
+                        <span className="text-[10px] text-gray-400 dark:text-[#6b7280] mt-1.5 font-medium">{t("common.upload") || "Upload"}</span>
                       </div>
                     )}
                     {logoPreview && (
@@ -357,7 +357,7 @@ export default function AdminBrands() {
                           onPress={() => fileRef.current?.click()}>
                           {t("common.change") || "Change"}
                         </Button>
-                        <p className="text-[10px] text-gray-400 dark:text-zinc-500">JPG, PNG, max 10MB</p>
+                        <p className="text-[10px] text-gray-400 dark:text-[#6b7280]">JPG, PNG, max 10MB</p>
                       </div>
                     )}
                   </div>
@@ -404,8 +404,8 @@ export default function AdminBrands() {
               <ModalBody>
                 <div className="flex items-center gap-3 p-3 bg-danger-50 dark:bg-danger-900/20 rounded-xl border border-danger-100 dark:border-danger-800">
                   <Trash2 size={18} className="text-danger flex-shrink-0" />
-                  <p className="text-sm text-gray-700 dark:text-zinc-300">
-                    {t("common.confirm_delete")} <strong className="text-gray-900 dark:text-zinc-100">"{delTarget?.name}"</strong>?
+                  <p className="text-sm text-gray-700 dark:text-[#c8cbd4]">
+                    {t("common.confirm_delete")} <strong className="text-gray-900 dark:text-[#e8eaed]">"{delTarget?.name}"</strong>?
                   </p>
                 </div>
               </ModalBody>

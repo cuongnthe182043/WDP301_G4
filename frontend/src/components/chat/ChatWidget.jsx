@@ -31,7 +31,7 @@ function ContextCard({ ctx, compact = false }) {
     const { name, image, price, slug } = ctx.data;
     return (
       <div
-        className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden cursor-pointer hover:border-primary transition-colors ${compact ? "flex items-center gap-2 p-2" : ""}`}
+        className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-[#1a1e2e] overflow-hidden cursor-pointer hover:border-primary transition-colors ${compact ? "flex items-center gap-2 p-2" : ""}`}
         onClick={() => slug && window.open(`/products/${slug}`, "_blank")}
       >
         {compact ? (
@@ -42,7 +42,7 @@ function ContextCard({ ctx, compact = false }) {
             }
             <div className="flex-1 min-w-0">
               <p className="text-[10px] text-primary font-semibold">Đang hỏi về sản phẩm</p>
-              <p className="text-xs text-default-700 dark:text-zinc-200 truncate font-medium">{name}</p>
+              <p className="text-xs text-default-700 dark:text-[#d1d5db] truncate font-medium">{name}</p>
               {price > 0 && <p className="text-[10px] text-default-500">{formatCurrency(price)}</p>}
             </div>
             <ExternalLink size={12} className="text-default-300 flex-shrink-0" />
@@ -55,7 +55,7 @@ function ContextCard({ ctx, compact = false }) {
             }
             <div className="flex-1 min-w-0">
               <p className="text-[10px] text-primary font-semibold mb-0.5">Sản phẩm được hỏi</p>
-              <p className="text-xs text-default-800 dark:text-zinc-100 line-clamp-2 font-medium leading-tight">{name}</p>
+              <p className="text-xs text-default-800 dark:text-[#e8eaed] line-clamp-2 font-medium leading-tight">{name}</p>
               {price > 0 && <p className="text-xs text-danger font-semibold mt-0.5">{formatCurrency(price)}</p>}
             </div>
           </div>
@@ -71,14 +71,14 @@ function ContextCard({ ctx, compact = false }) {
       in_transit: "Đang giao", delivered: "Đã giao", cancelled_by_customer: "Đã hủy",
     };
     return (
-      <div className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden ${compact ? "p-2" : "p-2.5"}`}>
+      <div className={`rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-[#1a1e2e] overflow-hidden ${compact ? "p-2" : "p-2.5"}`}>
         <div className="flex items-center gap-1.5 mb-1.5">
           <ShoppingBag size={compact ? 11 : 13} className="text-primary flex-shrink-0" />
           <p className="text-[10px] text-primary font-semibold">
             {compact ? "Đang hỏi về đơn hàng" : "Đơn hàng được hỏi"}
           </p>
         </div>
-        <p className="text-xs font-bold text-default-800 dark:text-zinc-100">#{order_code}</p>
+        <p className="text-xs font-bold text-default-800 dark:text-[#e8eaed]">#{order_code}</p>
         <div className="flex items-center gap-2 mt-0.5 flex-wrap">
           {total_price > 0 && <span className="text-xs text-danger font-semibold">{formatCurrency(total_price)}</span>}
           {status && <span className="text-[10px] text-default-400">{STATUS_VI[status] || status}</span>}
@@ -372,7 +372,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[560px] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-default-200 dark:border-zinc-700 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[560px] bg-white dark:bg-[#131620] rounded-2xl shadow-2xl border border-default-200 dark:border-[#2e3347] flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0 bg-gradient-to-r from-primary to-violet-500 text-white">
@@ -424,7 +424,7 @@ export default function ChatWidget() {
                     conversations.map(conv => (
                       <button
                         key={conv._id}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-default-50 dark:hover:bg-zinc-800 transition-colors border-b border-default-50 dark:border-zinc-800 text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-default-50 dark:hover:bg-zinc-800 transition-colors border-b border-default-50 dark:border-[#222738] text-left"
                         onClick={() => openConversation(conv)}
                       >
                         <div className="relative flex-shrink-0">
@@ -437,7 +437,7 @@ export default function ChatWidget() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <p className="font-semibold text-sm text-default-900 dark:text-zinc-100 truncate">
+                            <p className="font-semibold text-sm text-default-900 dark:text-[#e8eaed] truncate">
                               {conv.shop?.shop_name || "Shop"}
                             </p>
                             <span className="text-[10px] text-default-400 flex-shrink-0 ml-2">
@@ -463,7 +463,7 @@ export default function ChatWidget() {
                 /* ── Message thread ─────────────────────────────────── */
                 <>
                   {/* Shop info bar */}
-                  <div className="flex items-center gap-2 px-3 py-2 border-b border-default-100 dark:border-zinc-700 flex-shrink-0 bg-white dark:bg-zinc-900">
+                  <div className="flex items-center gap-2 px-3 py-2 border-b border-default-100 dark:border-[#2e3347] flex-shrink-0 bg-white dark:bg-[#131620]">
                     <Avatar
                       src={activeConv?.shop?.shop_logo}
                       name={activeConv?.shop?.shop_name?.charAt(0)}
@@ -471,7 +471,7 @@ export default function ChatWidget() {
                       className="w-7 h-7"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-default-900 dark:text-zinc-100 truncate">
+                      <p className="text-xs font-semibold text-default-900 dark:text-[#e8eaed] truncate">
                         {activeConv?.shop?.shop_name}
                       </p>
                       <p className="text-[10px] text-green-500 font-medium">● Online</p>
@@ -547,7 +547,7 @@ export default function ChatWidget() {
                                   <div className={`px-3 py-2 rounded-2xl text-sm leading-relaxed shadow-sm ${
                                     isMe
                                       ? "bg-primary text-white rounded-br-sm"
-                                      : "bg-white dark:bg-zinc-700 text-default-900 dark:text-zinc-100 rounded-bl-sm"
+                                      : "bg-white dark:bg-zinc-700 text-default-900 dark:text-[#e8eaed] rounded-bl-sm"
                                   }`}>
                                     {msg.content}
                                   </div>
@@ -579,7 +579,7 @@ export default function ChatWidget() {
 
                   {/* Pending image previews */}
                   {pendingImages.length > 0 && (
-                    <div className="flex gap-2 px-3 py-2 border-t border-default-100 dark:border-zinc-700 overflow-x-auto flex-shrink-0 bg-white dark:bg-zinc-900">
+                    <div className="flex gap-2 px-3 py-2 border-t border-default-100 dark:border-[#2e3347] overflow-x-auto flex-shrink-0 bg-white dark:bg-[#131620]">
                       {pendingImages.map(img => (
                         <div key={img.id} className="relative flex-shrink-0">
                           <img
@@ -604,7 +604,7 @@ export default function ChatWidget() {
                   )}
 
                   {/* Input */}
-                  <div className="px-3 py-2 border-t border-default-100 dark:border-zinc-700 flex items-center gap-2 flex-shrink-0 bg-white dark:bg-zinc-900">
+                  <div className="px-3 py-2 border-t border-default-100 dark:border-[#2e3347] flex items-center gap-2 flex-shrink-0 bg-white dark:bg-[#131620]">
                     {/* Hidden file input */}
                     <input
                       ref={imageInputRef}
@@ -622,7 +622,7 @@ export default function ChatWidget() {
                       <ImagePlus size={18} />
                     </button>
                     <input
-                      className="flex-1 text-sm bg-default-50 dark:bg-zinc-800 border border-default-200 dark:border-zinc-600 rounded-xl px-3 py-2 outline-none focus:border-primary transition-colors"
+                      className="flex-1 text-sm bg-default-50 dark:bg-[#1a1e2e] border border-default-200 dark:border-zinc-600 rounded-xl px-3 py-2 outline-none focus:border-primary transition-colors"
                       placeholder="Nhập tin nhắn..."
                       value={input}
                       onChange={e => setInput(e.target.value)}

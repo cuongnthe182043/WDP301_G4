@@ -45,15 +45,15 @@ export default function LanguageSwitcher({ iconColor }) {
   };
 
   /* ── Panel colors ───────────────────────────────────────── */
-  const bg       = isDark ? "#18181b" : "#ffffff";
-  const border   = isDark ? "#27272a" : "#e2e8f0";
+  const bg       = isDark ? "#1a1e2e" : "#ffffff";
+  const border   = isDark ? "#2e3347" : "#e2e8f0";
   const shadow   = isDark
-    ? "0 8px 32px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3)"
+    ? "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)"
     : "0 8px 24px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.06)";
-  const hoverBg  = isDark ? "#27272a" : "#f4f4f5";
-  const activeBg = isDark ? "#3f3f46" : "#eff6ff";
-  const textCol  = isDark ? "#f4f4f5" : "#09090b";
-  const subCol   = isDark ? "#71717a" : "#94a3b8";
+  const hoverBg  = isDark ? "#222738" : "#f4f4f5";
+  const activeBg = isDark ? "#2e3347" : "#eff6ff";
+  const textCol  = isDark ? "#e8eaed" : "#09090b";
+  const subCol   = isDark ? "#6b7280" : "#94a3b8";
 
   return (
     <div className="relative">
