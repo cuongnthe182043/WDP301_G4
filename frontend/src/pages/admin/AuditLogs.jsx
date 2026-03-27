@@ -136,7 +136,7 @@ const BADGE_STYLE = {
   warning:   { bg: "bg-amber-500/10 dark:bg-amber-400/10",     text: "text-amber-600 dark:text-amber-400",      ring: "ring-amber-500/20 dark:ring-amber-400/20" },
   primary:   { bg: "bg-blue-500/10 dark:bg-blue-400/10",       text: "text-blue-600 dark:text-blue-400",        ring: "ring-blue-500/20 dark:ring-blue-400/20" },
   secondary: { bg: "bg-violet-500/10 dark:bg-violet-400/10",   text: "text-violet-600 dark:text-violet-400",    ring: "ring-violet-500/20 dark:ring-violet-400/20" },
-  default:   { bg: "bg-zinc-500/10 dark:bg-zinc-400/10",       text: "text-zinc-600 dark:text-zinc-400",        ring: "ring-zinc-500/20 dark:ring-zinc-400/20" },
+  default:   { bg: "bg-zinc-500/10 dark:bg-zinc-400/10",       text: "text-zinc-600 dark:text-[#9ea3b5]",        ring: "ring-zinc-500/20 dark:ring-zinc-400/20" },
 };
 
 const ACTION_GROUPS = {
@@ -191,15 +191,15 @@ const STAT_PALETTE = {
 function StatCard({ icon: Icon, label, value, accent = "indigo" }) {
   const p = STAT_PALETTE[accent] || STAT_PALETTE.indigo;
   return (
-    <div className={`relative overflow-hidden rounded-xl border ${p.border} bg-white dark:bg-zinc-900 shadow-lg ${p.glow} p-5 group hover:shadow-xl transition-all duration-300`}>
+    <div className={`relative overflow-hidden rounded-xl border ${p.border} bg-white dark:bg-[#131620] shadow-lg ${p.glow} p-5 group hover:shadow-xl transition-all duration-300`}>
       {/* gradient wash */}
       <div className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-60 pointer-events-none`} />
       <div className="relative flex items-start justify-between">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">{label}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-[#6b7280] mb-2">{label}</p>
           <p className="text-3xl font-black text-zinc-900 dark:text-white tabular-nums leading-none">{value}</p>
         </div>
-        <div className={`p-2.5 rounded-lg bg-white/50 dark:bg-zinc-800/80 ${p.icon}`}>
+        <div className={`p-2.5 rounded-lg bg-white/50 dark:bg-[#1a1e2e]/80 ${p.icon}`}>
           <Icon size={20} strokeWidth={1.75} />
         </div>
       </div>
@@ -210,7 +210,7 @@ function StatCard({ icon: Icon, label, value, accent = "indigo" }) {
 /* ── Section Label ─────────────────────────────────────────────────────────── */
 function SectionLabel({ children }) {
   return (
-    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">{children}</p>
+    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400 dark:text-[#6b7280] mb-2">{children}</p>
   );
 }
 
@@ -332,7 +332,7 @@ export default function AuditLogs() {
             <h1 className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 leading-none">
               {t("admin.audit_logs")}
             </h1>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 font-medium">
+            <p className="text-xs text-zinc-400 dark:text-[#6b7280] mt-1 font-medium">
               {t("admin.audit_logs_subtitle")}
             </p>
           </div>
@@ -341,7 +341,7 @@ export default function AuditLogs() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => load(page)}
-            className="inline-flex items-center gap-1.5 h-9 px-4 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm"
+            className="inline-flex items-center gap-1.5 h-9 px-4 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-[#2e3347]/80 bg-white dark:bg-[#131620] text-zinc-600 dark:text-[#c8cbd4] hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all shadow-sm"
           >
             <RefreshCw size={13} /> {t("common.reset")}
           </button>
@@ -363,10 +363,10 @@ export default function AuditLogs() {
       </div>
 
       {/* ══ FILTERS + TABS PANEL ════════════════════════════════════════════ */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-zinc-200 dark:border-[#222738] bg-white dark:bg-[#131620] shadow-sm overflow-hidden">
 
         {/* Tab strip */}
-        <div className="border-b border-zinc-100 dark:border-zinc-800 px-4 pt-3">
+        <div className="border-b border-zinc-100 dark:border-[#222738] px-4 pt-3">
           <div className="flex items-center gap-1 flex-wrap pb-0">
             {availableTabs.map((key) => {
               const grp = ACTION_GROUPS[key] || { label: key, icon: Activity };
@@ -379,7 +379,7 @@ export default function AuditLogs() {
                   className={`inline-flex items-center gap-1.5 px-3 py-2 text-[11px] font-semibold rounded-t-md border-b-2 transition-all duration-150 ${
                     isActive
                       ? "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/60 dark:bg-blue-500/10"
-                      : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                      : "border-transparent text-zinc-500 dark:text-[#9ea3b5] hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
                   }`}
                 >
                   <GrpIcon size={12} />
@@ -399,7 +399,7 @@ export default function AuditLogs() {
               value={actor}
               onChange={(e) => setActor(e.target.value)}
               placeholder={t("admin.audit_actor_placeholder")}
-              className="w-full h-9 pl-8 pr-3 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
+              className="w-full h-9 pl-8 pr-3 text-xs rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
             />
           </div>
 
@@ -411,7 +411,7 @@ export default function AuditLogs() {
             onSelectionChange={(k) => setActionQ(Array.from(k)[0] || "")}
             className="w-full sm:w-52"
             classNames={{
-              trigger: "h-9 min-h-9 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 data-[hover=true]:border-zinc-300 dark:data-[hover=true]:border-zinc-600",
+              trigger: "h-9 min-h-9 border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 data-[hover=true]:border-zinc-300 dark:data-[hover=true]:border-zinc-600",
               value: "text-xs",
             }}
             startContent={<Filter size={12} className="text-zinc-400 shrink-0" />}
@@ -429,7 +429,7 @@ export default function AuditLogs() {
             onSelectionChange={(k) => setCollection(Array.from(k)[0] || "")}
             className="w-full sm:w-44"
             classNames={{
-              trigger: "h-9 min-h-9 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 data-[hover=true]:border-zinc-300 dark:data-[hover=true]:border-zinc-600",
+              trigger: "h-9 min-h-9 border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 data-[hover=true]:border-zinc-300 dark:data-[hover=true]:border-zinc-600",
               value: "text-xs",
             }}
             startContent={<Database size={12} className="text-zinc-400 shrink-0" />}
@@ -445,7 +445,7 @@ export default function AuditLogs() {
             <input
               type="date" value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="w-full h-9 px-3 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
             />
           </div>
 
@@ -455,7 +455,7 @@ export default function AuditLogs() {
             <input
               type="date" value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="w-full h-9 px-3 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
+              className="w-full h-9 px-3 text-xs rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
             />
           </div>
 
@@ -471,31 +471,31 @@ export default function AuditLogs() {
       </div>
 
       {/* ══ TABLE ═══════════════════════════════════════════════════════════ */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-zinc-200 dark:border-[#222738] bg-white dark:bg-[#131620] shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
             <Spinner size="lg" color="primary" />
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium animate-pulse">Loading logs…</p>
+            <p className="text-xs text-zinc-400 dark:text-[#6b7280] font-medium animate-pulse">Loading logs…</p>
           </div>
         ) : logs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-[#1a1e2e] flex items-center justify-center">
               <Search size={24} className="text-zinc-300 dark:text-zinc-600" strokeWidth={1.5} />
             </div>
             <div className="text-center">
-              <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">{t("common.no_data")}</p>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">Thay đổi bộ lọc hoặc chọn tab khác</p>
+              <p className="text-sm font-semibold text-zinc-500 dark:text-[#9ea3b5]">{t("common.no_data")}</p>
+              <p className="text-xs text-zinc-400 dark:text-[#6b7280] mt-1">Thay đổi bộ lọc hoặc chọn tab khác</p>
             </div>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800">
+                <tr className="border-b border-zinc-100 dark:border-[#222738]">
                   {cols.map((h, i) => (
                     <th
                       key={i}
-                      className={`px-4 py-3 text-left text-[10px] font-black uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500 bg-zinc-50/80 dark:bg-zinc-800/40 whitespace-nowrap ${h.cls}`}
+                      className={`px-4 py-3 text-left text-[10px] font-black uppercase tracking-[0.1em] text-zinc-400 dark:text-[#6b7280] bg-zinc-50/80 dark:bg-[#1a1e2e]/40 whitespace-nowrap ${h.cls}`}
                     >
                       {h.label}
                     </th>
@@ -511,7 +511,7 @@ export default function AuditLogs() {
                   return (
                     <tr
                       key={log._id}
-                      className={`group border-b border-zinc-50 dark:border-zinc-800/60 last:border-0 hover:bg-blue-50/40 dark:hover:bg-blue-500/5 transition-colors duration-100 ${isEven ? "" : "bg-zinc-50/30 dark:bg-zinc-800/20"}`}
+                      className={`group border-b border-zinc-50 dark:border-[#222738]/60 last:border-0 hover:bg-blue-50/40 dark:hover:bg-blue-500/5 transition-colors duration-100 ${isEven ? "" : "bg-zinc-50/30 dark:bg-[#1a1e2e]/20"}`}
                     >
                       {/* # */}
                       <td className="px-4 py-3.5 text-center">
@@ -524,14 +524,14 @@ export default function AuditLogs() {
                           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800 flex items-center justify-center shrink-0 overflow-hidden ring-1 ring-zinc-200 dark:ring-zinc-700">
                             {log.actor_id?.avatar
                               ? <img src={log.actor_id.avatar} alt="" className="w-8 h-8 object-cover rounded-full" />
-                              : <User size={13} className="text-zinc-400 dark:text-zinc-500" />}
+                              : <User size={13} className="text-zinc-400 dark:text-[#6b7280]" />}
                           </div>
                           <div className="min-w-0">
-                            <p className="text-[13px] font-semibold text-zinc-800 dark:text-zinc-100 truncate max-w-[150px] leading-tight">
+                            <p className="text-[13px] font-semibold text-zinc-800 dark:text-[#e8eaed] truncate max-w-[150px] leading-tight">
                               {log.actor_id?.full_name || "System"}
                             </p>
                             {log.actor_id?.email && (
-                              <p className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate max-w-[150px] mt-0.5 font-medium">
+                              <p className="text-[10px] text-zinc-400 dark:text-[#6b7280] truncate max-w-[150px] mt-0.5 font-medium">
                                 {log.actor_id.email}
                               </p>
                             )}
@@ -548,13 +548,13 @@ export default function AuditLogs() {
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {log.target_collection && (
-                            <span className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
+                            <span className="text-[11px] font-semibold text-zinc-600 dark:text-[#c8cbd4] bg-zinc-100 dark:bg-[#1a1e2e] px-2 py-0.5 rounded-md">
                               {log.target_collection}
                             </span>
                           )}
                           {log.target_id && (
                             <Tooltip content={log.target_id} radius="sm">
-                              <span className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800/80 px-1.5 py-0.5 rounded cursor-default border border-zinc-200 dark:border-zinc-700">
+                              <span className="text-[10px] font-mono text-zinc-400 dark:text-[#6b7280] bg-zinc-100 dark:bg-[#1a1e2e]/80 px-1.5 py-0.5 rounded cursor-default border border-zinc-200 dark:border-[#2e3347]">
                                 …{log.target_id.slice(-7)}
                               </span>
                             </Tooltip>
@@ -567,7 +567,7 @@ export default function AuditLogs() {
 
                       {/* IP */}
                       <td className="px-4 py-3.5">
-                        <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 tabular-nums">
+                        <span className="text-[11px] font-mono text-zinc-500 dark:text-[#9ea3b5] tabular-nums">
                           {log.ip_address || <span className="text-zinc-300 dark:text-zinc-600">—</span>}
                         </span>
                       </td>
@@ -576,23 +576,23 @@ export default function AuditLogs() {
                       <td className="px-4 py-3.5">
                         <Tooltip content={log.user_agent || "Unknown"} radius="sm">
                           <div className="flex items-center gap-1.5 cursor-default">
-                            <Monitor size={12} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
-                            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate max-w-[110px]">{ua.short}</span>
+                            <Monitor size={12} className="text-zinc-400 dark:text-[#6b7280] shrink-0" />
+                            <span className="text-[11px] text-zinc-500 dark:text-[#9ea3b5] truncate max-w-[110px]">{ua.short}</span>
                           </div>
                         </Tooltip>
                       </td>
 
                       {/* Date */}
                       <td className="px-4 py-3.5 whitespace-nowrap">
-                        <p className="text-[12px] font-medium text-zinc-700 dark:text-zinc-300 tabular-nums">{formatDate(log.createdAt)}</p>
-                        {rel && <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">{rel}</p>}
+                        <p className="text-[12px] font-medium text-zinc-700 dark:text-[#c8cbd4] tabular-nums">{formatDate(log.createdAt)}</p>
+                        {rel && <p className="text-[10px] text-zinc-400 dark:text-[#6b7280] mt-0.5">{rel}</p>}
                       </td>
 
                       {/* Detail button */}
                       <td className="px-4 py-3.5 text-center pr-4">
                         <button
                           onClick={() => setDetailLog(log)}
-                          className="opacity-0 group-hover:opacity-100 w-7 h-7 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-150"
+                          className="opacity-0 group-hover:opacity-100 w-7 h-7 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-500 dark:text-[#9ea3b5] hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-150"
                         >
                           <Eye size={13} />
                         </button>
@@ -609,19 +609,19 @@ export default function AuditLogs() {
       {/* ══ PAGINATION ══════════════════════════════════════════════════════ */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium tabular-nums">
-            <span className="font-bold text-zinc-700 dark:text-zinc-300">{(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, total)}</span>
+          <p className="text-xs text-zinc-400 dark:text-[#6b7280] font-medium tabular-nums">
+            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, total)}</span>
             {" "}of{" "}
-            <span className="font-bold text-zinc-700 dark:text-zinc-300">{total.toLocaleString()}</span> entries
+            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{total.toLocaleString()}</span> entries
           </p>
           <Pagination
             total={totalPages} page={page} onChange={setPage}
             radius="sm" size="sm" showControls
             classNames={{
               cursor: "bg-blue-600 text-white font-bold shadow-sm shadow-blue-600/30",
-              item: "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700",
-              prev: "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700",
-              next: "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700",
+              item: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700",
+              prev: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347]",
+              next: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347]",
             }}
           />
         </div>
@@ -633,10 +633,10 @@ export default function AuditLogs() {
         onOpenChange={(o) => !o && setDetailLog(null)}
         radius="lg" size="2xl" backdrop="blur"
         classNames={{
-          base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl",
-          header: "border-b border-zinc-100 dark:border-zinc-800 pb-4",
+          base: "bg-white dark:bg-[#131620] border border-zinc-200 dark:border-[#222738] shadow-2xl",
+          header: "border-b border-zinc-100 dark:border-[#222738] pb-4",
           body: "pt-4",
-          footer: "border-t border-zinc-100 dark:border-zinc-800 pt-3",
+          footer: "border-t border-zinc-100 dark:border-[#222738] pt-3",
         }}
       >
         <ModalContent>
@@ -649,7 +649,7 @@ export default function AuditLogs() {
                 <div>
                   <p className="text-sm font-black text-zinc-900 dark:text-zinc-50">{t("admin.audit_col_detail")}</p>
                   {detailLog && (
-                    <p className="text-[10px] font-mono font-normal text-zinc-400 dark:text-zinc-500 mt-0.5">{detailLog._id}</p>
+                    <p className="text-[10px] font-mono font-normal text-zinc-400 dark:text-[#6b7280] mt-0.5">{detailLog._id}</p>
                   )}
                 </div>
               </ModalHeader>
@@ -670,8 +670,8 @@ export default function AuditLogs() {
                                   : <User size={11} className="text-zinc-400" />}
                               </div>
                               <div>
-                                <p className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">{detailLog.actor_id?.full_name || "System"}</p>
-                                {detailLog.actor_id?.email && <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-medium">{detailLog.actor_id.email}</p>}
+                                <p className="text-[13px] font-semibold text-zinc-900 dark:text-[#e8eaed] leading-tight">{detailLog.actor_id?.full_name || "System"}</p>
+                                {detailLog.actor_id?.email && <p className="text-[10px] text-zinc-400 dark:text-[#6b7280] font-medium">{detailLog.actor_id.email}</p>}
                               </div>
                             </div>
                           ),
@@ -683,7 +683,7 @@ export default function AuditLogs() {
                         {
                           label: t("admin.audit_col_ip"),
                           content: (
-                            <p className="mt-1.5 text-sm font-mono font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                            <p className="mt-1.5 text-sm font-mono font-medium text-zinc-700 dark:text-[#c8cbd4] flex items-center gap-1.5">
                               <Globe size={13} className="text-zinc-400" /> {detailLog.ip_address || "—"}
                             </p>
                           ),
@@ -691,13 +691,13 @@ export default function AuditLogs() {
                         {
                           label: t("admin.audit_col_date"),
                           content: (
-                            <p className="mt-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5 tabular-nums">
+                            <p className="mt-1.5 text-sm font-medium text-zinc-700 dark:text-[#c8cbd4] flex items-center gap-1.5 tabular-nums">
                               <Clock size={13} className="text-zinc-400" /> {formatDate(detailLog.createdAt)}
                             </p>
                           ),
                         },
                       ].map((card, i) => (
-                        <div key={i} className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+                        <div key={i} className="p-3.5 rounded-xl border border-zinc-100 dark:border-[#222738] bg-zinc-50 dark:bg-[#1a1e2e]/50">
                           <SectionLabel>{card.label}</SectionLabel>
                           {card.content}
                         </div>
@@ -705,13 +705,13 @@ export default function AuditLogs() {
                     </div>
 
                     {/* Target */}
-                    <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+                    <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-[#222738] bg-zinc-50 dark:bg-[#1a1e2e]/50">
                       <SectionLabel>{t("admin.audit_col_target")}</SectionLabel>
                       <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                         <Database size={13} className="text-zinc-400 shrink-0" />
-                        <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{detailLog.target_collection || "—"}</span>
+                        <span className="text-sm font-semibold text-zinc-700 dark:text-[#c8cbd4]">{detailLog.target_collection || "—"}</span>
                         {detailLog.target_id && (
-                          <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-900 px-2 py-0.5 rounded-md border border-zinc-200 dark:border-zinc-700 break-all">
+                          <span className="text-[11px] font-mono text-zinc-500 dark:text-[#9ea3b5] bg-white dark:bg-[#131620] px-2 py-0.5 rounded-md border border-zinc-200 dark:border-[#2e3347] break-all">
                             {detailLog.target_id}
                           </span>
                         )}
@@ -719,29 +719,29 @@ export default function AuditLogs() {
                     </div>
 
                     {/* User Agent */}
-                    <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+                    <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-[#222738] bg-zinc-50 dark:bg-[#1a1e2e]/50">
                       <SectionLabel>User Agent</SectionLabel>
                       <div className="flex items-center gap-2 mt-1.5 mb-1.5">
                         <Monitor size={13} className="text-zinc-400 shrink-0" />
-                        <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{parseUserAgent(detailLog.user_agent).short}</span>
+                        <span className="text-sm font-semibold text-zinc-700 dark:text-[#c8cbd4]">{parseUserAgent(detailLog.user_agent).short}</span>
                       </div>
-                      <p className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 break-all leading-relaxed bg-white dark:bg-zinc-900 rounded-lg p-2.5 border border-zinc-100 dark:border-zinc-700/50">
+                      <p className="text-[10px] font-mono text-zinc-400 dark:text-[#6b7280] break-all leading-relaxed bg-white dark:bg-[#131620] rounded-lg p-2.5 border border-zinc-100 dark:border-[#2e3347]/50">
                         {detailLog.user_agent || "—"}
                       </p>
                     </div>
 
                     {/* Metadata */}
                     {detailLog.metadata && Object.keys(detailLog.metadata).length > 0 && (
-                      <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+                      <div className="p-3.5 rounded-xl border border-zinc-100 dark:border-[#222738] bg-zinc-50 dark:bg-[#1a1e2e]/50">
                         <SectionLabel>Metadata</SectionLabel>
-                        <div className="mt-1.5 space-y-0 rounded-lg overflow-hidden border border-zinc-100 dark:border-zinc-700/50 bg-white dark:bg-zinc-900">
+                        <div className="mt-1.5 space-y-0 rounded-lg overflow-hidden border border-zinc-100 dark:border-[#2e3347]/50 bg-white dark:bg-[#131620]">
                           {Object.entries(detailLog.metadata).map(([key, val], idx, arr) => (
                             <div
                               key={key}
-                              className={`flex items-start gap-3 px-3 py-2.5 ${idx !== arr.length - 1 ? "border-b border-zinc-50 dark:border-zinc-800" : ""}`}
+                              className={`flex items-start gap-3 px-3 py-2.5 ${idx !== arr.length - 1 ? "border-b border-zinc-50 dark:border-[#222738]" : ""}`}
                             >
-                              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500 min-w-[80px] shrink-0 mt-0.5">{key}</span>
-                              <span className="text-[11px] font-mono text-zinc-700 dark:text-zinc-300 break-all leading-relaxed">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-[#6b7280] min-w-[80px] shrink-0 mt-0.5">{key}</span>
+                              <span className="text-[11px] font-mono text-zinc-700 dark:text-[#c8cbd4] break-all leading-relaxed">
                                 {typeof val === "object" ? JSON.stringify(val, null, 2) : String(val)}
                               </span>
                             </div>
@@ -756,7 +756,7 @@ export default function AuditLogs() {
               <ModalFooter className="pt-3">
                 <button
                   onClick={onClose}
-                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
+                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
                 >
                   {t("common.cancel")}
                 </button>

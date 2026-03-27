@@ -162,7 +162,7 @@ export default function AdminPendingProducts() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-black text-gray-900 dark:text-zinc-100">{t("admin.admin_pending_title")}</h1>
+            <h1 className="text-xl font-black text-gray-900 dark:text-[#e8eaed]">{t("admin.admin_pending_title")}</h1>
             {total > 0 && (
               <Chip size="sm" color="warning" variant="solid" className="text-white">{total}</Chip>
             )}
@@ -172,7 +172,7 @@ export default function AdminPendingProducts() {
               </Chip>
             )}
           </div>
-          <p className="text-sm text-gray-400 dark:text-zinc-500">{t("admin.admin_pending_subtitle")}</p>
+          <p className="text-sm text-gray-400 dark:text-[#6b7280]">{t("admin.admin_pending_subtitle")}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -198,7 +198,7 @@ export default function AdminPendingProducts() {
       {selectedIds.size > 0 && (
         <Card radius="xl" shadow="sm" className="border-2 border-primary-200 dark:border-primary-800">
           <CardBody className="py-2 px-4 flex flex-row items-center gap-3">
-            <span className="text-sm font-semibold text-gray-700 dark:text-zinc-300">
+            <span className="text-sm font-semibold text-gray-700 dark:text-[#c8cbd4]">
               {t("admin.mod_selected", { count: selectedIds.size })}
             </span>
             <div className="flex gap-2 ml-auto">
@@ -237,7 +237,7 @@ export default function AdminPendingProducts() {
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
+              <thead className="bg-gray-50 dark:bg-[#1a1e2e] border-b border-gray-100 dark:border-[#2e3347]">
                 <tr>
                   <th className="px-3 py-3 w-10">
                     <Checkbox
@@ -256,7 +256,7 @@ export default function AdminPendingProducts() {
                     t("admin.admin_pending_col_date"),
                     t("admin.admin_pending_col_actions"),
                   ].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -276,15 +276,15 @@ export default function AdminPendingProducts() {
                       <td className="px-4 py-3">
                         <img
                           src={p.images?.[0] || "/no-image.jpg"} alt={p.name}
-                          className="w-14 h-14 object-cover rounded-xl border border-gray-100 dark:border-zinc-700"
+                          className="w-14 h-14 object-cover rounded-xl border border-gray-100 dark:border-[#2e3347]"
                         />
                       </td>
                       <td className="px-4 py-3 max-w-xs">
-                        <p className="font-semibold text-gray-900 dark:text-zinc-100 truncate">{p.name}</p>
-                        <p className="text-xs text-gray-400 dark:text-zinc-500 truncate">{p.category?.name || "—"}</p>
+                        <p className="font-semibold text-gray-900 dark:text-[#e8eaed] truncate">{p.name}</p>
+                        <p className="text-xs text-gray-400 dark:text-[#6b7280] truncate">{p.category?.name || "—"}</p>
                       </td>
                       <td className="px-4 py-3">
-                        <p className="text-sm text-gray-700 dark:text-zinc-300">{p.shop?.shop_name || "—"}</p>
+                        <p className="text-sm text-gray-700 dark:text-[#c8cbd4]">{p.shop?.shop_name || "—"}</p>
                       </td>
                       <td className="px-4 py-3 font-bold text-blue-600 whitespace-nowrap">
                         {(p.base_price || 0).toLocaleString("vi-VN")}₫
@@ -358,7 +358,7 @@ export default function AdminPendingProducts() {
           <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
             {t("shop.product_prev")}
           </Button>
-          <span className="text-sm text-gray-500 dark:text-zinc-400 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
+          <span className="text-sm text-gray-500 dark:text-[#9ea3b5] self-center">{t("shop.product_page", { page, total: totalPages })}</span>
           <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
             {t("shop.product_next")}
           </Button>
@@ -398,7 +398,7 @@ export default function AdminPendingProducts() {
                           {flag.severity}
                         </Chip>
                         <div>
-                          <p className="text-gray-700 dark:text-zinc-300">{flag.message}</p>
+                          <p className="text-gray-700 dark:text-[#c8cbd4]">{flag.message}</p>
                           <p className="text-xs text-gray-400">{t("admin.mod_field")}: {flag.field}</p>
                         </div>
                       </div>
@@ -409,7 +409,7 @@ export default function AdminPendingProducts() {
                 {detailProd.images?.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {detailProd.images.map((url, i) => (
-                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-gray-100 dark:border-zinc-700" />
+                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-gray-100 dark:border-[#2e3347]" />
                     ))}
                   </div>
                 )}
@@ -424,7 +424,7 @@ export default function AdminPendingProducts() {
                 {detailProd.description && (
                   <div>
                     <p className="text-xs font-semibold text-gray-500 mb-1">{t("admin.admin_products_detail_desc")}</p>
-                    <p className="text-sm text-gray-700 dark:text-zinc-300 whitespace-pre-wrap">{detailProd.description}</p>
+                    <p className="text-sm text-gray-700 dark:text-[#c8cbd4] whitespace-pre-wrap">{detailProd.description}</p>
                   </div>
                 )}
                 {detailProd.rejection_reason && (
@@ -523,8 +523,8 @@ export default function AdminPendingProducts() {
               <ModalHeader>{t("admin.mod_result_title")}</ModalHeader>
               <ModalBody>
                 <div className="grid grid-cols-4 gap-3 mb-4">
-                  <div className="text-center p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-zinc-100">{moderateResult.processed}</p>
+                  <div className="text-center p-3 bg-gray-50 dark:bg-[#1a1e2e] rounded-xl">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-[#e8eaed]">{moderateResult.processed}</p>
                     <p className="text-xs text-gray-500">{t("admin.mod_processed")}</p>
                   </div>
                   <div className="text-center p-3 bg-success-50 dark:bg-success-900/20 rounded-xl">
@@ -549,8 +549,8 @@ export default function AdminPendingProducts() {
                       return (
                       <div key={r.productId} className={`flex items-center justify-between p-2 rounded-lg text-sm ${bgClass}`}>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate text-gray-800 dark:text-zinc-200">{r.productName}</p>
-                          {r.summary && <p className="text-xs text-gray-500 dark:text-zinc-400 truncate">{r.summary}</p>}
+                          <p className="font-medium truncate text-gray-800 dark:text-[#d1d5db]">{r.productName}</p>
+                          {r.summary && <p className="text-xs text-gray-500 dark:text-[#9ea3b5] truncate">{r.summary}</p>}
                         </div>
                         <Chip size="sm" color={decColor} variant="flat" className="ml-2 shrink-0">
                           {decLabel}
@@ -576,7 +576,7 @@ function InfoRow({ label, value }) {
   return (
     <div>
       <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-      <p className="font-medium text-gray-800 dark:text-zinc-200">{value}</p>
+      <p className="font-medium text-gray-800 dark:text-[#d1d5db]">{value}</p>
     </div>
   );
 }

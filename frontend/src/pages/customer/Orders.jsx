@@ -332,17 +332,17 @@ export default function Orders() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.04, duration: 0.22 }}
                 >
-                  <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-default-100 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <div className="bg-white dark:bg-[#131620] rounded-2xl border border-default-100 dark:border-[#2e3347] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
 
                     {/* Top accent stripe */}
                     <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${accentColor}, ${accentColor}55)` }} />
 
                     {/* Card header */}
-                    <div className="flex items-center justify-between px-4 py-3 bg-default-50/60 dark:bg-zinc-800/60 border-b border-default-100 dark:border-zinc-700/60">
+                    <div className="flex items-center justify-between px-4 py-3 bg-default-50/60 dark:bg-[#1a1e2e]/60 border-b border-default-100 dark:border-[#2e3347]/60">
                       <div className="flex items-center gap-2 flex-wrap">
                         {/* Order code */}
                         <button
-                          className="font-black text-default-900 dark:text-zinc-100 hover:text-primary transition-colors text-sm"
+                          className="font-black text-default-900 dark:text-[#e8eaed] hover:text-primary transition-colors text-sm"
                           onClick={() => nav(`/orders/${o._id}`)}
                         >
                           #{o.order_code}
@@ -377,12 +377,12 @@ export default function Orders() {
                               size="sm"
                               className="w-5 h-5 text-[10px]"
                             />
-                            <span className="text-xs text-default-500 dark:text-zinc-400 max-w-[100px] truncate">
+                            <span className="text-xs text-default-500 dark:text-[#9ea3b5] max-w-[100px] truncate">
                               {o.shop_info.shop_name}
                             </span>
                           </div>
                         )}
-                        <span className="text-xs text-default-400 dark:text-zinc-500">
+                        <span className="text-xs text-default-400 dark:text-[#6b7280]">
                           {new Date(o.createdAt).toLocaleDateString("vi-VN")}
                         </span>
                       </div>
@@ -396,7 +396,7 @@ export default function Orders() {
                           {(o.items || []).slice(0, 4).map((it, i) => (
                             <div
                               key={i}
-                              className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white dark:border-zinc-900 bg-default-100 dark:bg-zinc-700 shadow-sm"
+                              className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white dark:border-[#1a1e2e] bg-default-100 dark:bg-zinc-700 shadow-sm"
                             >
                               {it.image_url
                                 ? <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />
@@ -405,7 +405,7 @@ export default function Orders() {
                             </div>
                           ))}
                           {(o.items?.length || 0) > 4 && (
-                            <div className="w-12 h-12 rounded-xl bg-default-100 dark:bg-zinc-700 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xs font-bold text-default-500 shadow-sm">
+                            <div className="w-12 h-12 rounded-xl bg-default-100 dark:bg-zinc-700 border-2 border-white dark:border-[#1a1e2e] flex items-center justify-center text-xs font-bold text-default-500 shadow-sm">
                               +{o.items.length - 4}
                             </div>
                           )}
@@ -413,10 +413,10 @@ export default function Orders() {
 
                         {/* First item name & count */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-default-800 dark:text-zinc-200 truncate leading-snug">
+                          <p className="text-sm font-medium text-default-800 dark:text-[#d1d5db] truncate leading-snug">
                             {o.items?.[0]?.name || "Sản phẩm"}
                           </p>
-                          <p className="text-xs text-default-400 dark:text-zinc-500 mt-0.5">
+                          <p className="text-xs text-default-400 dark:text-[#6b7280] mt-0.5">
                             {(o.items?.length || 0)} sản phẩm
                             {o.items?.[0]?.variant_text && <span className="ml-1">· {o.items[0].variant_text}</span>}
                           </p>
@@ -425,7 +425,7 @@ export default function Orders() {
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between px-4 py-3 border-t border-default-100 dark:border-zinc-700/60 bg-default-50/30 dark:bg-zinc-800/30">
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-default-100 dark:border-[#2e3347]/60 bg-default-50/30 dark:bg-[#1a1e2e]/30">
                       {/* Left: special notes */}
                       <div className="flex items-center gap-2 flex-wrap">
                         {(o.status === "cancelled_by_shop" || o.status === "canceled_by_shop") && o.cancel_reason && (
@@ -561,9 +561,9 @@ export default function Orders() {
                 </span>
               </div>
             ) : (
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-default-50 dark:bg-zinc-800">
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-default-50 dark:bg-[#1a1e2e]">
                 <AlertCircle size={16} className="mt-0.5 flex-shrink-0 text-default-400" />
-                <span className="text-sm text-default-600 dark:text-zinc-400">Đơn COD — hủy đơn không ảnh hưởng đến thanh toán.</span>
+                <span className="text-sm text-default-600 dark:text-[#9ea3b5]">Đơn COD — hủy đơn không ảnh hưởng đến thanh toán.</span>
               </div>
             )}
             <Textarea

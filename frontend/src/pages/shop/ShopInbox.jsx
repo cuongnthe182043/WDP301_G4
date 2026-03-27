@@ -30,7 +30,7 @@ function ContextCard({ ctx }) {
     const { name, image, price, slug } = ctx.data;
     return (
       <div
-        className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 overflow-hidden cursor-pointer hover:border-primary transition-colors"
+        className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-[#1a1e2e] overflow-hidden cursor-pointer hover:border-primary transition-colors"
         onClick={() => slug && window.open(`/products/${slug}`, "_blank")}
       >
         <div className="flex items-center gap-2.5 p-2.5">
@@ -40,7 +40,7 @@ function ContextCard({ ctx }) {
           }
           <div className="flex-1 min-w-0">
             <p className="text-[10px] text-primary font-semibold mb-0.5">Sản phẩm được hỏi</p>
-            <p className="text-sm text-default-800 dark:text-zinc-100 line-clamp-2 font-medium leading-tight">{name}</p>
+            <p className="text-sm text-default-800 dark:text-[#e8eaed] line-clamp-2 font-medium leading-tight">{name}</p>
             {price > 0 && <p className="text-xs text-danger font-semibold mt-0.5">{formatCurrency(price)}</p>}
           </div>
           <ExternalLink size={14} className="text-default-300 flex-shrink-0" />
@@ -56,12 +56,12 @@ function ContextCard({ ctx }) {
       in_transit: "Đang giao", delivered: "Đã giao", cancelled_by_customer: "Đã hủy",
     };
     return (
-      <div className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 p-3">
+      <div className="rounded-xl border border-default-200 dark:border-zinc-600 bg-white dark:bg-[#1a1e2e] p-3">
         <div className="flex items-center gap-1.5 mb-1.5">
           <ShoppingBag size={14} className="text-primary flex-shrink-0" />
           <p className="text-[10px] text-primary font-semibold">Đơn hàng được hỏi</p>
         </div>
-        <p className="text-sm font-bold text-default-800 dark:text-zinc-100">#{order_code}</p>
+        <p className="text-sm font-bold text-default-800 dark:text-[#e8eaed]">#{order_code}</p>
         <div className="flex items-center gap-3 mt-0.5 flex-wrap">
           {total_price > 0 && <span className="text-sm text-danger font-semibold">{formatCurrency(total_price)}</span>}
           {status && <span className="text-xs text-default-400">{STATUS_VI[status] || status}</span>}
@@ -296,12 +296,12 @@ export default function ShopInbox() {
   const canSend       = (input.trim() || pendingImages.some(p => p.url)) && !hasUploading;
 
   return (
-    <div className="h-[calc(100vh-120px)] flex rounded-2xl overflow-hidden border border-default-100 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
+    <div className="h-[calc(100vh-120px)] flex rounded-2xl overflow-hidden border border-default-100 dark:border-[#2e3347] bg-white dark:bg-[#131620] shadow-sm">
 
       {/* ── Conversation list ───────────────────────────────────────────── */}
-      <div className="w-72 flex-shrink-0 border-r border-default-100 dark:border-zinc-700 flex flex-col">
-        <div className="px-4 py-4 border-b border-default-100 dark:border-zinc-700 bg-gradient-to-r from-primary/5 to-violet-500/5 dark:from-primary/10 dark:to-violet-500/10">
-          <h2 className="font-bold text-default-900 dark:text-zinc-100 flex items-center gap-2">
+      <div className="w-72 flex-shrink-0 border-r border-default-100 dark:border-[#2e3347] flex flex-col">
+        <div className="px-4 py-4 border-b border-default-100 dark:border-[#2e3347] bg-gradient-to-r from-primary/5 to-violet-500/5 dark:from-primary/10 dark:to-violet-500/10">
+          <h2 className="font-bold text-default-900 dark:text-[#e8eaed] flex items-center gap-2">
             <MessageCircle size={18} className="text-primary" />
             Tin nhắn
             {totalUnread > 0 && (
@@ -328,7 +328,7 @@ export default function ShopInbox() {
             conversations.map(conv => (
               <button
                 key={conv._id}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-default-50 dark:border-zinc-800 ${
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-default-50 dark:border-[#222738] ${
                   activeConv?._id === conv._id
                     ? "bg-primary-50 dark:bg-primary-900/20 border-l-2 border-l-primary"
                     : "hover:bg-default-50 dark:hover:bg-zinc-800"
@@ -343,7 +343,7 @@ export default function ShopInbox() {
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className={`text-sm truncate ${conv.unread_shop > 0 ? "font-bold text-default-900 dark:text-zinc-100" : "font-semibold text-default-800 dark:text-zinc-200"}`}>
+                    <p className={`text-sm truncate ${conv.unread_shop > 0 ? "font-bold text-default-900 dark:text-[#e8eaed]" : "font-semibold text-default-800 dark:text-[#d1d5db]"}`}>
                       {conv.customer?.name || "Khách hàng"}
                     </p>
                     <span className="text-[10px] text-default-400 ml-2 flex-shrink-0">
@@ -351,7 +351,7 @@ export default function ShopInbox() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between mt-0.5">
-                    <p className={`text-xs truncate flex-1 ${conv.unread_shop > 0 ? "text-default-700 dark:text-zinc-300 font-medium" : "text-default-400"}`}>
+                    <p className={`text-xs truncate flex-1 ${conv.unread_shop > 0 ? "text-default-700 dark:text-[#c8cbd4] font-medium" : "text-default-400"}`}>
                       {conv.last_message || "Bắt đầu cuộc trò chuyện"}
                     </p>
                     {conv.unread_shop > 0 && (
@@ -370,7 +370,7 @@ export default function ShopInbox() {
       {/* ── Message area ───────────────────────────────────────────────── */}
       {!activeConv ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4 text-default-400 bg-gradient-to-br from-slate-50 to-indigo-50/30 dark:from-zinc-900 dark:to-zinc-800">
-          <div className="p-5 rounded-full bg-white dark:bg-zinc-800 shadow-md">
+          <div className="p-5 rounded-full bg-white dark:bg-[#1a1e2e] shadow-md">
             <MessageCircle size={40} className="text-primary/40" />
           </div>
           <p className="text-sm text-default-400">Chọn cuộc trò chuyện để bắt đầu</p>
@@ -378,14 +378,14 @@ export default function ShopInbox() {
       ) : (
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-default-100 dark:border-zinc-700 flex-shrink-0 bg-white dark:bg-zinc-900">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-default-100 dark:border-[#2e3347] flex-shrink-0 bg-white dark:bg-[#131620]">
             <Avatar
               src={activeConv.customer?.avatar}
               name={activeConv.customer?.name?.charAt(0)}
               size="sm"
             />
             <div>
-              <p className="font-semibold text-sm text-default-900 dark:text-zinc-100">
+              <p className="font-semibold text-sm text-default-900 dark:text-[#e8eaed]">
                 {activeConv.customer?.name || "Khách hàng"}
               </p>
               <p className="text-xs text-green-500 font-medium">● Đang hoạt động</p>
@@ -454,7 +454,7 @@ export default function ShopInbox() {
                           <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${
                             isMe
                               ? "bg-primary text-white rounded-br-sm"
-                              : "bg-white dark:bg-zinc-700 text-default-900 dark:text-zinc-100 rounded-bl-sm"
+                              : "bg-white dark:bg-zinc-700 text-default-900 dark:text-[#e8eaed] rounded-bl-sm"
                           }`}>
                             {msg.content}
                           </div>
@@ -486,7 +486,7 @@ export default function ShopInbox() {
 
           {/* Pending image previews */}
           {pendingImages.length > 0 && (
-            <div className="flex gap-2 px-5 py-2 border-t border-default-100 dark:border-zinc-700 overflow-x-auto flex-shrink-0 bg-white dark:bg-zinc-900">
+            <div className="flex gap-2 px-5 py-2 border-t border-default-100 dark:border-[#2e3347] overflow-x-auto flex-shrink-0 bg-white dark:bg-[#131620]">
               {pendingImages.map(img => (
                 <div key={img.id} className="relative flex-shrink-0">
                   <img
@@ -511,7 +511,7 @@ export default function ShopInbox() {
           )}
 
           {/* Input */}
-          <div className="px-5 py-3 border-t border-default-100 dark:border-zinc-700 flex items-center gap-3 flex-shrink-0 bg-white dark:bg-zinc-900">
+          <div className="px-5 py-3 border-t border-default-100 dark:border-[#2e3347] flex items-center gap-3 flex-shrink-0 bg-white dark:bg-[#131620]">
             <input
               ref={imageInputRef}
               type="file"
@@ -528,7 +528,7 @@ export default function ShopInbox() {
               <ImagePlus size={20} />
             </button>
             <input
-              className="flex-1 text-sm bg-default-50 dark:bg-zinc-800 border border-default-200 dark:border-zinc-600 rounded-xl px-4 py-2.5 outline-none focus:border-primary transition-colors"
+              className="flex-1 text-sm bg-default-50 dark:bg-[#1a1e2e] border border-default-200 dark:border-zinc-600 rounded-xl px-4 py-2.5 outline-none focus:border-primary transition-colors"
               placeholder="Nhập tin nhắn..."
               value={input}
               onChange={e => setInput(e.target.value)}

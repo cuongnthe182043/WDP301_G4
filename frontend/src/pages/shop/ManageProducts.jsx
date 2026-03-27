@@ -188,10 +188,10 @@ export default function ManageProducts() {
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-default-50 dark:bg-zinc-800 border-b border-default-100 dark:border-zinc-700">
+              <thead className="bg-default-50 dark:bg-[#1a1e2e] border-b border-default-100 dark:border-[#2e3347]">
                 <tr>
                   {[t("shop.product_col_image"), t("shop.product_col_name"), t("shop.product_col_price"), t("shop.product_col_stock"), t("shop.product_col_status"), ""].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-[#9ea3b5] uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -205,7 +205,7 @@ export default function ManageProducts() {
                       />
                     </td>
                     <td className="px-4 py-3 max-w-xs">
-                      <p className="font-semibold text-default-900 dark:text-zinc-100 truncate">{p.name}</p>
+                      <p className="font-semibold text-default-900 dark:text-[#e8eaed] truncate">{p.name}</p>
                       <p className="text-xs text-default-400 truncate">{p.category_name || "—"}</p>
                       {p.rejection_reason && (
                         <p className="text-xs text-danger mt-0.5 truncate">

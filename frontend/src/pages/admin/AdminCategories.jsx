@@ -29,7 +29,7 @@ const GENDER_STYLE = {
   men:    { bg: "bg-blue-500/10 dark:bg-blue-400/10",    text: "text-blue-600 dark:text-blue-400",    ring: "ring-blue-500/20",    dot: "bg-blue-500" },
   women:  { bg: "bg-rose-500/10 dark:bg-rose-400/10",    text: "text-rose-600 dark:text-rose-400",    ring: "ring-rose-500/20",    dot: "bg-rose-500" },
   unisex: { bg: "bg-violet-500/10 dark:bg-violet-400/10",text: "text-violet-600 dark:text-violet-400",ring: "ring-violet-500/20",  dot: "bg-violet-500" },
-  mixed:  { bg: "bg-zinc-500/10 dark:bg-zinc-400/10",    text: "text-zinc-500 dark:text-zinc-400",    ring: "ring-zinc-400/20",    dot: "bg-zinc-400" },
+  mixed:  { bg: "bg-zinc-500/10 dark:bg-zinc-400/10",    text: "text-zinc-500 dark:text-[#9ea3b5]",    ring: "ring-zinc-400/20",    dot: "bg-zinc-400" },
 };
 
 function GenderBadge({ value = "mixed" }) {
@@ -52,14 +52,14 @@ const STAT_PALETTE = {
 function StatCard({ icon: Icon, label, value, accent = "indigo" }) {
   const p = STAT_PALETTE[accent] || STAT_PALETTE.indigo;
   return (
-    <div className={`relative overflow-hidden rounded-xl border ${p.border} bg-white dark:bg-zinc-900 shadow-lg ${p.glow} p-5 hover:shadow-xl transition-all duration-300`}>
+    <div className={`relative overflow-hidden rounded-xl border ${p.border} bg-white dark:bg-[#131620] shadow-lg ${p.glow} p-5 hover:shadow-xl transition-all duration-300`}>
       <div className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-60 pointer-events-none`} />
       <div className="relative flex items-start justify-between">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">{label}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-[#6b7280] mb-2">{label}</p>
           <p className="text-3xl font-black text-zinc-900 dark:text-white tabular-nums leading-none">{value}</p>
         </div>
-        <div className={`p-2.5 rounded-lg bg-white/50 dark:bg-zinc-800/80 ${p.icon}`}>
+        <div className={`p-2.5 rounded-lg bg-white/50 dark:bg-[#1a1e2e]/80 ${p.icon}`}>
           <Icon size={20} strokeWidth={1.75} />
         </div>
       </div>
@@ -71,7 +71,7 @@ function StatCard({ icon: Icon, label, value, accent = "indigo" }) {
 function Field({ label, required, children }) {
   return (
     <div className="space-y-1.5">
-      <label className="text-[11px] font-black uppercase tracking-[0.12em] text-zinc-400 dark:text-zinc-500">
+      <label className="text-[11px] font-black uppercase tracking-[0.12em] text-zinc-400 dark:text-[#6b7280]">
         {label}{required && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
       {children}
@@ -85,7 +85,7 @@ function FieldInput({ value, onChange, placeholder, ...rest }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full h-10 px-3.5 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
+      className="w-full h-10 px-3.5 text-sm rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all"
       {...rest}
     />
   );
@@ -222,7 +222,7 @@ export default function AdminBrands() {
             <h1 className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 leading-none">
               {t("shop.brands")}
             </h1>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 font-medium tabular-nums">
+            <p className="text-xs text-zinc-400 dark:text-[#6b7280] mt-1 font-medium tabular-nums">
               {filtered.length !== rows.length
                 ? `${filtered.length} / ${rows.length} brands`
                 : `${rows.length} brands total`}
@@ -254,7 +254,7 @@ export default function AdminBrands() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("admin.admin_products_search") || "Search brands…"}
-            className="w-full h-9 pl-8 pr-3 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all shadow-sm"
+            className="w-full h-9 pl-8 pr-3 text-xs rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] text-zinc-800 dark:text-[#d1d5db] placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all shadow-sm"
           />
           {search && (
             <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
@@ -274,7 +274,7 @@ export default function AdminBrands() {
                 className={`h-9 px-3.5 text-xs font-semibold rounded-lg border transition-all ${
                   active
                     ? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-600/20"
-                    : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300"
+                    : "bg-white dark:bg-[#131620] border-zinc-200 dark:border-[#2e3347] text-zinc-500 dark:text-[#9ea3b5] hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300"
                 }`}
               >
                 {opt.label}
@@ -285,7 +285,7 @@ export default function AdminBrands() {
       </div>
 
       {/* ── Table ─────────────────────────────────────────────────────────── */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-zinc-200 dark:border-[#222738] bg-white dark:bg-[#131620] shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
             <Spinner size="lg" color="primary" />
@@ -293,19 +293,19 @@ export default function AdminBrands() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-[#1a1e2e] flex items-center justify-center">
               <Search size={24} className="text-zinc-300 dark:text-zinc-600" strokeWidth={1.5} />
             </div>
             <div className="text-center">
-              <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">{t("common.no_data")}</p>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">Try adjusting your search or filters</p>
+              <p className="text-sm font-semibold text-zinc-500 dark:text-[#9ea3b5]">{t("common.no_data")}</p>
+              <p className="text-xs text-zinc-400 dark:text-[#6b7280] mt-1">Try adjusting your search or filters</p>
             </div>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="border-b border-zinc-100 dark:border-zinc-800">
+                <tr className="border-b border-zinc-100 dark:border-[#222738]">
                   {[
                     { label: "#",                    cls: "w-12 pl-5 text-left" },
                     { label: "Logo",                 cls: "w-16" },
@@ -315,7 +315,7 @@ export default function AdminBrands() {
                     { label: t("common.description"),cls: "min-w-[200px]" },
                     { label: t("common.actions"),    cls: "w-24 text-right pr-5" },
                   ].map((h, i) => (
-                    <th key={i} className={`px-4 py-3 text-left text-[10px] font-black uppercase tracking-[0.1em] text-zinc-400 dark:text-zinc-500 bg-zinc-50/80 dark:bg-zinc-800/40 whitespace-nowrap ${h.cls}`}>
+                    <th key={i} className={`px-4 py-3 text-left text-[10px] font-black uppercase tracking-[0.1em] text-zinc-400 dark:text-[#6b7280] bg-zinc-50/80 dark:bg-[#1a1e2e]/40 whitespace-nowrap ${h.cls}`}>
                       {h.label}
                     </th>
                   ))}
@@ -328,7 +328,7 @@ export default function AdminBrands() {
                   return (
                     <tr
                       key={r._id}
-                      className={`group border-b border-zinc-50 dark:border-zinc-800/60 last:border-0 hover:bg-blue-50/40 dark:hover:bg-blue-500/5 transition-colors duration-100 ${isEven ? "" : "bg-zinc-50/30 dark:bg-zinc-800/20"}`}
+                      className={`group border-b border-zinc-50 dark:border-[#222738]/60 last:border-0 hover:bg-blue-50/40 dark:hover:bg-blue-500/5 transition-colors duration-100 ${isEven ? "" : "bg-zinc-50/30 dark:bg-[#1a1e2e]/20"}`}
                     >
                       {/* # */}
                       <td className="pl-5 px-4 py-4 text-[10px] text-zinc-300 dark:text-zinc-600 font-mono tabular-nums">{rowNum}</td>
@@ -336,28 +336,28 @@ export default function AdminBrands() {
                       {/* Logo */}
                       <td className="px-4 py-4">
                         {r.logo_url ? (
-                          <div className="w-11 h-11 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center p-1.5 shadow-sm">
+                          <div className="w-11 h-11 rounded-xl border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] flex items-center justify-center p-1.5 shadow-sm">
                             <img src={r.logo_url} alt={r.name} className="w-full h-full object-contain" />
                           </div>
                         ) : (
-                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700 flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
-                            <span className="text-sm font-black text-zinc-400 dark:text-zinc-500 uppercase">{r.name[0]}</span>
+                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700 flex items-center justify-center border border-zinc-200 dark:border-[#2e3347]">
+                            <span className="text-sm font-black text-zinc-400 dark:text-[#6b7280] uppercase">{r.name[0]}</span>
                           </div>
                         )}
                       </td>
 
                       {/* Name */}
                       <td className="px-4 py-4">
-                        <p className="font-semibold text-zinc-800 dark:text-zinc-100 text-[13px] leading-tight">{r.name}</p>
+                        <p className="font-semibold text-zinc-800 dark:text-[#e8eaed] text-[13px] leading-tight">{r.name}</p>
                         {r.slug && (
-                          <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono mt-0.5">{r.slug}</p>
+                          <p className="text-[10px] text-zinc-400 dark:text-[#6b7280] font-mono mt-0.5">{r.slug}</p>
                         )}
                       </td>
 
                       {/* Country */}
                       <td className="px-4 py-4">
                         {r.country ? (
-                          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-zinc-600 dark:text-zinc-300">
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-zinc-600 dark:text-[#c8cbd4]">
                             <Globe size={11} className="text-zinc-400 shrink-0" /> {r.country}
                           </span>
                         ) : (
@@ -372,7 +372,7 @@ export default function AdminBrands() {
 
                       {/* Description */}
                       <td className="px-4 py-4">
-                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-2 max-w-[220px] leading-relaxed">
+                        <p className="text-[11px] text-zinc-500 dark:text-[#9ea3b5] line-clamp-2 max-w-[220px] leading-relaxed">
                           {r.description || <span className="text-zinc-300 dark:text-zinc-600">—</span>}
                         </p>
                       </td>
@@ -383,7 +383,7 @@ export default function AdminBrands() {
                           <Tooltip content={t("common.edit_brand")} radius="sm">
                             <button
                               onClick={() => openEdit(r)}
-                              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-150"
+                              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-500 dark:text-[#9ea3b5] hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-150"
                             >
                               <Pencil size={13} />
                             </button>
@@ -391,7 +391,7 @@ export default function AdminBrands() {
                           <Tooltip content={t("common.delete_brand")} radius="sm" color="danger">
                             <button
                               onClick={() => setDelTarget(r)}
-                              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:border-rose-400 dark:hover:border-rose-500 hover:text-rose-600 dark:hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all duration-150"
+                              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-500 dark:text-[#9ea3b5] hover:border-rose-400 dark:hover:border-rose-500 hover:text-rose-600 dark:hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all duration-150"
                             >
                               <Trash2 size={13} />
                             </button>
@@ -410,16 +410,16 @@ export default function AdminBrands() {
       {/* ── Pagination ────────────────────────────────────────────────────── */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium tabular-nums">
-            <span className="font-bold text-zinc-700 dark:text-zinc-300">{(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, filtered.length)}</span>
+          <p className="text-xs text-zinc-400 dark:text-[#6b7280] font-medium tabular-nums">
+            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, filtered.length)}</span>
             {" "}of{" "}
-            <span className="font-bold text-zinc-700 dark:text-zinc-300">{filtered.length}</span> brands
+            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{filtered.length}</span> brands
           </p>
           <div className="flex items-center gap-1">
             <button
               disabled={page <= 1}
               onClick={() => setPage(p => p - 1)}
-              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeft size={14} />
             </button>
@@ -433,7 +433,7 @@ export default function AdminBrands() {
                   className={`w-8 h-8 inline-flex items-center justify-center rounded-lg text-xs font-semibold border transition-all ${
                     page === p
                       ? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-600/30"
-                      : "border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                      : "border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {p}
@@ -443,7 +443,7 @@ export default function AdminBrands() {
             <button
               disabled={page >= totalPages}
               onClick={() => setPage(p => p + 1)}
-              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               <ChevronRight size={14} />
             </button>
@@ -457,10 +457,10 @@ export default function AdminBrands() {
         onOpenChange={(o) => { if (!o) { setModal(null); resetLogo(); } }}
         radius="lg" size="lg" backdrop="blur"
         classNames={{
-          base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl",
-          header: "border-b border-zinc-100 dark:border-zinc-800 pb-4",
+          base: "bg-white dark:bg-[#131620] border border-zinc-200 dark:border-[#222738] shadow-2xl",
+          header: "border-b border-zinc-100 dark:border-[#222738] pb-4",
           body: "pt-5",
-          footer: "border-t border-zinc-100 dark:border-zinc-800 pt-3",
+          footer: "border-t border-zinc-100 dark:border-[#222738] pt-3",
         }}
       >
         <ModalContent>
@@ -483,7 +483,7 @@ export default function AdminBrands() {
                   <div className="flex items-start gap-5">
                     {logoPreview ? (
                       <div className="relative shrink-0">
-                        <div className="w-24 h-24 rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center p-2 shadow-sm overflow-hidden">
+                        <div className="w-24 h-24 rounded-2xl border-2 border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] flex items-center justify-center p-2 shadow-sm overflow-hidden">
                           <img src={logoPreview} alt="preview" className="w-full h-full object-contain" />
                         </div>
                         <button
@@ -497,22 +497,22 @@ export default function AdminBrands() {
                       <button
                         type="button"
                         onClick={() => fileRef.current?.click()}
-                        className="w-24 h-24 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 flex flex-col items-center justify-center gap-1.5 shrink-0 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-500/10 transition-all group"
+                        className="w-24 h-24 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-[#2e3347] flex flex-col items-center justify-center gap-1.5 shrink-0 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-500/10 transition-all group"
                       >
-                        <Upload size={18} className="text-zinc-400 dark:text-zinc-500 group-hover:text-blue-500 transition-colors" />
-                        <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 group-hover:text-blue-500 transition-colors">Upload</span>
+                        <Upload size={18} className="text-zinc-400 dark:text-[#6b7280] group-hover:text-blue-500 transition-colors" />
+                        <span className="text-[10px] font-semibold text-zinc-400 dark:text-[#6b7280] group-hover:text-blue-500 transition-colors">Upload</span>
                       </button>
                     )}
 
                     <div className="flex-1 space-y-2 pt-1">
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                        Upload your brand logo. Recommended size: <span className="font-semibold text-zinc-700 dark:text-zinc-300">200×200px</span>. Supports JPG, PNG, WEBP up to 10MB.
+                      <p className="text-xs text-zinc-500 dark:text-[#9ea3b5] leading-relaxed">
+                        Upload your brand logo. Recommended size: <span className="font-semibold text-zinc-700 dark:text-[#c8cbd4]">200×200px</span>. Supports JPG, PNG, WEBP up to 10MB.
                       </p>
                       {logoPreview && (
                         <button
                           type="button"
                           onClick={() => fileRef.current?.click()}
-                          className="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
+                          className="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
                         >
                           <Upload size={11} /> Change image
                         </button>
@@ -544,7 +544,7 @@ export default function AdminBrands() {
                     <select
                       value={form.gender_focus || "mixed"}
                       onChange={(e) => setForm(f => ({ ...f, gender_focus: e.target.value }))}
-                      className="w-full h-10 px-3.5 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all appearance-none cursor-pointer"
+                      className="w-full h-10 px-3.5 text-sm rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all appearance-none cursor-pointer"
                     >
                       {GENDER_OPTS.map(o => <option key={o.key} value={o.key}>{o.label}</option>)}
                     </select>
@@ -556,7 +556,7 @@ export default function AdminBrands() {
                         onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))}
                         placeholder={t("common.optional")}
                         rows={3}
-                        className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all resize-none"
+                        className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-zinc-50 dark:bg-[#1a1e2e]/60 text-zinc-800 dark:text-[#d1d5db] placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all resize-none"
                       />
                     </Field>
                   </div>
@@ -566,7 +566,7 @@ export default function AdminBrands() {
               <ModalFooter className="gap-2">
                 <button
                   onClick={onClose}
-                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
+                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
                 >
                   {t("common.cancel")}
                 </button>
@@ -593,9 +593,9 @@ export default function AdminBrands() {
         onOpenChange={(o) => !o && setDelTarget(null)}
         radius="lg" backdrop="blur"
         classNames={{
-          base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl max-w-sm",
-          header: "border-b border-zinc-100 dark:border-zinc-800 pb-4",
-          footer: "border-t border-zinc-100 dark:border-zinc-800 pt-3",
+          base: "bg-white dark:bg-[#131620] border border-zinc-200 dark:border-[#222738] shadow-2xl max-w-sm",
+          header: "border-b border-zinc-100 dark:border-[#222738] pb-4",
+          footer: "border-t border-zinc-100 dark:border-[#222738] pt-3",
         }}
       >
         <ModalContent>
@@ -608,16 +608,16 @@ export default function AdminBrands() {
                 <p className="text-sm font-black text-zinc-900 dark:text-zinc-50">{t("common.delete_brand")}</p>
               </ModalHeader>
               <ModalBody className="py-5">
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                <p className="text-sm text-zinc-600 dark:text-[#c8cbd4] leading-relaxed">
                   {t("common.confirm_delete")}{" "}
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100">"{delTarget?.name}"</span>?
+                  <span className="font-bold text-zinc-900 dark:text-[#e8eaed]">"{delTarget?.name}"</span>?
                 </p>
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">This action cannot be undone.</p>
+                <p className="text-xs text-zinc-400 dark:text-[#6b7280] mt-1">This action cannot be undone.</p>
               </ModalBody>
               <ModalFooter className="gap-2">
                 <button
                   onClick={onClose}
-                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
+                  className="h-9 px-5 text-xs font-semibold rounded-lg border border-zinc-200 dark:border-[#2e3347] bg-white dark:bg-[#1a1e2e] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-all"
                 >
                   {t("common.cancel")}
                 </button>

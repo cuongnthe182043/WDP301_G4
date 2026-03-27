@@ -43,7 +43,7 @@ const inputCls = (hasError) =>
   `w-full h-10 px-3.5 rounded-xl text-sm font-medium transition-all duration-200 outline-none border-2
   ${hasError
     ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-2 focus:ring-red-100 text-red-800 dark:bg-red-950 dark:border-red-700 dark:text-red-300"
-    : "border-blue-100 bg-blue-50/50 text-gray-800 dark:text-zinc-200 placeholder-blue-200 focus:border-blue-400 focus:bg-white dark:focus:bg-zinc-800 focus:ring-2 focus:ring-blue-100 dark:border-zinc-700 dark:bg-zinc-800"
+    : "border-blue-100 bg-blue-50/50 text-gray-800 dark:text-[#d1d5db] placeholder-blue-200 focus:border-blue-400 focus:bg-white dark:focus:bg-zinc-800 focus:ring-2 focus:ring-blue-100 dark:border-[#2e3347] dark:bg-[#1a1e2e]"
   }`;
 
 function FieldLabel({ icon: Icon, children }) {
@@ -402,9 +402,9 @@ export default function AddressDialog({ open, onClose, initial, onSubmit }) {
 
           {/* Current address hint */}
           {initial && (
-            <div className="flex items-start gap-2.5 px-4 py-3 rounded-xl bg-blue-50 dark:bg-zinc-800 border border-blue-200 dark:border-zinc-700">
+            <div className="flex items-start gap-2.5 px-4 py-3 rounded-xl bg-blue-50 dark:bg-[#1a1e2e] border border-blue-200 dark:border-[#2e3347]">
               <Info size={14} className="text-blue-400 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-blue-600 dark:text-zinc-300 leading-relaxed">
+              <p className="text-xs text-blue-600 dark:text-[#c8cbd4] leading-relaxed">
                 <span className="font-bold">{t("profile.current_address_label")} </span>
                 {initial?.street ? `${initial.street}, ` : ""}
                 {prettyJoin([initial?.ward, initial?.district, initial?.city])}

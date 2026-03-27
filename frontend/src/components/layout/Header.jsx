@@ -224,11 +224,11 @@ function NotificationDropdown({ scrolled, isDark }) {
           boxShadow: isDark
             ? "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)"
             : "0 12px 48px rgba(29,78,216,0.14), 0 0 0 1px #DBEAFE",
-          background: isDark ? "#18181b" : "#fff",
+          background: isDark ? "#1a1e2e" : "#fff",
         }}
       >
         <DropdownItem key="header" isReadOnly className="cursor-default px-4 py-3 opacity-100 rounded-none"
-          style={{ borderBottom: isDark ? "1px solid #27272a" : "1px solid #EFF6FF", background: isDark ? "#1f1f23" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)" }}>
+          style={{ borderBottom: isDark ? "1px solid #2e3347" : "1px solid #EFF6FF", background: isDark ? "#1e2233" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Bell size={15} className="text-blue-600" />
@@ -258,9 +258,9 @@ function NotificationDropdown({ scrolled, isDark }) {
               <div
                 onClick={() => { if (!n.isRead) markRead(n._id); if (n.link) navigate(n.link); }}
                 className="flex gap-3 px-4 py-3 transition-colors cursor-pointer group"
-                style={{ background: n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF") }}
-                onMouseEnter={e => e.currentTarget.style.background = isDark ? "#27272a" : "#EFF6FF"}
-                onMouseLeave={e => e.currentTarget.style.background = n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF")}
+                style={{ background: n.isRead ? "transparent" : (isDark ? "#1e2233" : "#F0F7FF") }}
+                onMouseEnter={e => e.currentTarget.style.background = isDark ? "#222738" : "#EFF6FF"}
+                onMouseLeave={e => e.currentTarget.style.background = n.isRead ? "transparent" : (isDark ? "#1e2233" : "#F0F7FF")}
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: bg }}>
                   <Icon size={16} style={{ color }} />
@@ -283,7 +283,7 @@ function NotificationDropdown({ scrolled, isDark }) {
         })}
 
         <DropdownItem key="view-all" isReadOnly className="cursor-pointer opacity-100 rounded-none px-4 py-2.5"
-          style={{ borderTop: isDark ? "1px solid #27272a" : "1px solid #EFF6FF", background: isDark ? "#121215" : "#F8FBFF" }}>
+          style={{ borderTop: isDark ? "1px solid #2e3347" : "1px solid #EFF6FF", background: isDark ? "#161a28" : "#F8FBFF" }}>
           <button onClick={() => navigate("/notifications")}
             className="w-full flex items-center justify-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">
             <ExternalLink size={12} />{t("notification.view_all")}
@@ -315,9 +315,9 @@ const NAV_WHITE_LIGHT = {
   borderBottom: "1.5px solid #EFF6FF",
 };
 const NAV_WHITE_DARK = {
-  background: "#18181b",
-  boxShadow: "0 2px 16px rgba(0,0,0,0.4)",
-  borderBottom: "1.5px solid #27272a",
+  background: "#1a1e2e",
+  boxShadow: "0 2px 16px rgba(0,0,0,0.25)",
+  borderBottom: "1.5px solid #2e3347",
 };
 
 export default function Header({ cartCount = 0, notifyCount = 0, user = null, onLogout }) {
@@ -568,7 +568,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                   <DropdownItem key="identity" isReadOnly className="opacity-100 cursor-default px-0 py-0 mb-1">
                     <div className="px-4 py-4 flex items-center gap-3"
                       style={{
-                        background: isDark ? "linear-gradient(135deg,#1e293b,#1f2937)" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)",
+                        background: isDark ? "linear-gradient(135deg,#1a1e2e,#1e2235)" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)",
                         borderBottom: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid #BFDBFE",
                       }}>
                       <div className="relative flex-shrink-0">
@@ -670,7 +670,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
       <NavbarMenu
         className="top-[64px] pt-0 pb-6 px-0 gap-0 overflow-y-auto"
         style={{
-          background: isDark ? "#1e293b" : "#ffffff",
+          background: isDark ? "#1a1e2e" : "#ffffff",
           borderTop: isDark ? "2px solid #334155" : "2px solid #DBEAFE",
           boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.3)" : "0 8px 32px rgba(29,78,216,0.12)",
           maxHeight: "85dvh",
@@ -712,7 +712,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             <NavbarMenuItem className="px-4 mb-2">
               <div className="flex items-center gap-3 p-3 rounded-2xl"
                 style={isDark
-                  ? { background: "#1f1f23", border: "1px solid #27272a" }
+                  ? { background: "#1e2233", border: "1px solid #2e3347" }
                   : { background: "linear-gradient(135deg,#EFF6FF,#DBEAFE)", border: "1.5px solid #BFDBFE" }}>
                 <div className="relative flex-shrink-0">
                   <Avatar size="sm"
