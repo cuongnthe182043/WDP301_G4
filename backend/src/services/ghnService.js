@@ -7,18 +7,30 @@
 
 const axios = require("axios");
 
-const GHN_API_URL = process.env.GHN_API_URL || "https://dev-online-gateway.ghn.vn/shiip/public-api/v2";
-const GHN_TOKEN   = process.env.GHN_TOKEN   || "fb35fa85-1f15-11f1-a973-aee5264794df";
-const GHN_SHOP_ID = Number(process.env.GHN_SHOP_ID || "2510907");
+const GHN_API_URL  = process.env.GHN_API_URL || "https://dev-online-gateway.ghn.vn/shiip/public-api/v2";
+const GHN_TOKEN    = process.env.GHN_TOKEN   || "fb35fa85-1f15-11f1-a973-aee5264794df";
+const GHN_SHOP_ID  = Number(process.env.GHN_SHOP_ID || "199062");
+// Location endpoints live at /shiip/public-api (no /v2)
+const GHN_DATA_URL = GHN_API_URL.replace(/\/v\d+$/, "");
 
-// Axios instance with GHN auth headers
+// Axios instance for shipping order operations
 const ghnClient = axios.create({
   baseURL: GHN_API_URL,
   timeout: 15000,
   headers: {
-    "Content-Type":    "application/json",
-    "Token":           GHN_TOKEN,
-    "ShopId":          String(GHN_SHOP_ID),
+    "Content-Type": "application/json",
+    "Token":        GHN_TOKEN,
+    "ShopId":       String(GHN_SHOP_ID),
+  },
+});
+
+// Axios instance for master-data (province / district / ward) — no /v2
+const ghnDataClient = axios.create({
+  baseURL: GHN_DATA_URL,
+  timeout: 15000,
+  headers: {
+    "Content-Type": "application/json",
+    "Token":        GHN_TOKEN,
   },
 });
 
@@ -59,7 +71,39 @@ function mapGhnStatus(ghnStatus) {
 // @param {Object} order  — Mongoose Order document (with .shipping_address)
 // @returns {Object}      — GHN response data (order_code, expected_delivery_time, …)
 // ─────────────────────────────────────────────────────────────────────────────
-async function createShippingOrder(order) {
+/**
+ * Fetch GHN province list (for shop pickup address setup).
+ */
+async function getProvinces() {
+  const res = await ghnDataClient.get("/master-data/province");
+  if (res.data?.code !== 200) throw new Error(res.data?.message || "GHN province error");
+  return res.data.data || [];
+}
+
+/**
+ * Fetch GHN districts for a province.
+ */
+async function getDistricts(provinceId) {
+  const res = await ghnDataClient.post("/master-data/district", { province_id: Number(provinceId) });
+  if (res.data?.code !== 200) throw new Error(res.data?.message || "GHN district error");
+  return res.data.data || [];
+}
+
+/**
+ * Fetch GHN wards for a district.
+ */
+async function getWards(districtId) {
+  const res = await ghnDataClient.get("/master-data/ward", { params: { district_id: Number(districtId) } });
+  if (res.data?.code !== 200) throw new Error(res.data?.message || "GHN ward error");
+  return res.data.data || [];
+}
+
+/**
+ * createShippingOrder
+ * @param {Object} order        — Mongoose Order document
+ * @param {Object} fromAddress  — Shop pickup address { name, phone, address, district_id, ward_code }
+ */
+async function createShippingOrder(order, fromAddress) {
   const addr = order.shipping_address || {};
 
   // Validate required GHN address fields before calling API
@@ -93,10 +137,38 @@ async function createShippingOrder(order) {
     weight:   200,
   }));
 
+  // Pick the best available service type for this from→to district pair.
+  // Preference order: 2 (Express) → 5 (Standard) → first available → fallback 2.
+  const fromDistrictId = fromAddress?.district_id ? Number(fromAddress.district_id) : 0;
+  let serviceTypeId = 2;
+  if (fromDistrictId) {
+    try {
+      const services = await getAvailableServices(fromDistrictId, districtId);
+      const preferred = services.find(s => s.service_type_id === 2)
+        || services.find(s => s.service_type_id === 5)
+        || services[0];
+      if (preferred) {
+        serviceTypeId = preferred.service_type_id;
+        console.log(`[GHN] Using service_type_id: ${serviceTypeId} (${preferred.short_name || ""})`);
+      }
+    } catch {
+      // keep default
+    }
+  }
+
   const payload = {
     payment_type_id,
     note:           order.note || "",
-    required_note:  "KHONGCHOXEM",
+    required_note:  "CHOXEMHANGKHONGTHU",
+    // Pickup (from) address — each shop's own address
+    ...(fromAddress?.district_id && fromAddress?.ward_code ? {
+      from_name:        fromAddress.name    || "Shop",
+      from_phone:       fromAddress.phone   || "",
+      from_address:     fromAddress.address || "",
+      from_district_id: Number(fromAddress.district_id),
+      from_ward_code:   String(fromAddress.ward_code),
+    } : {}),
+    // Delivery (to) address
     to_name:        addr.name    || "Khách hàng",
     to_phone:       addr.phone   || "0000000000",
     to_address:     [addr.street, addr.ward, addr.district].filter(Boolean).join(", "),
@@ -107,7 +179,7 @@ async function createShippingOrder(order) {
     length:         20,
     width:          20,
     height:         10,
-    service_type_id: 2,
+    service_type_id: serviceTypeId,
     items,
   };
 
@@ -132,6 +204,14 @@ async function createShippingOrder(order) {
     const msg = response.data?.message || "GHN API error";
     console.error(`[GHN] createShippingOrder failed | order: ${order.order_code} | msg: ${msg}`);
     console.error(`[GHN] Full response:`, JSON.stringify(response.data, null, 2));
+
+    // Give actionable hints for common GHN errors
+    if (/address|pick.?up|store|kho/i.test(msg)) {
+      throw new Error(`GHN: ${msg} — Vui lòng thiết lập địa chỉ lấy hàng mặc định tại 5sao.ghn.dev → Cài đặt → Địa chỉ lấy hàng.`);
+    }
+    if (/shop.*not.*exist|không.*tìm.*thấy.*shop/i.test(msg)) {
+      throw new Error(`GHN: ${msg} — Kiểm tra lại GHN_SHOP_ID trong file .env.`);
+    }
     throw new Error(`GHN: ${msg}`);
   }
 
@@ -181,6 +261,23 @@ async function getOrderDetail(ghnCode) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// getAvailableServices
+// Returns available services for a from→to district pair.
+// Used to pick the best service_type_id before creating an order.
+// ─────────────────────────────────────────────────────────────────────────────
+async function getAvailableServices(fromDistrictId, toDistrictId) {
+  const response = await ghnClient.get("/shipping-order/available-services", {
+    params: {
+      shop_id:          GHN_SHOP_ID,
+      from_district:    Number(fromDistrictId),
+      to_district:      Number(toDistrictId),
+    },
+  });
+  if (response.data?.code !== 200) return [];
+  return response.data.data || [];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // calculateFee
 // Calculates estimated shipping fee for given destination.
 //
@@ -210,4 +307,8 @@ module.exports = {
   getOrderDetail,
   mapGhnStatus,
   calculateFee,
+  getAvailableServices,
+  getProvinces,
+  getDistricts,
+  getWards,
 };

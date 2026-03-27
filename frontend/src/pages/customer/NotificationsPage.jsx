@@ -77,7 +77,7 @@ function NotifSkeleton() {
 
 // ─── Single notification card ─────────────────────────────────────────────────
 function NotifCard({ n, onMarkRead, onDelete, onNavigate }) {
-  const { Icon, color, bg } = getMeta(n);
+  const { Icon, color, bg, label } = getMeta(n);
   const [hovered, setHovered] = useState(false);
   const { t } = useTranslation();
   const timeAgo = useTimeAgo();

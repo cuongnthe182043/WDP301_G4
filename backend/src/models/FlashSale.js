@@ -6,6 +6,8 @@ const flashSaleProductSchema = new mongoose.Schema(
   {
     product_id: { type: String, ref: "Product", required: true },
     variant_id: { type: String, ref: "ProductVariant", required: true },
+    name: { type: String, default: "" },
+    variant_name: { type: String, default: "" },
     flash_price: { type: Number, required: true },
     original_price: { type: Number, required: true },
     quantity_total: { type: Number, required: true },

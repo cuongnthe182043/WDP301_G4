@@ -3,6 +3,7 @@ const Voucher  = require("../models/Voucher");
 const Order    = require("../models/Order");
 const { v4: uuidv4 } = require("uuid");
 const auditLog = require("../services/auditLogService");
+const audit = require("../services/auditLogService");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function validateDiscount(type, value) {
@@ -212,6 +213,16 @@ exports.createVoucher = async (req, res, next) => {
       created_by: req.userId,
     });
 
+    audit.log({
+      actorId: req.userId,
+      action: "VOUCHER_CREATED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      ip: audit.getIp(req),
+      userAgent: audit.getUA(req),
+      metadata: { code: voucher.code, shop_id: String(req.shop._id), discount_type: voucher.discount_type, discount_value: voucher.discount_value, max_uses: voucher.max_uses },
+    });
+
     auditLog.log({ actorId: req.userId, action: "voucher.create", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: normalizedCode, discount_type, discount_value: Number(discount_value) } });
     res.status(201).json({ success: true, message: "Tạo voucher thành công", data: voucher });
   } catch (err) { next(err); }
@@ -288,6 +299,17 @@ exports.updateVoucher = async (req, res, next) => {
 
     await voucher.save();
     auditLog.log({ actorId: req.userId, action: "voucher.update", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: voucher.code } });
+
+    audit.log({
+      actorId: req.userId,
+      action: "VOUCHER_UPDATED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      ip: audit.getIp(req),
+      userAgent: audit.getUA(req),
+      metadata: { code: voucher.code, shop_id: String(req.shop._id), changes: req.body },
+    });
+
     res.json({ success: true, message: "Cập nhật voucher thành công", data: voucher });
   } catch (err) { next(err); }
 };
@@ -307,6 +329,17 @@ exports.toggleVoucher = async (req, res, next) => {
     voucher.is_active = !voucher.is_active;
     await voucher.save();
     auditLog.log({ actorId: req.userId, action: "voucher.toggle", targetCollection: "vouchers", targetId: voucher._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: voucher.code, is_active: voucher.is_active } });
+
+    audit.log({
+      actorId: req.userId,
+      action: "VOUCHER_TOGGLED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      ip: audit.getIp(req),
+      userAgent: audit.getUA(req),
+      metadata: { code: voucher.code, shop_id: String(req.shop._id), is_active: voucher.is_active },
+    });
+
     res.json({ success: true, data: { is_active: voucher.is_active } });
   } catch (err) { next(err); }
 };
@@ -327,8 +360,21 @@ exports.deleteVoucher = async (req, res, next) => {
 
     const vCode = voucher.code;
     const vId = voucher._id;
+    const deletedCode = voucher.code;
+    const deletedId   = String(voucher._id);
     await voucher.deleteOne();
     auditLog.log({ actorId: req.userId, action: "voucher.delete", targetCollection: "vouchers", targetId: vId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { code: vCode } });
+
+    audit.log({
+      actorId: req.userId,
+      action: "VOUCHER_DELETED",
+      targetCollection: "vouchers",
+      targetId: deletedId,
+      ip: audit.getIp(req),
+      userAgent: audit.getUA(req),
+      metadata: { code: deletedCode, shop_id: String(req.shop._id) },
+    });
+
     res.json({ success: true, message: "Xóa voucher thành công" });
   } catch (err) { next(err); }
 };

@@ -18,3 +18,13 @@ export const addressService = {
 };
 
 export default addressService;
+
+// GHN location data (for address form — accessible to all logged-in users)
+export const ghnGetProvinces = () =>
+  apiClient.get("/addresses/ghn/provinces").then(r => r.data.data || []);
+
+export const ghnGetDistricts = (provinceId) =>
+  apiClient.get("/addresses/ghn/districts", { params: { province_id: provinceId } }).then(r => r.data.data || []);
+
+export const ghnGetWards = (districtId) =>
+  apiClient.get("/addresses/ghn/wards", { params: { district_id: districtId } }).then(r => r.data.data || []);

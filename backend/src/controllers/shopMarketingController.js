@@ -9,6 +9,7 @@ const User         = require("../models/User");
 const Shop         = require("../models/Shop");
 const notif        = require("../services/dbNotificationService");
 const emailSvc     = require("../services/notificationService");
+const audit        = require("../services/auditLogService");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -168,6 +169,24 @@ exports.distributeVoucher = async (req, res, next) => {
     campaign.failed_count = failed;
     campaign.sent_at      = new Date();
     await campaign.save();
+
+    audit.log({
+      actorId: req.userId,
+      action: "VOUCHER_DISTRIBUTED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      ip: audit.getIp(req),
+      userAgent: audit.getUA(req),
+      metadata: {
+        code: voucher.code,
+        shop_id: String(shopId),
+        recipient_type,
+        sent_count: sent,
+        failed_count: failed,
+        channels,
+        campaign_id: String(campaign._id),
+      },
+    });
 
     res.json({ success: true, message: `Đã gửi voucher đến ${sent} khách hàng`, data: campaign });
   } catch (err) { next(err); }
