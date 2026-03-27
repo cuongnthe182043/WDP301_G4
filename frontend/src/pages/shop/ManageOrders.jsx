@@ -114,7 +114,7 @@ function StatusTimeline({ status }) {
               }`}>
                 {done && !current ? "✓" : i + 1}
               </div>
-              <span className={`text-[10px] text-center leading-tight ${done ? "text-default-700 dark:text-zinc-300 font-medium" : "text-default-400"}`}>
+              <span className={`text-[10px] text-center leading-tight ${done ? "text-default-700 dark:text-[#c8cbd4] font-medium" : "text-default-400"}`}>
                 {t(step.labelKey)}
               </span>
             </div>
@@ -324,7 +324,7 @@ export default function ManageOrders() {
     setSimLoading(true);
     try {
       await shopOrderApi.devResetGhn(detail._id);
-      toast.success("Reset về processing — có thể push GHN lại");
+      toast.success("Reset to processing — ready to push GHN again");
       const r = await shopOrderApi.getById(detail._id);
       setDetail(r.data);
       load(page);
@@ -346,9 +346,9 @@ export default function ManageOrders() {
       const res = await shopOrderApi.syncGhn(id);
       const d = res.data;
       if (d.updated) {
-        toast.success(`Đã đồng bộ: GHN "${d.ghn_status}" → "${d.internal_status}"`);
+        toast.success(`Synced: GHN "${d.ghn_status}" → "${d.internal_status}"`);
       } else {
-        toast.success(`Trạng thái đã đúng: ${d.internal_status} (GHN: ${d.ghn_status})`);
+        toast.success(`Status already correct: ${d.internal_status} (GHN: ${d.ghn_status})`);
       }
       if (detail?._id === id) {
         const r = await shopOrderApi.getById(id);
@@ -421,10 +421,10 @@ export default function ManageOrders() {
             <p className="text-center py-12 text-default-400">{t("shop.order_no_orders")}</p>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-default-50 dark:bg-zinc-800 border-b border-default-100 dark:border-zinc-700">
+              <thead className="bg-default-50 dark:bg-[#1a1e2e] border-b border-default-100 dark:border-[#2e3347]">
                 <tr>
                   {[t("order.order_id"), t("common.name"), t("order.items"), t("order.total"), t("order.payment_method"), t("common.status"), "GHN", t("order.date"), ""].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase whitespace-nowrap">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-[#9ea3b5] uppercase whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -432,11 +432,11 @@ export default function ManageOrders() {
                 {orders.map((o) => (
                   <tr key={o._id} className="hover:bg-default-50 dark:hover:bg-zinc-800 transition-colors">
                     {/* Order code */}
-                    <td className="px-4 py-3 font-bold text-default-900 dark:text-zinc-100 font-mono text-xs whitespace-nowrap">
+                    <td className="px-4 py-3 font-bold text-default-900 dark:text-[#e8eaed] font-mono text-xs whitespace-nowrap">
                       {o.order_code}
                     </td>
                     {/* Customer */}
-                    <td className="px-4 py-3 text-default-600 dark:text-zinc-400 text-xs max-w-[120px] truncate">
+                    <td className="px-4 py-3 text-default-600 dark:text-[#9ea3b5] text-xs max-w-[120px] truncate">
                       {o.customer?.name || o.shipping_address?.name || "—"}
                     </td>
                     {/* Item count */}
@@ -505,7 +505,7 @@ export default function ManageOrders() {
                         )}
 
                         {o.ghn_order_code && (
-                          <Tooltip content="Sync trạng thái từ GHN">
+                          <Tooltip content="Sync status from GHN">
                             <Button isIconOnly size="sm" variant="light" color="default"
                               isLoading={syncLoading}
                               onPress={() => handleSyncGhn(o._id)}>
@@ -583,12 +583,12 @@ export default function ManageOrders() {
                         <div className="flex items-center gap-2 text-default-500">
                           <Clock size={13} />
                           <span>{t("shop.order_date_label")}</span>
-                          <span className="text-default-700 dark:text-zinc-300 font-medium">{formatDate(detail.createdAt)}</span>
+                          <span className="text-default-700 dark:text-[#c8cbd4] font-medium">{formatDate(detail.createdAt)}</span>
                         </div>
                         <div className="flex items-center gap-2 text-default-500">
                           <CreditCard size={13} />
                           <span>{t("shop.order_payment_label")}</span>
-                          <span className="text-default-700 dark:text-zinc-300 font-medium">{detail.payment_method}</span>
+                          <span className="text-default-700 dark:text-[#c8cbd4] font-medium">{detail.payment_method}</span>
                           <Chip size="sm" color={detail.payment_status === "paid" ? "success" : "warning"} variant="flat">
                             {detail.payment_status === "paid" ? t("shop.order_paid") : t("shop.order_unpaid")}
                           </Chip>
@@ -599,7 +599,7 @@ export default function ManageOrders() {
                           <div className="flex items-center gap-2 text-default-500">
                             <Truck size={13} />
                             <span>{t("shop.order_expected")}</span>
-                            <span className="text-default-700 dark:text-zinc-300 font-medium">{formatDate(detail.expected_delivery)}</span>
+                            <span className="text-default-700 dark:text-[#c8cbd4] font-medium">{formatDate(detail.expected_delivery)}</span>
                           </div>
                         )}
                         {detail.cancel_reason && (
@@ -619,7 +619,7 @@ export default function ManageOrders() {
                       </p>
                       <div className="space-y-2">
                         {(detail.items || []).map((item, i) => (
-                          <div key={i} className="flex justify-between items-center text-sm border border-default-100 dark:border-zinc-700 rounded-xl p-3 gap-3">
+                          <div key={i} className="flex justify-between items-center text-sm border border-default-100 dark:border-[#2e3347] rounded-xl p-3 gap-3">
                             {item.image_url && (
                               <img src={item.image_url} alt={item.name}
                                 className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
@@ -635,7 +635,7 @@ export default function ManageOrders() {
                     </div>
 
                     {/* Totals */}
-                    <div className="border border-default-100 dark:border-zinc-700 rounded-xl p-3 space-y-1.5">
+                    <div className="border border-default-100 dark:border-[#2e3347] rounded-xl p-3 space-y-1.5">
                       <div className="flex justify-between text-sm text-default-600">
                         <span>{t("shop.order_shipping_fee")}</span>
                         <span>{formatVND(detail.shipping_fee)}</span>
@@ -648,7 +648,7 @@ export default function ManageOrders() {
 
                     {/* Shipping address */}
                     {detail.shipping_address && (
-                      <div className="text-sm border border-default-100 dark:border-zinc-700 rounded-xl p-3">
+                      <div className="text-sm border border-default-100 dark:border-[#2e3347] rounded-xl p-3">
                         <p className="text-xs font-semibold text-default-500 uppercase mb-2">{t("shop.order_ship_address")}</p>
                         <div className="flex items-start gap-2">
                           <MapPin size={13} className="text-default-400 mt-0.5 flex-shrink-0" />
@@ -672,7 +672,7 @@ export default function ManageOrders() {
 
                     {/* Customer info */}
                     {detail.customer && (
-                      <div className="text-sm border border-default-100 dark:border-zinc-700 rounded-xl p-3">
+                      <div className="text-sm border border-default-100 dark:border-[#2e3347] rounded-xl p-3">
                         <p className="text-xs font-semibold text-default-500 uppercase mb-2">{t("shop.order_customer_label")}</p>
                         <div className="flex items-center gap-2">
                           <User size={13} className="text-default-400" />
@@ -684,7 +684,7 @@ export default function ManageOrders() {
 
                     {/* GHN tracking preview */}
                     {detail.ghn_detail && (
-                      <div className="text-sm border border-default-100 dark:border-zinc-700 rounded-xl p-3">
+                      <div className="text-sm border border-default-100 dark:border-[#2e3347] rounded-xl p-3">
                         <p className="text-xs font-semibold text-default-500 uppercase mb-2">
                           {t("shop.order_ghn_shipping", { status: detail.ghn_detail.status })}
                         </p>
@@ -702,14 +702,14 @@ export default function ManageOrders() {
                     )}
 
                     {/* DEV: GHN test tools */}
-                    <div className="border-2 border-dashed border-warning-300 bg-warning-50 dark:bg-zinc-800 rounded-xl p-3 space-y-2">
+                    <div className="border-2 border-dashed border-warning-300 bg-warning-50 dark:bg-[#1a1e2e] rounded-xl p-3 space-y-2">
                       <p className="text-xs font-bold text-warning-700 uppercase">🧪 Dev — GHN Test Tools</p>
                       {detail.ghn_order_code ? (
                         <div className="flex gap-2 flex-wrap items-center">
                           <select
                             value={simStatus}
                             onChange={e => setSimStatus(e.target.value)}
-                            className="flex-1 min-w-0 h-8 px-2 rounded-lg border border-warning-300 bg-white dark:bg-zinc-700 text-sm font-medium text-gray-800 dark:text-zinc-200 outline-none"
+                            className="flex-1 min-w-0 h-8 px-2 rounded-lg border border-warning-300 bg-white dark:bg-zinc-700 text-sm font-medium text-gray-800 dark:text-[#d1d5db] outline-none"
                           >
                             {[
                               ["ready_to_pick",            "ready_to_pick → processing"],
@@ -731,7 +731,7 @@ export default function ManageOrders() {
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <p className="text-xs text-warning-600 flex-1">Đơn chưa có mã GHN. Reset về "processing" để push lại.</p>
+                          <p className="text-xs text-warning-600 flex-1">Order has no GHN code. Reset to "processing" to push again.</p>
                           <Button size="sm" color="warning" variant="bordered" radius="lg" isLoading={simLoading} onPress={handleDevResetGhn}>
                             Reset → processing
                           </Button>
@@ -745,7 +745,7 @@ export default function ManageOrders() {
                         <p className="text-xs font-semibold text-default-500 uppercase mb-2">{t("shop.order_status_history")}</p>
                         <div className="space-y-1.5 max-h-36 overflow-y-auto">
                           {[...detail.status_history].reverse().map((h, i) => (
-                            <div key={i} className="flex items-center gap-2 text-xs border-l-2 border-default-200 dark:border-zinc-700 pl-3">
+                            <div key={i} className="flex items-center gap-2 text-xs border-l-2 border-default-200 dark:border-[#2e3347] pl-3">
                               <span className="text-default-400 whitespace-nowrap">{formatDate(h.at)}</span>
                               <StatusChip status={h.status} />
                               {h.note && <span className="text-default-500">{h.note}</span>}
@@ -861,7 +861,7 @@ export default function ManageOrders() {
                   <span className="font-bold font-mono">{ghnTarget?.order_code}</span>.
                 </p>
                 {ghnTarget && (
-                  <div className="border border-default-100 dark:border-zinc-700 rounded-xl p-3 text-sm space-y-1.5">
+                  <div className="border border-default-100 dark:border-[#2e3347] rounded-xl p-3 text-sm space-y-1.5">
                     <div className="flex justify-between">
                       <span className="text-default-500">{t("shop.order_ghn_customer")}</span>
                       <span className="font-medium">{ghnTarget.shipping_address?.name || ghnTarget.customer?.name || "—"}</span>
@@ -950,7 +950,7 @@ export default function ManageOrders() {
                         <p className="text-xs font-semibold text-default-500 uppercase mb-2">{t("shop.order_track_internal")}</p>
                         <div className="space-y-1.5 max-h-48 overflow-y-auto">
                           {[...trackData.status_history].reverse().map((h, i) => (
-                            <div key={i} className="flex items-center gap-2 text-xs border-l-2 border-default-200 dark:border-zinc-700 pl-3">
+                            <div key={i} className="flex items-center gap-2 text-xs border-l-2 border-default-200 dark:border-[#2e3347] pl-3">
                               <span className="text-default-400 whitespace-nowrap">{formatDate(h.at)}</span>
                               <StatusChip status={h.status} />
                               {h.note && <span className="text-default-500">{h.note}</span>}

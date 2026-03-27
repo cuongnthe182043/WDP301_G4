@@ -282,7 +282,7 @@ export default function VariantsPage() {
       {dims.length > 0 && (
         <Card radius="xl" shadow="sm">
           <CardBody className="p-4 space-y-3">
-            <h3 className="font-bold text-default-800 dark:text-zinc-200">{t("shop.create_variant_matrix")}</h3>
+            <h3 className="font-bold text-default-800 dark:text-[#d1d5db]">{t("shop.create_variant_matrix")}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {dims.map((dim) => (
                 <Input
@@ -312,10 +312,10 @@ export default function VariantsPage() {
       <Card radius="xl" shadow="sm">
         <CardBody className="p-0 overflow-auto">
           <table className="w-full text-sm">
-            <thead className="bg-default-50 dark:bg-zinc-800 border-b border-default-100 dark:border-zinc-700">
+            <thead className="bg-default-50 dark:bg-[#1a1e2e] border-b border-default-100 dark:border-[#2e3347]">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase">SKU</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-[#9ea3b5] uppercase">SKU</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-[#9ea3b5] uppercase">
                   {t("product.variants")}
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-default-500 uppercase">

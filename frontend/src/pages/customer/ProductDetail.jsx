@@ -664,7 +664,7 @@ export default function ProductDetail() {
               onClick={toggleWishlist}
               disabled={wishlistLoading}
               aria-label={isWishlisted ? t("product.remove_from_wishlist_aria") : t("product.add_to_wishlist_aria")}
-              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm flex items-center justify-center shadow-md z-10 transition-colors hover:bg-white dark:hover:bg-zinc-800"
+              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 dark:bg-[#1a1e2e]/90 backdrop-blur-sm flex items-center justify-center shadow-md z-10 transition-colors hover:bg-white dark:hover:bg-zinc-800"
             >
               {wishlistLoading ? (
                 <span className="w-4 h-4 border-2 border-danger border-t-transparent rounded-full animate-spin" />
@@ -683,14 +683,14 @@ export default function ProductDetail() {
               <>
                 <button
                   onClick={() => setActiveIndex((i) => (i - 1 + images.length) % images.length)}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-[#1a1e2e]/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-[#c8cbd4] hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
                   aria-label={t("product.prev_image")}
                 >
                   <ChevronLeft size={16} />
                 </button>
                 <button
                   onClick={() => setActiveIndex((i) => (i + 1) % images.length)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-zinc-300 hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 dark:bg-[#1a1e2e]/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-default-700 dark:text-[#c8cbd4] hover:bg-white dark:hover:bg-zinc-800 transition-colors md:hidden"
                   aria-label={t("product.next_image")}
                 >
                   <ChevronRight size={16} />
@@ -905,7 +905,7 @@ export default function ProductDetail() {
 
           {/* ── Mini shop bar ── */}
           {(shopInfo || p.shop_id) && (
-            <div className="flex items-center gap-3 pt-3 mt-1 border-t border-default-100 dark:border-zinc-700">
+            <div className="flex items-center gap-3 pt-3 mt-1 border-t border-default-100 dark:border-[#2e3347]">
               {/* Logo — only clickable when we have the slug */}
               <div
                 className={`w-9 h-9 rounded-lg overflow-hidden bg-default-100 dark:bg-zinc-700 border border-default-100 flex-shrink-0 ${shopInfo?.shop_slug ? "cursor-pointer" : ""}`}
@@ -921,7 +921,7 @@ export default function ProductDetail() {
                 className={`flex-1 min-w-0 ${shopInfo?.shop_slug ? "cursor-pointer" : ""}`}
                 onClick={() => shopInfo?.shop_slug && navigate(`/shops/${shopInfo.shop_slug}`)}
               >
-                <p className="text-sm font-bold text-default-900 dark:text-zinc-100 flex items-center gap-1 truncate">
+                <p className="text-sm font-bold text-default-900 dark:text-[#e8eaed] flex items-center gap-1 truncate">
                   {shopInfo?.shop_name || "Shop"}
                   <BadgeCheck size={13} className="text-primary flex-shrink-0" />
                 </p>
@@ -951,7 +951,7 @@ export default function ProductDetail() {
 
       {/* ══ SHOP CARD ══ */}
       {shopInfo && (
-        <div className="mb-8 rounded-2xl border border-default-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
+        <div className="mb-8 rounded-2xl border border-default-200 dark:border-[#2e3347] bg-white dark:bg-[#131620] p-4">
           <div className="flex items-center gap-4">
             {/* Logo */}
             <div
@@ -970,7 +970,7 @@ export default function ProductDetail() {
                 className="flex items-center gap-1.5 cursor-pointer group w-fit"
                 onClick={() => navigate(`/shops/${shopInfo.shop_slug}`)}
               >
-                <span className="font-black text-base text-default-900 dark:text-zinc-100 group-hover:text-primary transition-colors truncate">
+                <span className="font-black text-base text-default-900 dark:text-[#e8eaed] group-hover:text-primary transition-colors truncate">
                   {shopInfo.shop_name}
                 </span>
                 <BadgeCheck size={15} className="text-primary flex-shrink-0" />
@@ -1027,7 +1027,7 @@ export default function ProductDetail() {
 
       {/* ══ SIZE ADVISOR + SIZE CHART ══ */}
       <section id="size-section" className="mb-8">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-zinc-700 rounded-2xl p-5">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-[#2e3347] rounded-2xl p-5">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <p className="font-bold text-default-800 flex items-center gap-2">
@@ -1060,7 +1060,7 @@ export default function ProductDetail() {
                 return (
                   <div
                     key={s.label}
-                    className={`rounded-xl p-3 border transition-all ${isBest ? "border-primary bg-white dark:bg-zinc-800 shadow-md" : "border-blue-100 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60"}`}
+                    className={`rounded-xl p-3 border transition-all ${isBest ? "border-primary bg-white dark:bg-[#1a1e2e] shadow-md" : "border-blue-100 dark:border-[#2e3347] bg-white/60 dark:bg-[#131620]/60"}`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className={`text-sm font-black ${isBest ? "text-primary" : "text-default-700"}`}>
@@ -1078,22 +1078,22 @@ export default function ProductDetail() {
         </div>
 
         {Array.isArray(sizeChart?.rows) && sizeChart.rows.length > 0 && (
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-default-200 dark:border-zinc-700">
+          <div className="mt-4 overflow-x-auto rounded-2xl border border-default-200 dark:border-[#2e3347]">
             <table className="w-full text-sm">
-              <thead className="bg-default-50 dark:bg-zinc-800">
+              <thead className="bg-default-50 dark:bg-[#1a1e2e]">
                 <tr>
-                  <th className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-zinc-300">Size</th>
+                  <th className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-[#c8cbd4]">Size</th>
                   {sizeHeaders.map((k) => (
-                    <th key={k} className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-zinc-300">{prettyKey(k)}</th>
+                    <th key={k} className="text-left px-4 py-2.5 font-bold text-default-700 dark:text-[#c8cbd4]">{prettyKey(k)}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {sizeChart.rows.map((r, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-default-50/50 dark:bg-zinc-800/50"}>
+                  <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-[#131620]" : "bg-default-50/50 dark:bg-[#1a1e2e]/50"}>
                     <td className="px-4 py-2.5 font-black text-primary">{r.label}</td>
                     {sizeHeaders.map((k) => (
-                      <td key={k} className="px-4 py-2.5 text-default-700 dark:text-zinc-300">{r.measurements?.[k] ?? "—"}</td>
+                      <td key={k} className="px-4 py-2.5 text-default-700 dark:text-[#c8cbd4]">{r.measurements?.[k] ?? "—"}</td>
                     ))}
                   </tr>
                 ))}
@@ -1107,11 +1107,11 @@ export default function ProductDetail() {
       {!!specEntries.length && (
         <section className="mb-8">
           <h3 className="text-lg font-black text-default-900 mb-4">{t("product.product_details")}</h3>
-          <div className="rounded-2xl border border-default-200 dark:border-zinc-700 overflow-hidden">
+          <div className="rounded-2xl border border-default-200 dark:border-[#2e3347] overflow-hidden">
             {specEntries.map(([k, v], i) => (
-              <div key={i} className={`flex gap-4 px-4 py-3 text-sm ${i % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-default-50/50 dark:bg-zinc-800/50"}`}>
-                <span className="w-40 flex-shrink-0 font-semibold text-default-600 dark:text-zinc-400">{k}</span>
-                <span className="text-default-800 dark:text-zinc-200">{String(v)}</span>
+              <div key={i} className={`flex gap-4 px-4 py-3 text-sm ${i % 2 === 0 ? "bg-white dark:bg-[#131620]" : "bg-default-50/50 dark:bg-[#1a1e2e]/50"}`}>
+                <span className="w-40 flex-shrink-0 font-semibold text-default-600 dark:text-[#9ea3b5]">{k}</span>
+                <span className="text-default-800 dark:text-[#d1d5db]">{String(v)}</span>
               </div>
             ))}
           </div>
@@ -1123,7 +1123,7 @@ export default function ProductDetail() {
         <section className="mb-8">
           <h3 className="text-lg font-black text-default-900 mb-4">{t("product.description")}</h3>
           <div
-            className="prose prose-sm max-w-none text-default-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 border border-default-200 dark:border-zinc-700 rounded-2xl p-5"
+            className="prose prose-sm max-w-none text-default-700 dark:text-[#c8cbd4] bg-white dark:bg-[#131620] border border-default-200 dark:border-[#2e3347] rounded-2xl p-5"
             dangerouslySetInnerHTML={{ __html: p.description }}
           />
         </section>
@@ -1134,7 +1134,7 @@ export default function ProductDetail() {
         <h2 className="text-lg font-black text-default-900 mb-5">{t("product.reviews_section")}</h2>
 
         {/* Summary */}
-        <div className="flex items-start gap-6 bg-default-50 dark:bg-zinc-800 rounded-2xl p-5 mb-5">
+        <div className="flex items-start gap-6 bg-default-50 dark:bg-[#1a1e2e] rounded-2xl p-5 mb-5">
           <div className="text-center flex-shrink-0">
             <div className="text-4xl font-black text-default-900">{ratingValue?.toFixed(1)}</div>
             <Stars value={ratingValue} size={18} />
@@ -1150,7 +1150,7 @@ export default function ProductDetail() {
                   className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
                     String(rvStar) === String(f)
                       ? "bg-primary text-white border-primary"
-                      : "border-default-200 dark:border-zinc-700 text-default-600 dark:text-zinc-400 hover:border-primary hover:text-primary"
+                      : "border-default-200 dark:border-[#2e3347] text-default-600 dark:text-[#9ea3b5] hover:border-primary hover:text-primary"
                   }`}
                 >
                   {f === "all" ? t("common.all") : `${f} ★ (${summary.histogram?.[f] || 0})`}
@@ -1169,7 +1169,7 @@ export default function ProductDetail() {
                   key={r._id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-zinc-900 border border-default-100 dark:border-zinc-700 rounded-2xl p-4 shadow-sm"
+                  className="bg-white dark:bg-[#131620] border border-default-100 dark:border-[#2e3347] rounded-2xl p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">

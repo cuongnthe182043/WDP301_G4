@@ -10,16 +10,16 @@ export default function ThemeSettingsPanel({ iconColor }) {
   const [open, setOpen] = useState(false);
   const isDark = theme === "dark";
 
-  /* zinc-900 panel in dark, white panel in light */
-  const panelBg     = isDark ? "#18181b" : "#ffffff";
-  const panelBorder = isDark ? "#27272a" : "#e2e8f0";
+  /* soft dark panel */
+  const panelBg     = isDark ? "#1a1e2e" : "#ffffff";
+  const panelBorder = isDark ? "#2e3347" : "#e2e8f0";
   const panelShadow = isDark
-    ? "0 8px 32px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3)"
+    ? "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)"
     : "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)";
-  const labelColor  = isDark ? "#71717a" : "#94a3b8";
-  const trackBg     = isDark ? "#09090b" : "#f4f4f5";
-  const textPrimary = isDark ? "#f4f4f5" : "#09090b";
-  const textSecond  = isDark ? "#a1a1aa" : "#71717a";
+  const labelColor  = isDark ? "#6b7280" : "#94a3b8";
+  const trackBg     = isDark ? "#131620" : "#f4f4f5";
+  const textPrimary = isDark ? "#e8eaed" : "#09090b";
+  const textSecond  = isDark ? "#9ea3b5" : "#71717a";
   const accentBlue  = isDark ? "#60a5fa" : "#3b82f6";
   const activeBtn   = isDark
     ? { background: "#3b82f6", color: "#ffffff" }

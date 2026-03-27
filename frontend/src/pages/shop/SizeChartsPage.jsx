@@ -231,7 +231,7 @@ function ChartCard({ chart, onEdit, onDelete }) {
   const genderColor = { men: "primary", women: "secondary", unisex: "default" };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-default-200 dark:border-zinc-700 rounded-2xl overflow-hidden">
+    <div className="bg-white dark:bg-[#131620] border border-default-200 dark:border-[#2e3347] rounded-2xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3">
         <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -266,9 +266,9 @@ function ChartCard({ chart, onEdit, onDelete }) {
 
       {/* Expanded rows table */}
       {expanded && chart.rows?.length > 0 && (
-        <div className="border-t border-default-100 dark:border-zinc-800 overflow-x-auto">
+        <div className="border-t border-default-100 dark:border-[#222738] overflow-x-auto">
           <table className="w-full text-xs">
-            <thead className="bg-default-50 dark:bg-zinc-800">
+            <thead className="bg-default-50 dark:bg-[#1a1e2e]">
               <tr>
                 <th className="px-3 py-2 text-left font-bold text-default-600">Size</th>
                 {MEAS_FIELDS.filter(({ key }) =>
@@ -284,7 +284,7 @@ function ChartCard({ chart, onEdit, onDelete }) {
                   chart.rows.some((row) => row.measurements?.[key] != null)
                 );
                 return (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-default-50/50 dark:bg-zinc-800/50"}>
+                  <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-[#131620]" : "bg-default-50/50 dark:bg-[#1a1e2e]/50"}>
                     <td className="px-3 py-2 font-black text-primary">{r.label}</td>
                     {visibleFields.map(({ key }) => (
                       <td key={key} className="px-3 py-2 text-default-600">{r.measurements?.[key] ?? "—"}</td>
@@ -363,7 +363,7 @@ export default function SizeChartsPage() {
       </div>
 
       {/* How it works banner */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-zinc-700 rounded-2xl p-4">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-blue-100 dark:border-[#2e3347] rounded-2xl p-4">
         <p className="text-sm font-bold text-default-700 mb-1 flex items-center gap-2">
           <Bot size={14} className="text-primary" /> How XGBoost AI works
         </p>
