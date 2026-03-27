@@ -37,7 +37,7 @@ exports.getCart = async (userId) => {
       _id: v._id,
       price: v.price,
       stock: v.stock,
-      attributes: v.attributes || {},
+      attributes: v.attributes || v.variant_attributes || {},
       label: attrLabel(v.attributes || {}),
       images: v.images || [],
     });
@@ -53,6 +53,7 @@ exports.getCart = async (userId) => {
     ...it.toObject(),
     product: productMap[it.product_id] || null,
     available_variants: variantMap[it.product_id] || [],
+    current_variant: variantMap[it.product_id] ? variantMap[it.product_id].find(v => String(v._id) === String(it.variant_id)) : null,
   }));
 
   return {

@@ -96,9 +96,9 @@ export default function CartPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { refresh: refreshCartBadge } = useCart();
-  const [data, setData]       = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [err, setErr]         = useState("");
+  const [err, setErr] = useState("");
   const [checked, setChecked] = useState(new Set());
   const [pickState, setPickState] = useState({});
   const [vEditor, setVEditor] = useState({ open: false, item: null, temp: {} });
@@ -263,7 +263,7 @@ export default function CartPage() {
                       const subTotal = it.total || price * it.qty;
                       const outOfStock = (selectedVar?.stock ?? 0) <= 0;
                       const overStock = !outOfStock && it.qty > (selectedVar?.stock ?? 0);
-                      const summary = orderedKeys.map(k => pick.selections?.[k]).filter(Boolean).join(", ");
+                      const summary = orderedKeys.map(k => pick.selections?.[k]).filter(Boolean).join(" - ");
 
                       return (
                         <motion.div
@@ -355,11 +355,10 @@ export default function CartPage() {
                                                         key={val}
                                                         disabled={disabled}
                                                         onClick={() => setVEditor(p => ({ ...p, temp: resolveOnPick(vEditor.item.available_variants, p.temp, key, val) }))}
-                                                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-                                                          active ? "bg-primary text-white border-primary" :
-                                                          disabled ? "opacity-40 cursor-not-allowed border-default-200 text-default-400" :
-                                                          "border-default-300 text-default-700 hover:border-primary hover:text-primary"
-                                                        }`}
+                                                        className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${active ? "bg-primary text-white border-primary" :
+                                                            disabled ? "opacity-40 cursor-not-allowed border-default-200 text-default-400" :
+                                                              "border-default-300 text-default-700 hover:border-primary hover:text-primary"
+                                                          }`}
                                                       >
                                                         {active && <Check size={10} className="inline mr-1" />}{val}
                                                       </button>
