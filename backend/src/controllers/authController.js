@@ -73,6 +73,16 @@ exports.requestResetOTP = async (req, res) => {
   }
 };
 
+exports.checkResetOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const result = await authService.checkResetOTP(email, otp);
+    res.json(successResponse(result, "OTP hợp lệ"));
+  } catch (err) {
+    res.status(400).json(errorResponse(err.message));
+  }
+};
+
 exports.resetPassword = async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body;

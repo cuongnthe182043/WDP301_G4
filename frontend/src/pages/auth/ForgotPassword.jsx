@@ -134,10 +134,19 @@ export default function ForgotPassword() {
     finally { setLoading(false); }
   };
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e?.preventDefault?.();
     if (otpValue.length < 6) { showMsg(t("auth.otp_required")); return; }
-    setStep(3); setMessage({ text: "", error: true });
+    try {
+      setLoading(true);
+      await authService.checkResetOTP({ email: form.email, otp: otpValue });
+      setStep(3);
+      setMessage({ text: "", error: true });
+    } catch (err) {
+      showMsg(err?.response?.data?.message || err.message || "OTP không hợp lệ hoặc đã hết hạn");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = async (e) => {
@@ -380,10 +389,10 @@ export default function ForgotPassword() {
                 </div>
               </div>
 
-              <Button type="submit" color="primary" isDisabled={otpValue.length < 6}
+              <Button type="submit" color="primary" isDisabled={otpValue.length < 6 || loading} isLoading={loading}
                 radius="lg" size="lg" className="w-full font-bold text-base h-12 shadow-md"
                 style={{ background: "linear-gradient(135deg, #1E40AF, #1D4ED8, #2563EB)" }}>
-                {t("auth.confirm_otp")}
+                {loading ? t("common.loading") : t("auth.confirm_otp")}
               </Button>
 
               <button type="button" onClick={() => { setStep(1); setOtpDigits(["","","","","",""]); }}

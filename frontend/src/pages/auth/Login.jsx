@@ -87,22 +87,34 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 export default function Login() {
   const [form, setForm] = useState({ identifier: "", password: "" });
   const [touched, setTouched] = useState({ identifier: false, password: false });
+  const [apiErrors, setApiErrors] = useState({ identifier: null, password: null });
   const [showPwd, setShowPwd] = useState(false);
   const [remember, setRemember] = useState(true);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(true);
+  const [message, setMessage] = useState("");   // only for non-field messages (Google errors, success)
+  const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { t } = useTranslation();
 
-  const errors = {
+  const validationErrors = {
     identifier: touched.identifier ? validateIdentifier(form.identifier) : null,
-    password: touched.password ? validatePassword(form.password) : null,
+    password:   touched.password   ? validatePassword(form.password)     : null,
+  };
+  // Merge: api errors take priority over local validation errors
+  const errors = {
+    identifier: apiErrors.identifier || validationErrors.identifier,
+    password:   apiErrors.password   || validationErrors.password,
   };
   const formValid =
     !validateIdentifier(form.identifier) && !validatePassword(form.password);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    // Clear the api error for the field being edited
+    if (apiErrors[e.target.name]) {
+      setApiErrors(prev => ({ ...prev, [e.target.name]: null }));
+    }
+  };
   const handleBlur = (field) => setTouched((t) => ({ ...t, [field]: true }));
 
   useEffect(() => {
@@ -116,6 +128,7 @@ export default function Login() {
     setTouched({ identifier: true, password: true });
     if (!formValid) return;
     setMessage("");
+    setApiErrors({ identifier: null, password: null });
     setLoading(true);
     clearAuthStorage();
     try {
@@ -124,13 +137,30 @@ export default function Login() {
       if (remember) localStorage.setItem("dfs_remember", "1");
       else localStorage.removeItem("dfs_remember");
       login(user, accessToken);
-      setIsError(false);
-      setMessage("Đăng nhập thành công!");
     } catch (err) {
-      setIsError(true);
-      setMessage(
-        err?.response?.data?.message || err.message || "Đăng nhập thất bại"
-      );
+      const msg = err?.response?.data?.message || err.message || "Đăng nhập thất bại";
+      const lower = msg.toLowerCase();
+      // Map backend message to the relevant field
+      if (
+        lower.includes("mật khẩu") ||
+        lower.includes("password") ||
+        lower.includes("sai mật")
+      ) {
+        setApiErrors(prev => ({ ...prev, password: msg }));
+      } else if (
+        lower.includes("tài khoản") ||
+        lower.includes("không tìm thấy") ||
+        lower.includes("not found") ||
+        lower.includes("email") ||
+        lower.includes("username") ||
+        lower.includes("số điện thoại") ||
+        lower.includes("người dùng")
+      ) {
+        setApiErrors(prev => ({ ...prev, identifier: msg }));
+      } else {
+        // Fallback: show on password field (most common auth error location)
+        setApiErrors(prev => ({ ...prev, password: msg }));
+      }
     } finally {
       setLoading(false);
     }
@@ -398,7 +428,7 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Alert */}
+          {/* Non-field alert — only for Google login errors or other general messages */}
           {message && (
             <div
               className={`mb-5 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 ${
@@ -478,37 +508,6 @@ export default function Login() {
                 </button>
               }
             />
-
-            {/* Password strength */}
-            {form.password && (
-              <div className="flex gap-1.5 -mt-2 px-1">
-                {[6, 8, 12].map((n, i) => (
-                  <div
-                    key={i}
-                    className="h-1 flex-1 rounded-full transition-all duration-300"
-                    style={{
-                      background:
-                        form.password.length >= n
-                          ? i === 0
-                            ? "#f97316"
-                            : i === 1
-                            ? "#eab308"
-                            : "#22c55e"
-                          : "#e4e4e7",
-                    }}
-                  />
-                ))}
-                <span className="text-xs text-default-400 ml-1 self-center">
-                  {form.password.length < 6
-                    ? "Yếu"
-                    : form.password.length < 8
-                    ? "Trung bình"
-                    : form.password.length < 12
-                    ? "Khá"
-                    : "Mạnh"}
-                </span>
-              </div>
-            )}
 
             <div className="flex items-center justify-between">
               <Checkbox
