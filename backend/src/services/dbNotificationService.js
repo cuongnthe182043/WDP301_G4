@@ -242,8 +242,8 @@ const helpers = {
 
   userWarned: (userId, warningCount) =>
     create(userId, {
-      title:   "Cảnh báo tài khoản",
-      message: `Tài khoản của bạn đã nhận ${warningCount} cảnh báo do vi phạm nội dung. Tiếp tục vi phạm có thể dẫn đến khóa tài khoản.`,
+      title:   "Cảnh báo tài khoản / Account Warning",
+      message: `Tài khoản của bạn đã nhận ${warningCount} cảnh báo do vi phạm nội dung. Tiếp tục vi phạm có thể dẫn đến khóa tài khoản.\n\nYour account has received ${warningCount} warning(s) due to content violations. Continued violations may lead to account suspension.`,
       type:    "system",
       subtype: "account.warned",
       link:    `/profile`,
@@ -251,10 +251,19 @@ const helpers = {
 
   userBanned: (userId, duration) =>
     create(userId, {
-      title:   "Tài khoản bị khóa",
-      message: `Tài khoản của bạn đã bị khóa ${duration} do vi phạm chính sách nội dung.`,
+      title:   "Tài khoản bị khóa / Account Suspended",
+      message: `Tài khoản của bạn đã bị khóa ${duration} do vi phạm chính sách nội dung.\n\nYour account has been suspended for ${duration} due to content policy violations.`,
       type:    "system",
       subtype: "account.banned",
+      link:    `/profile`,
+    }),
+
+  userUnbanned: (userId) =>
+    create(userId, {
+      title:   "Tài khoản đã được mở khóa / Account Restored",
+      message: "Tài khoản của bạn đã được mở khóa. Bạn có thể sử dụng đầy đủ các tính năng.\n\nYour account has been restored. You now have full access to all features.",
+      type:    "system",
+      subtype: "account.unbanned",
       link:    `/profile`,
     }),
 

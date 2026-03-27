@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
-  BarChart2, Key, Shield, Package, Clock, MessageSquare, Users,
+  BarChart2, Key, Shield, ShieldBan, Package, Clock, MessageSquare, Users,
   FolderTree, Tag,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -25,6 +25,7 @@ export default function AdminLayout() {
     { divider: true },
     { to: "/admin/reviews",          label: t("admin.moderation_reviews"), icon: MessageSquare,  color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
     { to: "/admin/users",            label: t("admin.users_nav"),          icon: Users,          color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
+    { to: "/admin/moderation",       label: t("admin.moderation_nav"),     icon: ShieldBan,      color: "#dc2626", bg: "rgba(220,38,38,0.1)"  },
     { divider: true },
     { to: "/admin/categories",       label: t("shop.categories"),          icon: FolderTree,     color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
     { to: "/admin/brands",           label: t("shop.brands"),              icon: Tag,            color: "#a855f7", bg: "rgba(168,85,247,0.1)"  },
