@@ -9,6 +9,7 @@ import { userService } from "./services/userService";
 import AppLoader from "./components/ui/AppLoader";
 import TopProgressBar from "./components/ui/TopProgressBar";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import BanNoticePopup from "./components/common/BanNoticePopup";
 
 export default function App() {
   const { user, logout, isAuthenticated, authReady, updateUser } = useAuth();
@@ -44,6 +45,9 @@ export default function App() {
         <AppRouter />
         <Footer />
       </div>
+
+      {/* Show ban notice modal when authenticated user is banned */}
+      {isAuthenticated && <BanNoticePopup />}
     </>
   );
 }

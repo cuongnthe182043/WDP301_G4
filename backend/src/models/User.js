@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "inactive", "banned"],
+      enum: ["active", "inactive", "banned", "warning", "suspended", "banned_permanent"],
       default: "active",
     },
     password_hash: String,
@@ -37,11 +37,24 @@ const UserSchema = new mongoose.Schema(
 
     // ── Moderation ────────────────────────────────────────────────────────
     warning_count: { type: Number, default: 0 },
-    ban_until: { type: Date, default: null }, // null = permanent when status=banned
+    ban_until: { type: Date, default: null }, // legacy field kept for backward compat
+
+    // Unified ban info
+    is_banned:  { type: Boolean, default: false },
+    ban_type:   { type: String, enum: ["temporary", "permanent", null], default: null },
+    ban_reason: { type: String, default: null },
+    ban_start:  { type: Date, default: null },
+    ban_end:    { type: Date, default: null },
+    banned_by:  { type: String, default: null },
+
+    // Trust score (0–100)
+    trust_score: { type: Number, default: 80, min: 0, max: 100 },
+
     violation_history: [{
       _id: false,
       reason:    { type: String },
       review_id: { type: String },
+      severity:  { type: Number, min: 1, max: 4 },
       at:        { type: Date, default: Date.now },
     }],
   },
@@ -56,5 +69,7 @@ UserSchema.index(
   { username: 1 },
   { unique: true, collation: { locale: "en", strength: 2 } }
 );
+UserSchema.index({ is_banned: 1, ban_end: 1 });
+UserSchema.index({ status: 1, trust_score: 1 });
 
 module.exports = mongoose.model("User", UserSchema);

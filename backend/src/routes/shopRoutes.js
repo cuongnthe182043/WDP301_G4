@@ -1,5 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middlewares/authMiddleware");
+const checkBanStatus  = require("../middlewares/checkBanStatus");
 const { requireAnyRole } = require("../middlewares/rbacMiddleware");
 const { requireShopOwner } = require("../middlewares/shopMiddleware");
 
@@ -14,8 +15,8 @@ const flashCtrl = require("../controllers/flashsaleController");
 
 const router = express.Router();
 
-// All shop routes require auth + role + approved shop
-router.use(verifyToken, ...requireAnyRole("shop_owner", "sales", "system_admin"), requireShopOwner);
+// All shop routes require auth + ban check + role + approved shop
+router.use(verifyToken, checkBanStatus, ...requireAnyRole("shop_owner", "sales", "system_admin"), requireShopOwner);
 
 // ── Legacy analytics (kept for backward compat) ────────────────────────────
 router.get("/analytics", shopCtrl.getAnalytics);

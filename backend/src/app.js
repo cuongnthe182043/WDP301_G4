@@ -137,6 +137,8 @@ app.use("/api/uploads",            uploadRoutes);
 app.use("/api/size-charts",  require("./routes/sizeChartRoutes"));
 app.use("/api/admin/products",      adminProductRoutes);
 app.use("/api/admin/moderation",    require("./routes/adminModerationRoutes"));
+app.use("/api/admin/moderate",      require("./routes/moderationRoutes"));
+app.use("/api/reports",             require("./routes/reportRoutes"));
 app.use("/api/admin/users",         require("./routes/adminUserRoutes"));
 app.use("/api/admin/audit-logs",    require("./routes/auditLogRoutes"));
 app.use("/api/admin/api-keys",      require("./routes/apiKeyRoutes"));

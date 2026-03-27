@@ -74,6 +74,7 @@ import Reconciliation from "../pages/admin/Reconciliation";
 import ApiKeyManager from "../pages/admin/ApiKeyManager";
 import AdminCategories from "../pages/admin/AdminCategories";
 import AdminBrands from "../pages/admin/AdminBrands";
+import AdminModeration from "../pages/admin/AdminModeration";
 
 /* ===== Landing Page ===== */
 import LandingPage from "../pages/LandingPage";
@@ -218,6 +219,7 @@ export default function AppRouter() {
         <Route path="audit-logs" element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />
         <Route path="api-keys" element={<ApiKeyManager />} />
+        <Route path="moderation" element={<AdminModeration />} />
       </Route>
 
       {/* ===== 404 ===== */}
