@@ -1,8 +1,9 @@
-const Banner = require("../models/Banner");
+const Banner    = require("../models/Banner");
 const Flashsale = require("../models/FlashSale");
 const { v4: uuidv4 } = require("uuid");
 const cloudinary = require("../config/cloudinary");
-const multer = require("multer");
+const multer     = require("multer");
+const auditLog   = require("../services/auditLogService");
 
 // ----------------------
 // Upload banner image helper
@@ -102,6 +103,7 @@ exports.createBanner = async (req, res, next) => {
     });
 
     await banner.save();
+    auditLog.log({ actorId: req.user._id, action: "banner.create", targetCollection: "banners", targetId: banner._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: title.trim(), position: position || "homepage_top" } });
     res.status(201).json({ message: "Tạo banner thành công", banner });
   } catch (err) {
     next(err);
@@ -175,6 +177,7 @@ exports.createBanner = async (req, res, next) => {
     }
 
     await banner.save();
+    auditLog.log({ actorId: req.user._id, action: "banner.update", targetCollection: "banners", targetId: banner._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: banner.title, image_changed: imageChanged } });
 
     res.json({ message: "Cập nhật banner thành công", banner });
   } catch (err) {
@@ -195,7 +198,10 @@ exports.deleteBanner = async (req, res, next) => {
 
     if (banner.image_public_id) await cloudinary.uploader.destroy(banner.image_public_id);
 
+    const bId = banner._id;
+    const bTitle = banner.title;
     await banner.deleteOne();
+    auditLog.log({ actorId: req.user._id, action: "banner.delete", targetCollection: "banners", targetId: bId, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { title: bTitle } });
     res.json({ message: "Xóa banner thành công" });
   } catch (err) {
     next(err);

@@ -2,6 +2,7 @@ const Refund        = require("../models/Refund");
 const Order         = require("../models/Order");
 const notif         = require("../services/dbNotificationService");
 const refundSvc     = require("../services/refundService");
+const auditLog      = require("../services/auditLogService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -94,6 +95,7 @@ exports.approveRefund = async (req, res, next) => {
     await order.save();
 
     notif.refundApproved(order.user_id, order.order_code).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "refund.approve", targetCollection: "refunds", targetId: refund._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, note: note.trim() } });
     res.json({ success: true, data: { refund_id: refund._id, order_status: order.status } });
   } catch (e) { next(e); }
 };
@@ -123,6 +125,7 @@ exports.rejectRefund = async (req, res, next) => {
     await order.save();
 
     notif.refundRejected(order.user_id, order.order_code, note.trim()).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "refund.reject", targetCollection: "refunds", targetId: refund._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, note: note.trim() } });
     res.json({ success: true, data: { refund_id: refund._id, order_status: order.status } });
   } catch (e) { next(e); }
 };
@@ -163,6 +166,7 @@ exports.completeRefund = async (req, res, next) => {
     }
 
     notif.refundCompleted(order.user_id, order.order_code, refund.amount).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "refund.complete", targetCollection: "refunds", targetId: refund._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, amount: refund.amount, wallet_credited: walletResult ? Number(refund.amount) : 0 } });
     res.json({
       success: true,
       data: {

@@ -8,6 +8,7 @@ const User       = require("../models/User");
 const notif      = require("../services/dbNotificationService");
 const ghn        = require("../services/ghnService");
 const refundSvc  = require("../services/refundService");
+const auditLog   = require("../services/auditLogService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -179,6 +180,7 @@ exports.confirmOrder = async (req, res, next) => {
     await order.save();
 
     notif.orderConfirmed(order.user_id, order.order_code).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "order.confirm", targetCollection: "orders", targetId: order._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code } });
     res.json({ success: true, data: { order_id: order._id, status: order.status } });
   } catch (e) { next(e); }
 };
@@ -238,6 +240,7 @@ exports.cancelOrder = async (req, res, next) => {
     }
 
     notif.orderCancelled(order.user_id, order.order_code).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "order.cancel_by_shop", targetCollection: "orders", targetId: order._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, reason: reason.trim(), wallet_credited: walletCredited } });
     res.json({ success: true, data: { order_id: order._id, status: order.status, wallet_credited: walletCredited } });
   } catch (e) { next(e); }
 };
@@ -320,6 +323,7 @@ exports.pushToGhn = async (req, res, next) => {
     await order.save();
 
     notif.orderShipped(order.user_id, order.order_code).catch(() => {});
+    auditLog.log({ actorId: req.userId, action: "order.push_ghn", targetCollection: "orders", targetId: order._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, ghn_order_code: order.ghn_order_code } });
     res.json({
       success: true,
       data: {
@@ -449,6 +453,7 @@ exports.updateOrderStatus = async (req, res, next) => {
     pushStatusHistory(order, status, "shop", NOTE_MAP[status] || `Cập nhật → ${status}`);
     order.status = status;
     await order.save();
+    auditLog.log({ actorId: req.userId, action: "order.update_status", targetCollection: "orders", targetId: order._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: order.order_code, new_status: status } });
     res.json({ success: true, data: { order_id: order._id, status: order.status } });
   } catch (e) { next(e); }
 };

@@ -1,5 +1,6 @@
-const svc = require("../services/userService");
+const svc      = require("../services/userService");
 const UserBodyProfile = require("../models/UserBodyProfile");
+const auditLog = require("../services/auditLogService");
 const ok = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb = "Bad request") => res.status(e?.status || 400).json({ status: "fail", message: e?.message || fb, errors: e?.errors });
 const nf = (res, msg) => res.status(404).json({ status: "fail", message: msg });
@@ -16,6 +17,7 @@ exports.updateProfile = async (req, res) => {
   try {
     const user = await svc.updateById(req.user._id, req.body || {});
     if (!user) return nf(res, "User not found");
+    auditLog.log({ actorId: req.user._id, action: "user.update_profile", targetCollection: "users", targetId: req.user._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { fields: Object.keys(req.body || {}) } });
     ok(res, { user });
   } catch (e) {
     if (e?.code === 11000) return bad(res, { message: "Duplicate field", errors: e.keyValue });
@@ -122,6 +124,7 @@ exports.registerShop = async (req, res) => {
     }
 
     const newShop = await svc.registerShop(userId, req.body);
+    auditLog.log({ actorId: userId, action: "shop.register", targetCollection: "shops", targetId: newShop._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { shop_name: req.body?.shop_name } });
 
     return res.status(201).json({
       success: true,

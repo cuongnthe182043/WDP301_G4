@@ -1,10 +1,12 @@
-const svc = require("../services/reviewService");
+const svc      = require("../services/reviewService");
+const auditLog = require("../services/auditLogService");
 const ok  = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb = "Bad request") => res.status(e?.status || 400).json({ status: "fail", message: e?.message || fb });
 
 exports.submitReview = async (req, res) => {
   try {
     const review = await svc.submitReview(req.user._id, req.body || {});
+    auditLog.log({ actorId: req.user._id, action: "review.submit", targetCollection: "reviews", targetId: review._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { product_id: req.body?.product_id, rating: req.body?.rating } });
     ok(res, { review });
   } catch (e) { bad(res, e, "Cannot submit review"); }
 };
@@ -33,6 +35,7 @@ exports.updateReview = async (req, res) => {
 exports.deleteReview = async (req, res) => {
   try {
     const result = await svc.deleteReview(req.user._id, req.params.id);
+    auditLog.log({ actorId: req.user._id, action: "review.delete", targetCollection: "reviews", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) });
     ok(res, result);
   } catch (e) { bad(res, e, "Cannot delete review"); }
 };

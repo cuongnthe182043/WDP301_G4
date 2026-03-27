@@ -1,4 +1,5 @@
-const Review = require("../models/Review");
+const Review   = require("../models/Review");
+const auditLog = require("../services/auditLogService");
 
 // GET /api/shop/reviews
 exports.listReviews = async (req, res, next) => {
@@ -59,6 +60,7 @@ exports.replyToReview = async (req, res, next) => {
     }
 
     await review.save();
+    auditLog.log({ actorId: req.userId, action: "review.reply", targetCollection: "reviews", targetId: review._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { is_update: isUpdate } });
     res.json({ success: true, data: review });
   } catch (e) { next(e); }
 };
@@ -71,6 +73,7 @@ exports.toggleHideReview = async (req, res, next) => {
 
     review.status = review.status === "hidden" ? "visible" : "hidden";
     await review.save();
+    auditLog.log({ actorId: req.userId, action: "review.toggle_hide", targetCollection: "reviews", targetId: review._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { new_status: review.status } });
 
     res.json({ success: true, data: { status: review.status } });
   } catch (e) { next(e); }
