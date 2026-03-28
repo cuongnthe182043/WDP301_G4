@@ -90,6 +90,17 @@ function ProtectedRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
+function HomeRoute() {
+  const { isAuthenticated, authReady } = useAuth();
+  if (!authReady) return null;
+  const hasVisited = localStorage.getItem("hasVisited");
+  if (!hasVisited) {
+    localStorage.setItem("hasVisited", "1");
+    return isAuthenticated ? <HomePage /> : <LandingPage />;
+  }
+  return isAuthenticated ? <HomePage /> : <HomePage />;
+}
+
 function RoleRoute({ children, roles = [], permAny = [], permAll = [] }) {
   const { user, authReady } = useAuth();
   if (!authReady) return null;
@@ -129,7 +140,7 @@ export default function AppRouter() {
       <Route path="/landing"            element={<LandingPage />} />
 
       {/* ===== Customer — Public ===== */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<HomeRoute />} />
       <Route path="/product/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products" element={<AllProductsPages />} />

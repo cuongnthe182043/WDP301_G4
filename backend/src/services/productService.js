@@ -10,7 +10,7 @@ const ProductSizeChart = require('../models/ProductSizeChart');
 let Shop; try { Shop = require('../models/Shop'); } catch (_) {}
 
 async function findProductByIdOrSlug(idOrSlug) {
-  return Product.findOne({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] }).lean();
+  return Product.findOne({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] }).lean({ flattenMaps: true });
 }
 
 async function getFlashSaleItemForProduct(productId) {
@@ -69,7 +69,7 @@ async function getProductDetail(idOrSlug) {
   })
     .select('_id product_id sku barcode variant_attributes price compare_at_price currency stock images is_active')
     .sort({ price: 1 })
-    .lean();
+    .lean({ flattenMaps: true });
 
   const [brand, category, flashItem, shopInfo] = await Promise.all([
     prodDoc.brand_id ? Brand.findById(prodDoc.brand_id).select('_id name slug logo_url logo_public_id').lean() : null,
@@ -88,22 +88,22 @@ async function getProductDetail(idOrSlug) {
   sizeChart =
     // 1. exact brand + category + gender
     (prodDoc.brand_id && category?._id
-      ? await ProductSizeChart.findOne({ brand_id: prodDoc.brand_id, category_id: category._id, gender: _gender, is_active: true }).lean()
+      ? await ProductSizeChart.findOne({ brand_id: prodDoc.brand_id, category_id: category._id, gender: _gender, is_active: true }).lean({ flattenMaps: true })
       : null)
     // 2. any brand + same category + gender
     || (category?._id
-      ? await ProductSizeChart.findOne({ category_id: category._id, gender: _gender, is_active: true }).lean()
+      ? await ProductSizeChart.findOne({ category_id: category._id, gender: _gender, is_active: true }).lean({ flattenMaps: true })
       : null)
     // 3. same category, any gender
     || (category?._id
-      ? await ProductSizeChart.findOne({ category_id: category._id, is_active: true }).lean()
+      ? await ProductSizeChart.findOne({ category_id: category._id, is_active: true }).lean({ flattenMaps: true })
       : null)
     // 4. any chart matching gender (no category constraint)
-    || await ProductSizeChart.findOne({ gender: _gender, is_active: true }).lean()
+    || await ProductSizeChart.findOne({ gender: _gender, is_active: true }).lean({ flattenMaps: true })
     // 5. any unisex chart
-    || await ProductSizeChart.findOne({ gender: "unisex", is_active: true }).lean()
+    || await ProductSizeChart.findOne({ gender: "unisex", is_active: true }).lean({ flattenMaps: true })
     // 6. absolutely any active chart
-    || await ProductSizeChart.findOne({ is_active: true }).lean()
+    || await ProductSizeChart.findOne({ is_active: true }).lean({ flattenMaps: true })
     || null;
 
   // price range

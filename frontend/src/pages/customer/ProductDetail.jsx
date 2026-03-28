@@ -326,7 +326,21 @@ export default function ProductDetail() {
 
   /* ── Computed values ── */
   const variantsMemo = detail?.variants || [];
-  const { optionGroups, orderedKeys } = useMemo(() => buildVariantOptionGroups(variantsMemo), [variantsMemo]);
+  const { optionGroups, orderedKeys } = useMemo(() => {
+    const fromVariants = buildVariantOptionGroups(variantsMemo);
+    if (fromVariants.orderedKeys.length > 0) return fromVariants;
+    // Fallback: use variant_dimensions + variant_values stored on the product document
+    const prod = detail?.product || {};
+    const dims = prod.variant_dimensions;
+    const vv = prod.variant_values;
+    if (!Array.isArray(dims) || !dims.length || !vv) return fromVariants;
+    const keys = dims.filter((d) => Array.isArray(vv[d]) && vv[d].length > 0);
+    const groups = {};
+    for (const k of keys) {
+      groups[k] = vv[k].map((v) => ({ value: String(v), label: String(v) }));
+    }
+    return { optionGroups: groups, orderedKeys: keys };
+  }, [variantsMemo, detail?.product]);
 
   const p = detail?.product || {};
   const brand = detail?.brand;
@@ -365,28 +379,34 @@ export default function ProductDetail() {
 
   const sizeHeaders = useMemo(() => {
     const rows = Array.isArray(sizeChart?.rows) ? sizeChart.rows : [];
-    return Array.from(new Set(rows.flatMap((r) => Object.keys(r.measurements || {}))));
+    // Exclude 'extra' Map field — its sub-keys are not directly accessible as columns
+    return Array.from(new Set(rows.flatMap((r) => {
+      const m = r.measurements || {};
+      return Object.keys(m).filter((k) => k !== "extra" && typeof m[k] !== "object");
+    })));
   }, [sizeChart]);
 
   const onPick = (k, v) => setSelectedAttrs((prev) => resolveOnPick(variantsMemo, prev, k, v));
 
   const canSuggest = Number(height) > 0 && Number(weight) > 0;
 
-  // Load saved body profile when modal opens
+  // Load saved body profile when modal opens (pre-fill only if field is empty to allow free editing)
   useEffect(() => {
     if (!sizeOpen) return;
-    if (!localStorage.getItem(TOKEN_KEY)) return;
+    if (!isAuthenticated) return;
+    let cancelled = false;
     setProfileLoading(true);
     userService.getBodyProfile().then((profile) => {
-      if (!profile) return;
-      if (profile.height && !height) setHeight(String(profile.height));
-      if (profile.weight && !weight) setWeight(String(profile.weight));
-      if (profile.chest  && !chest)  setChest(String(profile.chest));
-      if (profile.waist  && !waist)  setWaist(String(profile.waist));
-      if (profile.hip    && !hip)    setHip(String(profile.hip));
-      if (profile.shoulder && !shoulder) setShoulder(String(profile.shoulder));
-    }).catch(() => {}).finally(() => setProfileLoading(false));
-  }, [sizeOpen]);
+      if (cancelled || !profile) return;
+      if (profile.height)   setHeight((v) => v || String(profile.height));
+      if (profile.weight)   setWeight((v) => v || String(profile.weight));
+      if (profile.chest)    setChest((v)  => v || String(profile.chest));
+      if (profile.waist)    setWaist((v)  => v || String(profile.waist));
+      if (profile.hip)      setHip((v)    => v || String(profile.hip));
+      if (profile.shoulder) setShoulder((v) => v || String(profile.shoulder));
+    }).catch(() => {}).finally(() => { if (!cancelled) setProfileLoading(false); });
+    return () => { cancelled = true; };
+  }, [sizeOpen, isAuthenticated]);
 
   const saveProfile = async () => {
     if (!localStorage.getItem(TOKEN_KEY)) return;
@@ -1091,7 +1111,7 @@ export default function ProductDetail() {
               <tbody>
                 {sizeChart.rows.map((r, i) => (
                   <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-[#131620]" : "bg-default-50/50 dark:bg-[#1a1e2e]/50"}>
-                    <td className="px-4 py-2.5 font-black text-primary">{r.label}</td>
+                    <td className="px-4 py-2.5 font-black text-primary">{r.label || "—"}</td>
                     {sizeHeaders.map((k) => (
                       <td key={k} className="px-4 py-2.5 text-default-700 dark:text-[#c8cbd4]">{r.measurements?.[k] ?? "—"}</td>
                     ))}
@@ -1164,9 +1184,9 @@ export default function ProductDetail() {
         {reviews.items?.length ? (
           <>
             <div className="space-y-4">
-              {reviews.items.map((r) => (
+              {reviews.items.map((r, ri) => (
                 <motion.div
-                  key={r._id}
+                  key={r._id || ri}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-white dark:bg-[#131620] border border-default-100 dark:border-[#2e3347] rounded-2xl p-4 shadow-sm"
@@ -1450,18 +1470,20 @@ export default function ProductDetail() {
                 )}
               </ModalBody>
               <ModalFooter className="flex gap-2 flex-wrap">
-                <Button
-                  variant="flat"
-                  radius="lg"
-                  size="sm"
-                  startContent={<Save size={13} />}
-                  isLoading={profileSaving}
-                  isDisabled={!Number(height) && !Number(weight)}
-                  onPress={saveProfile}
-                  className="font-bold"
-                >
-                  {t("product.save_measurements")}
-                </Button>
+                {isAuthenticated && (
+                  <Button
+                    variant="flat"
+                    radius="lg"
+                    size="sm"
+                    startContent={<Save size={13} />}
+                    isLoading={profileSaving}
+                    isDisabled={!Number(height) && !Number(weight)}
+                    onPress={saveProfile}
+                    className="font-bold"
+                  >
+                    {t("product.save_measurements")}
+                  </Button>
+                )}
                 <div className="flex-1" />
                 <Button variant="light" radius="lg" onPress={onClose}>{t("common.close")}</Button>
                 <Button

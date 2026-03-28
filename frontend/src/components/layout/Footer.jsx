@@ -6,11 +6,14 @@ import {
   ChevronRight, Shield, RefreshCw, Truck, CreditCard,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -23,12 +26,14 @@ export default function Footer() {
   return (
     <footer
       style={{
-        background: "linear-gradient(180deg, #1E3A8A 0%, #1E40AF 40%, #1D4ED8 100%)",
+        background: isDark
+          ? "linear-gradient(180deg, #131829 0%, #182040 40%, #1d2850 100%)"
+          : "linear-gradient(180deg, #1E3A8A 0%, #1E40AF 40%, #1D4ED8 100%)",
         fontFamily: "'Quicksand', 'Segoe UI', sans-serif",
       }}
     >
       {/* ── Trust strip ── */}
-      <div style={{ background: "rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      <div style={{ background: isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.07)", borderBottom: isDark ? "1px solid rgba(255,255,255,0.10)" : "1px solid rgba(255,255,255,0.08)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { Icon: Truck,      label: "Miễn phí vận chuyển", sub: "Đơn hàng từ 299K" },
@@ -280,7 +285,7 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.15)" }}>
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", background: isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.15)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-blue-300 text-xs font-semibold">
             © {new Date().getFullYear()} Daily Fit. {t("footer.rights")}

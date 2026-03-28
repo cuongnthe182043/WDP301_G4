@@ -156,14 +156,14 @@ exports.matchSize = async (productId, measurements) => {
   let chart =
     // 1. brand + category
     (product.brand_id && product.category_id
-      ? await ProductSizeChart.findOne({ brand_id: product.brand_id, category_id: product.category_id, is_active: true }).lean()
+      ? await ProductSizeChart.findOne({ brand_id: product.brand_id, category_id: product.category_id, is_active: true }).lean({ flattenMaps: true })
       : null)
     // 2. category only
     || (product.category_id
-      ? await ProductSizeChart.findOne({ category_id: product.category_id, is_active: true }).lean()
+      ? await ProductSizeChart.findOne({ category_id: product.category_id, is_active: true }).lean({ flattenMaps: true })
       : null)
     // 3. any active chart (lets demo/seed data work without exact category match)
-    || await ProductSizeChart.findOne({ is_active: true }).lean()
+    || await ProductSizeChart.findOne({ is_active: true }).lean({ flattenMaps: true })
     || null;
 
   if (!chart || !chart.rows || chart.rows.length === 0) {
