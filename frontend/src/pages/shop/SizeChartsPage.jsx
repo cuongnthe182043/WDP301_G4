@@ -285,7 +285,7 @@ function ChartCard({ chart, onEdit, onDelete }) {
                 );
                 return (
                   <tr key={i} className={i % 2 === 0 ? "bg-white dark:bg-[#131620]" : "bg-default-50/50 dark:bg-[#1a1e2e]/50"}>
-                    <td className="px-3 py-2 font-black text-primary">{r.label}</td>
+                    <td className="px-3 py-2 font-black text-primary">{r.label || "—"}</td>
                     {visibleFields.map(({ key }) => (
                       <td key={key} className="px-3 py-2 text-default-600">{r.measurements?.[key] ?? "—"}</td>
                     ))}

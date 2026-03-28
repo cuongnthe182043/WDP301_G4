@@ -5,6 +5,7 @@ import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
 import { Input, Button } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, KeyRound, ShieldCheck, ChevronLeft, CheckCircle2, RefreshCw } from "lucide-react";
 import { authService } from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 
 /* ─── helpers ─── */
 const Dot = ({ style }) => (
@@ -24,7 +25,7 @@ const getPasswordStrength = (pwd) => {
 const strengthColor = (s) => ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"][s] || "#e4e4e7";
 
 /* ─── Step bar ─── */
-const StepBar = ({ step, labels }) => (
+const StepBar = ({ step, labels, isDark = false }) => (
   <div className="flex items-center gap-0 mb-8">
     {labels.map((label, i) => {
       const n = i + 1; const done = step > n; const active = step === n;
@@ -33,20 +34,20 @@ const StepBar = ({ step, labels }) => (
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300"
               style={{
-                background: done || active ? "linear-gradient(135deg, #1E40AF, #2563EB)" : "#f4f4f5",
-                color: done || active ? "#fff" : "#a1a1aa",
+                background: done || active ? "linear-gradient(135deg, #1E40AF, #2563EB)" : (isDark ? "#1f2937" : "#f4f4f5"),
+                color: done || active ? "#fff" : (isDark ? "#6b7280" : "#a1a1aa"),
                 boxShadow: active ? "0 0 0 4px rgba(29,78,216,.18)" : "none",
               }}>
               {done ? <CheckCircle2 size={15} /> : n}
             </div>
             <span className="text-xs font-semibold hidden sm:block"
-              style={{ color: done || active ? "#1D4ED8" : "#a1a1aa" }}>
+              style={{ color: done || active ? "#1D4ED8" : (isDark ? "#6b7280" : "#a1a1aa") }}>
               {label}
             </span>
           </div>
           {i < labels.length - 1 && (
             <div className="flex-1 mx-2 h-0.5 rounded-full"
-              style={{ background: step > n ? "#1D4ED8" : "#e4e4e7", minWidth: 20 }} />
+              style={{ background: step > n ? "#1D4ED8" : (isDark ? "#374151" : "#e4e4e7"), minWidth: 20 }} />
           )}
         </React.Fragment>
       );
@@ -65,6 +66,8 @@ export default function ForgotPassword() {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [message, setMessage]   = useState({ text: "", error: true });
   const [form, setForm]         = useState({ email: "", newPassword: "", confirmPassword: "" });
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [otpDigits, setOtpDigits] = useState(["","","","","",""]);
   const otpValue = otpDigits.join("");
 
@@ -120,6 +123,15 @@ export default function ForgotPassword() {
       e.preventDefault();
     }
   };
+
+  // Auto-verify when all 6 digits are filled
+  const autoVerifyRef = React.useRef(false);
+  React.useEffect(() => {
+    if (step !== 2 || otpValue.length !== 6 || loading || autoVerifyRef.current) return;
+    autoVerifyRef.current = true;
+    handleVerifyOtp().finally(() => { autoVerifyRef.current = false; });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otpValue, step]);
 
   const handleSend = async (e) => {
     e?.preventDefault?.();
@@ -276,7 +288,7 @@ export default function ForgotPassword() {
       </div>
 
       {/* ── RIGHT PANEL ── */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: "#f8faff" }}>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: isDark ? "#181d2e" : "#f8faff" }}>
         <div className="w-full max-w-[420px] py-4">
 
           <div className="flex lg:hidden items-center gap-3 mb-8">
@@ -298,7 +310,7 @@ export default function ForgotPassword() {
             </p>
           </div>
 
-          <StepBar step={step} labels={stepLabels} />
+          <StepBar step={step} labels={stepLabels} isDark={isDark} />
 
           {message.text && (
             <div className={`mb-5 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 ${
@@ -365,9 +377,9 @@ export default function ForgotPassword() {
                       className="text-center text-xl font-black rounded-xl outline-none transition-all"
                       style={{
                         width: 48, height: 54,
-                        border: d ? "2px solid #1D4ED8" : "2px solid #DBEAFE",
-                        background: d ? "rgba(29,78,216,.06)" : "#fff",
-                        color: "#1e3a8a",
+                        border: d ? "2px solid #1D4ED8" : `2px solid ${isDark ? "#2d3748" : "#DBEAFE"}`,
+                        background: d ? `rgba(29,78,216,${isDark ? ".2" : ".06"})` : (isDark ? "#1f2937" : "#fff"),
+                        color: isDark ? "#93c5fd" : "#1e3a8a",
                         boxShadow: d ? "0 0 0 3px rgba(29,78,216,.1)" : "none",
                       }}
                     />
@@ -434,7 +446,7 @@ export default function ForgotPassword() {
                   <div className="flex items-center gap-1.5 px-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="h-1 flex-1 rounded-full transition-all duration-300"
-                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : "#e4e4e7" }} />
+                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : (isDark ? "#374151" : "#e4e4e7") }} />
                     ))}
                     <span className="text-xs ml-1 font-medium flex-shrink-0" style={{ color: strengthColor(pwdStrength) }}>
                       {strengthLabel(pwdStrength)}

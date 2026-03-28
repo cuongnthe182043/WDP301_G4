@@ -22,7 +22,7 @@ exports.list = async (req, res, next) => {
 
     const skip = (Number(page) - 1) * Number(limit);
     const [items, total] = await Promise.all([
-      ProductSizeChart.find(filter).sort({ updatedAt: -1 }).skip(skip).limit(Number(limit)).lean(),
+      ProductSizeChart.find(filter).sort({ updatedAt: -1 }).skip(skip).limit(Number(limit)).lean({ flattenMaps: true }),
       ProductSizeChart.countDocuments(filter),
     ]);
     res.json({ items, total, page: Number(page), limit: Number(limit) });
@@ -32,7 +32,7 @@ exports.list = async (req, res, next) => {
 /** GET /api/size-charts/:id */
 exports.getOne = async (req, res, next) => {
   try {
-    const chart = await ProductSizeChart.findById(req.params.id).lean();
+    const chart = await ProductSizeChart.findById(req.params.id).lean({ flattenMaps: true });
     if (!chart) return res.status(404).json({ message: "Size chart not found" });
     res.json(chart);
   } catch (err) { next(err); }
@@ -71,7 +71,7 @@ exports.update = async (req, res, next) => {
     }
     const chart = await ProductSizeChart.findByIdAndUpdate(
       req.params.id, update, { new: true, runValidators: true },
-    ).lean();
+    ).lean({ flattenMaps: true });
     if (!chart) return res.status(404).json({ message: "Size chart not found" });
     await invalidateML(req.params.id);
     res.json(chart);

@@ -11,9 +11,9 @@ const notif = require("./dbNotificationService");
 
 const slugify = (s) => String(s || "").toLowerCase().trim().replace(/[^\w\-]+/g, "-").replace(/\-+/g, "-");
 exports.getProduct = async (id, shopId) => {
-  const p = await Product.findOne({ _id: id, shop_id: shopId }).lean();
+  const p = await Product.findOne({ _id: id, shop_id: shopId }).lean({ flattenMaps: true });
   if (!p) return null;
-  const vars = await ProductVariant.find({ product_id: id, shop_id: shopId }).lean();
+  const vars = await ProductVariant.find({ product_id: id, shop_id: shopId }).lean({ flattenMaps: true });
   return { ...p, variants: vars };
 };
 
@@ -136,7 +136,7 @@ exports.updateProduct = async (id, payload, shopId) => {
   const needsReModeration = moderatableFields.some((f) => f in patch);
   if (needsReModeration) {
     // Merge current product with patch to get full picture
-    const current = await Product.findOne({ _id: id, shop_id: shopId }).lean();
+    const current = await Product.findOne({ _id: id, shop_id: shopId }).lean({ flattenMaps: true });
     if (current) {
       const merged = { ...current, ...patch };
       const modResult = moderateProduct(merged);
@@ -182,11 +182,11 @@ exports.updateProduct = async (id, payload, shopId) => {
     await exports.recomputeStockTotal(id, shopId);
   }
 
-  return Product.findOne({ _id: id, shop_id: shopId }).lean();
+  return Product.findOne({ _id: id, shop_id: shopId }).lean({ flattenMaps: true });
 };
 
 /* ===== Variants single ===== */
-exports.listVariants = (product_id, shopId) => ProductVariant.find({ product_id, shop_id: shopId }).lean();
+exports.listVariants = (product_id, shopId) => ProductVariant.find({ product_id, shop_id: shopId }).lean({ flattenMaps: true });
 exports.createVariant = async (product_id, body, shopId) => {
   const v = await ProductVariant.create({ product_id, shop_id: shopId, ...body });
   await exports.recomputeStockTotal(product_id, shopId);
@@ -253,6 +253,6 @@ exports.importExcel = (fileBuffer, shopId) => importProductsFromExcel(fileBuffer
 
 /* ===== Low stock giữ nguyên ===== */
 exports.lowStock = async (shopId, threshold = 5) => {
-  const rows = await ProductVariant.find({ is_active: true, shop_id: shopId, stock: { $lte: Number(threshold) } }, { product_id: 1, stock: 1, variant_attributes: 1, sku: 1 }).limit(200).lean();
+  const rows = await ProductVariant.find({ is_active: true, shop_id: shopId, stock: { $lte: Number(threshold) } }, { product_id: 1, stock: 1, variant_attributes: 1, sku: 1 }).limit(200).lean({ flattenMaps: true });
   return rows;
 };

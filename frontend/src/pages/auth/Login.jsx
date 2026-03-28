@@ -5,6 +5,7 @@ import { Input, Button, Checkbox, Divider, Chip } from "@heroui/react";
 import { Eye, EyeOff, Mail, Lock, ShieldCheck, Zap, Users, TrendingUp } from "lucide-react";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { useTranslation } from "react-i18next";
 
 /* ─── helpers ─── */
@@ -85,7 +86,10 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 );
 
 export default function Login() {
-  const [form, setForm] = useState({ identifier: "", password: "" });
+  const [form, setForm] = useState(() => {
+    try { const id = sessionStorage.getItem("login_id"); if (id) return { identifier: id, password: "" }; } catch {}
+    return { identifier: "", password: "" };
+  });
   const [touched, setTouched] = useState({ identifier: false, password: false });
   const [apiErrors, setApiErrors] = useState({ identifier: null, password: null });
   const [showPwd, setShowPwd] = useState(false);
@@ -94,6 +98,8 @@ export default function Login() {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const { t } = useTranslation();
 
   const validationErrors = {
@@ -109,7 +115,11 @@ export default function Login() {
     !validateIdentifier(form.identifier) && !validatePassword(form.password);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const next = { ...form, [e.target.name]: e.target.value };
+    setForm(next);
+    if (e.target.name === "identifier") {
+      try { sessionStorage.setItem("login_id", next.identifier); } catch {}
+    }
     // Clear the api error for the field being edited
     if (apiErrors[e.target.name]) {
       setApiErrors(prev => ({ ...prev, [e.target.name]: null }));
@@ -136,6 +146,7 @@ export default function Login() {
       const { accessToken, user } = res.data.data || {};
       if (remember) localStorage.setItem("dfs_remember", "1");
       else localStorage.removeItem("dfs_remember");
+      try { sessionStorage.removeItem("login_id"); } catch {}
       login(user, accessToken);
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || "Đăng nhập thất bại";
@@ -389,7 +400,7 @@ export default function Login() {
       {/* ── RIGHT PANEL ── */}
       <div
         className="flex-1 flex items-center justify-center p-6 sm:p-10"
-        style={{ background: "#f8faff" }}
+        style={{ background: isDark ? "#181d2e" : "#f8faff" }}
       >
         <div className="w-full max-w-[420px]">
           {/* Mobile logo */}
