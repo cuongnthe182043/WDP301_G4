@@ -11,14 +11,14 @@ import {
   Gift, Tag, Package, ShieldCheck, Ticket, Percent, ChevronRight,
   Clock, Check, X,
 } from "lucide-react";
-import { addressService }    from "../../services/addressService";
-import { publicVoucherApi }  from "../../services/voucherService";
-import { formatCurrency }    from "../../utils/formatCurrency";
-import { useToast }          from "../../components/common/ToastProvider";
-import AddressDialog         from "../../components/AddressDialog";
-import AddressDialogPicker   from "../../components/AddressDialogPicker";
-import PayPalCheckout        from "../../components/PayPalCheckout";
-import { useCheckout }       from "../../hooks/useCheckout";
+import { addressService } from "../../services/addressService";
+import { publicVoucherApi } from "../../services/voucherService";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { useToast } from "../../components/common/ToastProvider";
+import AddressDialog from "../../components/AddressDialog";
+import AddressDialogPicker from "../../components/AddressDialogPicker";
+import PayPalCheckout from "../../components/PayPalCheckout";
+import { useCheckout } from "../../hooks/useCheckout";
 
 /* ════════════════════════════════════════════════════════════════════════════ */
 /*  Payment Method Selector                                                    */
@@ -26,8 +26,8 @@ import { useCheckout }       from "../../hooks/useCheckout";
 function PaymentMethodPanel({ value, onChange, disabled }) {
   const { t } = useTranslation();
   const methods = [
-    { val: "COD",    label: t("checkout.pay_cod"),    icon: Banknote,   desc: t("checkout.cod_desc"),    color: "#22c55e" },
-    { val: "VNPAY",  label: t("checkout.pay_vnpay"),  icon: CreditCard, desc: t("checkout.vnpay_desc"),  color: "#3b82f6" },
+    { val: "COD", label: t("checkout.pay_cod"), icon: Banknote, desc: t("checkout.cod_desc"), color: "#22c55e" },
+    { val: "VNPAY", label: t("checkout.pay_vnpay"), icon: CreditCard, desc: t("checkout.vnpay_desc"), color: "#3b82f6" },
     { val: "PAYPAL", label: t("checkout.pay_paypal"), icon: CreditCard, desc: t("checkout.paypal_desc"), color: "#6366f1" },
   ];
   return (
@@ -143,8 +143,8 @@ function VoucherCard({ v, isSelected, onSelect, t }) {
 function VoucherPickerModal({ open, onClose, productCode, shippingCode, onSelectProduct, onSelectShipping }) {
   const { t } = useTranslation();
   const [allVouchers, setAllVouchers] = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [tab, setTab]                 = useState("all"); // "all" | "product" | "shipping"
+  const [loading, setLoading] = useState(false);
+  const [tab, setTab] = useState("all"); // "all" | "product" | "shipping"
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -157,7 +157,7 @@ function VoucherPickerModal({ open, onClose, productCode, shippingCode, onSelect
 
   useEffect(() => { if (open) load(); }, [open, load]);
 
-  const productVouchers  = allVouchers.filter(v => (v.voucher_type || "product") === "product");
+  const productVouchers = allVouchers.filter(v => (v.voucher_type || "product") === "product");
   const shippingVouchers = allVouchers.filter(v => (v.voucher_type || "product") === "shipping");
 
   const handleSelect = (code, vType) => {
@@ -167,13 +167,13 @@ function VoucherPickerModal({ open, onClose, productCode, shippingCode, onSelect
   };
 
   const tabs = [
-    { key: "all",      label: t("checkout.tab_all"),      count: allVouchers.length },
-    { key: "product",  label: t("checkout.tab_product"),  count: productVouchers.length,  color: TYPE_COLORS.product },
+    { key: "all", label: t("checkout.tab_all"), count: allVouchers.length },
+    { key: "product", label: t("checkout.tab_product"), count: productVouchers.length, color: TYPE_COLORS.product },
     { key: "shipping", label: t("checkout.tab_shipping"), count: shippingVouchers.length, color: TYPE_COLORS.shipping },
   ];
 
-  const showProducts  = tab === "all" || tab === "product";
-  const showShipping  = tab === "all" || tab === "shipping";
+  const showProducts = tab === "all" || tab === "product";
+  const showShipping = tab === "all" || tab === "shipping";
 
   return (
     <Modal isOpen={open} onClose={onClose} size="2xl" scrollBehavior="inside" radius="2xl">
@@ -184,7 +184,7 @@ function VoucherPickerModal({ open, onClose, productCode, shippingCode, onSelect
         </ModalHeader>
         <ModalBody className="pb-5">
           {/* Tabs */}
-          <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+          <div className="flex gap-2 mb-4 pb-1">
             {tabs.map(tb => (
               <button
                 key={tb.key}
@@ -359,26 +359,26 @@ const prettyJoin = (parts = []) =>
 export default function Checkout() {
   const { t } = useTranslation();
   const toast = useToast();
-  const nav   = useNavigate();
+  const nav = useNavigate();
 
   const {
     isBuyNow,
     addresses, addressId, setAddressId, loadAddresses,
-    voucherCode,         setVoucherCode,
+    voucherCode, setVoucherCode,
     shippingVoucherCode, setShippingVoucherCode,
-    creditsToUse,  setShopCredits,
-    note,          setNote,
-    method,        setMethod,
-    preview,       loadingPreview, runPreview,
-    loadingPay,    onPlaceCOD,
-    loadingVNPay,  onPlaceVNPAY,
+    creditsToUse, setShopCredits,
+    note, setNote,
+    method, setMethod,
+    preview, loadingPreview, runPreview,
+    loadingPay, onPlaceCOD,
+    loadingVNPay, onPlaceVNPAY,
     paypalPayload, paypalKey,
   } = useCheckout();
 
-  const [openPicker,       setOpenPicker]       = useState(false);
-  const [openAddrForm,     setOpenAddrForm]     = useState(false);
-  const [editAddr,         setEditAddr]         = useState(null);
-  const [voucherModal,     setVoucherModal]     = useState(null); // "product" | "shipping" | null
+  const [openPicker, setOpenPicker] = useState(false);
+  const [openAddrForm, setOpenAddrForm] = useState(false);
+  const [editAddr, setEditAddr] = useState(null);
+  const [voucherModal, setVoucherModal] = useState(null); // "product" | "shipping" | null
 
   const currentAddr = addresses.find(a => a._id === addressId);
 
@@ -667,7 +667,7 @@ export default function Checkout() {
                       {preview.shop_groups.map(g => {
                         if (!g.available_credits) return null;
                         const isUsing = !!creditsToUse[g.shop_id];
-                        const deduct  = Math.min(g.available_credits, g.subtotal || 0);
+                        const deduct = Math.min(g.available_credits, g.subtotal || 0);
                         return (
                           <div key={g.shop_id} className="flex items-center justify-between p-3 border border-default-200 rounded-2xl bg-default-50/50">
                             <div>
@@ -829,8 +829,8 @@ export default function Checkout() {
                         <div key={paypalKey}>
                           <PayPalCheckout
                             checkoutPayload={paypalPayload}
-                            onSuccess={() => {}}
-                            onError={() => {}}
+                            onSuccess={() => { }}
+                            onError={() => { }}
                           />
                         </div>
                       ) : (
@@ -871,7 +871,7 @@ export default function Checkout() {
           try {
             let res;
             if (editAddr) { res = await addressService.update(editAddr._id, payload); toast.success(t("checkout.address_updated")); }
-            else          { res = await addressService.create(payload);               toast.success(t("checkout.address_added")); }
+            else { res = await addressService.create(payload); toast.success(t("checkout.address_added")); }
             const newId = res?._id || res?.data?._id;
             await loadAddresses();
             if (newId) { setAddressId(newId); setOpenPicker(false); await runPreview(); }
