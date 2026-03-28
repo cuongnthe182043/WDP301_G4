@@ -17,6 +17,7 @@ router.get("/:id/invoice", ctrl.invoicePdf);
 
 // Write operations — blocked for banned users
 router.post("/:id/cancel",          ctrl.cancel);
+router.post("/:id/confirm-receipt", ctrl.confirmReceipt);
 router.post("/:id/reorder",         checkBanStatus, ctrl.reorder);
 router.post("/:id/refund",          ctrl.requestRefund);
 router.post("/:id/review-reminder", checkBanStatus, ctrl.sendReviewReminder); 

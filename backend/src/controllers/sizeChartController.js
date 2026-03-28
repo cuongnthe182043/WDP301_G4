@@ -41,10 +41,10 @@ exports.getOne = async (req, res, next) => {
 /** POST /api/size-charts — shop owner */
 exports.create = async (req, res, next) => {
   try {
-    const { brand_id, category_id, gender, unit, weight_unit, height_unit, rows, notes } = req.body;
+    const { name, brand_id, category_id, gender, unit, weight_unit, height_unit, rows, notes } = req.body;
     const chart = new ProductSizeChart({
       _id: `psz-${uuidv4()}`,
-      brand_id, category_id, gender,
+      name, brand_id, category_id, gender,
       unit:        unit        || "cm",
       weight_unit: weight_unit || "kg",
       height_unit: height_unit || "cm",
@@ -61,7 +61,7 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const allowed = [
-      "brand_id", "category_id", "gender",
+      "name", "brand_id", "category_id", "gender",
       "unit", "weight_unit", "height_unit",
       "rows", "notes", "is_active",
     ];

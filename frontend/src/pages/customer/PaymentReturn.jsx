@@ -13,6 +13,7 @@ import {
   Calendar,
   Banknote,
   AlertCircle,
+  Wallet,
 } from "lucide-react";
 
 function parseVNDate(s) {
@@ -91,6 +92,7 @@ export default function PaymentReturn() {
   const payDate   = params.get("pay_date")   || "";
   const code      = params.get("code")       || "";
   const reason    = params.get("reason")     || "";
+  const isDeposit = params.get("deposit")    === "1";
 
   // polling state — used when VNPay didn't pass status params (sandbox restriction)
   const [polledStatus, setPolledStatus] = useState(null); // "success" | "fail" | null
@@ -126,6 +128,8 @@ export default function PaymentReturn() {
   const payDateStr = parseVNDate(payDate);
   const errorMsg   = code ? (VNPAY_RESPONSE_CODES[code] || `${t("common.error")}: ${code}`) : "";
 
+  const successDest = isDeposit ? "/wallet" : "/orders";
+
   const [count, setCount] = useState(isSuccess ? 8 : 15);
   useEffect(() => {
     if (polling) return; // don't countdown while polling
@@ -133,8 +137,8 @@ export default function PaymentReturn() {
     return () => clearInterval(timer);
   }, [polling]);
   useEffect(() => {
-    if (count === 0) nav(isSuccess ? "/orders" : "/");
-  }, [count, nav, isSuccess]);
+    if (count === 0) nav(isSuccess ? successDest : "/");
+  }, [count, nav, isSuccess, successDest]);
 
   const hasDetails = !!(orderCode || txnNo || amount || bank || payDateStr);
 
@@ -237,10 +241,12 @@ export default function PaymentReturn() {
                 className="text-2xl font-black"
                 style={{ color: isSuccess ? "#15803d" : "#b91c1c" }}
               >
-                {isSuccess ? t("payment.success_title") : t("payment.failed_title")}
+                {isSuccess
+                  ? (isDeposit ? "Nạp tiền thành công!" : t("payment.success_title"))
+                  : (isDeposit ? "Nạp tiền thất bại"    : t("payment.failed_title"))}
               </h2>
 
-              {!!orderCode && (
+              {!!orderCode && !isDeposit && (
                 <Chip
                   color={isSuccess ? "success" : "danger"}
                   variant="flat"
@@ -318,7 +324,9 @@ export default function PaymentReturn() {
             >
               {t("payment.redirect_to")}{" "}
               <span className="font-semibold" style={{ color: isSuccess ? "#16a34a" : "#6b7280" }}>
-                {isSuccess ? t("payment.my_orders") : t("payment.home")}
+                {isSuccess
+                  ? (isDeposit ? "Ví của tôi" : t("payment.my_orders"))
+                  : t("payment.home")}
               </span>{" "}
               {t("payment.redirect_after")} <span className="font-bold">{count}s</span>
             </motion.p>
@@ -340,16 +348,29 @@ export default function PaymentReturn() {
               >
                 {t("payment.go_home")}
               </Button>
-              <Button
-                as={RouterLink}
-                to="/orders"
-                color={isSuccess ? "success" : "primary"}
-                radius="xl"
-                startContent={<Receipt size={15} />}
-                className="font-bold flex-1 shadow-md text-white"
-              >
-                {t("payment.view_orders")}
-              </Button>
+              {isDeposit ? (
+                <Button
+                  as={RouterLink}
+                  to="/wallet"
+                  color={isSuccess ? "success" : "primary"}
+                  radius="xl"
+                  startContent={<Wallet size={15} />}
+                  className="font-bold flex-1 shadow-md text-white"
+                >
+                  Về ví
+                </Button>
+              ) : (
+                <Button
+                  as={RouterLink}
+                  to="/orders"
+                  color={isSuccess ? "success" : "primary"}
+                  radius="xl"
+                  startContent={<Receipt size={15} />}
+                  className="font-bold flex-1 shadow-md text-white"
+                >
+                  {t("payment.view_orders")}
+                </Button>
+              )}
             </motion.div>
           </div>
         </div>

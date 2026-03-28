@@ -5,7 +5,7 @@ import { Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
   BarChart2, Key, Shield, ShieldBan, Package, Clock, MessageSquare, Users,
-  FolderTree, Tag, Wallet,
+  FolderTree, Tag, Wallet, AlertCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -24,6 +24,7 @@ export default function AdminLayout() {
     { to: "/admin/products/pending", label: t("admin.pending_label"),      icon: Clock,          color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
     { divider: true },
     { to: "/admin/reviews",          label: t("admin.moderation_reviews"), icon: MessageSquare,  color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
+    { to: "/admin/tickets",          label: "Khiếu nại",                   icon: AlertCircle,    color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { to: "/admin/users",            label: t("admin.users_nav"),          icon: Users,          color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
     { to: "/admin/moderation",       label: t("admin.moderation_nav"),     icon: ShieldBan,      color: "#dc2626", bg: "rgba(220,38,38,0.1)"  },
     { divider: true },
@@ -32,7 +33,7 @@ export default function AdminLayout() {
     { divider: true },
     { to: "/admin/audit-logs",       label: t("admin.audit_logs"),         icon: FileText,       color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
     { to: "/admin/reconciliation",   label: t("finance.title"),            icon: Wallet,         color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
-    { to: "/admin/api-keys",         label: t("admin.api_keys"),           icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+    { to: "/admin/api-keys",         label: "Cấu hình & API Keys",         icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { divider: true },
     { to: "/admin/system-config",    label: t("admin.system_config"),      icon: Settings,       color: "#64748b", bg: "rgba(100,116,139,0.1)" },
   ];

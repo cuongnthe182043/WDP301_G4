@@ -36,6 +36,7 @@ const STATUS_COLOR = {
   out_for_delivery:     "secondary",
   shipping:             "secondary",
   delivered:            "success",
+  received:             "success",
   return_requested:     "warning",
   return_approved:      "primary",
   return_rejected:      "danger",
@@ -57,6 +58,7 @@ const STATUS_HEX = {
   picking: "#8b5cf6",          in_transit: "#3b82f6",
   out_for_delivery: "#0ea5e9", shipping: "#0ea5e9",
   delivered: "#22c55e",
+  received:  "#16a34a",
   return_requested: "#f59e0b", return_approved: "#3b82f6",
   return_rejected: "#ef4444",  return_completed: "#14b8a6",
   refund_pending: "#f59e0b",   refund_completed: "#14b8a6",
@@ -78,6 +80,7 @@ const STATUS_LABEL = {
   out_for_delivery:     "Đang giao",
   shipping:             "Đang giao hàng",
   delivered:            "Đã giao",
+  received:             "Đã nhận hàng",
   return_requested:     "Yêu cầu trả hàng",
   return_approved:      "Chấp nhận trả hàng",
   return_rejected:      "Từ chối trả hàng",
@@ -110,7 +113,7 @@ const STATUS_TABS = [
   { key: "order_created,payment_pending,payment_confirmed,pending",            label: "Chờ xác nhận",  icon: <Clock size={14} /> },
   { key: "confirmed,processing,packed,payment_failed",                         label: "Đang xử lý",    icon: <Package size={14} /> },
   { key: "picking,in_transit,out_for_delivery,shipping",                       label: "Đang giao",     icon: <Truck size={14} /> },
-  { key: "delivered",                                                           label: "Đã giao",       icon: <CheckCircle2 size={14} /> },
+  { key: "delivered,received",                                                  label: "Đã giao",       icon: <CheckCircle2 size={14} /> },
   { key: "return_requested,return_approved,return_rejected,return_completed",  label: "Hoàn/Đổi",      icon: <RotateCcw size={14} /> },
   { key: "cancelled_by_customer,cancelled_by_shop,canceled_by_customer,canceled_by_shop", label: "Đã hủy", icon: <XCircle size={14} /> },
   { key: "__refund_view__",                                                      label: "Hoàn tiền",     icon: <Wallet size={14} /> },
@@ -142,6 +145,9 @@ export default function Orders() {
 
   // Reorder
   const [reorderLoading, setReorderLoading] = useState(null);
+
+  // Confirm receipt
+  const [confirmLoading, setConfirmLoading] = useState(null);
 
   // Repay
   const [repayLoading, setRepayLoading] = useState(null);
@@ -202,6 +208,19 @@ export default function Orders() {
       nav("/cart");
     } catch { toast.error("Không thể đặt lại đơn hàng"); }
     finally { setReorderLoading(null); }
+  };
+
+  const handleConfirmReceipt = async (orderId) => {
+    setConfirmLoading(orderId);
+    try {
+      await orderService.confirmReceipt(orderId);
+      toast.success("Xác nhận đã nhận hàng thành công!");
+      await load(data.page);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Không thể xác nhận nhận hàng");
+    } finally {
+      setConfirmLoading(null);
+    }
   };
 
   const handleInvoice = async (orderId) => {
@@ -467,6 +486,22 @@ export default function Orders() {
                             className="font-semibold"
                           >
                             Chat shop
+                          </Button>
+                        )}
+
+                        {/* Confirm receipt */}
+                        {o.status === "delivered" && (
+                          <Button
+                            size="sm"
+                            color="success"
+                            variant="solid"
+                            radius="lg"
+                            startContent={<PackageCheck size={13} />}
+                            isLoading={confirmLoading === o._id}
+                            onPress={() => handleConfirmReceipt(o._id)}
+                            className="font-semibold text-white"
+                          >
+                            Đã nhận hàng
                           </Button>
                         )}
 

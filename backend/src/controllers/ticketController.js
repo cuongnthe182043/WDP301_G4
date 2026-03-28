@@ -6,7 +6,7 @@ const bad = (res, e, fb = "Bad request") => res.status(e?.status || 400).json({ 
 exports.createTicket = async (req, res) => {
   try {
     const ticket = await svc.createTicket(req.user._id, req.body || {});
-    auditLog.log({ actorId: req.user._id, action: "ticket.create", targetCollection: "tickets", targetId: ticket._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { subject: req.body?.subject, category: req.body?.category } });
+    auditLog.log({ actorId: req.user._id, action: "ticket.create", targetCollection: "tickets", targetId: ticket._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { subject: req.body?.subject, type: req.body?.type } });
     ok(res, { ticket });
   } catch (e) { bad(res, e, "Cannot create ticket"); }
 };
@@ -31,4 +31,11 @@ exports.closeTicket = async (req, res) => {
     auditLog.log({ actorId: req.user._id, action: "ticket.close", targetCollection: "tickets", targetId: req.params.id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req) });
     ok(res, { ticket });
   } catch (e) { bad(res, e, "Cannot close ticket"); }
+};
+
+exports.addReply = async (req, res) => {
+  try {
+    const ticket = await svc.addCustomerReply(req.user._id, req.params.id, req.body || {});
+    ok(res, { ticket });
+  } catch (e) { bad(res, e, "Cannot add reply"); }
 };

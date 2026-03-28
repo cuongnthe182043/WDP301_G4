@@ -56,6 +56,7 @@ import ManageCampaigns from "../pages/shop/ManageCampaigns";
 import ManageCredits from "../pages/shop/ManageCredits";
 import SizeChartsPage from "../pages/shop/SizeChartsPage";
 import ShopInbox from "../pages/shop/ShopInbox";
+import ManageComplaints from "../pages/shop/ManageComplaints";
 import ChatWidget from "../components/chat/ChatWidget";
 
 /* ===== New Vendor / Admin Pages ===== */
@@ -76,6 +77,7 @@ import ApiKeyManager from "../pages/admin/ApiKeyManager";
 import AdminCategories from "../pages/admin/AdminCategories";
 import AdminBrands from "../pages/admin/AdminBrands";
 import AdminModeration from "../pages/admin/AdminModeration";
+import AdminTickets from "../pages/admin/AdminTickets";
 
 /* ===== Landing Page ===== */
 import LandingPage from "../pages/LandingPage";
@@ -203,6 +205,9 @@ export default function AppRouter() {
         <Route path="marketing/campaigns" element={<ManageCampaigns />} />
         <Route path="marketing/credits" element={<ManageCredits />} />
 
+        {/* Complaints */}
+        <Route path="complaints" element={<ManageComplaints />} />
+
         {/* Finance */}
         <Route path="wallet" element={<ShopWallet />} />
 
@@ -233,6 +238,7 @@ export default function AppRouter() {
         <Route path="reconciliation" element={<Reconciliation />} />
         <Route path="api-keys" element={<ApiKeyManager />} />
         <Route path="moderation" element={<AdminModeration />} />
+        <Route path="tickets" element={<AdminTickets />} />
       </Route>
 
       {/* ===== 404 ===== */}

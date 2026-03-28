@@ -143,7 +143,9 @@ app.use("/api/admin/users",         require("./routes/adminUserRoutes"));
 app.use("/api/admin/audit-logs",    require("./routes/auditLogRoutes"));
 app.use("/api/admin/api-keys",      require("./routes/apiKeyRoutes"));
 app.use("/api/admin/system-config", require("./routes/systemConfigRoutes"));
+app.use("/api/admin/env-config",    require("./routes/envRoutes"));
 app.use("/api/admin/finance",       require("./routes/adminFinanceRoutes"));
+app.use("/api/admin/tickets",       require("./routes/adminTicketRoutes"));
 // app.use("/api/admin", adminRoutes);
 
 app.use("/static/invoices", express.static(path.join(__dirname, "../public/invoices")));
