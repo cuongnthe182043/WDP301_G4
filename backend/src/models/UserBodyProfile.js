@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const UserBodyProfileSchema = new mongoose.Schema(
   {
-    user_id:     { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
+    user_id:     { type: String, ref: "User", required: true, unique: true },
     height:      { type: Number, min: 100, max: 250 },   // cm
     weight:      { type: Number, min: 20,  max: 300 },   // kg
     chest:       { type: Number, min: 50,  max: 200 },   // cm

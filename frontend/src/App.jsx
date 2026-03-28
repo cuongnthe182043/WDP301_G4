@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AppRouter from "./router";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -9,11 +10,14 @@ import { userService } from "./services/userService";
 import AppLoader from "./components/ui/AppLoader";
 import TopProgressBar from "./components/ui/TopProgressBar";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import BanNoticePopup from "./components/common/BanNoticePopup";
 
 export default function App() {
   const { user, logout, isAuthenticated, authReady, updateUser } = useAuth();
   const { itemCount } = useCart();
   const { unreadCount } = useNotifications();
+  const location = useLocation();
+  const hideFooter = location.pathname.startsWith("/shop") || location.pathname.startsWith("/admin");
 
   // Refresh user profile on login to get latest avatar_url and other fields
   // userService.get() returns { user: {...} } from the API wrapper — extract the inner user
@@ -42,8 +46,11 @@ export default function App() {
           onLogout={logout}
         />
         <AppRouter />
-        <Footer />
+        {!hideFooter && <Footer />}
       </div>
+
+      {/* Show ban notice modal when authenticated user is banned */}
+      {isAuthenticated && <BanNoticePopup />}
     </>
   );
 }

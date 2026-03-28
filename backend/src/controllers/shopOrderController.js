@@ -3,11 +3,13 @@
 // Shop order management with GHN shipping integration.
 
 const Order      = require("../models/Order");
+const Shop       = require("../models/Shop");
 const User       = require("../models/User");
 const notif      = require("../services/dbNotificationService");
 const ghn        = require("../services/ghnService");
 const refundSvc  = require("../services/refundService");
 const auditLog   = require("../services/auditLogService");
+const settleSvc  = require("../services/platformFeeService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -20,6 +22,52 @@ const auditLog   = require("../services/auditLogService");
 function pushStatusHistory(order, status, by = "shop", note = "") {
   if (!order.status_history) order.status_history = [];
   order.status_history.push({ status, at: new Date(), by, note });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// resolveGhnCodes
+// Given a shipping_address with only text fields (city/district/ward),
+// tries to resolve GHN-compatible district_id and ward_code by fuzzy-matching
+// against the GHN location API. Returns { districtId, wardCode } or null.
+// ─────────────────────────────────────────────────────────────────────────────
+const strip    = (s = "") => String(s).normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/\./g, "").trim().toLowerCase();
+const rmPrefix = (s = "") => s.replace(/^(tinh|thanh pho|tp|quan|huyen|thi xa|xa|phuong)\s+/i, "").trim();
+const normAddr = (s = "") => rmPrefix(strip(s));
+
+function fuzzyFindAddr(segment, list, getName) {
+  const n = normAddr(segment);
+  if (!n) return null;
+  let found = list.find(i => normAddr(getName(i)) === n);
+  if (found) return found;
+  if (n.length >= 2) found = list.find(i => { const m = normAddr(getName(i)); return m.endsWith(n) || m.endsWith(" " + n); });
+  if (found) return found;
+  if (n.length >= 3) found = list.find(i => { const m = normAddr(getName(i)); return m.includes(n) || n.includes(m); });
+  return found || null;
+}
+
+async function resolveGhnCodes(addr) {
+  const cityText     = addr.city     || addr.province || "";
+  const districtText = addr.district || "";
+  const wardText     = addr.ward     || "";
+  if (!cityText || !districtText || !wardText) return null;
+
+  try {
+    const provinces = await ghn.getProvinces();
+    const province  = fuzzyFindAddr(cityText, provinces, p => p.ProvinceName);
+    if (!province) return null;
+
+    const districts = await ghn.getDistricts(province.ProvinceID);
+    const district  = fuzzyFindAddr(districtText, districts, d => d.DistrictName);
+    if (!district) return null;
+
+    const wards = await ghn.getWards(district.DistrictID);
+    const ward  = fuzzyFindAddr(wardText, wards, w => w.WardName);
+    if (!ward) return null;
+
+    return { districtId: district.DistrictID, wardCode: ward.WardCode };
+  } catch {
+    return null;
+  }
 }
 
 /** Statuses from which the shop CAN cancel */
@@ -128,8 +176,8 @@ exports.confirmOrder = async (req, res, next) => {
       return res.status(400).json({ message: `Không thể xác nhận đơn ở trạng thái: ${order.status}` });
     }
 
-    pushStatusHistory(order, "confirmed", "shop", "Shop xác nhận đơn hàng");
-    order.status = "confirmed";
+    pushStatusHistory(order, "processing", "shop", "Shop xác nhận đơn hàng");
+    order.status = "processing";
     await order.save();
 
     notif.orderConfirmed(order.user_id, order.order_code).catch(() => {});
@@ -214,6 +262,34 @@ exports.pushToGhn = async (req, res, next) => {
       return res.status(400).json({ message: "Đơn đã được gửi tới GHN trước đó", ghn_order_code: order.ghn_order_code });
     }
 
+    // Load shop pickup address
+    const shop = await Shop.findById(order.shop_id).lean();
+    const pickup = shop?.pickup_address;
+    if (!pickup?.district_id || !pickup?.ward_code) {
+      return res.status(400).json({
+        message: "Shop chưa thiết lập địa chỉ lấy hàng GHN. Vào Cài đặt → Địa chỉ lấy hàng để cấu hình.",
+      });
+    }
+
+    // Ensure delivery address has GHN district_code / ward_code.
+    // For legacy orders without these codes, attempt to resolve from text fields.
+    const addr = order.shipping_address || {};
+    if (!Number(addr.district_code || 0) || !String(addr.ward_code || "").trim()) {
+      console.log(`[pushToGhn] Address missing GHN codes — attempting auto-resolve for order ${order.order_code}`);
+      const resolved = await resolveGhnCodes(addr);
+      if (!resolved) {
+        return res.status(400).json({
+          message: "Địa chỉ giao hàng của khách chưa có mã GHN (quận/huyện, phường/xã) và không thể tự động nhận diện. " +
+                   "Khách hàng cần cập nhật lại địa chỉ.",
+        });
+      }
+      // Patch shipping_address in-memory so ghnService can use the resolved codes
+      addr.district_code = String(resolved.districtId);
+      addr.ward_code     = resolved.wardCode;
+      order.shipping_address = { ...addr };
+      console.log(`[pushToGhn] Auto-resolved: district_id=${resolved.districtId} ward_code=${resolved.wardCode}`);
+    }
+
     let ghnData;
     const GHN_DEV_MODE = process.env.GHN_DEV_MODE === "true";
 
@@ -227,7 +303,7 @@ exports.pushToGhn = async (req, res, next) => {
       console.log(`[GHN] DEV MODE — simulated order_code: ${fakeCode}`);
     } else {
       try {
-        ghnData = await ghn.createShippingOrder(order);
+        ghnData = await ghn.createShippingOrder(order, pickup);
       } catch (e) {
         return res.status(502).json({ message: `Không thể tạo đơn GHN: ${e.message}` });
       }
@@ -237,7 +313,11 @@ exports.pushToGhn = async (req, res, next) => {
     order.tracking_code   = ghnData.order_code;
     order.shipping_provider = "GHN";
     if (ghnData.expected_delivery_time) {
-      order.expected_delivery = new Date(ghnData.expected_delivery_time * 1000);
+      const raw = ghnData.expected_delivery_time;
+      const ts  = Number(raw);
+      // GHN may return a Unix timestamp (seconds) or an ISO-8601 string
+      const d = Number.isFinite(ts) && ts > 1e9 ? new Date(ts * 1000) : new Date(raw);
+      if (!isNaN(d)) order.expected_delivery = d;
     }
     pushStatusHistory(order, "picking", "shop", `GHN order: ${ghnData.order_code}`);
     order.status = "picking";
@@ -291,6 +371,64 @@ exports.trackOrder = async (req, res, next) => {
         source:         "internal",
         status:         order.status,
         status_history: order.status_history || [],
+      },
+    });
+  } catch (e) { next(e); }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// syncFromGhn  POST /api/shop/orders/:id/sync-ghn
+// Fetches the live GHN status and reconciles the local order status.
+// Fixes conflicts where GHN has progressed (e.g. "picking") but the local
+// status is stale because the webhook was missed.
+// ─────────────────────────────────────────────────────────────────────────────
+exports.syncFromGhn = async (req, res, next) => {
+  try {
+    const order = await Order.findOne({ _id: req.params.id, shop_id: req.shop._id });
+    if (!order) return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+    if (!order.ghn_order_code) {
+      return res.status(400).json({ message: "Đơn chưa được gửi tới GHN" });
+    }
+
+    let ghnDetail;
+    try {
+      ghnDetail = await ghn.getOrderDetail(order.ghn_order_code);
+    } catch (e) {
+      return res.status(502).json({ message: `Không thể lấy trạng thái GHN: ${e.message}` });
+    }
+
+    const ghnStatus      = String(ghnDetail?.status || "").toLowerCase();
+    const internalStatus = ghn.mapGhnStatus(ghnStatus);
+
+    const finalStates = ["delivered", "cancelled_by_shop", "cancelled_by_buyer", "refund_completed"];
+    let updated = false;
+
+    if (internalStatus && order.status !== internalStatus && !finalStates.includes(order.status)) {
+      const prev = order.status;
+      order.status = internalStatus;
+
+      if (internalStatus === "delivered" && order.payment_method === "COD" && order.payment_status !== "paid") {
+        order.payment_status = "paid";
+      }
+
+      pushStatusHistory(order, internalStatus, "sync", `synced from GHN: ${ghnStatus} (was: ${prev})`);
+      await order.save();
+      updated = true;
+      console.log(`[syncFromGhn] order ${order.order_code}: ${prev} → ${internalStatus} (GHN: ${ghnStatus})`);
+
+      // Settle platform fee when order is delivered
+      if (internalStatus === "delivered") {
+        settleSvc.settleOrder(order).catch(e => console.error("[settle]", e.message));
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        ghn_status:      ghnDetail?.status,
+        internal_status: order.status,
+        updated,
+        tracking_logs:   ghnDetail?.log || [],
       },
     });
   } catch (e) { next(e); }
@@ -360,6 +498,12 @@ exports.handleGhnWebhook = async (req, res) => {
 
     pushStatusHistory(order, internalStatus, "ghn", `GHN status: ${status}`);
     order.status = internalStatus;
+
+    // COD: cash is collected on delivery — mark payment as received
+    if (internalStatus === "delivered" && order.payment_method === "COD" && order.payment_status === "pending") {
+      order.payment_status = "paid";
+    }
+
     await order.save();
 
     // Notify customer on key events
@@ -367,6 +511,7 @@ exports.handleGhnWebhook = async (req, res) => {
       notif.orderShipped(order.user_id, order.order_code).catch(() => {});
     } else if (internalStatus === "delivered") {
       notif.orderDelivered(order.user_id, order.order_code).catch(() => {});
+      settleSvc.settleOrder(order).catch(e => console.error("[settle]", e.message));
     }
 
     res.json({ success: true });
@@ -374,4 +519,29 @@ exports.handleGhnWebhook = async (req, res) => {
     console.error("[GHN Webhook] Error:", e.message);
     res.json({ success: true }); // Always ACK to prevent GHN retry storms
   }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// devResetForGhn  POST /api/shop/orders/:id/dev-reset-ghn
+// DEV ONLY — resets an order to "processing" and clears ghn_order_code so it
+// can be pushed to GHN again for testing.
+// ─────────────────────────────────────────────────────────────────────────────
+exports.devResetForGhn = async (req, res, next) => {
+  if (process.env.NODE_ENV === "production") {
+    return res.status(403).json({ message: "Not available in production" });
+  }
+  try {
+    const order = await Order.findOne({ _id: req.params.id, shop_id: req.shop._id });
+    if (!order) return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+
+    order.status         = "processing";
+    order.ghn_order_code = null;
+    order.tracking_code  = null;
+    order.payment_status = order.payment_method === "COD" ? "pending" : order.payment_status;
+    if (!order.status_history) order.status_history = [];
+    order.status_history.push({ status: "processing", at: new Date(), by: "dev", note: "dev-reset for GHN test" });
+    await order.save();
+
+    res.json({ success: true, data: { status: order.status } });
+  } catch (e) { next(e); }
 };

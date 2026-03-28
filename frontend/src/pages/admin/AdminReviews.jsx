@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Card, CardBody, Button, Pagination, Chip, Select, SelectItem, Avatar, Tabs, Tab,
+  Card, CardBody, Button, Chip, Select, SelectItem, Avatar, Tabs, Tab,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Input,
 } from "@heroui/react";
 import { CheckCircle, Trash2, AlertTriangle, Ban, ShieldOff, Star, Eye, EyeOff } from "lucide-react";
 import apiClient from "../../services/apiClient";
 import { useToast } from "../../components/common/ToastProvider";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ─── API helpers ─────────────────────────────────────────────────────────────
 const adminApi = {
@@ -51,18 +52,18 @@ function ReviewsTab() {
   const [total, setTotal]     = useState(0);
   const [tp, setTp]           = useState(1);
   const [statusFilter, setStatusFilter] = useState("pending");
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const res = await adminApi.reviews({ page: pg, limit: LIMIT, status: statusFilter || undefined });
+      const res = await adminApi.reviews({ page: pg, limit: limit, status: statusFilter || undefined });
       setReviews(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTp(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTp(Math.ceil((res.data?.total || 0) / limit));
     } catch { toast.error(t("admin.refund_load_error")); }
     finally { setLoading(false); }
-  }, [page, statusFilter]);
+  }, [page, limit, statusFilter]);
 
   useEffect(() => { load(page); }, [page, statusFilter]);
 
@@ -154,7 +155,7 @@ function ReviewsTab() {
         </CardBody>
       </Card>
 
-      {tp > 1 && <div className="flex justify-center"><Pagination total={tp} page={page} onChange={setPage} color="primary" radius="lg" /></div>}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
     </div>
   );
 }
@@ -174,18 +175,18 @@ function UsersTab() {
   const [banDays,   setBanDays]   = useState("");
   const [banReason, setBanReason] = useState("");
   const [saving,    setSaving]    = useState(false);
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const res = await adminApi.users({ page: pg, limit: LIMIT });
+      const res = await adminApi.users({ page: pg, limit: limit });
       setUsers(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTp(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTp(Math.ceil((res.data?.total || 0) / limit));
     } catch { toast.error(t("admin.refund_load_error")); }
     finally { setLoading(false); }
-  }, [page]);
+  }, [page, limit]);
 
   useEffect(() => { load(page); }, [page]);
 
@@ -290,7 +291,7 @@ function UsersTab() {
         </CardBody>
       </Card>
 
-      {tp > 1 && <div className="flex justify-center"><Pagination total={tp} page={page} onChange={setPage} color="primary" radius="lg" /></div>}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Ban Modal */}
       <Modal isOpen={!!banTarget} onOpenChange={(o) => !o && setBanTarget(null)} radius="xl" size="md">

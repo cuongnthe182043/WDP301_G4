@@ -4,8 +4,6 @@
 // Handles both flows:
 //   - Cart flow:     loc.state.selected_item_ids = [cartItemId, ...]
 //   - Buy Now flow:  loc.state.buy_now_items = [{ productId, variantId, quantity }]
-//
-// The correct payload key is forwarded transparently to the backend.
 
 import { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,28 +17,28 @@ export function useCheckout() {
   const loc   = useLocation();
 
   // ── Detect mode ────────────────────────────────────────────────────────────
-  const buyNowItems = loc.state?.buy_now_items  || null;   // [{ productId, variantId, quantity }]
-  const selectedIds = loc.state?.selected_item_ids || [];  // [cartItemId, ...]
+  const buyNowItems = loc.state?.buy_now_items  || null;
+  const selectedIds = loc.state?.selected_item_ids || [];
   const isBuyNow    = Array.isArray(buyNowItems) && buyNowItems.length > 0;
 
   // ── State ──────────────────────────────────────────────────────────────────
-  const [addresses,      setAddresses]     = useState([]);
-  const [addressId,      setAddressId]     = useState("");
-  const [shipper,        setShipper]       = useState("GHN");
-  const [voucherCode,    setVoucherCode]   = useState("");
-  const [creditsToUse,   setCreditsToUse]  = useState({});  // { [shopId]: amount }
-  const [note,           setNote]          = useState("");
-  const [method,         setMethod]        = useState("COD");
-  const [preview,        setPreview]       = useState(null);
-  const [loadingPay,     setLoadingPay]    = useState(false);
-  const [loadingPreview, setLoadingPreview] = useState(false);
-  const [paypalKey,      setPaypalKey]     = useState(0);
-  const [loadingVNPay,   setLoadingVNPay]  = useState(false);
+  const [addresses,             setAddresses]            = useState([]);
+  const [addressId,             setAddressId]            = useState("");
+  const [voucherCode,           setVoucherCode]          = useState(loc.state?.voucher_code || "");
+  const [shippingVoucherCode,   setShippingVoucherCode]  = useState("");
+  const [creditsToUse,          setCreditsToUse]         = useState({});
+  const [note,                  setNote]                 = useState("");
+  const [method,                setMethod]               = useState("COD");
+  const [preview,               setPreview]              = useState(null);
+  const [loadingPay,            setLoadingPay]           = useState(false);
+  const [loadingPreview,        setLoadingPreview]       = useState(false);
+  const [paypalKey,             setPaypalKey]            = useState(0);
+  const [loadingVNPay,          setLoadingVNPay]         = useState(false);
 
   const setShopCredits = (shopId, amount) =>
     setCreditsToUse(prev => ({ ...prev, [shopId]: amount }));
 
-  // ── Items payload (backend accepts either key) ─────────────────────────────
+  // ── Items payload ─────────────────────────────────────────────────────────
   const itemsPayload = isBuyNow
     ? { buy_now_items: buyNowItems }
     : { selected_item_ids: selectedIds };
@@ -52,7 +50,7 @@ export function useCheckout() {
       const arr  = Array.isArray(list) ? list : [];
       setAddresses(arr);
       setAddressId(prev => {
-        if (prev) return prev;                       // keep if already set
+        if (prev) return prev;
         const d = arr.find(x => x.is_default) || arr[0];
         return d?._id || "";
       });
@@ -69,10 +67,10 @@ export function useCheckout() {
       setLoadingPreview(true);
       const p = await checkoutService.preview({
         ...itemsPayload,
-        address_id:        addressId,
-        shipping_provider: shipper,
-        voucher_code:      voucherCode || undefined,
-        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
+        address_id:            addressId,
+        voucher_code:          voucherCode || undefined,
+        shipping_voucher_code: shippingVoucherCode || undefined,
+        credits_to_use:        Object.keys(creditsToUse).length ? creditsToUse : undefined,
       });
       setPreview(p);
       setPaypalKey(k => k + 1);
@@ -82,11 +80,22 @@ export function useCheckout() {
     } finally {
       setLoadingPreview(false);
     }
-  }, [addressId, shipper, voucherCode, creditsToUse, isBuyNow, selectedIds, buyNowItems]);
+  }, [addressId, voucherCode, shippingVoucherCode, creditsToUse, isBuyNow, selectedIds, buyNowItems]);
 
   // ── Init ───────────────────────────────────────────────────────────────────
   useEffect(() => { loadAddresses(); }, [loadAddresses]);
-  useEffect(() => { if (addressId) runPreview(); }, [addressId, shipper, voucherCode, creditsToUse]);
+  useEffect(() => { if (addressId) runPreview(); }, [addressId, voucherCode, shippingVoucherCode, creditsToUse]);
+
+  // ── Build common payload ──────────────────────────────────────────────────
+  const buildPayload = (extraMethod) => ({
+    ...itemsPayload,
+    address_id:            addressId,
+    note,
+    voucher_code:          voucherCode || undefined,
+    shipping_voucher_code: shippingVoucherCode || undefined,
+    credits_to_use:        Object.keys(creditsToUse).length ? creditsToUse : undefined,
+    ...(extraMethod ? { payment_method: extraMethod } : {}),
+  });
 
   // ── Place COD order ────────────────────────────────────────────────────────
   const onPlaceCOD = async () => {
@@ -94,15 +103,7 @@ export function useCheckout() {
     if (!preview)   return toast.error("Chưa có tạm tính. Vui lòng thử lại.");
     setLoadingPay(true);
     try {
-      await checkoutService.confirm({
-        ...itemsPayload,
-        address_id:        addressId,
-        note,
-        shipping_provider: shipper,
-        voucher_code:      voucherCode || undefined,
-        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
-        payment_method:    "COD",
-      });
+      await checkoutService.confirm(buildPayload("COD"));
       toast.success("Đặt hàng thành công!");
       nav("/orders");
     } catch (e) {
@@ -112,69 +113,35 @@ export function useCheckout() {
     }
   };
 
-  // ── Place VNPAY order ───────────────────────────────────────────────────────
+  // ── Place VNPAY order ─────────────────────────────────────────────────────
   const onPlaceVNPAY = async () => {
     if (!addressId) return toast.error("Vui lòng chọn địa chỉ nhận hàng");
     if (!preview)   return toast.error("Chưa có tạm tính. Vui lòng thử lại.");
     setLoadingVNPay(true);
     try {
-      // Step 1: create the order in DB with payment_method = VNPAY
-      const { order_id } = await checkoutService.confirm({
-        ...itemsPayload,
-        address_id:        addressId,
-        note,
-        shipping_provider: shipper,
-        voucher_code:      voucherCode || undefined,
-        credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
-        payment_method:    "VNPAY",
-      });
-      // Step 2: get VNPAY payment URL from backend
+      const { order_id } = await checkoutService.confirm(buildPayload("VNPAY"));
       const { payUrl } = await checkoutService.createVNPayUrl(order_id);
-      // Step 3: redirect user to VNPAY sandbox — backend verifies on return
       window.location.href = payUrl;
     } catch (e) {
       toast.error(e?.response?.data?.message || e.message || "Không thể tạo thanh toán VNPAY");
       setLoadingVNPay(false);
     }
-    // intentionally no finally { setLoading(false) } — page navigates away on success
   };
 
-  // ── PayPal payload (amount always read by backend — never sent from client) ─
-  const paypalPayload = {
-    ...itemsPayload,
-    address_id:        addressId,
-    note,
-    shipping_provider: shipper,
-    voucher_code:      voucherCode || undefined,
-    credits_to_use:    Object.keys(creditsToUse).length ? creditsToUse : undefined,
-  };
+  // ── PayPal payload ────────────────────────────────────────────────────────
+  const paypalPayload = buildPayload();
 
   return {
-    // mode
-    isBuyNow,
-    selectedIds,
-    buyNowItems,
-    // address
-    addresses,
-    addressId,
-    setAddressId,
-    loadAddresses,
-    // options
-    shipper,       setShipper,
-    voucherCode,   setVoucherCode,
-    creditsToUse,  setShopCredits,
-    note,          setNote,
-    method,        setMethod,
-    // preview
-    preview,
-    loadingPreview,
-    runPreview,
-    // order placement
-    loadingPay,
-    onPlaceCOD,
-    loadingVNPay,
-    onPlaceVNPAY,
-    paypalPayload,
-    paypalKey,
+    isBuyNow, selectedIds, buyNowItems,
+    addresses, addressId, setAddressId, loadAddresses,
+    voucherCode,         setVoucherCode,
+    shippingVoucherCode, setShippingVoucherCode,
+    creditsToUse, setShopCredits,
+    note, setNote,
+    method, setMethod,
+    preview, loadingPreview, runPreview,
+    loadingPay, onPlaceCOD,
+    loadingVNPay, onPlaceVNPAY,
+    paypalPayload, paypalKey,
   };
 }

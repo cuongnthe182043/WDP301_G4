@@ -224,11 +224,11 @@ function NotificationDropdown({ scrolled, isDark }) {
           boxShadow: isDark
             ? "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)"
             : "0 12px 48px rgba(29,78,216,0.14), 0 0 0 1px #DBEAFE",
-          background: isDark ? "#18181b" : "#fff",
+          background: isDark ? "#1a1e2e" : "#fff",
         }}
       >
         <DropdownItem key="header" isReadOnly className="cursor-default px-4 py-3 opacity-100 rounded-none"
-          style={{ borderBottom: isDark ? "1px solid #27272a" : "1px solid #EFF6FF", background: isDark ? "#1f1f23" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)" }}>
+          style={{ borderBottom: isDark ? "1px solid #2e3347" : "1px solid #EFF6FF", background: isDark ? "#1e2233" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Bell size={15} className="text-blue-600" />
@@ -258,23 +258,28 @@ function NotificationDropdown({ scrolled, isDark }) {
               <div
                 onClick={() => { if (!n.isRead) markRead(n._id); if (n.link) navigate(n.link); }}
                 className="flex gap-3 px-4 py-3 transition-colors cursor-pointer group"
-                style={{ background: n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF") }}
-                onMouseEnter={e => e.currentTarget.style.background = isDark ? "#27272a" : "#EFF6FF"}
-                onMouseLeave={e => e.currentTarget.style.background = n.isRead ? "transparent" : (isDark ? "#1f1f23" : "#F0F7FF")}
+                style={{ background: n.isRead ? "transparent" : (isDark ? "#1e2233" : "#F0F7FF") }}
+                onMouseEnter={e => e.currentTarget.style.background = isDark ? "#222738" : "#EFF6FF"}
+                onMouseLeave={e => e.currentTarget.style.background = n.isRead ? "transparent" : (isDark ? "#1e2233" : "#F0F7FF")}
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: bg }}>
                   <Icon size={16} style={{ color }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-1">
-                    <p className={`text-xs leading-tight ${n.isRead ? "font-semibold text-gray-700" : "font-black text-gray-900"}`}>{n.title}</p>
+                    <p className={`text-xs leading-tight ${n.isRead ? "font-semibold" : "font-black"}`}
+                      style={{ color: isDark ? (n.isRead ? "#94a3b8" : "#e2e8f0") : (n.isRead ? "#374151" : "#111827") }}>{n.title}</p>
                     {!n.isRead && <span className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: "#2563EB" }} />}
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">{n.message}</p>
+                  <p className="text-[11px] mt-0.5 line-clamp-2 leading-relaxed"
+                    style={{ color: isDark ? "#6b7280" : "#6b7280" }}>{n.message}</p>
                   <p className="text-[10px] text-blue-400 mt-1 font-semibold">{timeAgo(n.createdAt)}</p>
                 </div>
                 <button onClick={(e) => { e.stopPropagation(); deleteNotif(n._id); }}
-                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded-lg hover:bg-red-50 transition-all">
+                  className="flex-shrink-0 opacity-0 group-hover:opacity-100 p-1 rounded-lg transition-all"
+                  style={{ "--hover-bg": isDark ? "rgba(239,68,68,.15)" : "#FEE2E2" }}
+                  onMouseEnter={e => e.currentTarget.style.background = isDark ? "rgba(239,68,68,.15)" : "#FEE2E2"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                   <Trash2 size={12} className="text-red-400" />
                 </button>
               </div>
@@ -283,7 +288,7 @@ function NotificationDropdown({ scrolled, isDark }) {
         })}
 
         <DropdownItem key="view-all" isReadOnly className="cursor-pointer opacity-100 rounded-none px-4 py-2.5"
-          style={{ borderTop: isDark ? "1px solid #27272a" : "1px solid #EFF6FF", background: isDark ? "#121215" : "#F8FBFF" }}>
+          style={{ borderTop: isDark ? "1px solid #333c5c" : "1px solid #EFF6FF", background: isDark ? "#1c2033" : "#F8FBFF" }}>
           <button onClick={() => navigate("/notifications")}
             className="w-full flex items-center justify-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">
             <ExternalLink size={12} />{t("notification.view_all")}
@@ -315,9 +320,9 @@ const NAV_WHITE_LIGHT = {
   borderBottom: "1.5px solid #EFF6FF",
 };
 const NAV_WHITE_DARK = {
-  background: "#18181b",
-  boxShadow: "0 2px 16px rgba(0,0,0,0.4)",
-  borderBottom: "1.5px solid #27272a",
+  background: "#1f2540",
+  boxShadow: "0 2px 16px rgba(0,0,0,0.20)",
+  borderBottom: "1.5px solid #333c5c",
 };
 
 export default function Header({ cartCount = 0, notifyCount = 0, user = null, onLogout }) {
@@ -352,7 +357,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
     boxShadow: isDark
       ? "0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.07)"
       : "0 16px 48px rgba(29,78,216,0.12), 0 4px 16px rgba(0,0,0,0.06), 0 0 0 1.5px #DBEAFE",
-    background: isDark ? "#1c1c1f" : "#ffffff",
+    background: isDark ? "#1f2540" : "#ffffff",
   };
 
   return (
@@ -401,17 +406,19 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
               className="flex items-center gap-2 w-full h-9 rounded-full px-3 transition-all duration-200"
               style={{
                 background: scrolled
-                  ? (searchFocus ? "#EFF6FF" : "#F1F5F9")
+                  ? isDark
+                    ? (searchFocus ? "#2e3550" : "#252b3d")
+                    : (searchFocus ? "#EFF6FF" : "#F1F5F9")
                   : (searchFocus ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.15)"),
-                boxShadow: searchFocus
-                  ? scrolled ? "0 0 0 2px #3B82F6" : "0 0 0 2px rgba(255,255,255,0.5)"
-                  : "none",
+                boxShadow: "none",
                 border: scrolled
-                  ? `1.5px solid ${searchFocus ? "#3B82F6" : "#E2E8F0"}`
+                  ? isDark
+                    ? `1.5px solid ${searchFocus ? "rgba(96,165,250,0.6)" : "#3a4055"}`
+                    : `1.5px solid ${searchFocus ? "#3B82F6" : "#E2E8F0"}`
                   : `1.5px solid ${searchFocus ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)"}`,
               }}
             >
-              <Search size={14} style={{ color: scrolled ? (searchFocus ? "#2563EB" : "#94A3B8") : "rgba(255,255,255,0.7)", flexShrink: 0 }} />
+              <Search size={14} style={{ color: scrolled ? (isDark ? (searchFocus ? "#60A5FA" : "#6B7280") : (searchFocus ? "#2563EB" : "#94A3B8")) : "rgba(255,255,255,0.7)", flexShrink: 0 }} />
               <input
                 type="search"
                 placeholder={t("nav.search_placeholder")}
@@ -420,9 +427,9 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                 onFocus={() => setSearchFocus(true)}
                 onBlur={() => setSearchFocus(false)}
                 className="flex-1 bg-transparent border-none outline-none text-sm min-w-0 font-semibold"
-                style={{ color: scrolled ? "#1E293B" : "#ffffff", fontFamily: "'Quicksand', sans-serif" }}
+                style={{ color: scrolled ? (isDark ? "#e2e8f0" : "#1E293B") : "#ffffff", fontFamily: "'Quicksand', sans-serif" }}
               />
-              <style>{`input[type="search"]::placeholder{color:${scrolled ? "#94A3B8" : "rgba(255,255,255,0.55)"};font-family:'Quicksand',sans-serif;}input[type="search"]::-webkit-search-cancel-button{display:none;}`}</style>
+              <style>{`input[type="search"]::placeholder{color:${scrolled ? (isDark ? "#4b5263" : "#94A3B8") : "rgba(255,255,255,0.55)"};font-family:'Quicksand',sans-serif;}input[type="search"]::-webkit-search-cancel-button{display:none;}`}</style>
               <AnimatePresence>
                 {searchQ && (
                   <motion.button type="button"
@@ -568,8 +575,8 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
                   <DropdownItem key="identity" isReadOnly className="opacity-100 cursor-default px-0 py-0 mb-1">
                     <div className="px-4 py-4 flex items-center gap-3"
                       style={{
-                        background: isDark ? "linear-gradient(135deg,#1e293b,#1f2937)" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)",
-                        borderBottom: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid #BFDBFE",
+                        background: isDark ? "linear-gradient(135deg,#1f2540,#252c4e)" : "linear-gradient(135deg,#EFF6FF,#DBEAFE)",
+                        borderBottom: isDark ? "1px solid rgba(255,255,255,0.09)" : "1px solid #BFDBFE",
                       }}>
                       <div className="relative flex-shrink-0">
                         <Avatar size="md"
@@ -670,8 +677,8 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
       <NavbarMenu
         className="top-[64px] pt-0 pb-6 px-0 gap-0 overflow-y-auto"
         style={{
-          background: isDark ? "#1e293b" : "#ffffff",
-          borderTop: isDark ? "2px solid #334155" : "2px solid #DBEAFE",
+          background: isDark ? "#1f2540" : "#ffffff",
+          borderTop: isDark ? "2px solid #3a4468" : "2px solid #DBEAFE",
           boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.3)" : "0 8px 32px rgba(29,78,216,0.12)",
           maxHeight: "85dvh",
           fontFamily: "'Quicksand', sans-serif",
@@ -683,16 +690,19 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
         {/* Mobile search */}
         <NavbarMenuItem className="px-4 mb-3">
           <div className="flex items-center gap-2 h-10 rounded-xl px-3 border-2"
-            style={{ background: "#F8FAFF", borderColor: "#BFDBFE" }}>
+            style={{
+              background: isDark ? "#1f2937" : "#F8FAFF",
+              borderColor: isDark ? "#374151" : "#BFDBFE",
+            }}>
             <Search size={15} className="text-blue-400 flex-shrink-0" />
             <form onSubmit={submitSearch} className="flex-1 flex items-center gap-1">
               <input type="search" autoFocus
                 placeholder={t("nav.search_placeholder")}
                 value={searchQ} onChange={e => setSearchQ(e.target.value)}
-                className="flex-1 bg-transparent border-none outline-none text-sm text-gray-800 font-semibold"
-                style={{ fontFamily: "'Quicksand', sans-serif" }}
+                className="flex-1 bg-transparent border-none outline-none text-sm font-semibold"
+                style={{ color: isDark ? "#e2e8f0" : "#1e293b", fontFamily: "'Quicksand', sans-serif" }}
               />
-              {searchQ && <button type="button" onClick={() => setSearchQ("")}><X size={13} className="text-gray-400" /></button>}
+              {searchQ && <button type="button" onClick={() => setSearchQ("")}><X size={13} style={{ color: isDark ? "#6b7280" : "#9ca3af" }} /></button>}
             </form>
           </div>
         </NavbarMenuItem>
@@ -712,7 +722,7 @@ export default function Header({ cartCount = 0, notifyCount = 0, user = null, on
             <NavbarMenuItem className="px-4 mb-2">
               <div className="flex items-center gap-3 p-3 rounded-2xl"
                 style={isDark
-                  ? { background: "#1f1f23", border: "1px solid #27272a" }
+                  ? { background: "#1e2233", border: "1px solid #2e3347" }
                   : { background: "linear-gradient(135deg,#EFF6FF,#DBEAFE)", border: "1.5px solid #BFDBFE" }}>
                 <div className="relative flex-shrink-0">
                   <Avatar size="sm"

@@ -1,19 +1,53 @@
 // services/checkoutService.js
 const notif = require("./dbNotificationService");
+const audit = require("./auditLogService");
 const Cart = require("../models/Cart");
 const Voucher = require("../models/Voucher");
 const Order = require("../models/Order");
 const Address = require("../models/Address");
 const Product = require("../models/Product");
 const ProductVariant = require("../models/ProductVariant");
+const FlashSale = require("../models/FlashSale");
 const Shop = require("../models/Shop");
 const ShopCredit = require("../models/ShopCredit");
 const { v4: uuidv4 } = require("uuid");
 const shippingSvc = require("./shippingService");
 
 // ─────────────────────────────────────────────────────────────────────────────
+// getActiveFlashMap — returns Map<variantId, flashItem> for any active flash sales
+// ─────────────────────────────────────────────────────────────────────────────
+async function getActiveFlashMap(variantIds, shopIds) {
+  if (!variantIds.length || !shopIds.length) return new Map();
+  const now = new Date();
+  const flashSales = await FlashSale.find({
+    shop_id: { $in: shopIds.map(String) },
+    status: "active",
+    start_time: { $lte: now },
+    end_time: { $gt: now },
+    "products.variant_id": { $in: variantIds.map(String) },
+  }).lean();
+
+  const map = new Map();
+  for (const fs of flashSales) {
+    for (const p of fs.products) {
+      const vid = String(p.variant_id);
+      if (!map.has(vid) && variantIds.map(String).includes(vid)) {
+        map.set(vid, {
+          flashsale_id: fs._id,
+          flash_price: p.flash_price,
+          quantity_total: p.quantity_total,
+          quantity_sold: p.quantity_sold,
+          max_per_user: fs.max_per_user,
+        });
+      }
+    }
+  }
+  return map;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // resolveItems — Unified item resolution with DB validation
-// Returns items enriched with shop_id from each product
+// Returns items enriched with shop_id from each product, plus flash sale map
 // ─────────────────────────────────────────────────────────────────────────────
 async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
   const isBuyNow = Array.isArray(buy_now_items) && buy_now_items.length > 0;
@@ -41,19 +75,46 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
         );
       }
 
+      // Build variant label from attributes map
+      const attrs = variant.variant_attributes instanceof Map
+        ? Object.fromEntries(variant.variant_attributes)
+        : (variant.variant_attributes || {});
+
       result.push({
         product_id: product._id,
         variant_id: variant._id,
         shop_id: product.shop_id || null,
         name: product.name,
         image_url: variant.images?.[0] || product.images?.[0] || "",
+        variant_attributes: attrs,
+        sku: variant.sku || null,
+        compare_at_price: variant.compare_at_price || null,
         qty,
         price: variant.price,
         discount: 0,
         total: variant.price * qty,
       });
     }
-    return { items: result, cartItemIds: null };
+
+    // Apply active flash sale prices (buy-now path)
+    const variantIds = result.map((i) => String(i.variant_id));
+    const shopIds    = [...new Set(result.map((i) => i.shop_id).filter(Boolean))];
+    const flashMap   = await getActiveFlashMap(variantIds, shopIds);
+    for (const item of result) {
+      const fi = flashMap.get(String(item.variant_id));
+      if (fi) {
+        if (fi.quantity_sold + item.qty > fi.quantity_total) {
+          throw Object.assign(
+            new Error(`"${item.name}" đã hết suất Flash Sale (còn ${Math.max(0, fi.quantity_total - fi.quantity_sold)} suất)`),
+            { status: 400 }
+          );
+        }
+        item.discount = item.price - fi.flash_price;
+        item.total    = fi.flash_price * item.qty;
+      }
+    }
+
+    return { items: result, cartItemIds: null, flashMap };
   }
 
   // ── Cart-based ────────────────────────────────────────────────────────────
@@ -94,12 +155,20 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
       );
     }
 
+    // Build variant label from attributes map
+    const attrs = variant.variant_attributes instanceof Map
+      ? Object.fromEntries(variant.variant_attributes)
+      : (variant.variant_attributes || {});
+
     result.push({
       product_id: product._id,
       variant_id: variant._id,
       shop_id: product.shop_id || null,
       name: product.name,
       image_url: variant.images?.[0] || product.images?.[0] || ci.image || "",
+      variant_attributes: attrs,
+      sku: variant.sku || null,
+      compare_at_price: variant.compare_at_price || null,
       qty: ci.qty,
       price: variant.price,
       discount: 0,
@@ -107,19 +176,46 @@ async function resolveItems(userId, { selected_item_ids, buy_now_items }) {
     });
   }
 
-  return { items: result, cartItemIds: Array.from(ids) };
+  // Apply active flash sale prices (cart path)
+  const variantIds = result.map((i) => String(i.variant_id));
+  const shopIds    = [...new Set(result.map((i) => i.shop_id).filter(Boolean))];
+  const flashMap   = await getActiveFlashMap(variantIds, shopIds);
+  for (const item of result) {
+    const fi = flashMap.get(String(item.variant_id));
+    if (fi) {
+      if (fi.quantity_sold + item.qty > fi.quantity_total) {
+        throw Object.assign(
+          new Error(`"${item.name}" đã hết suất Flash Sale (còn ${Math.max(0, fi.quantity_total - fi.quantity_sold)} suất)`),
+          { status: 400 }
+        );
+      }
+      item.discount = item.price - fi.flash_price;
+      item.total    = fi.flash_price * item.qty;
+    }
+  }
+
+  return { items: result, cartItemIds: Array.from(ids), flashMap };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // applyVoucher — validates & calculates discount
+// expectedType: "product" | "shipping" — ensures voucher matches intended use
+// applyTo: the amount to cap the discount against (subtotal or shipping_fee)
 // Returns { voucher, discount } on success, or { voucher:null, discount:0, error } on failure
 // ─────────────────────────────────────────────────────────────────────────────
-async function applyVoucher(voucherCode, subtotal, userId) {
+async function applyVoucher(voucherCode, applyTo, userId, expectedType = null) {
   if (!voucherCode) return { voucher: null, discount: 0 };
 
   const code = voucherCode.toString().trim().toUpperCase();
   const v = await Voucher.findOne({ code, is_active: true });
   if (!v) return { voucher: null, discount: 0, error: "Mã voucher không tồn tại hoặc đã bị vô hiệu hóa" };
+
+  // Check voucher type matches expected usage
+  const vType = v.voucher_type || "product";
+  if (expectedType && vType !== expectedType) {
+    const label = expectedType === "shipping" ? "giảm phí vận chuyển" : "giảm giá sản phẩm";
+    return { voucher: null, discount: 0, error: `Voucher này không phải loại ${label}` };
+  }
 
   const now = new Date();
   if (now < new Date(v.valid_from))
@@ -128,7 +224,7 @@ async function applyVoucher(voucherCode, subtotal, userId) {
     return { voucher: null, discount: 0, error: "Voucher đã hết hạn" };
   if (v.used_count >= v.max_uses)
     return { voucher: null, discount: 0, error: "Voucher đã hết lượt sử dụng" };
-  if (subtotal < (v.min_order_value || 0))
+  if (applyTo < (v.min_order_value || 0))
     return {
       voucher: null, discount: 0,
       error: `Đơn hàng tối thiểu ${(v.min_order_value || 0).toLocaleString("vi-VN")}₫ để dùng voucher này`,
@@ -145,10 +241,12 @@ async function applyVoucher(voucherCode, subtotal, userId) {
       return { voucher: null, discount: 0, error: "Bạn đã sử dụng hết lượt cho voucher này" };
   }
 
-  const rawDiscount = v.discount_type === "percent"
-    ? Math.round((subtotal * v.discount_value) / 100)
+  let rawDiscount = v.discount_type === "percent"
+    ? Math.round((applyTo * v.discount_value) / 100)
     : v.discount_value;
-  const discount = Math.min(rawDiscount, subtotal); // cannot exceed order value
+  // Cap by max_discount if set
+  if (v.max_discount > 0) rawDiscount = Math.min(rawDiscount, v.max_discount);
+  const discount = Math.min(rawDiscount, applyTo); // cannot exceed apply-to amount
   return { voucher: v, discount: Math.max(0, discount) };
 }
 
@@ -175,8 +273,8 @@ exports.preview = async ({
   selected_item_ids,
   buy_now_items,
   address_id,
-  ship_provider,
   voucher_code,
+  shipping_voucher_code,
   credits_to_use = {},
 }) => {
   if (!userId) throw Object.assign(new Error("Unauthorized"), { status: 401 });
@@ -184,13 +282,16 @@ exports.preview = async ({
   const { items } = await resolveItems(userId, { selected_item_ids, buy_now_items });
 
   const subtotal = items.reduce((s, it) => s + it.total, 0);
-  const shipping_fee = await shippingSvc.calculate(
-    ship_provider || "GHN",
-    address_id || null,
-    null,
-    items
-  );
-  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId);
+  const shipping_fee_raw = await shippingSvc.calculate("GHN", address_id || null, null, items);
+
+  // Apply product voucher to subtotal
+  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId, "product");
+
+  // Apply shipping voucher to shipping fee
+  const { voucher: shipVoucher, discount: shippingDiscount, error: shipVoucherError } =
+    await applyVoucher(shipping_voucher_code, shipping_fee_raw, userId, "shipping");
+
+  const shipping_fee = Math.max(0, shipping_fee_raw - shippingDiscount);
 
   // Enrich with shop names
   const shopIds = [...new Set(items.map((i) => i.shop_id).filter(Boolean))];
@@ -239,15 +340,21 @@ exports.preview = async ({
     items,
     shop_groups: shopGroups,
     subtotal,
+    shipping_fee_raw,
     shipping_fee,
+    shipping_discount: shippingDiscount,
     discount,
     credits_discount: totalCreditsDiscount,
     total,
     currency: "VND",
     voucher: voucher
-      ? { _id: voucher._id, code: voucher.code, discount_type: voucher.discount_type, discount_value: voucher.discount_value }
+      ? { _id: voucher._id, code: voucher.code, discount_type: voucher.discount_type, discount_value: voucher.discount_value, voucher_type: "product" }
       : null,
     voucher_error: voucherError || null,
+    shipping_voucher: shipVoucher
+      ? { _id: shipVoucher._id, code: shipVoucher.code, discount_type: shipVoucher.discount_type, discount_value: shipVoucher.discount_value, voucher_type: "shipping" }
+      : null,
+    shipping_voucher_error: shipVoucherError || null,
     payment_methods: ["COD", "PAYPAL", "VNPAY"],
   };
 };
@@ -260,8 +367,8 @@ exports.confirm = async ({
   userId,
   address_id,
   note,
-  ship_provider,
   voucher_code,
+  shipping_voucher_code,
   credits_to_use = {},
   selected_item_ids,
   buy_now_items,
@@ -297,13 +404,20 @@ exports.confirm = async ({
   };
 
   // ── Resolve & validate items ──────────────────────────────────────────────
-  const { items, cartItemIds } = await resolveItems(userId, { selected_item_ids, buy_now_items });
+  const { items, cartItemIds, flashMap } = await resolveItems(userId, { selected_item_ids, buy_now_items });
 
-  // ── Apply voucher (applied to total subtotal, then split proportionally) ──
+  // ── Apply product voucher (applied to subtotal, then split proportionally) ──
   const subtotal = items.reduce((s, it) => s + it.total, 0);
-  const shipping_fee = await shippingSvc.calculate(ship_provider || "GHN", address_id, null, items);
-  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId);
+  const shipping_fee_raw = await shippingSvc.calculate("GHN", address_id, null, items);
+  const { voucher, discount, error: voucherError } = await applyVoucher(voucher_code, subtotal, userId, "product");
   if (voucherError) throw Object.assign(new Error(voucherError), { status: 400 });
+
+  // ── Apply shipping voucher ────────────────────────────────────────────────
+  const { voucher: shipVoucher, discount: shippingDiscount, error: shipVoucherError } =
+    await applyVoucher(shipping_voucher_code, shipping_fee_raw, userId, "shipping");
+  if (shipVoucherError) throw Object.assign(new Error(shipVoucherError), { status: 400 });
+
+  const shipping_fee = Math.max(0, shipping_fee_raw - shippingDiscount);
 
   // ── Split items by shop ───────────────────────────────────────────────────
   const grouped = groupItemsByShop(items);
@@ -336,9 +450,10 @@ exports.confirm = async ({
       address_id,
       shipping_address,
       voucher_id: voucher?._id || null,
+      shipping_voucher_id: shipVoucher?._id || null,
       discount: shopDiscount,
       credits_used: shopCreditsUsed,
-      shipping_provider: ship_provider || "GHN",
+      shipping_provider: "GHN",
       shipping_fee: shopShipping,
       total_price,
       payment_method: method,
@@ -375,9 +490,51 @@ exports.confirm = async ({
     });
   }
 
-  // ── Increment voucher usage counter ──────────────────────────────────────
+  // ── Increment flash sale quantity_sold counters ───────────────────────────
+  if (flashMap && flashMap.size > 0) {
+    for (const item of items) {
+      const fi = flashMap.get(String(item.variant_id));
+      if (fi) {
+        FlashSale.updateOne(
+          { _id: fi.flashsale_id, "products.variant_id": String(item.variant_id) },
+          { $inc: { "products.$.quantity_sold": item.qty } }
+        ).catch((e) => console.error("[flashsale_qty_sold]", e.message));
+      }
+    }
+  }
+
+  // ── Increment voucher usage counters + audit ─────────────────────────────
   if (voucher) {
     Voucher.updateOne({ _id: voucher._id }, { $inc: { used_count: 1 } }).catch(() => { });
+    audit.log({
+      actorId: String(userId),
+      action: "VOUCHER_APPLIED",
+      targetCollection: "vouchers",
+      targetId: String(voucher._id),
+      metadata: {
+        code: voucher.code,
+        discount,
+        voucher_type: "product",
+        subtotal,
+        order_codes: createdOrders.map((o) => o.order_code),
+      },
+    });
+  }
+  if (shipVoucher) {
+    Voucher.updateOne({ _id: shipVoucher._id }, { $inc: { used_count: 1 } }).catch(() => { });
+    audit.log({
+      actorId: String(userId),
+      action: "VOUCHER_APPLIED",
+      targetCollection: "vouchers",
+      targetId: String(shipVoucher._id),
+      metadata: {
+        code: shipVoucher.code,
+        discount: shippingDiscount,
+        voucher_type: "shipping",
+        shipping_fee_raw,
+        order_codes: createdOrders.map((o) => o.order_code),
+      },
+    });
   }
 
   // ── Clear purchased items from cart ──────────────────────────────────────

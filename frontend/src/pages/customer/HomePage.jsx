@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Skeleton } from "@heroui/react";
@@ -178,6 +178,7 @@ if (typeof document !== "undefined" && !document.getElementById("hp-keyframes-v2
 
     .carousel-viewport { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
     .carousel-viewport::-webkit-scrollbar { display: none; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
     .carousel-track { display: flex; }
 
     .section-card {
@@ -826,55 +827,311 @@ function BrandsPanel({ brands }) {
 /* ══════════════════════════════════
    ✦ FLASH SALE — Red hot theme
 ══════════════════════════════════ */
+function FlashSaleCard({ it, index, shop }) {
+  const navigate  = useNavigate();
+  const [hovered, setHovered] = useState(false);
+  const p         = it.product || {};
+  const img       = p.images?.[0] || p.image || it.image || "";
+  const name      = p.name || it.name || "Sản phẩm";
+  const slug      = p.slug || it.slug || "";
+  const href      = slug ? `/product/${slug}` : `/product/${p._id || it.product_id || ""}`;
+  const shopHref  = shop?.shop_slug ? `/shop/${shop.shop_slug}` : null;
+  const rating    = Number(p.rating_avg || 0);
+  const reviews   = Number(p.rating_count || 0);
+  const sold      = Number(it.quantity_sold || 0);
+  const total     = Number(it.quantity_total || 1);
+  const progress  = Math.min(100, Math.round((sold / total) * 100));
+  const pct       = it.discount_percent || 0;
+  const remaining = Math.max(0, total - sold);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.045, duration: 0.35, ease: [0.22,1,0.36,1] }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      onClick={() => navigate(href)}
+      style={{
+        width: 192, minWidth: 192, flexShrink: 0, cursor: "pointer",
+        borderRadius: 16, overflow: "hidden",
+        background: hovered ? "#ffffff" : "rgba(255,255,255,0.97)",
+        border: hovered ? "2px solid #ef4444" : "2px solid rgba(255,255,255,0.6)",
+        boxShadow: hovered
+          ? "0 16px 40px rgba(220,38,38,0.35), 0 4px 12px rgba(0,0,0,0.15)"
+          : "0 4px 16px rgba(0,0,0,0.18)",
+        transform: hovered ? "translateY(-6px) scale(1.025)" : "translateY(0) scale(1)",
+        transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
+      }}
+    >
+      {/* ── Image ── */}
+      <div style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden" }}>
+        {img
+          ? <img src={img} alt={name} loading="lazy" style={{
+              width: "100%", height: "100%", objectFit: "cover",
+              transform: hovered ? "scale(1.1)" : "scale(1)",
+              transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1)",
+            }} />
+          : <div style={{ width: "100%", height: "100%",
+              background: "linear-gradient(135deg, #fef2f2, #fee2e2)",
+              display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>🏷️</div>
+        }
+
+        {/* Gradient overlay at bottom of image */}
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, height: 40,
+          background: "linear-gradient(to top, rgba(0,0,0,0.45), transparent)",
+          pointerEvents: "none",
+        }} />
+
+        {/* Discount badge */}
+        {pct > 0 && (
+          <div style={{
+            position: "absolute", top: 8, left: 8,
+            background: "linear-gradient(135deg, #fbbf24 0%, #ef4444 100%)",
+            color: "white", fontSize: 12, fontWeight: 900,
+            borderRadius: 8, padding: "3px 9px",
+            boxShadow: "0 3px 10px rgba(251,191,36,0.55)",
+            textShadow: "0 1px 3px rgba(0,0,0,0.3)",
+          }}>
+            -{pct}%
+          </div>
+        )}
+
+        {/* Stock urgency badge */}
+        {remaining > 0 && remaining <= 10 && (
+          <div style={{
+            position: "absolute", top: 8, right: 8,
+            background: "rgba(0,0,0,0.65)", color: "#fde68a",
+            fontSize: 9, fontWeight: 800, borderRadius: 6, padding: "2px 7px",
+            backdropFilter: "blur(4px)",
+          }}>
+            🔥 Còn {remaining}
+          </div>
+        )}
+
+        {/* Sold-out overlay */}
+        {remaining === 0 && (
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "rgba(0,0,0,0.6)", backdropFilter: "blur(2px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <span style={{
+              color: "white", fontWeight: 900, fontSize: 12, letterSpacing: "0.06em",
+              background: "rgba(180,0,0,0.7)", padding: "5px 14px", borderRadius: 8,
+              border: "1px solid rgba(255,255,255,0.25)",
+            }}>HẾT HÀNG</span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Content ── */}
+      <div style={{ padding: "10px 10px 12px" }}>
+
+        {/* Shop name — full-width badge */}
+        {shop?.shop_name && (
+          <div
+            onClick={(e) => { e.stopPropagation(); shopHref && navigate(shopHref); }}
+            style={{
+              display: "flex", alignItems: "center", gap: 5, marginBottom: 6,
+              background: hovered ? "#fff1f2" : "#fef2f2",
+              borderRadius: 8, padding: "4px 8px",
+              border: "1px solid #fecaca",
+              cursor: shopHref ? "pointer" : "default",
+            }}
+          >
+            {shop.shop_logo
+              ? <img src={shop.shop_logo} alt={shop.shop_name}
+                  style={{ width: 16, height: 16, borderRadius: "50%", objectFit: "cover",
+                    border: "1.5px solid #ef4444", flexShrink: 0 }} />
+              : <FiShield size={12} style={{ color: "#ef4444", flexShrink: 0 }} />
+            }
+            <span style={{
+              fontSize: 11, fontWeight: 700, color: "#dc2626",
+              letterSpacing: "0.01em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              textDecoration: shopHref && hovered ? "underline" : "none",
+            }}>
+              {shop.shop_name}
+            </span>
+          </div>
+        )}
+
+        {/* Product name */}
+        <p style={{
+          margin: 0, fontSize: 13, fontWeight: 700, color: "#111827", lineHeight: 1.38,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+          minHeight: 36,
+        }}>
+          {name}
+        </p>
+
+        {/* Variant chip */}
+        {it.variant_name && (
+          <span style={{
+            display: "inline-block", marginTop: 4,
+            fontSize: 10, color: "#6b7280",
+            background: "#f3f4f6", borderRadius: 5,
+            padding: "1px 7px", border: "1px solid #e5e7eb",
+          }}>
+            {it.variant_name}
+          </span>
+        )}
+
+        {/* Rating */}
+        {rating > 0 && (
+          <div style={{ display: "flex", alignItems: "center", gap: 3, marginTop: 5 }}>
+            {[1,2,3,4,5].map(s => (
+              <span key={s} style={{ fontSize: 11, lineHeight: 1,
+                color: s <= Math.round(rating) ? "#f59e0b" : "#d1d5db" }}>★</span>
+            ))}
+            <span style={{ fontSize: 10, color: "#9ca3af" }}>
+              {rating.toFixed(1)}{reviews > 0 ? ` (${reviews >= 1000 ? (reviews/1000).toFixed(1)+"k" : reviews})` : ""}
+            </span>
+          </div>
+        )}
+
+        {/* Price row */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginTop: 7 }}>
+          <span style={{
+            color: "#dc2626", fontWeight: 900, fontSize: 17, letterSpacing: "-0.02em",
+          }}>
+            {it.flash_price?.toLocaleString("vi-VN")}₫
+          </span>
+          {it.original_price > it.flash_price && (
+            <span style={{ color: "#9ca3af", fontSize: 11, textDecoration: "line-through" }}>
+              {it.original_price?.toLocaleString("vi-VN")}₫
+            </span>
+          )}
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ marginTop: 9 }}>
+          <div style={{
+            background: "#fee2e2", height: 7, borderRadius: 99, overflow: "hidden",
+          }}>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ delay: index * 0.045 + 0.3, duration: 0.7, ease: "easeOut" }}
+              style={{
+                height: "100%", borderRadius: 99,
+                background: progress >= 80
+                  ? "linear-gradient(90deg, #dc2626, #ef4444)"
+                  : "linear-gradient(90deg, #f87171, #dc2626)",
+              }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+            <span style={{ fontSize: 10, color: "#9ca3af" }}>
+              Đã bán {sold.toLocaleString("vi-VN")}
+            </span>
+            <span style={{
+              fontSize: 10, fontWeight: 700,
+              color: progress >= 80 ? "#dc2626" : "#6b7280",
+            }}>
+              {remaining > 0 ? `Còn ${remaining.toLocaleString("vi-VN")}` : "Hết hàng"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function FlashSaleSection({ flashSale }) {
   const { t } = useTranslation();
-  const { viewportRef, canPrev, canNext, scrollPrev, scrollNext } = useCarousel({ itemWidth: 200, gap: 12 });
-  const isUpcoming = flashSale._upcoming;
-  return (
-    <section style={{ marginBottom: 20 }}>
-      <div style={{
-        borderRadius: 20, overflow: "hidden",
-        background: "linear-gradient(135deg, #ef4444 0%, #dc2626 40%, #e11d48 75%, #f43f5e 100%)",
-        border: "1px solid rgba(255,180,180,0.25)",
-        boxShadow: "0 8px 32px rgba(239,68,68,0.4), inset 0 1px 0 rgba(255,255,255,0.15)",
-      }}>
-        {/* Top accent line */}
-        <div style={{ height: 3, background: "linear-gradient(90deg, #fff, rgba(255,255,255,0.4), #fff, rgba(255,255,255,0.4))", backgroundSize: "200% 100%", animation: "holo 3s linear infinite" }} />
+  const { viewportRef, canPrev, canNext, scrollPrev, scrollNext } = useCarousel({ itemWidth: 202, gap: 12 });
+  const isUpcoming = !!flashSale._upcoming;
+  const isEnded    = !!flashSale._ended;
+  const items      = (flashSale.items || []).map(it => normalizeFlashItem(it, "Sản phẩm"));
+  const shop       = flashSale.shop || null;
 
-        {/* Header */}
-        <div style={{ padding: "14px 20px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            {/* Zap icon */}
-            <div style={{
-              width: 42, height: 42, borderRadius: 13, display: "flex", alignItems: "center", justifyContent: "center",
-              background: "linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12))",
-              border: "1px solid rgba(255,255,255,0.4)",
-              animation: "pulseGlow 2s ease-in-out infinite",
-            }}>
-              <FiZap size={20} style={{ color: "#fff700" }} />
-            </div>
+  return (
+    <section style={{ marginBottom: 24 }}>
+      {/* Outer glow wrapper */}
+      <div style={{
+        borderRadius: 24,
+        background: "linear-gradient(135deg, #ff2d20 0%, #dc2626 30%, #b91c1c 60%, #991b1b 100%)",
+        boxShadow: "0 16px 48px rgba(220,38,38,0.45), 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2)",
+        position: "relative", overflow: "hidden",
+      }}>
+
+        {/* Background sparkle pattern */}
+        <div style={{
+          position: "absolute", inset: 0, opacity: 0.07, pointerEvents: "none",
+          backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px), radial-gradient(circle at 50% 80%, white 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }} />
+
+        {/* Shimmer bar */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: 3, borderRadius: "24px 24px 0 0",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.9), rgba(255,255,255,0.4), rgba(255,255,255,0.9), transparent)",
+          backgroundSize: "200% 100%",
+          animation: "holo 2.5s linear infinite",
+        }} />
+
+        {/* ── Header ── */}
+        <div style={{
+          position: "relative", zIndex: 1,
+          padding: "18px 20px 14px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexWrap: "wrap", gap: 10,
+        }}>
+          {/* Left: icon + title */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {/* Animated zap */}
+            <motion.div
+              animate={{ rotate: [0, -8, 8, -4, 4, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
+              style={{
+                width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.12))",
+                border: "1.5px solid rgba(255,255,255,0.45)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4)",
+              }}
+            >
+              <FiZap size={22} style={{ color: "#fff700", filter: "drop-shadow(0 0 6px rgba(255,247,0,0.8))" }} />
+            </motion.div>
+
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-                <h2 className="syne" style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "0.01em" }}>
-                  {isUpcoming ? t("home.flash_sale_upcoming") : t("home.flash_sale_live")}
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 900, color: "white",
+                  letterSpacing: "0.01em", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>
+                  {flashSale.title || "⚡ Flash Sale"}
                 </h2>
-                {/* Blinking LIVE badge */}
-                <span style={{
-                  background: "rgba(255,255,255,0.22)",
-                  color: "white",
-                  fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 20,
-                  letterSpacing: "0.1em", border: "1px solid rgba(255,255,255,0.35)",
-                  animation: "pulseGlow 1.5s ease-in-out infinite",
-                }}>
-                  LIVE
-                </span>
+                {!isEnded && (
+                  <motion.span
+                    animate={{ opacity: [1, 0.6, 1] }}
+                    transition={{ duration: 1.2, repeat: Infinity }}
+                    style={{
+                      background: isUpcoming ? "rgba(251,191,36,0.3)" : "rgba(255,255,255,0.25)",
+                      color: isUpcoming ? "#fbbf24" : "white",
+                      fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: 20,
+                      letterSpacing: "0.12em",
+                      border: `1px solid ${isUpcoming ? "rgba(251,191,36,0.6)" : "rgba(255,255,255,0.4)"}`,
+                    }}
+                  >
+                    {isUpcoming ? "SẮP DIỄN RA" : "🔴 ĐANG DIỄN RA"}
+                  </motion.span>
+                )}
               </div>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>{t("home.flash_sale_tagline")}</p>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.75)", fontStyle: "italic" }}>
+                {isEnded ? "Chương trình đã kết thúc" : t("home.flash_sale_tagline")}
+              </p>
             </div>
           </div>
 
+          {/* Right: countdown + nav */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Countdown label={isUpcoming ? t("home.starts_in") : t("home.ends_in")} endTime={isUpcoming ? flashSale.start_time : flashSale.end_time} />
+            {!isEnded && (
+              <Countdown
+                label={isUpcoming ? t("home.starts_in") : t("home.ends_in")}
+                endTime={isUpcoming ? flashSale.start_time : flashSale.end_time}
+              />
+            )}
             <div style={{ display: "flex", gap: 6 }}>
               <NavBtn onClick={scrollPrev} disabled={!canPrev} direction="prev" light />
               <NavBtn onClick={scrollNext} disabled={!canNext} direction="next" light />
@@ -882,21 +1139,46 @@ function FlashSaleSection({ flashSale }) {
           </div>
         </div>
 
-        {/* Products area */}
+        {/* ── Stats bar ── */}
         <div style={{
-          margin: "0 12px 12px", borderRadius: 14, padding: "12px",
-          background: "rgba(0,0,0,0.1)",
-          border: "1px solid rgba(255,255,255,0.12)",
+          position: "relative", zIndex: 1,
+          padding: "0 20px 12px",
+          display: "flex", gap: 16, flexWrap: "wrap",
         }}>
-          <div className="carousel">
-            <div className="carousel-viewport" ref={viewportRef}>
-              <div className="carousel-track" style={{ gap: 12 }}>
-                {flashSale.items.map((it, i) => (
-                  <div key={`flash-${it._id || it.product_id || it.id || ""}-${i}`} style={{ width: 200, minWidth: 200 }}>
-                    <ProductCard item={normalizeFlashItem(it, t("product.default_name"))} type="flash" index={i} />
-                  </div>
-                ))}
-              </div>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 5 }}>
+            <FiTag size={12} style={{ color: "#fbbf24" }} />
+            <b style={{ color: "white" }}>{items.length}</b> sản phẩm sale
+          </span>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 5 }}>
+            <FiPackage size={12} style={{ color: "#fbbf24" }} />
+            Tổng SL: <b style={{ color: "white" }}>&nbsp;{items.reduce((s, it) => s + (it.quantity_total || 0), 0).toLocaleString("vi-VN")}</b>
+          </span>
+          {items.some(it => (it.discount_percent || 0) > 0) && (
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", display: "flex", alignItems: "center", gap: 5 }}>
+              <FiZap size={12} style={{ color: "#fbbf24" }} />
+              Giảm đến <b style={{ color: "#fff700" }}>&nbsp;{Math.max(...items.map(it => it.discount_percent || 0))}%</b>
+            </span>
+          )}
+        </div>
+
+        {/* ── Product cards ── */}
+        <div style={{
+          position: "relative", zIndex: 1,
+          margin: "0 14px 14px",
+          borderRadius: 16,
+          background: "rgba(0,0,0,0.18)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          padding: 12,
+        }}>
+          <div
+            ref={viewportRef}
+            style={{ overflowX: "auto", overflowY: "visible", scrollBehavior: "smooth", scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="hide-scrollbar"
+          >
+            <div style={{ display: "flex", gap: 12, width: "max-content", paddingBottom: 2 }}>
+              {items.map((it, i) => (
+                <FlashSaleCard key={`fsc-${it.variant_id || it.product_id || i}`} it={it} index={i} shop={shop} />
+              ))}
             </div>
           </div>
         </div>
@@ -1067,7 +1349,8 @@ export default function HomePage() {
       <FeatureBadges />
 
       {!!brands.length && <BrandsPanel brands={brands} />}
-      {!!flashSale?.items?.length && <FlashSaleSection flashSale={flashSale} />}
+
+{!!flashSale?.items?.length && <FlashSaleSection flashSale={flashSale} />}
 
       {!!men.length && (
         <SectionCarousel title={t("home.section_men")} Icon={FiUsers} accentColor="linear-gradient(135deg,#2563eb,#1d4ed8)"

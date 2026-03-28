@@ -1,4 +1,5 @@
 const svc = require("../services/addressService");
+const ghn = require("../services/ghnService");
 const ok  = (res, data) => res.json({ status: "success", data });
 const bad = (res, e, fb="Bad request") => res.status(e?.status||400).json({ status:"fail", message:e?.message||fb });
 const nf  = (res, msg) => res.status(404).json({ status:"fail", message: msg });
@@ -25,4 +26,19 @@ exports.setDefault = async (req, res) => {
     if (!item) return nf(res, "Address not found");
     ok(res, { item });
   } catch(e){ bad(res,e,"Cannot set default address"); }
+};
+
+exports.ghnProvinces = async (req, res) => {
+  try { ok(res, await ghn.getProvinces()); }
+  catch(e) { res.status(500).json({ status: "fail", message: e.message }); }
+};
+
+exports.ghnDistricts = async (req, res) => {
+  try { ok(res, await ghn.getDistricts(req.query.province_id)); }
+  catch(e) { res.status(500).json({ status: "fail", message: e.message }); }
+};
+
+exports.ghnWards = async (req, res) => {
+  try { ok(res, await ghn.getWards(req.query.district_id)); }
+  catch(e) { res.status(500).json({ status: "fail", message: e.message }); }
 };

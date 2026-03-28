@@ -36,6 +36,7 @@ import TermsOfService from "../pages/support/TermsOfService";
 import ShopLayout from "../pages/shop/ShopLayout";
 import Dashboard from "../pages/shop/Dashboard";
 import ManageProducts from "../pages/shop/ManageProducts";
+import ShopPendingProducts from "../pages/shop/ShopPendingProducts";
 import AddProduct from "../pages/shop/AddProduct";
 import LowStockPage from "../pages/shop/LowStockPage";
 import CategoriesPage from "../pages/shop/CategoriesPage";
@@ -55,6 +56,7 @@ import ManageCampaigns from "../pages/shop/ManageCampaigns";
 import ManageCredits from "../pages/shop/ManageCredits";
 import SizeChartsPage from "../pages/shop/SizeChartsPage";
 import ShopInbox from "../pages/shop/ShopInbox";
+import ManageComplaints from "../pages/shop/ManageComplaints";
 import ChatWidget from "../components/chat/ChatWidget";
 
 /* ===== New Vendor / Admin Pages ===== */
@@ -74,6 +76,8 @@ import Reconciliation from "../pages/admin/Reconciliation";
 import ApiKeyManager from "../pages/admin/ApiKeyManager";
 import AdminCategories from "../pages/admin/AdminCategories";
 import AdminBrands from "../pages/admin/AdminBrands";
+import AdminModeration from "../pages/admin/AdminModeration";
+import AdminTickets from "../pages/admin/AdminTickets";
 
 /* ===== Landing Page ===== */
 import LandingPage from "../pages/LandingPage";
@@ -87,6 +91,17 @@ function ProtectedRoute({ children }) {
   const { isAuthenticated, authReady } = useAuth();
   if (!authReady) return null;
   return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
+function HomeRoute() {
+  const { isAuthenticated, authReady } = useAuth();
+  if (!authReady) return null;
+  const hasVisited = localStorage.getItem("hasVisited");
+  if (!hasVisited) {
+    localStorage.setItem("hasVisited", "1");
+    return isAuthenticated ? <HomePage /> : <LandingPage />;
+  }
+  return isAuthenticated ? <HomePage /> : <HomePage />;
 }
 
 function RoleRoute({ children, roles = [], permAny = [], permAll = [] }) {
@@ -128,7 +143,7 @@ export default function AppRouter() {
       <Route path="/landing"            element={<LandingPage />} />
 
       {/* ===== Customer — Public ===== */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<HomeRoute />} />
       <Route path="/product/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products/:idOrSlug" element={<ProductDetail />} />
       <Route path="/products" element={<AllProductsPages />} />
@@ -166,6 +181,7 @@ export default function AppRouter() {
 
         {/* Products */}
         <Route path="admin/products" element={<ManageProducts />} />
+        <Route path="admin/products/pending" element={<ShopPendingProducts />} />
         <Route path="admin/products/new" element={<AddProduct />} />
         <Route path="admin/products/:id" element={<AddProduct mode="edit" />} />
         <Route path="admin/products/:id/variants" element={<VariantsPage />} />
@@ -188,6 +204,9 @@ export default function AppRouter() {
         <Route path="marketing/banners" element={<ManageBanner />} />
         <Route path="marketing/campaigns" element={<ManageCampaigns />} />
         <Route path="marketing/credits" element={<ManageCredits />} />
+
+        {/* Complaints */}
+        <Route path="complaints" element={<ManageComplaints />} />
 
         {/* Finance */}
         <Route path="wallet" element={<ShopWallet />} />
@@ -218,6 +237,8 @@ export default function AppRouter() {
         <Route path="audit-logs" element={<AuditLogs />} />
         <Route path="reconciliation" element={<Reconciliation />} />
         <Route path="api-keys" element={<ApiKeyManager />} />
+        <Route path="moderation" element={<AdminModeration />} />
+        <Route path="tickets" element={<AdminTickets />} />
       </Route>
 
       {/* ===== 404 ===== */}

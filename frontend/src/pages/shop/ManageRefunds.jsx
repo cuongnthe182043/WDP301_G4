@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Card, CardBody, Button, Pagination, Chip, Select, SelectItem,
+  Card, CardBody, Button, Chip, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Textarea, Divider,
 } from "@heroui/react";
 import { Eye, CheckCircle, XCircle, PackageCheck } from "lucide-react";
 import { shopRefundApi } from "../../services/shopManagementService";
+import PaginationBar from "../../components/ui/PaginationBar";
 import { useToast } from "../../components/common/ToastProvider";
 import { formatCurrency } from "../../utils/formatCurrency";
 
@@ -40,7 +41,7 @@ export default function ManageRefunds() {
   const [total,      setTotal]      = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [statusFilter, setStatus]   = useState("");
-  const LIMIT = 15;
+  const [limit, setLimit] = useState(15);
 
   // Detail modal
   const [detail,     setDetail]     = useState(null);
@@ -54,12 +55,12 @@ export default function ManageRefunds() {
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit: limit };
       if (statusFilter) params.status = statusFilter;
       const res = await shopRefundApi.getAll(params);
       setRefunds(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTotalPages(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTotalPages(Math.ceil((res.data?.total || 0) / limit));
     } catch (e) {
       toast.error(e?.message || t("admin.refund_load_error"));
     } finally {
@@ -201,11 +202,7 @@ export default function ManageRefunds() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Detail Modal */}
       <Modal isOpen={detailOpen} onOpenChange={(o) => !o && setDetailOpen(false)} radius="xl" size="lg">

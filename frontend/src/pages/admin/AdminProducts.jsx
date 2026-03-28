@@ -6,6 +6,7 @@ import {
 } from "@heroui/react";
 import { Search, CheckCircle, XCircle, Eye, RotateCcw, Zap, AlertTriangle, Shield, ShieldAlert, Filter } from "lucide-react";
 import apiClient from "../../services/apiClient";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const STATUS_COLOR = { pending: "warning", active: "success", inactive: "default", out_of_stock: "danger" };
 const SEVERITY_COLOR = { high: "danger", medium: "warning", low: "default" };
@@ -20,8 +21,6 @@ const api = {
   bulkReject:  (ids, reason) => apiClient.post("/admin/products/bulk-reject", { ids, reason }).then(r => r.data.data),
   stats:       () => apiClient.get("/admin/products/stats").then(r => r.data.data),
 };
-
-const LIMIT = 20;
 
 export default function AdminProducts() {
   const { t } = useTranslation();
@@ -41,6 +40,7 @@ export default function AdminProducts() {
     { key: "out_of_stock", label: t("shop.product_status_out_of_stock") },
   ];
 
+  const [limit,            setLimit]            = useState(20);
   const [loading,          setLoading]          = useState(true);
   const [products,         setProducts]         = useState([]);
   const [total,            setTotal]            = useState(0);
@@ -60,7 +60,7 @@ export default function AdminProducts() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { page, limit: LIMIT, status: statusFilter };
+      const params = { page, limit: limit, status: statusFilter };
       if (query.trim())  params.q       = query.trim();
       if (flaggedOnly)   params.flagged = "true";
       const data = await api.list(params);
@@ -71,7 +71,7 @@ export default function AdminProducts() {
     } finally {
       setLoading(false);
     }
-  }, [page, query, statusFilter, flaggedOnly]);
+  }, [page, limit, query, statusFilter, flaggedOnly]);
 
   const loadStats = useCallback(async () => {
     try { setStats(await api.stats()); } catch {}
@@ -148,7 +148,7 @@ export default function AdminProducts() {
     else setSelectedIds(new Set(products.map(p => p._id)));
   };
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="space-y-5">
@@ -156,7 +156,7 @@ export default function AdminProducts() {
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
           {[
-            { label: t("admin.mod_stat_total"),    value: stats.total,              color: "text-gray-900 dark:text-zinc-100" },
+            { label: t("admin.mod_stat_total"),    value: stats.total,              color: "text-gray-900 dark:text-[#e8eaed]" },
             { label: t("shop.product_status_pending"),  value: stats.pending,       color: "text-amber-600" },
             { label: t("shop.product_status_active"),   value: stats.active,        color: "text-green-600" },
             { label: t("shop.product_status_inactive"), value: stats.inactive,      color: "text-gray-500" },
@@ -166,7 +166,7 @@ export default function AdminProducts() {
             <Card key={s.label} radius="xl" shadow="sm" isPressable={false}>
               <CardBody className="py-3 px-4 text-center">
                 <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">{s.label}</p>
+                <p className="text-xs text-gray-500 dark:text-[#9ea3b5] mt-0.5">{s.label}</p>
               </CardBody>
             </Card>
           ))}
@@ -176,8 +176,8 @@ export default function AdminProducts() {
       {/* Header + Filters */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-black text-gray-900 dark:text-zinc-100">{t("admin.admin_products_title")}</h1>
-          <p className="text-sm text-gray-400 dark:text-zinc-500">
+          <h1 className="text-xl font-black text-gray-900 dark:text-[#e8eaed]">{t("admin.admin_products_title")}</h1>
+          <p className="text-sm text-gray-400 dark:text-[#6b7280]">
             {t("admin.admin_products_total", { count: total })}
           </p>
         </div>
@@ -211,7 +211,7 @@ export default function AdminProducts() {
       {selectedIds.size > 0 && (
         <Card radius="xl" shadow="sm" className="border-2 border-primary-200 dark:border-primary-800">
           <CardBody className="py-2 px-4 flex flex-row items-center gap-3">
-            <span className="text-sm font-semibold text-gray-700 dark:text-zinc-300">
+            <span className="text-sm font-semibold text-gray-700 dark:text-[#c8cbd4]">
               {t("admin.mod_selected", { count: selectedIds.size })}
             </span>
             <div className="flex gap-2 ml-auto">
@@ -239,12 +239,12 @@ export default function AdminProducts() {
           {loading ? (
             <div className="flex justify-center py-16"><Spinner size="lg" /></div>
           ) : products.length === 0 ? (
-            <div className="text-center py-16 text-gray-400 dark:text-zinc-500">
+            <div className="text-center py-16 text-gray-400 dark:text-[#6b7280]">
               {t("admin.admin_products_none")}
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
+              <thead className="bg-gray-50 dark:bg-[#1a1e2e] border-b border-gray-100 dark:border-[#2e3347]">
                 <tr>
                   <th className="px-3 py-3 w-10">
                     <Checkbox
@@ -264,7 +264,7 @@ export default function AdminProducts() {
                     t("admin.admin_products_col_status"),
                     t("admin.admin_products_col_actions"),
                   ].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 dark:text-[#9ea3b5] uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -284,25 +284,25 @@ export default function AdminProducts() {
                       <td className="px-4 py-3">
                         <img
                           src={p.images?.[0] || "/no-image.jpg"} alt={p.name}
-                          className="w-12 h-12 object-cover rounded-xl border border-gray-100 dark:border-zinc-700"
+                          className="w-12 h-12 object-cover rounded-xl border border-gray-100 dark:border-[#2e3347]"
                         />
                       </td>
                       <td className="px-4 py-3 max-w-[200px]">
-                        <p className="font-semibold text-gray-900 dark:text-zinc-100 truncate">{p.name}</p>
-                        <p className="text-xs text-gray-400 dark:text-zinc-500 truncate">{p.category?.name || "—"}</p>
+                        <p className="font-semibold text-gray-900 dark:text-[#e8eaed] truncate">{p.name}</p>
+                        <p className="text-xs text-gray-400 dark:text-[#6b7280] truncate">{p.category?.name || "—"}</p>
                         {p.rejection_reason && (
                           <p className="text-xs text-red-500 mt-0.5 truncate" title={p.rejection_reason}>
                             {p.rejection_reason}
                           </p>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600 dark:text-zinc-400 max-w-[120px] truncate">
+                      <td className="px-4 py-3 text-sm text-gray-600 dark:text-[#9ea3b5] max-w-[120px] truncate">
                         {p.shop?.shop_name || "—"}
                       </td>
                       <td className="px-4 py-3 font-bold text-blue-600 whitespace-nowrap">
                         {(p.base_price || 0).toLocaleString("vi-VN")}₫
                       </td>
-                      <td className="px-4 py-3 text-gray-600 dark:text-zinc-400">
+                      <td className="px-4 py-3 text-gray-600 dark:text-[#9ea3b5]">
                         {p.stock_total ?? 0}
                       </td>
                       <td className="px-4 py-3">
@@ -376,17 +376,7 @@ export default function AdminProducts() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-            {t("shop.product_prev")}
-          </Button>
-          <span className="text-sm text-gray-500 dark:text-zinc-400 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-            {t("shop.product_next")}
-          </Button>
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Detail Modal */}
       <Modal isOpen={!!detailProd} onOpenChange={(o) => !o && setDetailProd(null)} size="2xl" radius="xl" scrollBehavior="inside">
@@ -421,7 +411,7 @@ export default function AdminProducts() {
                           {flag.severity}
                         </Chip>
                         <div>
-                          <p className="text-gray-700 dark:text-zinc-300">{flag.message}</p>
+                          <p className="text-gray-700 dark:text-[#c8cbd4]">{flag.message}</p>
                           <p className="text-xs text-gray-400">{t("admin.mod_field")}: {flag.field}</p>
                         </div>
                       </div>
@@ -432,7 +422,7 @@ export default function AdminProducts() {
                 {detailProd.images?.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {detailProd.images.map((url, i) => (
-                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-gray-100 dark:border-zinc-700" />
+                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-xl border border-gray-100 dark:border-[#2e3347]" />
                     ))}
                   </div>
                 )}
@@ -449,7 +439,7 @@ export default function AdminProducts() {
                 {detailProd.description && (
                   <div>
                     <p className="text-xs font-semibold text-gray-500 mb-1">{t("admin.admin_products_detail_desc")}</p>
-                    <p className="text-sm text-gray-700 dark:text-zinc-300 whitespace-pre-wrap">{detailProd.description}</p>
+                    <p className="text-sm text-gray-700 dark:text-[#c8cbd4] whitespace-pre-wrap">{detailProd.description}</p>
                   </div>
                 )}
                 {detailProd.rejection_reason && (
@@ -558,7 +548,7 @@ function InfoRow({ label, value }) {
   return (
     <div>
       <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-      <p className="font-medium text-gray-800 dark:text-zinc-200">{value}</p>
+      <p className="font-medium text-gray-800 dark:text-[#d1d5db]">{value}</p>
     </div>
   );
 }

@@ -11,6 +11,8 @@ export const authService = {
 
   requestResetOTP: (data) =>
     apiClient.post("/auth/forgot-password/request-otp", data),
+  checkResetOTP: (data) =>
+    apiClient.post("/auth/forgot-password/check-otp", data),
   resetPassword: (data) =>
     apiClient.post("/auth/forgot-password/verify", data),
 

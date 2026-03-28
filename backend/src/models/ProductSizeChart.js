@@ -27,7 +27,8 @@ const SizeRowSchema = new mongoose.Schema(
 const ProductSizeChartSchema = new mongoose.Schema(
   {
     _id: { type: String, default: () => `psz-${uuidv4()}` },
-    brand_id: { type: String, ref: "Brand" }, 
+    name: { type: String, trim: true }, // custom display name, e.g. "Áo sơ mi nam"
+    brand_id: { type: String, ref: "Brand" },
     category_id: { type: String, ref: "Category" },
     gender: { type: String, enum: ["men", "women", "unisex"], default: "unisex" },
 

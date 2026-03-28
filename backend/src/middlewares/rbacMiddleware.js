@@ -46,12 +46,12 @@ async function withACL(req, res, next) {
     if (req.acl) return next(); // đã có rồi
 
     req.acl = await buildACL(req.user);
-    // middlewares/rbac.js, trong withACL
-console.log("ACL DEBUG:", req.acl);
 
-    // Có thể chặn user bị khóa
-    if (req.acl.status && req.acl.status !== "active") {
-      return res.status(403).json({ message: "Tài khoản bị hạn chế" });
+    // Block only hard-disabled accounts (inactive).
+    // Ban enforcement is handled by the dedicated checkBanStatus middleware,
+    // and "warning" users should retain normal access.
+    if (req.acl.status === "inactive") {
+      return res.status(403).json({ message: "Tài khoản đã bị vô hiệu hóa" });
     }
     return next();
   } catch (err) {

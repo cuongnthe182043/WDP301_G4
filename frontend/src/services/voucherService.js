@@ -17,6 +17,10 @@ export const voucherApi = {
   toggle: (id) =>
     apiClient.patch(`/vouchers/${id}/toggle`).then(r => r.data),
 
+  // Explicitly set is_active to a known value (deterministic, no flip-direction confusion)
+  setActive: (id, active) =>
+    apiClient.put(`/vouchers/${id}`, { is_active: Boolean(active) }).then(r => r.data),
+
   delete: (id) =>
     apiClient.delete(`/vouchers/${id}`).then(r => r.data),
 };

@@ -3,18 +3,22 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Card, CardBody, CardHeader, Input, Textarea, Button, Avatar,
-  Divider, Chip,
+  Divider, Chip, Select, SelectItem, Spinner,
 } from "@heroui/react";
-import { Store, Camera, Save, ExternalLink } from "lucide-react";
+import { Store, Camera, Save, ExternalLink, Truck, MapPin } from "lucide-react";
 import { useToast } from "../../components/common/ToastProvider";
-import { getMyShop, updateMyShop } from "../../services/shopService";
+import {
+  getMyShop, updateMyShop,
+  getPickupAddress, updatePickupAddress,
+  ghnGetProvinces, ghnGetDistricts, ghnGetWards,
+} from "../../services/shopService";
 import { Link } from "react-router-dom";
 
 const STATUS_COLOR = { pending: "warning", approved: "success", suspended: "danger" };
 
 export default function ShopSettings() {
   const { t } = useTranslation();
-  const { toast } = useToast();
+  const toast = useToast();
   const [shop, setShop] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,6 +51,60 @@ export default function ShopSettings() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  // ── GHN pickup address state ──────────────────────────────────────────────
+  const [pickup,        setPickup]        = useState({ name: "", phone: "", address: "", province_id: "", province_name: "", district_id: "", district_name: "", ward_code: "", ward_name: "" });
+  const [savingPickup,  setSavingPickup]  = useState(false);
+  const [provinces,     setProvinces]     = useState([]);
+  const [districts,     setDistricts]     = useState([]);
+  const [wards,         setWards]         = useState([]);
+  const [loadingDist,   setLoadingDist]   = useState(false);
+  const [loadingWard,   setLoadingWard]   = useState(false);
+
+  useEffect(() => {
+    ghnGetProvinces().then(setProvinces).catch(() => {});
+    getPickupAddress().then((d) => {
+      if (d && d.district_id) setPickup(d);
+    }).catch(() => {});
+  }, []);
+
+  const handleProvinceChange = async (keys) => {
+    const pid = Number([...keys][0]);
+    const prov = provinces.find((p) => p.ProvinceID === pid);
+    setPickup((p) => ({ ...p, province_id: pid, province_name: prov?.ProvinceName || "", district_id: "", district_name: "", ward_code: "", ward_name: "" }));
+    setDistricts([]); setWards([]);
+    if (!pid) return;
+    setLoadingDist(true);
+    try { setDistricts(await ghnGetDistricts(pid)); } finally { setLoadingDist(false); }
+  };
+
+  const handleDistrictChange = async (keys) => {
+    const did = Number([...keys][0]);
+    const dist = districts.find((d) => d.DistrictID === did);
+    setPickup((p) => ({ ...p, district_id: did, district_name: dist?.DistrictName || "", ward_code: "", ward_name: "" }));
+    setWards([]);
+    if (!did) return;
+    setLoadingWard(true);
+    try { setWards(await ghnGetWards(did)); } finally { setLoadingWard(false); }
+  };
+
+  const handleWardChange = (keys) => {
+    const wcode = [...keys][0];
+    const ward = wards.find((w) => w.WardCode === wcode);
+    setPickup((p) => ({ ...p, ward_code: wcode, ward_name: ward?.WardName || "" }));
+  };
+
+  const handleSavePickup = async () => {
+    setSavingPickup(true);
+    try {
+      await updatePickupAddress(pickup);
+      toast.success("Đã lưu địa chỉ lấy hàng");
+    } catch (err) {
+      toast.error(err.response?.data?.message || t("common.error"));
+    } finally {
+      setSavingPickup(false);
+    }
+  };
 
   const set = (field) => (val) => setForm((p) => ({ ...p, [field]: val }));
 
@@ -224,6 +282,110 @@ export default function ShopSettings() {
                 <span className="text-blue-600 font-mono">/shops/{shop.shop_slug}</span>
               </p>
             </div>
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* GHN Pickup Address */}
+      <Card radius="xl" shadow="sm">
+        <CardHeader className="px-5 pt-5 pb-0 flex items-center gap-2">
+          <Truck size={16} className="text-primary" />
+          <h3 className="font-bold text-gray-800">Địa chỉ lấy hàng GHN</h3>
+          {pickup.ward_code && (
+            <Chip size="sm" color="success" variant="flat" className="ml-auto">Đã cấu hình</Chip>
+          )}
+          {!pickup.ward_code && (
+            <Chip size="sm" color="warning" variant="flat" className="ml-auto">Chưa cấu hình</Chip>
+          )}
+        </CardHeader>
+        <CardBody className="p-5 flex flex-col gap-4">
+          <p className="text-xs text-gray-400">
+            Địa chỉ này được gửi tới GHN làm điểm lấy hàng cho mỗi đơn vận chuyển. Mỗi shop cần cấu hình riêng.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Input
+              label="Tên người liên hệ" placeholder="Nguyễn Văn A"
+              value={pickup.name}
+              onValueChange={(v) => setPickup((p) => ({ ...p, name: v }))}
+              variant="bordered" radius="lg"
+            />
+            <Input
+              label="Số điện thoại" placeholder="0912345678"
+              value={pickup.phone}
+              onValueChange={(v) => setPickup((p) => ({ ...p, phone: v }))}
+              variant="bordered" radius="lg"
+            />
+          </div>
+
+          <Input
+            label="Số nhà, tên đường" placeholder="123 Đường ABC"
+            value={pickup.address}
+            onValueChange={(v) => setPickup((p) => ({ ...p, address: v }))}
+            variant="bordered" radius="lg"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Province */}
+            <Select
+              label="Tỉnh / Thành phố"
+              selectedKeys={pickup.province_id ? new Set([String(pickup.province_id)]) : new Set()}
+              onSelectionChange={handleProvinceChange}
+              variant="bordered" radius="lg"
+              isDisabled={provinces.length === 0}
+            >
+              {provinces.map((p) => (
+                <SelectItem key={String(p.ProvinceID)}>{p.ProvinceName}</SelectItem>
+              ))}
+            </Select>
+
+            {/* District */}
+            <Select
+              label="Quận / Huyện"
+              selectedKeys={pickup.district_id ? new Set([String(pickup.district_id)]) : new Set()}
+              onSelectionChange={handleDistrictChange}
+              variant="bordered" radius="lg"
+              isDisabled={!pickup.province_id || loadingDist}
+              startContent={loadingDist ? <Spinner size="sm" /> : null}
+            >
+              {districts.map((d) => (
+                <SelectItem key={String(d.DistrictID)}>{d.DistrictName}</SelectItem>
+              ))}
+            </Select>
+
+            {/* Ward */}
+            <Select
+              label="Phường / Xã"
+              selectedKeys={pickup.ward_code ? new Set([pickup.ward_code]) : new Set()}
+              onSelectionChange={handleWardChange}
+              variant="bordered" radius="lg"
+              isDisabled={!pickup.district_id || loadingWard}
+              startContent={loadingWard ? <Spinner size="sm" /> : null}
+            >
+              {wards.map((w) => (
+                <SelectItem key={w.WardCode}>{w.WardName}</SelectItem>
+              ))}
+            </Select>
+          </div>
+
+          {pickup.ward_code && (
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+              <MapPin size={12} />
+              <span>{[pickup.address, pickup.ward_name, pickup.district_name, pickup.province_name].filter(Boolean).join(", ")}</span>
+            </div>
+          )}
+
+          <div className="flex justify-end">
+            <Button
+              color="primary" radius="lg"
+              isLoading={savingPickup}
+              onPress={handleSavePickup}
+              isDisabled={!pickup.ward_code}
+              startContent={!savingPickup && <Save size={16} />}
+              className="font-bold"
+            >
+              Lưu địa chỉ lấy hàng
+            </Button>
           </div>
         </CardBody>
       </Card>

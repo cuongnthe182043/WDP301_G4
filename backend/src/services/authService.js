@@ -154,6 +154,14 @@ exports.googleLogin = async (idToken) => {
 };
 
 
+// Check OTP only — does NOT consume (delete) it, so resetPassword can still use it
+exports.checkResetOTP = async (email, otp) => {
+  if (!email || !otp) throw new Error("Thiếu email hoặc OTP");
+  const cachedOtp = await redis.get(`otp:forgot:${email}`);
+  if (!cachedOtp || cachedOtp !== otp) throw new Error("OTP không hợp lệ hoặc đã hết hạn");
+  return { valid: true };
+};
+
 exports.resetPassword = async (email, otp, newPassword) => {
   const cachedOtp = await redis.get(`otp:forgot:${email}`);
   if (!cachedOtp || cachedOtp !== otp) throw new Error("OTP không hợp lệ hoặc hết hạn");

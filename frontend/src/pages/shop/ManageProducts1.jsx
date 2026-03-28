@@ -4,8 +4,9 @@ import { productService } from "../../services/productService";
 import { sellerCatalogService } from "../../services/sellerCatalogService";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
-import { Card, CardBody, Button, Input, Select, SelectItem, Chip, Pagination } from "@heroui/react";
+import { Card, CardBody, Button, Input, Select, SelectItem, Chip } from "@heroui/react";
 import { Plus, Download, Upload, Pencil, Layers } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 function fmt(n) { return Number(n || 0).toLocaleString("vi-VN") + " ₫"; }
 const STATUS_COLOR = { active: "success", out_of_stock: "warning", inactive: "default" };
@@ -18,17 +19,17 @@ export default function ManageProducts1() {
   const [status, setStatus] = useState(new Set([""]));
   const [cat,    setCat]    = useState(new Set([""]));
   const [page,   setPage]   = useState(1);
+  const [limit,  setLimit]  = useState(20);
   const [cats,   setCats]   = useState([]);
-  const LIMIT = 20;
 
   async function load() {
     const statusVal = Array.from(status)[0] || undefined;
     const catVal    = Array.from(cat)[0]    || undefined;
-    const r = await productService.list({ q, status: statusVal, category_id: catVal, page, limit: LIMIT });
+    const r = await productService.list({ q, status: statusVal, category_id: catVal, page, limit });
     setRows(r.items || []); setTotal(r.total || 0);
   }
   useEffect(() => { (async () => setCats(await sellerCatalogService.listCategories()))(); }, []);
-  useEffect(() => { load(); }, [q, status, cat, page]);
+  useEffect(() => { load(); }, [q, status, cat, page, limit]);
 
   const onImport = async (e) => {
     const f = e.target.files?.[0];
@@ -122,11 +123,13 @@ export default function ManageProducts1() {
         </CardBody>
       </Card>
 
-      {total > LIMIT && (
-        <div className="flex justify-center">
-          <Pagination total={Math.ceil(total / LIMIT)} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={setPage}
+        onLimitChange={(v) => { setLimit(v); setPage(1); }}
+      />
     </div>
   );
 }

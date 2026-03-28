@@ -31,6 +31,9 @@ app.set("realtime", realtime);
 const socketManager = require("./config/socketManager");
 socketManager.init(realtime.emitToUser);
 
+// Moderation cron (auto-unban + violation detection)
+const moderationCron = require("./cron/moderationCron");
+
 // Kết nối DB + start
 const { connectDB } = require("./config/db");
 (async () => {
@@ -39,6 +42,9 @@ const { connectDB } = require("./config/db");
     server.listen(PORT, () => {
       console.log(`✅ API + Socket.IO listening on ${PORT}`);
     });
+
+    // Start moderation background jobs after DB is connected
+    moderationCron.start();
   } catch (err) {
     console.error("❌ Failed to start server:", err);
     process.exit(1);

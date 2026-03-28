@@ -51,18 +51,22 @@ export default function AddProduct({ mode }) {
 
         if (dims.length > 0) {
           try {
-            const dimArrays = dims.map((d) => variantValues[d]);
-            const combos    = cartesian(dimArrays);
+            const dimArrays  = dims.map((d) => variantValues[d]);
+            const combos     = cartesian(dimArrays);
+            const overrides  = payload.variant_overrides || {};
+            const hasOverrides = Object.keys(overrides).length > 0;
             const totalStock = Number(payload.stock_total) || 0;
             const perVariant = combos.length > 0 ? Math.floor(totalStock / combos.length) : 0;
             const remainder  = totalStock - perVariant * combos.length;
             const rows = combos.map((combo, i) => {
               const attrs = {};
               dims.forEach((d, j) => { attrs[d] = combo[j]; });
+              const key      = combo.join("\x00");
+              const override = hasOverrides ? overrides[key] : null;
               return {
                 sku:                `${p._id.replace("prod-", "")}-${i + 1}`,
-                price:              payload.base_price,
-                stock:              perVariant + (i === 0 ? remainder : 0),
+                price:              override?.price ?? payload.base_price,
+                stock:              override != null ? (override.stock ?? 0) : (perVariant + (i === 0 ? remainder : 0)),
                 variant_attributes: attrs,
                 is_active:          true,
               };

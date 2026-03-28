@@ -7,6 +7,7 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
 import { Search, Pencil, Trash2, Plus, Layers, Upload, Download, CheckCircle, AlertCircle, FileSpreadsheet } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const STATUS_COLOR = {
   active:       "success",
@@ -47,12 +48,12 @@ export default function ManageProducts() {
   const [importResult,  setImportResult]  = useState(null); // { inserted, errors, items }
   const [showImport,    setShowImport]    = useState(false);
 
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { page, limit: LIMIT };
+      const params = { page, limit };
       if (query.trim())           params.q      = query.trim();
       if (statusFilter !== "all") params.status = statusFilter;
       const data = await svc.list(params);
@@ -122,7 +123,7 @@ export default function ManageProducts() {
     }
   };
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="space-y-5">
@@ -188,10 +189,10 @@ export default function ManageProducts() {
             </div>
           ) : (
             <table className="w-full text-sm">
-              <thead className="bg-default-50 dark:bg-zinc-800 border-b border-default-100 dark:border-zinc-700">
+              <thead className="bg-default-50 dark:bg-[#1a1e2e] border-b border-default-100 dark:border-[#2e3347]">
                 <tr>
                   {[t("shop.product_col_image"), t("shop.product_col_name"), t("shop.product_col_price"), t("shop.product_col_stock"), t("shop.product_col_status"), ""].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-zinc-400 uppercase">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-default-500 dark:text-[#9ea3b5] uppercase">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -205,7 +206,7 @@ export default function ManageProducts() {
                       />
                     </td>
                     <td className="px-4 py-3 max-w-xs">
-                      <p className="font-semibold text-default-900 dark:text-zinc-100 truncate">{p.name}</p>
+                      <p className="font-semibold text-default-900 dark:text-[#e8eaed] truncate">{p.name}</p>
                       <p className="text-xs text-default-400 truncate">{p.category_name || "—"}</p>
                       {p.rejection_reason && (
                         <p className="text-xs text-danger mt-0.5 truncate">
@@ -256,17 +257,7 @@ export default function ManageProducts() {
       </Card>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-            {t("shop.product_prev")}
-          </Button>
-          <span className="text-sm text-default-500 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-            {t("shop.product_next")}
-          </Button>
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Delete confirm */}
       <Modal isOpen={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)} radius="xl">

@@ -6,7 +6,7 @@ import { checkoutService } from "../../services/checkoutService";
 import chatService from "../../services/chatService";
 import { useAuth } from "../../context/AuthContext";
 import {
-  Avatar, Tabs, Tab, Button, Chip, Pagination, Input,
+  Avatar, Tabs, Tab, Button, Chip, Input,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea,
 } from "@heroui/react";
 import {
@@ -19,6 +19,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 import { useTranslation } from "react-i18next";
 import { useToast } from "../../components/common/ToastProvider";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ─── Status config ────────────────────────────────────────────────────────────
 const STATUS_COLOR = {
@@ -35,6 +36,7 @@ const STATUS_COLOR = {
   out_for_delivery:     "secondary",
   shipping:             "secondary",
   delivered:            "success",
+  received:             "success",
   return_requested:     "warning",
   return_approved:      "primary",
   return_rejected:      "danger",
@@ -56,6 +58,7 @@ const STATUS_HEX = {
   picking: "#8b5cf6",          in_transit: "#3b82f6",
   out_for_delivery: "#0ea5e9", shipping: "#0ea5e9",
   delivered: "#22c55e",
+  received:  "#16a34a",
   return_requested: "#f59e0b", return_approved: "#3b82f6",
   return_rejected: "#ef4444",  return_completed: "#14b8a6",
   refund_pending: "#f59e0b",   refund_completed: "#14b8a6",
@@ -77,6 +80,7 @@ const STATUS_LABEL = {
   out_for_delivery:     "Đang giao",
   shipping:             "Đang giao hàng",
   delivered:            "Đã giao",
+  received:             "Đã nhận hàng",
   return_requested:     "Yêu cầu trả hàng",
   return_approved:      "Chấp nhận trả hàng",
   return_rejected:      "Từ chối trả hàng",
@@ -109,7 +113,7 @@ const STATUS_TABS = [
   { key: "order_created,payment_pending,payment_confirmed,pending",            label: "Chờ xác nhận",  icon: <Clock size={14} /> },
   { key: "confirmed,processing,packed,payment_failed",                         label: "Đang xử lý",    icon: <Package size={14} /> },
   { key: "picking,in_transit,out_for_delivery,shipping",                       label: "Đang giao",     icon: <Truck size={14} /> },
-  { key: "delivered",                                                           label: "Đã giao",       icon: <CheckCircle2 size={14} /> },
+  { key: "delivered,received",                                                  label: "Đã giao",       icon: <CheckCircle2 size={14} /> },
   { key: "return_requested,return_approved,return_rejected,return_completed",  label: "Hoàn/Đổi",      icon: <RotateCcw size={14} /> },
   { key: "cancelled_by_customer,cancelled_by_shop,canceled_by_customer,canceled_by_shop", label: "Đã hủy", icon: <XCircle size={14} /> },
   { key: "__refund_view__",                                                      label: "Hoàn tiền",     icon: <Wallet size={14} /> },
@@ -130,6 +134,7 @@ export default function Orders() {
 
   const [tab, setTab]   = useState("");
   const [data, setData] = useState({ items: [], total: 0, page: 1, limit: 10 });
+  const [limit, setLimit] = useState(10);
   const [q, setQ]       = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -141,6 +146,9 @@ export default function Orders() {
   // Reorder
   const [reorderLoading, setReorderLoading] = useState(null);
 
+  // Confirm receipt
+  const [confirmLoading, setConfirmLoading] = useState(null);
+
   // Repay
   const [repayLoading, setRepayLoading] = useState(null);
 
@@ -151,11 +159,11 @@ export default function Orders() {
     setLoading(true);
     try {
       const status = tab || undefined;
-      const res = await orderService.list({ status, page, limit: 10, q: q || undefined });
+      const res = await orderService.list({ status, page, limit, q: q || undefined });
       setData(res);
     } catch { /* silent */ }
     finally { setLoading(false); }
-  }, [tab, q]);
+  }, [tab, q, limit]);
 
   useEffect(() => { load(1); }, [tab]);
 
@@ -200,6 +208,19 @@ export default function Orders() {
       nav("/cart");
     } catch { toast.error("Không thể đặt lại đơn hàng"); }
     finally { setReorderLoading(null); }
+  };
+
+  const handleConfirmReceipt = async (orderId) => {
+    setConfirmLoading(orderId);
+    try {
+      await orderService.confirmReceipt(orderId);
+      toast.success("Xác nhận đã nhận hàng thành công!");
+      await load(data.page);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Không thể xác nhận nhận hàng");
+    } finally {
+      setConfirmLoading(null);
+    }
   };
 
   const handleInvoice = async (orderId) => {
@@ -332,17 +353,17 @@ export default function Orders() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.04, duration: 0.22 }}
                 >
-                  <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-default-100 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <div className="bg-white dark:bg-[#131620] rounded-2xl border border-default-100 dark:border-[#2e3347] shadow-sm hover:shadow-md transition-shadow overflow-hidden">
 
                     {/* Top accent stripe */}
                     <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${accentColor}, ${accentColor}55)` }} />
 
                     {/* Card header */}
-                    <div className="flex items-center justify-between px-4 py-3 bg-default-50/60 dark:bg-zinc-800/60 border-b border-default-100 dark:border-zinc-700/60">
+                    <div className="flex items-center justify-between px-4 py-3 bg-default-50/60 dark:bg-[#1a1e2e]/60 border-b border-default-100 dark:border-[#2e3347]/60">
                       <div className="flex items-center gap-2 flex-wrap">
                         {/* Order code */}
                         <button
-                          className="font-black text-default-900 dark:text-zinc-100 hover:text-primary transition-colors text-sm"
+                          className="font-black text-default-900 dark:text-[#e8eaed] hover:text-primary transition-colors text-sm"
                           onClick={() => nav(`/orders/${o._id}`)}
                         >
                           #{o.order_code}
@@ -377,12 +398,12 @@ export default function Orders() {
                               size="sm"
                               className="w-5 h-5 text-[10px]"
                             />
-                            <span className="text-xs text-default-500 dark:text-zinc-400 max-w-[100px] truncate">
+                            <span className="text-xs text-default-500 dark:text-[#9ea3b5] max-w-[100px] truncate">
                               {o.shop_info.shop_name}
                             </span>
                           </div>
                         )}
-                        <span className="text-xs text-default-400 dark:text-zinc-500">
+                        <span className="text-xs text-default-400 dark:text-[#6b7280]">
                           {new Date(o.createdAt).toLocaleDateString("vi-VN")}
                         </span>
                       </div>
@@ -396,7 +417,7 @@ export default function Orders() {
                           {(o.items || []).slice(0, 4).map((it, i) => (
                             <div
                               key={i}
-                              className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white dark:border-zinc-900 bg-default-100 dark:bg-zinc-700 shadow-sm"
+                              className="w-12 h-12 rounded-xl overflow-hidden border-2 border-white dark:border-[#1a1e2e] bg-default-100 dark:bg-zinc-700 shadow-sm"
                             >
                               {it.image_url
                                 ? <img src={it.image_url} alt={it.name} className="w-full h-full object-cover" />
@@ -405,7 +426,7 @@ export default function Orders() {
                             </div>
                           ))}
                           {(o.items?.length || 0) > 4 && (
-                            <div className="w-12 h-12 rounded-xl bg-default-100 dark:bg-zinc-700 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xs font-bold text-default-500 shadow-sm">
+                            <div className="w-12 h-12 rounded-xl bg-default-100 dark:bg-zinc-700 border-2 border-white dark:border-[#1a1e2e] flex items-center justify-center text-xs font-bold text-default-500 shadow-sm">
                               +{o.items.length - 4}
                             </div>
                           )}
@@ -413,10 +434,10 @@ export default function Orders() {
 
                         {/* First item name & count */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-default-800 dark:text-zinc-200 truncate leading-snug">
+                          <p className="text-sm font-medium text-default-800 dark:text-[#d1d5db] truncate leading-snug">
                             {o.items?.[0]?.name || "Sản phẩm"}
                           </p>
-                          <p className="text-xs text-default-400 dark:text-zinc-500 mt-0.5">
+                          <p className="text-xs text-default-400 dark:text-[#6b7280] mt-0.5">
                             {(o.items?.length || 0)} sản phẩm
                             {o.items?.[0]?.variant_text && <span className="ml-1">· {o.items[0].variant_text}</span>}
                           </p>
@@ -425,7 +446,7 @@ export default function Orders() {
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between px-4 py-3 border-t border-default-100 dark:border-zinc-700/60 bg-default-50/30 dark:bg-zinc-800/30">
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-default-100 dark:border-[#2e3347]/60 bg-default-50/30 dark:bg-[#1a1e2e]/30">
                       {/* Left: special notes */}
                       <div className="flex items-center gap-2 flex-wrap">
                         {(o.status === "cancelled_by_shop" || o.status === "canceled_by_shop") && o.cancel_reason && (
@@ -465,6 +486,22 @@ export default function Orders() {
                             className="font-semibold"
                           >
                             Chat shop
+                          </Button>
+                        )}
+
+                        {/* Confirm receipt */}
+                        {o.status === "delivered" && (
+                          <Button
+                            size="sm"
+                            color="success"
+                            variant="solid"
+                            radius="lg"
+                            startContent={<PackageCheck size={13} />}
+                            isLoading={confirmLoading === o._id}
+                            onPress={() => handleConfirmReceipt(o._id)}
+                            className="font-semibold text-white"
+                          >
+                            Đã nhận hàng
                           </Button>
                         )}
 
@@ -532,18 +569,13 @@ export default function Orders() {
       )}
 
       {/* ── Pagination ────────────────────────────────────────────────────── */}
-      {(data.total || 0) > (data.limit || 10) && (
-        <div className="flex justify-center mt-8">
-          <Pagination
-            total={Math.ceil(data.total / data.limit) || 1}
-            page={data.page}
-            onChange={(p) => load(p)}
-            color="primary"
-            radius="lg"
-            showShadow
-          />
-        </div>
-      )}
+      <PaginationBar
+        total={data.total || 0}
+        page={data.page || 1}
+        limit={limit}
+        onPageChange={(p) => load(p)}
+        onLimitChange={(v) => { setLimit(v); load(1); }}
+      />
 
       {/* ── Cancel modal ──────────────────────────────────────────────────── */}
       <Modal isOpen={cancelModal.open} onClose={closeCancelModal} radius="xl" size="md" backdrop="blur">
@@ -561,9 +593,9 @@ export default function Orders() {
                 </span>
               </div>
             ) : (
-              <div className="flex items-start gap-2 p-3 rounded-xl bg-default-50 dark:bg-zinc-800">
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-default-50 dark:bg-[#1a1e2e]">
                 <AlertCircle size={16} className="mt-0.5 flex-shrink-0 text-default-400" />
-                <span className="text-sm text-default-600 dark:text-zinc-400">Đơn COD — hủy đơn không ảnh hưởng đến thanh toán.</span>
+                <span className="text-sm text-default-600 dark:text-[#9ea3b5]">Đơn COD — hủy đơn không ảnh hưởng đến thanh toán.</span>
               </div>
             )}
             <Textarea

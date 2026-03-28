@@ -37,10 +37,9 @@ function useCountdown(start, end) {
 }
 
 export default function FlashSaleSection({ flashSale }) {
-  const has =
-    !!flashSale &&
-    Array.isArray(flashSale.products) &&
-    flashSale.products.length > 0;
+  // Backend returns enriched array as `items`; fall back to raw `products` if absent
+  const saleItems = flashSale?.items || flashSale?.products || [];
+  const has = !!flashSale && saleItems.length > 0;
   const { label } = useCountdown(flashSale?.start_time, flashSale?.end_time);
   const title = useMemo(() => flashSale?.title || "Flash Sale", [flashSale]);
 
@@ -53,14 +52,17 @@ export default function FlashSaleSection({ flashSale }) {
         <div className="timer">{label}</div>
       </div>
       <div className="grid">
-        {flashSale.products.map((p) => (
-          <div key={`${p.product_id}`} className="fs-card">
+        {saleItems.map((p) => (
+          <div key={`${p.variant_id || p.product_id}`} className="fs-card">
             <ProductCard
               product={{
-                ...p,
+                ...p.product,
                 _id: p.product_id,
+                name: p.name || p.product?.name,
+                slug: p.slug || p.product?.slug,
+                images: p.product?.images,
                 price: p.flash_price,
-                image: p.image,
+                image: p.image || p.product?.images?.[0],
               }}
               badge="-FLASH-"
             />

@@ -5,6 +5,7 @@ import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
 import { Input, Button, Checkbox, Divider } from "@heroui/react";
 import { Eye, EyeOff, User, AtSign, Mail, Lock, ShieldCheck, KeyRound, ChevronLeft, CheckCircle2 } from "lucide-react";
 import { authService } from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 import { isEmail, isValidFullName, isValidPassword, isValidUsername } from "../../utils/validators";
 
 /* ─── helpers ─── */
@@ -25,27 +26,27 @@ const getPasswordStrength = (pwd) => {
 const strengthColor = (s) => ["", "#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"][s] || "#e4e4e7";
 
 /* ─── Step bar ─── */
-const StepBar = ({ step, labels }) => (
+const StepBar = ({ step, labels, isDark = false }) => (
   <div className="flex items-center gap-0 mb-8">
     {[1, 2].map((n, i) => (
       <React.Fragment key={n}>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 flex-shrink-0"
             style={{
-              background: step >= n ? "linear-gradient(135deg, #1E40AF, #2563EB)" : "#f4f4f5",
-              color: step >= n ? "#fff" : "#a1a1aa",
+              background: step >= n ? "linear-gradient(135deg, #1E40AF, #2563EB)" : (isDark ? "#1f2937" : "#f4f4f5"),
+              color: step >= n ? "#fff" : (isDark ? "#6b7280" : "#a1a1aa"),
               boxShadow: step === n ? "0 0 0 4px rgba(29,78,216,.18)" : "none",
             }}>
             {step > n ? <CheckCircle2 size={16} /> : n}
           </div>
           <span className="text-sm font-semibold hidden sm:block"
-            style={{ color: step >= n ? "#1D4ED8" : "#a1a1aa" }}>
+            style={{ color: step >= n ? "#1D4ED8" : (isDark ? "#6b7280" : "#a1a1aa") }}>
             {labels[i]}
           </span>
         </div>
         {i === 0 && (
           <div className="flex-1 mx-3 h-0.5 rounded-full"
-            style={{ background: step > 1 ? "#1D4ED8" : "#e4e4e7", minWidth: 32 }} />
+            style={{ background: step > 1 ? "#1D4ED8" : (isDark ? "#374151" : "#e4e4e7"), minWidth: 32 }} />
         )}
       </React.Fragment>
     ))}
@@ -70,7 +71,15 @@ export default function Register() {
   const [touched, setTouched]   = useState({});
   const [message, setMessage]   = useState({ text: "", error: true });
   const [otpDigits, setOtpDigits] = useState(["","","","","",""]);
-  const [form, setForm] = useState({ name: "", username: "", email: "", password: "", confirmPassword: "" });
+  const [form, setForm] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem("reg_draft");
+      if (saved) { const p = JSON.parse(saved); return { name: p.name||"", username: p.username||"", email: p.email||"", password: "", confirmPassword: "" }; }
+    } catch {}
+    return { name: "", username: "", email: "", password: "", confirmPassword: "" };
+  });
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const strengthLabel = (s) => [
     "", t("auth.pwd_strength_very_weak"), t("auth.pwd_strength_weak"),
@@ -99,7 +108,11 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: name === "username" || name === "email" ? value.toLowerCase().trim() : value }));
+    setForm(f => {
+      const next = { ...f, [name]: name === "username" || name === "email" ? value.toLowerCase().trim() : value };
+      try { sessionStorage.setItem("reg_draft", JSON.stringify({ name: next.name, username: next.username, email: next.email })); } catch {}
+      return next;
+    });
   };
   const handleBlur = (field) => setTouched(t => ({ ...t, [field]: true }));
   const otpValue = otpDigits.join("");
@@ -120,6 +133,15 @@ export default function Register() {
       e.preventDefault();
     }
   };
+
+  // Auto-verify when all 6 digits are filled
+  const autoVerifyRef = React.useRef(false);
+  React.useEffect(() => {
+    if (step !== 2 || otpValue.length !== 6 || loading || autoVerifyRef.current) return;
+    autoVerifyRef.current = true;
+    handleVerify().finally(() => { autoVerifyRef.current = false; });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otpValue, step]);
 
   useEffect(() => {
     if (!message.text) return;
@@ -148,6 +170,7 @@ export default function Register() {
     try {
       setLoading(true);
       await authService.verifyRegister({ ...form, otp: otpValue });
+      try { sessionStorage.removeItem("reg_draft"); } catch {}
       showMsg(t("auth.register_done"), false);
       setTimeout(() => navigate("/login", { replace: true }), 1600);
     } catch (err) { showMsg(err?.response?.data?.message || err.message); }
@@ -234,7 +257,7 @@ export default function Register() {
       </div>
 
       {/* ── RIGHT PANEL ── */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: "#f8faff" }}>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: isDark ? "#181d2e" : "#f8faff" }}>
         <div className="w-full max-w-[430px] py-4">
 
           <div className="flex lg:hidden items-center gap-3 mb-8">
@@ -254,7 +277,7 @@ export default function Register() {
             </p>
           </div>
 
-          <StepBar step={step} labels={stepLabels} />
+          <StepBar step={step} labels={stepLabels} isDark={isDark} />
 
           {message.text && (
             <div className={`mb-5 px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 ${
@@ -311,7 +334,7 @@ export default function Register() {
                   <div className="flex items-center gap-1.5 px-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="h-1 flex-1 rounded-full transition-all duration-300"
-                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : "#e4e4e7" }} />
+                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : (isDark ? "#374151" : "#e4e4e7") }} />
                     ))}
                     <span className="text-xs ml-1 font-medium flex-shrink-0" style={{ color: strengthColor(pwdStrength) }}>
                       {strengthLabel(pwdStrength)}
@@ -379,9 +402,9 @@ export default function Register() {
                       className="text-center text-xl font-black rounded-xl outline-none transition-all"
                       style={{
                         width: 46, height: 52,
-                        border: d ? "2px solid #1D4ED8" : "2px solid #DBEAFE",
-                        background: d ? "rgba(29,78,216,.06)" : "#fff",
-                        color: "#1e3a8a",
+                        border: d ? "2px solid #1D4ED8" : `2px solid ${isDark ? "#2d3748" : "#DBEAFE"}`,
+                        background: d ? `rgba(29,78,216,${isDark ? ".2" : ".06"})` : (isDark ? "#1f2937" : "#fff"),
+                        color: isDark ? "#93c5fd" : "#1e3a8a",
                         boxShadow: d ? "0 0 0 3px rgba(29,78,216,.1)" : "none",
                       }}
                     />

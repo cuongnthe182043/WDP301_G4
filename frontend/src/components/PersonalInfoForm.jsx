@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { userService } from "../services/userService";
+import { useAuth } from "../context/AuthContext";
 import { Camera, Check, AlertCircle, User, Mail, Phone, Calendar, Ruler, Weight, Shirt } from "lucide-react";
 import ShopRegisterDialog from "./ShopRegisterDialog";
 
@@ -58,6 +59,7 @@ function SectionLabel({ children }) {
 
 export default function PersonalInfoForm({ me, onUpdated }) {
   const { t } = useTranslation();
+  const { user: authUser } = useAuth();
   const [form, setForm] = useState({
     name: me?.name || "",
     email: me?.email || "",
@@ -374,20 +376,22 @@ export default function PersonalInfoForm({ me, onUpdated }) {
             )}
           </AnimatePresence>
 
-          {/* New Green Register Shop Button */}
-          <motion.button
-            type="button"
-            onClick={() => { setRegisteringShop(true); }}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            className="h-10 px-7 rounded-xl text-sm font-black text-white transition-all ml-auto"
-            style={{
-              background: "linear-gradient(135deg, #059669, #10B981)",
-              boxShadow: "0 4px 14px rgba(16, 185, 129, 0.35)",
-            }}
-          >
-            {t("nav.register_shop")}
-          </motion.button>
+          {/* Register Shop button — hidden if user is already a shop owner / admin / sales */}
+          {!["shop_owner", "system_admin", "sales"].includes(authUser?.role_name || me?.role_name) && (
+            <motion.button
+              type="button"
+              onClick={() => { setRegisteringShop(true); }}
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              className="h-10 px-7 rounded-xl text-sm font-black text-white transition-all ml-auto"
+              style={{
+                background: "linear-gradient(135deg, #059669, #10B981)",
+                boxShadow: "0 4px 14px rgba(16, 185, 129, 0.35)",
+              }}
+            >
+              {t("nav.register_shop")}
+            </motion.button>
+          )}
         </div>
       </form>
       <ShopRegisterDialog open={registeringShop} onClose={() => setRegisteringShop(false)} user={me} />

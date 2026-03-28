@@ -10,10 +10,11 @@ router.get("/slug/:slug", ctrl.getShopBySlug);
 router.get("/slug/:slug/products", ctrl.getShopProducts);
 
 // ─── Authenticated — any logged-in user can register / view own shop ──────────
+const checkBanStatus = require("../middlewares/checkBanStatus");
 router.use(verifyToken);
-router.post("/register", ctrl.registerShop);
+router.post("/register", checkBanStatus, ctrl.registerShop);
 router.get("/my", ctrl.getMyShop);
-router.put("/my", ctrl.updateMyShop);
+router.put("/my", checkBanStatus, ctrl.updateMyShop);
 
 // ─── Admin routes ─────────────────────────────────────────────────────────────
 router.get("/admin/list", ...requireAnyRole("system_admin"), ctrl.adminListShops);

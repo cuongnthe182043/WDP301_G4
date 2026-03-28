@@ -42,42 +42,85 @@ async function getBrands(limit = 12) {
         .limit(limit)
         .lean();
 }
-async function getActiveFlashSale(limitItems = 20) {
+async function getActiveFlashSale(limitItems = 200) {
     const now = new Date();
-    const fs = await FlashSale.findOne({
-        status: 'active',
+
+    // Priority 1: prefer currently ACTIVE flash sale (started, not ended, not cancelled)
+    // Sort by end_time ascending = soonest-expiring first (most urgency for customer)
+    let fs = await FlashSale.findOne({
+        status: { $ne: 'cancelled' },
         start_time: { $lte: now },
-        end_time: { $gte: now },
+        end_time: { $gt: now },
     })
-        .sort({ start_time: 1 })
+        .sort({ end_time: 1 })
         .lean();
 
+    // Priority 2: upcoming flash sale (not started yet)
+    if (!fs) {
+        fs = await FlashSale.findOne({
+            status: { $ne: 'cancelled' },
+            start_time: { $gt: now },
+            end_time: { $gt: now },
+        })
+            .sort({ start_time: 1 })
+            .lean();
+    }
 
-    if (!fs) return null;
+    // Priority 2: fallback — find the most recently ended non-cancelled flash sale with products
+    // (handles test data where end_time may already be past)
+    if (!fs) {
+        fs = await FlashSale.findOne({
+            status: { $ne: 'cancelled' },
+            'products.0': { $exists: true },
+        })
+            .sort({ end_time: -1 })
+            .lean();
+        if (fs) console.log(`[FlashSale] Showing recently-ended sale as fallback: ${fs._id}`);
+    }
 
+    if (!fs) {
+        console.log('[FlashSale] No valid flash sale found in DB');
+        return null;
+    }
 
-    // Enrich with product data
+    // Determine live vs upcoming purely from time
+    const isUpcoming = new Date(fs.start_time) > now;
+    const isEnded    = new Date(fs.end_time)   <= now;
+    console.log(`[FlashSale] Found: ${fs._id} | status: ${fs.status} | upcoming: ${isUpcoming} | ended: ${isEnded} | products: ${fs.products?.length}`);
+
+    // Enrich with product data + shop data (parallel)
     const productIds = fs.products.map((p) => p.product_id);
-    const products = await Product.find({ _id: { $in: productIds }, status: 'active' })
-        .select('_id name slug images base_price currency rating_avg rating_count sold_count stock_total brand_id category_id')
-        .lean();
-    const prodMap = new Map(products.map((p) => [p._id, p]));
-
+    const [products, shop] = await Promise.all([
+        Product.find({ _id: { $in: productIds } })
+            .select('_id name slug images base_price currency rating_avg rating_count sold_count stock_total brand_id category_id status shop_id')
+            .lean(),
+        Shop.findOne({ $or: [{ _id: fs.shop_id }, { owner_id: fs.shop_id }] })
+            .select('_id shop_name shop_slug shop_logo')
+            .lean(),
+    ]);
+    const prodMap = new Map(products.map((p) => [String(p._id), p]));
 
     const items = fs.products
-        .slice(0, limitItems)
-        .map((item) => ({
-            ...item,
-            product: prodMap.get(item.product_id) || null,
-            discount_percent: Math.max(
-                0,
-                Math.round((1 - item.flash_price / (item.original_price || item.flash_price)) * 100)
-            ),
-            remaining: Math.max(0, (item.quantity_total || 0) - (item.quantity_sold || 0)),
-        }));
+        .map((item) => {
+            const product = prodMap.get(String(item.product_id)) || null;
+            const sold    = item.quantity_sold  || 0;
+            const total   = item.quantity_total || 0;
+            return {
+                ...item,
+                product,
+                name:             product?.name        || item.name || "",
+                slug:             product?.slug        || "",
+                image:            product?.images?.[0] || "",
+                discount_percent: Math.max(0, Math.round((1 - item.flash_price / (item.original_price || item.flash_price)) * 100)),
+                remaining:        Math.max(0, total - sold),
+                progress:         total > 0 ? Math.min(100, Math.round((sold / total) * 100)) : 0,
+            };
+        });
 
+    console.log(`[FlashSale] Enriched items: ${items.length} (products matched: ${products.length}/${productIds.length})`);
+    if (!items.length) return null;
 
-    return { ...fs, items };
+    return { ...fs, items, shop: shop || null, _upcoming: isUpcoming, _ended: isEnded };
 }
 
 async function getCategoryTree() {
@@ -139,7 +182,7 @@ async function getProductsByRootSlug(rootSlug, limit = 50) {
 async function getHomepageData() {
   const [banners, flashSale, categories, men, women, brands, unisex] = await Promise.all([
     getActiveBanners(),
-    getActiveFlashSale(20),
+    getActiveFlashSale(),
     getCategoryTree(),
     getProductsByRootSlug("thoi-trang-nam", 50),
     getProductsByRootSlug("thoi-trang-nu", 50),

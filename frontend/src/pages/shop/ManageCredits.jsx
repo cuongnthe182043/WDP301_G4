@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Card, CardBody, Button, Input, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
-  Chip, Pagination, Spinner, Avatar, Textarea,
+  Chip, Spinner, Avatar, Textarea,
 } from "@heroui/react";
+import PaginationBar from "../../components/ui/PaginationBar";
 import { Gift, History } from "lucide-react";
 import { shopCreditApi } from "../../services/shopMarketingService";
 import { useToast } from "../../components/common/ToastProvider";
@@ -224,18 +225,18 @@ export default function ManageCredits() {
   const [tp,         setTp]         = useState(1);
   const [detailUser, setDetailUser] = useState(null);
   const [showGive,   setShowGive]   = useState(false);
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const res = await shopCreditApi.list({ page: pg, limit: LIMIT });
+      const res = await shopCreditApi.list({ page: pg, limit });
       setCredits(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTp(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTp(Math.ceil((res.data?.total || 0) / limit));
     } catch { /* silent */ }
     finally { setLoading(false); }
-  }, [page]);
+  }, [page, limit]);
 
   useEffect(() => { load(page); }, [page]);
 
@@ -296,7 +297,7 @@ export default function ManageCredits() {
         </CardBody>
       </Card>
 
-      {tp > 1 && <div className="flex justify-center"><Pagination total={tp} page={page} onChange={setPage} color="primary" radius="lg" /></div>}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       <GiveCreditsModal isOpen={showGive} onClose={() => setShowGive(false)} onDone={() => load(1)} />
       <CustomerCreditModal userId={detailUser} onClose={() => setDetailUser(null)} />

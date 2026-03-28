@@ -3,7 +3,7 @@ import { Skeleton } from "@heroui/react";
 
 export default function SkeletonProductCard() {
   return (
-    <div className="rounded-2xl overflow-hidden border border-default-100 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
+    <div className="rounded-2xl overflow-hidden border border-default-100 dark:border-[#2e3347] bg-white dark:bg-[#131620] shadow-sm">
       {/* Image placeholder */}
       <Skeleton className="aspect-square w-full" />
       {/* Text placeholders */}

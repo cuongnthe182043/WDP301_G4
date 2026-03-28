@@ -5,6 +5,7 @@ import dfsLogo from "../../assets/icons/DFS-NonBG1.png";
 import { Input, Button } from "@heroui/react";
 import { Eye, EyeOff, Lock, ShieldCheck, CheckCircle2, ChevronLeft } from "lucide-react";
 import { authService } from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 
 const Dot = ({ style }) => (
   <div className="absolute rounded-full" style={{ opacity: 0.18, ...style }} />
@@ -32,6 +33,8 @@ export default function ChangePassword() {
   const [touched, setTouched] = useState({});
   const [message, setMessage] = useState({ text: "", error: true });
   const [done, setDone]       = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const strengthLabel = (s) => [
     "", t("auth.pwd_strength_very_weak"), t("auth.pwd_strength_weak"),
@@ -150,7 +153,7 @@ export default function ChangePassword() {
       </div>
 
       {/* ── RIGHT PANEL ── */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: "#f8faff" }}>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto" style={{ background: isDark ? "#181d2e" : "#f8faff" }}>
         <div className="w-full max-w-[420px] py-4">
 
           <div className="flex lg:hidden items-center gap-3 mb-8">
@@ -179,7 +182,7 @@ export default function ChangePassword() {
           {done ? (
             <div className="flex flex-col items-center gap-5 py-8 text-center">
               <div className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, #DBEAFE, #BFDBFE)" }}>
+                style={{ background: isDark ? "rgba(29,78,216,.25)" : "linear-gradient(135deg, #DBEAFE, #BFDBFE)" }}>
                 <CheckCircle2 size={32} style={{ color: "#1D4ED8" }} />
               </div>
               <div>
@@ -234,7 +237,7 @@ export default function ChangePassword() {
                   <div className="flex items-center gap-1.5 px-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="h-1 flex-1 rounded-full transition-all duration-300"
-                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : "#e4e4e7" }} />
+                        style={{ background: i < pwdStrength ? strengthColor(pwdStrength) : (isDark ? "#374151" : "#e4e4e7") }} />
                     ))}
                     <span className="text-xs ml-1 font-medium flex-shrink-0" style={{ color: strengthColor(pwdStrength) }}>
                       {strengthLabel(pwdStrength)}

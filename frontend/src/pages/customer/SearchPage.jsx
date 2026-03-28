@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
-  Button, Select, SelectItem, Checkbox, Pagination,
+  Button, Select, SelectItem, Checkbox,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Skeleton,
 } from "@heroui/react";
@@ -15,6 +15,7 @@ import { productApi } from "../../services/productService";
 import { homeService } from "../../services/homeService";
 import { formatCurrency } from "../../utils/formatCurrency";
 import PageContainer from "../../components/ui/PageContainer";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ─── constants (non-translatable) ──────────────────────────────────────────────────────
 const SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -730,7 +731,7 @@ export default function SearchPage() {
   // ── Data ──
   const [products, setProducts]     = useState([]);
   const [total, setTotal]           = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit]           = useState(20);
   const [loading, setLoading]       = useState(false);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands]         = useState([]);
@@ -749,7 +750,7 @@ export default function SearchPage() {
     (async () => {
       setLoading(true);
       try {
-        const params = { page: filters.page, limit: 20, sort: filters.sort || "created_at" };
+        const params = { page: filters.page, limit, sort: filters.sort || "created_at" };
         if (filters.q)        params.q          = filters.q;
         if (filters.category) params.category    = filters.category;
         if (filters.brand)    params.brand       = filters.brand;
@@ -762,12 +763,11 @@ export default function SearchPage() {
         if (cancelled) return;
         setProducts(res?.products || []);
         setTotal(res?.total || 0);
-        setTotalPages(res?.total_pages || 1);
       } catch { if (!cancelled) setProducts([]); }
       finally { if (!cancelled) setLoading(false); }
     })();
     return () => { cancelled = true; };
-  }, [searchParams.toString()]);
+  }, [searchParams.toString(), limit]);
 
   // ── Mobile filter ──
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -974,16 +974,14 @@ export default function SearchPage() {
           )}
 
           {/* Pagination */}
-          {!loading && totalPages > 1 && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="flex justify-center mt-10">
-              <Pagination
-                total={totalPages}
-                page={Number(filters.page)}
-                onChange={p => { setFilter("page", p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                color="primary" radius="lg" showShadow
-              />
-            </motion.div>
+          {!loading && (
+            <PaginationBar
+              total={total}
+              page={Number(filters.page)}
+              limit={limit}
+              onPageChange={(p) => { setFilter("page", p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              onLimitChange={(v) => { setLimit(v); setFilter("page", 1); }}
+            />
           )}
         </div>
       </div>

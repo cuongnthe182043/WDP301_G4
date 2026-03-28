@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 import {
   ArrowLeft, Truck, RefreshCw, CheckCircle2, Circle,
-  Package, Star, FileText, AlertTriangle, Wallet,
+  Package, PackageCheck, Star, FileText, AlertTriangle, Wallet,
   MapPin, Phone, CreditCard, Calendar, MessageSquare,
   Download, RotateCcw, ShoppingBag, XCircle, ChevronDown, ChevronUp,
   Store, Tag, Layers, BarChart2, Info, ExternalLink, BadgeCheck, MessageCircle,
@@ -33,6 +33,7 @@ const STATUS_COLOR = {
   packed: "primary",              picking: "secondary",
   in_transit: "secondary",        out_for_delivery: "secondary",
   shipping: "secondary",          delivered: "success",
+  received:  "success",
   delivery_failed: "danger",
   cancelled_by_customer: "default", cancelled_by_shop: "default",
   canceled_by_customer: "default",  canceled_by_shop: "default",
@@ -51,6 +52,7 @@ const PROGRESS_STEPS = [
   { key: "in_transit",       icon: <Truck size={14} /> },
   { key: "out_for_delivery", icon: <MapPin size={14} /> },
   { key: "delivered",        icon: <CheckCircle2 size={14} /> },
+  { key: "received",         icon: <PackageCheck size={14} /> },
 ];
 const STEP_RANK = Object.fromEntries(PROGRESS_STEPS.map((s, i) => [s.key, i]));
 
@@ -61,7 +63,7 @@ const CANCELLABLE = new Set([
 ]);
 
 // Statuses for refund/return
-const REFUND_ALLOWED = new Set(["delivered", "return_rejected"]);
+const REFUND_ALLOWED = new Set(["delivered", "received", "return_rejected"]);
 
 // PAYMENT method labels/colors
 const PAYMENT_COLOR = { COD: "default", PAYPAL: "primary", VNPAY: "secondary", WALLET: "success" };
@@ -81,7 +83,8 @@ export default function OrderDetail() {
     processing: "Đang chuẩn bị hàng",             packed: "Đã đóng gói",
     picking: "Shipper đang lấy hàng",             in_transit: "Đang vận chuyển",
     out_for_delivery: "Đang giao đến bạn",         shipping: "Đang giao",
-    delivered: "Giao hàng thành công",             delivery_failed: "Giao thất bại",
+    delivered: "Giao hàng thành công",             received: "Đã nhận hàng",
+    delivery_failed: "Giao thất bại",
     cancelled_by_customer: "Khách đã hủy",         cancelled_by_shop: "Shop đã hủy",
     canceled_by_customer: "Khách đã hủy",          canceled_by_shop: "Shop đã hủy",
     return_requested: "Yêu cầu hoàn/đổi",          return_approved: "Đã duyệt hoàn/đổi",
@@ -113,9 +116,10 @@ export default function OrderDetail() {
   const [ticketMessage,   setTicketMessage]   = useState("");
   const [ticketLoading,   setTicketLoading]   = useState(false);
 
-  const [reviewItem,   setReviewItem]   = useState(null);
-  const [reviewOpen,   setReviewOpen]   = useState(false);
-  const [actionLoad,   setActionLoad]   = useState(false);
+  const [reviewItem,      setReviewItem]      = useState(null);
+  const [reviewOpen,      setReviewOpen]      = useState(false);
+  const [actionLoad,      setActionLoad]      = useState(false);
+  const [confirmLoading,  setConfirmLoading]  = useState(false);
 
   // product details map: product_id → { product, variants, brand, category }
   const [productMap,   setProductMap]   = useState(new Map());
@@ -133,7 +137,7 @@ export default function OrderDetail() {
       setOrd(d);
       setTrack(tr);
 
-      if (d?.status === "delivered" || d?.status?.startsWith("return") || d?.status?.startsWith("refund")) {
+      if (d?.status === "delivered" || d?.status === "received" || d?.status?.startsWith("return") || d?.status?.startsWith("refund")) {
         try {
           const rvData = await reviewService.getByOrder(id);
           const list = rvData.reviews || rvData || [];
@@ -174,6 +178,19 @@ export default function OrderDetail() {
   useEffect(() => { load(); }, [id]);
 
   // ── Actions ───────────────────────────────────────────────────────────────
+  const handleConfirmReceipt = async () => {
+    setConfirmLoading(true);
+    try {
+      await orderService.confirmReceipt(id);
+      toast.success("Xác nhận đã nhận hàng thành công!");
+      await load();
+    } catch (e) {
+      toast.error(e?.response?.data?.message || "Không thể xác nhận nhận hàng");
+    } finally {
+      setConfirmLoading(false);
+    }
+  };
+
   const handleCancel = async () => {
     if (!cancelReason.trim()) { toast.error("Vui lòng nhập lý do hủy"); return; }
     setCancelLoading(true);
@@ -321,7 +338,7 @@ export default function OrderDetail() {
     </PageContainer>
   );
 
-  const isDelivered  = ord.status === "delivered";
+  const isDelivered  = ord.status === "delivered" || ord.status === "received";
   const isCancelled  = ord.status.startsWith("cancel");
   const isReturning  = ord.status.startsWith("return") || ord.status.startsWith("refund");
 
@@ -393,7 +410,7 @@ export default function OrderDetail() {
       {/* ── Progress bar (normal flow only) ───────────────────────────────── */}
       {!isCancelled && !isReturning && (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] dark:bg-[#131620] overflow-hidden">
             <div className="h-1 bg-gradient-to-r from-primary via-violet-400 to-indigo-500" />
             <CardBody className="px-4 py-4">
               <div className="flex items-center gap-0">
@@ -408,7 +425,7 @@ export default function OrderDetail() {
                             ? current
                               ? "bg-gradient-to-br from-primary to-violet-500 text-white ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 shadow-primary/30"
                               : "bg-gradient-to-br from-success to-emerald-400 text-white"
-                            : "bg-default-100 dark:bg-zinc-800 text-default-300"
+                            : "bg-default-100 dark:bg-[#1a1e2e] text-default-300"
                         }`}>
                           {step.icon}
                         </div>
@@ -434,7 +451,7 @@ export default function OrderDetail() {
       {(isCancelled || isReturning) && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <div className={`rounded-xl px-4 py-3 mb-4 flex items-center gap-3 ${
-            isCancelled ? "bg-default-100 dark:bg-zinc-800" : "bg-warning-50 dark:bg-warning-900/20"
+            isCancelled ? "bg-default-100 dark:bg-[#1a1e2e]" : "bg-warning-50 dark:bg-warning-900/20"
           }`}>
             {isCancelled
               ? <XCircle size={18} className="text-default-500 flex-shrink-0" />
@@ -458,15 +475,15 @@ export default function OrderDetail() {
 
       {/* ── Products ──────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] dark:bg-[#131620] overflow-hidden">
           <div className="h-0.5 bg-gradient-to-r from-primary to-violet-500" />
           <CardBody className="p-5">
-            <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+            <h3 className="font-bold text-default-900 dark:text-[#e8eaed] mb-4 flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Package size={14} className="text-primary" />
               </div>
               Sản phẩm
-              <span className="text-xs font-normal text-default-400 bg-default-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-normal text-default-400 bg-default-100 dark:bg-[#1a1e2e] px-2 py-0.5 rounded-full">
                 {(ord.items || []).length} sản phẩm
               </span>
             </h3>
@@ -509,7 +526,7 @@ export default function OrderDetail() {
                       <div className="flex-1 min-w-0 flex flex-col gap-1.5">
                         {/* Name */}
                         <p
-                          className="font-semibold text-sm text-default-900 dark:text-zinc-100 line-clamp-2 cursor-pointer hover:text-primary transition-colors leading-snug"
+                          className="font-semibold text-sm text-default-900 dark:text-[#e8eaed] line-clamp-2 cursor-pointer hover:text-primary transition-colors leading-snug"
                           onClick={() => nav(`/products/${it.product_id}`)}
                         >
                           {it.name}
@@ -517,7 +534,7 @@ export default function OrderDetail() {
 
                         {/* Variant */}
                         {it.variant_text && (
-                          <span className="text-xs text-default-500 dark:text-zinc-400 bg-default-50 dark:bg-zinc-800 border border-default-100 dark:border-zinc-700 px-2 py-0.5 rounded-lg self-start">
+                          <span className="text-xs text-default-500 dark:text-[#9ea3b5] bg-default-50 dark:bg-[#1a1e2e] border border-default-100 dark:border-[#2e3347] px-2 py-0.5 rounded-lg self-start">
                             {it.variant_text}
                           </span>
                         )}
@@ -552,7 +569,7 @@ export default function OrderDetail() {
                               </Chip>
                             </>
                           ) : (
-                            <span className="text-sm font-semibold text-default-700 dark:text-zinc-300">
+                            <span className="text-sm font-semibold text-default-700 dark:text-[#c8cbd4]">
                               {formatCurrency(it.price)}
                             </span>
                           )}
@@ -573,7 +590,7 @@ export default function OrderDetail() {
                       <div className="flex flex-col items-end gap-2 flex-shrink-0 min-w-[72px]">
                         {/* Line total */}
                         <div className="text-right">
-                          <p className="font-black text-default-900 dark:text-zinc-100">
+                          <p className="font-black text-default-900 dark:text-[#e8eaed]">
                             {formatCurrency(lineTotal)}
                           </p>
                           {hasDiscount && (
@@ -630,7 +647,7 @@ export default function OrderDetail() {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
-                              className="mt-3 rounded-xl border border-default-100 dark:border-zinc-700 bg-default-50 dark:bg-zinc-800/60 overflow-hidden"
+                              className="mt-3 rounded-xl border border-default-100 dark:border-[#2e3347] bg-default-50 dark:bg-[#1a1e2e]/60 overflow-hidden"
                             >
                               {!pd ? (
                                 <div className="p-4 space-y-2">
@@ -641,7 +658,7 @@ export default function OrderDetail() {
 
                                   {/* ── Shop seller ── */}
                                   {ord.shop_info && (
-                                    <div className="flex items-center gap-3 pb-3 border-b border-default-100 dark:border-zinc-700">
+                                    <div className="flex items-center gap-3 pb-3 border-b border-default-100 dark:border-[#2e3347]">
                                       <div className="w-10 h-10 rounded-xl overflow-hidden bg-default-100 dark:bg-zinc-700 flex-shrink-0 border border-default-100">
                                         {ord.shop_info.shop_logo
                                           ? <img src={ord.shop_info.shop_logo} alt={ord.shop_info.shop_name} className="w-full h-full object-cover" />
@@ -649,7 +666,7 @@ export default function OrderDetail() {
                                         }
                                       </div>
                                       <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-default-900 dark:text-zinc-100 truncate flex items-center gap-1">
+                                        <p className="font-semibold text-default-900 dark:text-[#e8eaed] truncate flex items-center gap-1">
                                           {ord.shop_info.shop_name}
                                           <BadgeCheck size={13} className="text-primary flex-shrink-0" />
                                         </p>
@@ -800,7 +817,7 @@ export default function OrderDetail() {
                                         {Object.entries(pd.product.attributes).map(([k, v]) => (
                                           <div key={k}>
                                             <span className="text-xs text-default-400 capitalize">{k}: </span>
-                                            <span className="text-xs font-medium text-default-700 dark:text-zinc-300">{String(v)}</span>
+                                            <span className="text-xs font-medium text-default-700 dark:text-[#c8cbd4]">{String(v)}</span>
                                           </div>
                                         ))}
                                       </div>
@@ -859,7 +876,7 @@ export default function OrderDetail() {
                                       {pd.product.detail_info.care_instructions && (
                                         <div>
                                           <p className="text-xs text-default-400 mb-1">Hướng dẫn bảo quản</p>
-                                          <p className="text-xs text-default-600 dark:text-zinc-400 leading-relaxed">
+                                          <p className="text-xs text-default-600 dark:text-[#9ea3b5] leading-relaxed">
                                             {pd.product.detail_info.care_instructions}
                                           </p>
                                         </div>
@@ -894,8 +911,8 @@ export default function OrderDetail() {
             </div>
 
             {/* Price breakdown */}
-            <div className="mt-5 pt-4 border-t border-default-100 dark:border-zinc-700 space-y-2">
-              <div className="flex justify-between text-sm text-default-600 dark:text-zinc-400">
+            <div className="mt-5 pt-4 border-t border-default-100 dark:border-[#2e3347] space-y-2">
+              <div className="flex justify-between text-sm text-default-600 dark:text-[#9ea3b5]">
                 <span>Tạm tính ({(ord.items || []).reduce((s, i) => s + i.qty, 0)} sản phẩm)</span>
                 <span>{formatCurrency(subtotal)}</span>
               </div>
@@ -917,7 +934,7 @@ export default function OrderDetail() {
                   <span>-{formatCurrency(ord.credits_used)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm text-default-600 dark:text-zinc-400">
+              <div className="flex justify-between text-sm text-default-600 dark:text-[#9ea3b5]">
                 <span>Phí vận chuyển</span>
                 <span>
                   {Number(ord.shipping_fee) > 0
@@ -927,7 +944,7 @@ export default function OrderDetail() {
               </div>
               <Divider />
               <div className="flex justify-between items-center">
-                <span className="font-bold text-default-900 dark:text-zinc-100">Tổng cộng</span>
+                <span className="font-bold text-default-900 dark:text-[#e8eaed]">Tổng cộng</span>
                 <span className="font-black text-primary text-xl">{formatCurrency(Number(ord.total_price))}</span>
               </div>
             </div>
@@ -937,10 +954,10 @@ export default function OrderDetail() {
 
       {/* ── Order Info ────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] dark:bg-[#131620] overflow-hidden">
           <div className="h-0.5 bg-gradient-to-r from-sky-400 to-blue-500" />
           <CardBody className="p-5">
-            <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+            <h3 className="font-bold text-default-900 dark:text-[#e8eaed] mb-3 flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
                 <FileText size={14} className="text-sky-500" />
               </div>
@@ -984,9 +1001,9 @@ export default function OrderDetail() {
                 </div>
               )}
               {ord.note && (
-                <div className="mt-2 bg-default-50 dark:bg-zinc-800 rounded-xl p-3">
+                <div className="mt-2 bg-default-50 dark:bg-[#1a1e2e] rounded-xl p-3">
                   <p className="text-xs text-default-400 mb-1">Ghi chú đơn hàng</p>
-                  <p className="text-sm text-default-700 dark:text-zinc-300">{ord.note}</p>
+                  <p className="text-sm text-default-700 dark:text-[#c8cbd4]">{ord.note}</p>
                 </div>
               )}
             </div>
@@ -997,17 +1014,17 @@ export default function OrderDetail() {
       {/* ── Shipping Address ──────────────────────────────────────────────── */}
       {ord.shipping_address && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] dark:bg-[#131620] overflow-hidden">
             <div className="h-0.5 bg-gradient-to-r from-emerald-400 to-teal-500" />
             <CardBody className="p-5">
-              <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+              <h3 className="font-bold text-default-900 dark:text-[#e8eaed] mb-3 flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
                   <MapPin size={14} className="text-emerald-500" />
                 </div>
                 Địa chỉ giao hàng
               </h3>
               <div className="space-y-1.5 text-sm">
-                <p className="font-semibold text-default-900 dark:text-zinc-100">
+                <p className="font-semibold text-default-900 dark:text-[#e8eaed]">
                   {ord.shipping_address.name}
                 </p>
                 {ord.shipping_address.phone && (
@@ -1015,7 +1032,7 @@ export default function OrderDetail() {
                     <Phone size={12} /> {ord.shipping_address.phone}
                   </p>
                 )}
-                <p className="text-default-600 dark:text-zinc-400">
+                <p className="text-default-600 dark:text-[#9ea3b5]">
                   {[
                     ord.shipping_address.street,
                     ord.shipping_address.ward,
@@ -1032,9 +1049,9 @@ export default function OrderDetail() {
       {/* ── Shop info ─────────────────────────────────────────────────────── */}
       {ord.shop_info && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.11 }}>
-          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 overflow-hidden">
+          <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] overflow-hidden">
             {/* Gradient header */}
-            <div className="px-5 py-4 bg-gradient-to-r from-violet-500/10 via-primary/5 to-indigo-500/10 dark:from-violet-900/30 dark:to-indigo-900/20 border-b border-default-100 dark:border-zinc-700">
+            <div className="px-5 py-4 bg-gradient-to-r from-violet-500/10 via-primary/5 to-indigo-500/10 dark:from-violet-900/30 dark:to-indigo-900/20 border-b border-default-100 dark:border-[#2e3347]">
               <div className="flex items-center gap-3">
                 <div className="w-14 h-14 rounded-2xl overflow-hidden bg-white dark:bg-zinc-700 flex-shrink-0 border-2 border-white dark:border-zinc-600 shadow-md">
                   {ord.shop_info.shop_logo
@@ -1043,7 +1060,7 @@ export default function OrderDetail() {
                   }
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-default-900 dark:text-zinc-100 flex items-center gap-1.5 text-base">
+                  <p className="font-bold text-default-900 dark:text-[#e8eaed] flex items-center gap-1.5 text-base">
                     {ord.shop_info.shop_name}
                     <BadgeCheck size={15} className="text-primary flex-shrink-0" />
                   </p>
@@ -1095,11 +1112,11 @@ export default function OrderDetail() {
 
       {/* ── Tracking ──────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
-        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-zinc-700 dark:bg-zinc-900 overflow-hidden">
+        <Card radius="xl" shadow="sm" className="mb-4 border border-default-100 dark:border-[#2e3347] dark:bg-[#131620] overflow-hidden">
           <div className="h-0.5 bg-gradient-to-r from-indigo-400 to-blue-400" />
           <CardBody className="p-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-default-900 dark:text-zinc-100 flex items-center gap-2">
+              <h3 className="font-bold text-default-900 dark:text-[#e8eaed] flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
                   <Truck size={14} className="text-indigo-500" />
                 </div>
@@ -1137,7 +1154,7 @@ export default function OrderDetail() {
                           {idx < arr.length - 1 && <div className="w-px flex-1 bg-default-200 dark:bg-zinc-700 my-1 min-h-[20px]" />}
                         </div>
                         <div className="pb-3 flex-1">
-                          <p className={`text-sm font-semibold ${isFirst ? "text-primary" : "text-default-700 dark:text-zinc-300"}`}>
+                          <p className={`text-sm font-semibold ${isFirst ? "text-primary" : "text-default-700 dark:text-[#c8cbd4]"}`}>
                             {s.text}
                           </p>
                           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -1166,7 +1183,7 @@ export default function OrderDetail() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}>
           <Card radius="xl" shadow="sm" className="mb-4 border border-warning-200 bg-warning-50/40 dark:bg-warning-900/10 dark:border-warning-800">
             <CardBody className="p-5">
-              <h3 className="font-bold text-default-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+              <h3 className="font-bold text-default-900 dark:text-[#e8eaed] mb-3 flex items-center gap-2">
                 <RotateCcw size={16} className="text-warning" />
                 Yêu cầu hoàn/đổi
               </h3>
@@ -1191,14 +1208,14 @@ export default function OrderDetail() {
                   <span className="text-default-500">Ngày yêu cầu</span>
                   <span>{new Date(refundInfo.createdAt).toLocaleDateString("vi-VN")}</span>
                 </div>
-                <div className="bg-white dark:bg-zinc-800 rounded-xl p-3 mt-2">
+                <div className="bg-white dark:bg-[#1a1e2e] rounded-xl p-3 mt-2">
                   <p className="text-xs text-default-400 mb-1">Lý do</p>
-                  <p className="text-sm text-default-700 dark:text-zinc-300">{refundInfo.reason}</p>
+                  <p className="text-sm text-default-700 dark:text-[#c8cbd4]">{refundInfo.reason}</p>
                 </div>
                 {refundInfo.shop_note && (
-                  <div className="bg-default-50 dark:bg-zinc-800 rounded-xl p-3">
+                  <div className="bg-default-50 dark:bg-[#1a1e2e] rounded-xl p-3">
                     <p className="text-xs text-default-400 mb-1">Phản hồi từ shop</p>
-                    <p className="text-sm text-default-700 dark:text-zinc-300">{refundInfo.shop_note}</p>
+                    <p className="text-sm text-default-700 dark:text-[#c8cbd4]">{refundInfo.shop_note}</p>
                   </div>
                 )}
                 {refundInfo.status === "completed" && (
@@ -1215,7 +1232,7 @@ export default function OrderDetail() {
 
       {/* ── Actions ───────────────────────────────────────────────────────── */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}>
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-default-100 dark:border-zinc-700 shadow-sm overflow-hidden mb-4">
+        <div className="bg-white dark:bg-[#131620] rounded-2xl border border-default-100 dark:border-[#2e3347] shadow-sm overflow-hidden mb-4">
           <div className="h-0.5 bg-gradient-to-r from-primary to-violet-500" />
           <div className="px-5 py-4">
             <p className="text-xs font-semibold text-default-400 uppercase tracking-wide mb-3">Thao tác</p>
@@ -1243,6 +1260,17 @@ export default function OrderDetail() {
                 onPress={handleInvoice}>
                 Hóa đơn
               </Button>
+
+              {/* Confirm receipt */}
+              {ord.status === "delivered" && (
+                <Button color="success" variant="solid" radius="lg" size="sm"
+                  isLoading={confirmLoading}
+                  startContent={<PackageCheck size={14} />}
+                  onPress={handleConfirmReceipt}
+                  className="font-bold text-white">
+                  Đã nhận hàng
+                </Button>
+              )}
 
               {/* Refund/Return/Exchange */}
               {REFUND_ALLOWED.has(ord.status) && !refundInfo && !refundDeadlinePassed() && (
@@ -1334,13 +1362,13 @@ export default function OrderDetail() {
                 <RotateCcw size={18} className="mr-2 text-warning" /> Yêu cầu hoàn/đổi hàng
               </ModalHeader>
               <ModalBody className="space-y-4">
-                <p className="text-xs text-default-400 bg-default-50 dark:bg-zinc-800 rounded-xl px-3 py-2">
+                <p className="text-xs text-default-400 bg-default-50 dark:bg-[#1a1e2e] rounded-xl px-3 py-2">
                   Bạn có <strong>3 ngày</strong> kể từ khi nhận hàng để gửi yêu cầu.
                 </p>
 
                 {/* Type */}
                 <div>
-                  <p className="text-sm font-semibold text-default-700 dark:text-zinc-300 mb-2">Loại yêu cầu</p>
+                  <p className="text-sm font-semibold text-default-700 dark:text-[#c8cbd4] mb-2">Loại yêu cầu</p>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { key: "refund",   label: "Hoàn tiền",   desc: "Trả hàng, lấy lại tiền" },
@@ -1353,7 +1381,7 @@ export default function OrderDetail() {
                             ? "border-primary bg-primary/5 dark:bg-primary/10"
                             : "border-default-200 dark:border-zinc-600 hover:border-default-300"
                         }`}>
-                        <p className={`text-sm font-bold ${refundType === rt.key ? "text-primary" : "text-default-700 dark:text-zinc-300"}`}>
+                        <p className={`text-sm font-bold ${refundType === rt.key ? "text-primary" : "text-default-700 dark:text-[#c8cbd4]"}`}>
                           {rt.label}
                         </p>
                         <p className="text-xs text-default-400 mt-0.5">{rt.desc}</p>
@@ -1377,7 +1405,7 @@ export default function OrderDetail() {
 
                 {/* Evidence images */}
                 <div>
-                  <p className="text-sm font-semibold text-default-700 dark:text-zinc-300 mb-2">
+                  <p className="text-sm font-semibold text-default-700 dark:text-[#c8cbd4] mb-2">
                     Ảnh minh chứng (tùy chọn, tối đa 5 ảnh)
                   </p>
                   <label className="flex items-center justify-center gap-2 border-2 border-dashed border-default-200 dark:border-zinc-600 rounded-xl py-4 cursor-pointer hover:border-primary transition-colors">
@@ -1443,7 +1471,7 @@ export default function OrderDetail() {
                 <MessageSquare size={18} className="text-warning" /> Gửi khiếu nại
               </ModalHeader>
               <ModalBody className="space-y-3">
-                <p className="text-xs text-default-400 bg-default-50 dark:bg-zinc-800 rounded-xl px-3 py-2">
+                <p className="text-xs text-default-400 bg-default-50 dark:bg-[#1a1e2e] rounded-xl px-3 py-2">
                   Khiếu nại sẽ được gửi tới bộ phận hỗ trợ. Chúng tôi sẽ phản hồi trong vòng 24h.
                 </p>
                 <Input
@@ -1460,7 +1488,7 @@ export default function OrderDetail() {
                   onValueChange={setTicketMessage}
                   radius="lg" minRows={4} isRequired
                 />
-                <div className="text-xs text-default-400 bg-default-50 dark:bg-zinc-800 rounded-xl px-3 py-2">
+                <div className="text-xs text-default-400 bg-default-50 dark:bg-[#1a1e2e] rounded-xl px-3 py-2">
                   Đơn hàng: <span className="font-mono font-bold">#{ord.order_code}</span>
                 </div>
               </ModalBody>

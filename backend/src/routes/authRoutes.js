@@ -10,6 +10,7 @@ router.post("/register/verify", authController.verifyRegisterOTP);
 router.post("/login", authController.login);
 router.post("/google-login", authController.googleLogin);
 router.post("/forgot-password/request-otp", limitOtpSends, authController.requestResetOTP);
+router.post("/forgot-password/check-otp", authController.checkResetOTP);
 router.post("/forgot-password/verify", authController.resetPassword);
 router.post("/change-password", verifyToken, authController.changePassword);
 router.post("/logout", verifyToken, authController.logout);

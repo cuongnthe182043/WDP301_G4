@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
-  BarChart2, Key, Shield, Package, Clock, MessageSquare, Users,
-  FolderTree, Tag,
+  BarChart2, Key, Shield, ShieldBan, Package, Clock, MessageSquare, Users,
+  FolderTree, Tag, Wallet, AlertCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -24,43 +24,45 @@ export default function AdminLayout() {
     { to: "/admin/products/pending", label: t("admin.pending_label"),      icon: Clock,          color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
     { divider: true },
     { to: "/admin/reviews",          label: t("admin.moderation_reviews"), icon: MessageSquare,  color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
+    { to: "/admin/tickets",          label: "Khiếu nại",                   icon: AlertCircle,    color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { to: "/admin/users",            label: t("admin.users_nav"),          icon: Users,          color: "#ec4899", bg: "rgba(236,72,153,0.1)"  },
+    { to: "/admin/moderation",       label: t("admin.moderation_nav"),     icon: ShieldBan,      color: "#dc2626", bg: "rgba(220,38,38,0.1)"  },
     { divider: true },
     { to: "/admin/categories",       label: t("shop.categories"),          icon: FolderTree,     color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
     { to: "/admin/brands",           label: t("shop.brands"),              icon: Tag,            color: "#a855f7", bg: "rgba(168,85,247,0.1)"  },
     { divider: true },
     { to: "/admin/audit-logs",       label: t("admin.audit_logs"),         icon: FileText,       color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
-    { to: "/admin/reconciliation",   label: t("admin.reconciliation"),     icon: BarChart2,      color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
-    { to: "/admin/api-keys",         label: t("admin.api_keys"),           icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+    { to: "/admin/reconciliation",   label: t("finance.title"),            icon: Wallet,         color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
+    { to: "/admin/api-keys",         label: "Cấu hình & API Keys",         icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { divider: true },
     { to: "/admin/system-config",    label: t("admin.system_config"),      icon: Settings,       color: "#64748b", bg: "rgba(100,116,139,0.1)" },
   ];
 
   const S = {
-    sidebar:     isDark ? { background: "#18181b", borderRight: "1px solid #27272a", boxShadow: "2px 0 16px rgba(0,0,0,0.35)" }
+    sidebar:     isDark ? { background: "#1a1e2e", borderRight: "1px solid #2e3347", boxShadow: "2px 0 16px rgba(0,0,0,0.2)" }
                         : { background: "#ffffff",  borderRight: "1px solid #e8edf5", boxShadow: "2px 0 12px rgba(239,68,68,0.05)" },
-    topBorder:   isDark ? { borderBottom: "1px solid #27272a" } : { borderBottom: "1px solid #f0f4fb" },
-    brandText:   isDark ? "#f4f4f5" : "#1e293b",
-    subText:     isDark ? "#52525b" : "#94a3b8",
-    collapseBtn: isDark ? { background: "#27272a", color: "#71717a" } : { background: "#f1f5f9", color: "#94a3b8" },
-    collapseBtnHover: isDark ? { background: "#3f3f46", color: "#d4d4d8" } : { background: "#e2e8f0", color: "#475569" },
-    divider:     isDark ? "#27272a" : "#f0f4fb",
-    navInactive: isDark ? "#71717a" : "#64748b",
-    navHoverBg:  isDark ? "#27272a" : "#f8fafc",
-    navHoverTxt: isDark ? "#f4f4f5" : "#1e293b",
-    footerBorder:isDark ? { borderTop: "1px solid #27272a" } : { borderTop: "1px solid #f0f4fb" },
-    userHoverBg: isDark ? "#27272a" : "#f8fafc",
+    topBorder:   isDark ? { borderBottom: "1px solid #2e3347" } : { borderBottom: "1px solid #f0f4fb" },
+    brandText:   isDark ? "#e8eaed" : "#1e293b",
+    subText:     isDark ? "#4b5263" : "#94a3b8",
+    collapseBtn: isDark ? { background: "#222738", color: "#6b7280" } : { background: "#f1f5f9", color: "#94a3b8" },
+    collapseBtnHover: isDark ? { background: "#2e3347", color: "#c8cbd4" } : { background: "#e2e8f0", color: "#475569" },
+    divider:     isDark ? "#2e3347" : "#f0f4fb",
+    navInactive: isDark ? "#6b7280" : "#64748b",
+    navHoverBg:  isDark ? "#222738" : "#f8fafc",
+    navHoverTxt: isDark ? "#e8eaed" : "#1e293b",
+    footerBorder:isDark ? { borderTop: "1px solid #2e3347" } : { borderTop: "1px solid #f0f4fb" },
+    userHoverBg: isDark ? "#222738" : "#f8fafc",
   };
 
   return (
     <div
       className="flex min-h-[calc(100dvh-var(--header-height,64px))]"
-      style={{ background: isDark ? "#09090b" : "#f8fafc" }}
+      style={{ background: isDark ? "#131620" : "#f8fafc" }}
     >
 
       {/* ── Sidebar ── */}
       <aside
-        className="flex flex-col flex-shrink-0 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
+        className="flex flex-col flex-shrink-0 sticky top-0 h-dvh transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
         style={{ width: collapsed ? "68px" : "220px", ...S.sidebar }}
       >
         {/* Brand */}
@@ -98,7 +100,7 @@ export default function AdminLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto" style={{ padding: "8px" }}>
+        <nav className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "8px" }}>
           {NAV_ITEMS.map((item, idx) => {
             if (item.divider) {
               return <Divider key={`div-${idx}`} className="my-1" style={{ background: S.divider }} />;
@@ -200,7 +202,7 @@ export default function AdminLayout() {
       </aside>
 
       {/* ── Main ── */}
-      <main className="flex-1 overflow-auto p-6" style={{ background: isDark ? "#09090b" : undefined }}>
+      <main className="flex-1 overflow-auto p-6" style={{ background: isDark ? "#131620" : undefined }}>
         <Outlet />
       </main>
     </div>
