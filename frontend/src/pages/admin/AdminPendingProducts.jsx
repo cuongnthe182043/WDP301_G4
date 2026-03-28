@@ -6,6 +6,7 @@ import {
 } from "@heroui/react";
 import { Search, CheckCircle, XCircle, Eye, Zap, AlertTriangle, Shield, ShieldAlert } from "lucide-react";
 import apiClient from "../../services/apiClient";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const STATUS_COLOR = { pending: "warning", active: "success", inactive: "default", out_of_stock: "danger" };
 const SEVERITY_COLOR = { high: "danger", medium: "warning", low: "default" };
@@ -22,8 +23,6 @@ const api = {
   stats:     () => apiClient.get("/admin/products/stats").then(r => r.data.data),
 };
 
-const LIMIT = 20;
-
 export default function AdminPendingProducts() {
   const { t } = useTranslation();
 
@@ -34,6 +33,7 @@ export default function AdminPendingProducts() {
     out_of_stock: t("shop.product_status_out_of_stock"),
   };
 
+  const [limit,              setLimit]              = useState(20);
   const [loading,            setLoading]            = useState(true);
   const [products,           setProducts]           = useState([]);
   const [total,              setTotal]              = useState(0);
@@ -53,7 +53,7 @@ export default function AdminPendingProducts() {
   const loadProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { page, limit: LIMIT, status: "pending" };
+      const params = { page, limit: limit, status: "pending" };
       if (query.trim()) params.q = query.trim();
       const data = await api.list(params);
       setProducts(data?.items || []);
@@ -63,7 +63,7 @@ export default function AdminPendingProducts() {
     } finally {
       setLoading(false);
     }
-  }, [page, query]);
+  }, [page, limit, query]);
 
   const loadStats = useCallback(async () => {
     try { setStats(await api.stats()); } catch {}
@@ -154,7 +154,7 @@ export default function AdminPendingProducts() {
     }
   };
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="space-y-5">
@@ -353,17 +353,7 @@ export default function AdminPendingProducts() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-            {t("shop.product_prev")}
-          </Button>
-          <span className="text-sm text-gray-500 dark:text-[#9ea3b5] self-center">{t("shop.product_page", { page, total: totalPages })}</span>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-            {t("shop.product_next")}
-          </Button>
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Detail Modal */}
       <Modal isOpen={!!detailProd} onOpenChange={(o) => !o && setDetailProd(null)} size="2xl" radius="xl" scrollBehavior="inside">

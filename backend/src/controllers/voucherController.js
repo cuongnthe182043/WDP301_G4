@@ -69,7 +69,7 @@ exports.getAllVouchers = async (req, res, next) => {
 // ─────────────────────────────────────────────────────────────────────────────
 exports.listPublicVouchers = async (req, res, next) => {
   try {
-    const { shop_id, page = 1, limit = 20 } = req.query;
+    const { shop_id, voucher_type, page = 1, limit = 20 } = req.query;
     const now = new Date();
     const cond = {
       is_active: true,
@@ -78,6 +78,7 @@ exports.listPublicVouchers = async (req, res, next) => {
       $expr: { $lt: ["$used_count", "$max_uses"] },
     };
     if (shop_id) cond.shop_id = shop_id;
+    if (voucher_type && ["product", "shipping"].includes(voucher_type)) cond.voucher_type = voucher_type;
 
     const pg  = Math.max(1, parseInt(page));
     const lim = Math.min(50, Math.max(1, parseInt(limit)));
@@ -86,7 +87,7 @@ exports.listPublicVouchers = async (req, res, next) => {
         .sort({ valid_to: 1 })
         .skip((pg - 1) * lim)
         .limit(lim)
-        .select("code discount_type discount_value min_order_value max_uses used_count valid_from valid_to shop_id")
+        .select("code voucher_type discount_type discount_value max_discount min_order_value max_uses used_count valid_from valid_to shop_id")
         .lean(),
       Voucher.countDocuments(cond),
     ]);
@@ -144,6 +145,7 @@ exports.validateVoucherCode = async (req, res, next) => {
       message: "Voucher hợp lệ",
       data: {
         code: v.code,
+        voucher_type:    v.voucher_type || "product",
         discount_type:   v.discount_type,
         discount_value:  v.discount_value,
         min_order_value: v.min_order_value,
@@ -176,14 +178,17 @@ exports.getVoucherById = async (req, res, next) => {
 exports.createVoucher = async (req, res, next) => {
   try {
     const {
-      code, discount_type, discount_value, max_uses,
-      usage_limit_per_user, min_order_value,
+      code, voucher_type, discount_type, discount_value, max_discount,
+      max_uses, usage_limit_per_user, min_order_value,
       applicable_products, applicable_users,
       valid_from, valid_to, is_active,
     } = req.body;
 
     if (!code || !discount_type || discount_value == null || !max_uses || !valid_from || !valid_to)
       return res.status(400).json({ message: "Thiếu thông tin bắt buộc" });
+
+    if (voucher_type && !["product", "shipping"].includes(voucher_type))
+      return res.status(400).json({ message: "Loại voucher không hợp lệ (product | shipping)" });
 
     const discountErr = validateDiscount(discount_type, discount_value);
     if (discountErr) return res.status(400).json({ message: discountErr });
@@ -198,15 +203,17 @@ exports.createVoucher = async (req, res, next) => {
     const voucher = await Voucher.create({
       _id:                  `vou-${uuidv4()}`,
       code:                 normalizedCode,
+      voucher_type:         voucher_type || "product",
       discount_type,
       discount_value:       Number(discount_value),
+      max_discount:         Number(max_discount) || 0,
       max_uses:             Math.max(1, Number(max_uses)),
       usage_limit_per_user: Number(usage_limit_per_user) || 1,
       min_order_value:      Number(min_order_value) || 0,
       applicable_products:  Array.isArray(applicable_products) ? applicable_products : [],
       applicable_users:     Array.isArray(applicable_users)     ? applicable_users    : [],
       scope:    "shop",
-      shop_id:  String(req.shop._id),   // ← always use the real shop ID
+      shop_id:  String(req.shop._id),
       valid_from: new Date(valid_from),
       valid_to:   new Date(valid_to),
       is_active:  is_active !== undefined ? Boolean(is_active) : true,
@@ -241,10 +248,13 @@ exports.updateVoucher = async (req, res, next) => {
     if (!voucher) return res.status(404).json({ message: "Không tìm thấy voucher hoặc bạn không có quyền sửa" });
 
     const {
-      code, discount_type, discount_value, max_uses,
-      usage_limit_per_user, min_order_value,
+      code, voucher_type, discount_type, discount_value, max_discount,
+      max_uses, usage_limit_per_user, min_order_value,
       valid_from, valid_to, is_active,
     } = req.body;
+
+    if (voucher_type !== undefined && !["product", "shipping"].includes(voucher_type))
+      return res.status(400).json({ message: "Loại voucher không hợp lệ (product | shipping)" });
 
     // Validate discount fields if provided
     if (discount_type !== undefined || discount_value !== undefined) {
@@ -283,8 +293,10 @@ exports.updateVoucher = async (req, res, next) => {
       }
     }
 
+    if (voucher_type   !== undefined) voucher.voucher_type        = voucher_type;
     if (discount_type  !== undefined) voucher.discount_type       = discount_type;
     if (discount_value !== undefined) voucher.discount_value      = Number(discount_value);
+    if (max_discount   !== undefined) voucher.max_discount        = Number(max_discount) || 0;
     if (max_uses       !== undefined) voucher.max_uses            = Math.max(Number(max_uses), voucher.used_count);
     if (usage_limit_per_user !== undefined) voucher.usage_limit_per_user = Number(usage_limit_per_user);
     if (min_order_value !== undefined)      voucher.min_order_value      = Number(min_order_value);

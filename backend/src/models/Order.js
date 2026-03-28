@@ -19,6 +19,7 @@ const OrderSchema = new mongoose.Schema(
 
     address_id: { type: String, ref: "Address" },
     voucher_id: { type: String, ref: "Voucher" },
+    shipping_voucher_id: { type: String, ref: "Voucher" },
 
     payment_method: {
       type: String,

@@ -9,6 +9,7 @@ const notif      = require("../services/dbNotificationService");
 const ghn        = require("../services/ghnService");
 const refundSvc  = require("../services/refundService");
 const auditLog   = require("../services/auditLogService");
+const settleSvc  = require("../services/platformFeeService");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -414,6 +415,11 @@ exports.syncFromGhn = async (req, res, next) => {
       await order.save();
       updated = true;
       console.log(`[syncFromGhn] order ${order.order_code}: ${prev} → ${internalStatus} (GHN: ${ghnStatus})`);
+
+      // Settle platform fee when order is delivered
+      if (internalStatus === "delivered") {
+        settleSvc.settleOrder(order).catch(e => console.error("[settle]", e.message));
+      }
     }
 
     res.json({
@@ -505,6 +511,7 @@ exports.handleGhnWebhook = async (req, res) => {
       notif.orderShipped(order.user_id, order.order_code).catch(() => {});
     } else if (internalStatus === "delivered") {
       notif.orderDelivered(order.user_id, order.order_code).catch(() => {});
+      settleSvc.settleOrder(order).catch(e => console.error("[settle]", e.message));
     }
 
     res.json({ success: true });

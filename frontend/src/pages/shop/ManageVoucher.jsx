@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Card, CardBody, Button, Input, Pagination, Chip, Select, SelectItem,
+  Card, CardBody, Button, Input, Chip, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner, Progress, Switch,
 } from "@heroui/react";
 import { Plus, Search, Eye, Pencil, Trash2, CheckCircle2, XCircle, Copy, Check, Send, Zap } from "lucide-react";
@@ -10,6 +10,7 @@ import { voucherDistributeApi } from "../../services/shopMarketingService";
 import { useToast } from "../../components/common/ToastProvider";
 import { formatCurrency } from "../../utils/formatCurrency";
 import apiClient from "../../services/apiClient";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const formatDate  = (d) => d ? new Date(d).toLocaleDateString("vi-VN") : "—";
@@ -32,8 +33,10 @@ const todayStr = () => {
 // ── Default form state (is_active = true always) ──────────────────────────────
 const BLANK = {
   code: "",
+  voucher_type: "product",
   discount_type: "percent",
   discount_value: "",
+  max_discount: "0",
   max_uses: "",
   usage_limit_per_user: "1",
   min_order_value: "0",
@@ -265,7 +268,7 @@ export default function ManageVoucher() {
   const [vouchers,    setVouchers]    = useState([]);
   const [listLoading, setListLoading] = useState(true);
   const [page,        setPage]        = useState(1);
-  const [totalPages,  setTotalPages]  = useState(1);
+  const [limit,       setLimit]       = useState(10);
   const [total,       setTotal]       = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm,  setSearchTerm]  = useState("");
@@ -289,17 +292,16 @@ export default function ManageVoucher() {
     const target = pg ?? pageRef.current;
     setListLoading(true);
     try {
-      const res = await voucherApi.getAll(target, 10, searchTerm, statusFilter);
+      const res = await voucherApi.getAll(target, limit, searchTerm, statusFilter);
       const d   = res?.data || res;  // handle both { data: {...} } and raw
       setVouchers(d?.items || []);
       setTotal(d?.total || 0);
-      setTotalPages(d?.totalPages || 1);
     } catch (e) {
       toast.error(e?.response?.data?.message || e.message || "Không tải được danh sách voucher");
     } finally {
       setListLoading(false);
     }
-  }, [searchTerm, statusFilter]); // eslint-disable-line
+  }, [searchTerm, statusFilter, limit]); // eslint-disable-line
 
   useEffect(() => { load(page); }, [page, searchTerm, statusFilter]); // eslint-disable-line
 
@@ -635,11 +637,13 @@ export default function ManageVoucher() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={setPage}
+        onLimitChange={(v) => { setLimit(v); setPage(1); }}
+      />
 
       {/* ── Distribute Modal ── */}
       <DistributeModal
@@ -727,6 +731,19 @@ export default function ManageVoucher() {
                         maxLength={30}
                       />
 
+                      {/* Voucher type */}
+                      <Select
+                        label="Loại voucher *"
+                        aria-label="Loại voucher"
+                        selectedKeys={new Set([fields.voucher_type || "product"])}
+                        onSelectionChange={(k) => setField("voucher_type", Array.from(k)[0])}
+                        radius="lg"
+                        description={fields.voucher_type === "shipping" ? "Giảm phí vận chuyển cho khách hàng" : "Giảm giá sản phẩm cho khách hàng"}
+                      >
+                        <SelectItem key="product">🛒 Voucher sản phẩm</SelectItem>
+                        <SelectItem key="shipping">🚚 Voucher vận chuyển</SelectItem>
+                      </Select>
+
                       {/* Discount type + value */}
                       <div className="grid grid-cols-2 gap-3">
                         <Select
@@ -756,6 +773,21 @@ export default function ManageVoucher() {
                           errorMessage={errors.discount_value}
                         />
                       </div>
+
+                      {/* Max discount (for percent type) */}
+                      {fields.discount_type === "percent" && (
+                        <Input
+                          label="Giảm tối đa (₫)"
+                          type="number"
+                          min="0"
+                          step="1000"
+                          placeholder="0 = không giới hạn"
+                          value={String(fields.max_discount || "0")}
+                          onValueChange={(v) => setField("max_discount", v)}
+                          radius="lg"
+                          description="Số tiền giảm tối đa khi dùng voucher phần trăm"
+                        />
+                      )}
 
                       {/* Max uses + per user */}
                       <div className="grid grid-cols-2 gap-3">

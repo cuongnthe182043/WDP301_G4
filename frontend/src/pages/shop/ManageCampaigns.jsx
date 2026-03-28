@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Card, CardBody, Button, Input, Textarea, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
-  Chip, Pagination, Spinner, Avatar,
+  Chip, Spinner, Avatar,
 } from "@heroui/react";
-import { Plus, Megaphone, Mail, Bell, Users, ChevronRight, Check } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
+import { Plus, Megaphone, Mail, Bell, Users, ChevronRight, Check, RefreshCw } from "lucide-react";
 import { campaignApi, voucherDistributeApi } from "../../services/shopMarketingService";
 import { voucherApi } from "../../services/voucherService";
 import apiClient from "../../services/apiClient";
@@ -246,20 +247,20 @@ export default function ManageCampaigns() {
   const [tp,        setTp]        = useState(1);
   const [typeFilter, setTypeFilter] = useState("");
   const [showCreate, setShowCreate] = useState(false);
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit };
       if (typeFilter) params.type = typeFilter;
       const res = await campaignApi.list(params);
       setCampaigns(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTp(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTp(Math.ceil((res.data?.total || 0) / limit));
     } catch { /* silent */ }
     finally { setLoading(false); }
-  }, [page, typeFilter]);
+  }, [page, typeFilter, limit]);
 
   useEffect(() => { load(page); }, [page, typeFilter]);
 
@@ -323,7 +324,7 @@ export default function ManageCampaigns() {
         </CardBody>
       </Card>
 
-      {tp > 1 && <div className="flex justify-center"><Pagination total={tp} page={page} onChange={setPage} color="primary" radius="lg" /></div>}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       <CreateModal isOpen={showCreate} onClose={() => setShowCreate(false)} onCreated={() => load(1)} />
     </div>

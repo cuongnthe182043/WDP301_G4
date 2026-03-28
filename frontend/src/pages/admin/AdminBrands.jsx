@@ -5,8 +5,9 @@ import {
   Card, CardBody, Button, Input, Select, SelectItem, Spinner,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Chip, Tooltip,
 } from "@heroui/react";
-import { Plus, Pencil, Trash2, Upload, X, Search, ChevronLeft, ChevronRight, Tag, Globe } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, X, Search, Tag, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const adminUploadImages = async (files) => {
   const fd = new FormData();
@@ -16,7 +17,6 @@ const adminUploadImages = async (files) => {
 };
 
 const EMPTY = { name: "", country: "", gender_focus: "mixed", description: "", logo_url: "", logo_public_id: "" };
-const LIMIT = 10;
 const GENDER_COLOR = { men: "primary", women: "danger", unisex: "warning", mixed: "default" };
 
 export default function AdminBrands() {
@@ -41,6 +41,7 @@ export default function AdminBrands() {
   const [uploading, setUploading] = useState(false);
   const [search,    setSearch]    = useState("");
   const [genderFilter, setGenderFilter] = useState("all");
+  const [limit,     setLimit]     = useState(10);
   const [page,      setPage]      = useState(1);
 
   const load = useCallback(async () => {
@@ -62,8 +63,8 @@ export default function AdminBrands() {
     return list;
   }, [rows, search, genderFilter]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / LIMIT));
-  const paginated = filtered.slice((page - 1) * LIMIT, page * LIMIT);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / limit));
+  const paginated = filtered.slice((page - 1) * limit, page * limit);
 
   useEffect(() => { setPage(1); }, [search, genderFilter]);
 
@@ -229,7 +230,7 @@ export default function AdminBrands() {
               </thead>
               <tbody className="divide-y divide-gray-50 dark:divide-zinc-800">
                 {paginated.map((r, idx) => {
-                  const rowNum = (page - 1) * LIMIT + idx + 1;
+                  const rowNum = (page - 1) * limit + idx + 1;
                   return (
                     <tr key={r._id} className="hover:bg-gray-50/50 dark:hover:bg-zinc-800/30 transition-colors">
                       <td className="px-5 py-3 text-xs text-gray-400 dark:text-[#6b7280] font-mono">{rowNum}</td>
@@ -280,41 +281,7 @@ export default function AdminBrands() {
       </Card>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between px-1">
-          <p className="text-xs text-gray-400 dark:text-[#6b7280]">
-            {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, filtered.length)} / {filtered.length}
-          </p>
-          <div className="flex items-center gap-1.5">
-            <Button size="sm" variant="flat" radius="lg" isIconOnly isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-              <ChevronLeft size={15} />
-            </Button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1)
-              .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
-              .reduce((acc, p, idx, arr) => {
-                if (idx > 0 && p - arr[idx - 1] > 1) acc.push("...");
-                acc.push(p);
-                return acc;
-              }, [])
-              .map((p, i) =>
-                p === "..." ? (
-                  <span key={`dot-${i}`} className="text-xs text-gray-400 px-1">...</span>
-                ) : (
-                  <Button key={p} size="sm" radius="lg" isIconOnly
-                    variant={page === p ? "solid" : "flat"}
-                    color={page === p ? "primary" : "default"}
-                    onPress={() => setPage(p)}
-                  >
-                    <span className="text-xs">{p}</span>
-                  </Button>
-                )
-              )}
-            <Button size="sm" variant="flat" radius="lg" isIconOnly isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-              <ChevronRight size={15} />
-            </Button>
-          </div>
-        </div>
-      )}
+      <PaginationBar total={filtered.length} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Create/Edit Modal */}
       <Modal isOpen={!!modal} onOpenChange={(o) => { if (!o) { setModal(null); resetLogo(); } }} radius="xl" size="lg">

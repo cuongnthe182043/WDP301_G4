@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Divider } from "@heroui/react";
 import { useTheme } from "../../context/ThemeContext";
 import {
-  LayoutDashboard, Package, PackagePlus, AlertTriangle,
+  LayoutDashboard, Package, PackagePlus, AlertTriangle, Clock,
   FolderTree, Tag, Award, ChevronLeft, ChevronRight, Store, Settings,
   ShoppingCart, RefreshCw, Users, Star, Wallet, Megaphone, Ruler,
   MessageCircle,
@@ -23,7 +23,8 @@ export default function ShopLayout() {
     { to: "/shop/refunds",             label: t("shop.nav_returns"),          icon: RefreshCw,       color: "#f97316", bg: "rgba(249,115,22,0.1)"  },
     { to: "/shop/customers",           label: t("shop.nav_customers"),        icon: Users,           color: "#10b981", bg: "rgba(16,185,129,0.1)"  },
     { divider: true, label: t("shop.section_products") },
-    { to: "/shop/admin/products",      label: t("shop.nav_products"),         icon: Package,         color: "#6366f1", bg: "rgba(99,102,241,0.1)",  exact: true },
+    { to: "/shop/admin/products",         label: t("shop.nav_products"),         icon: Package,         color: "#6366f1", bg: "rgba(99,102,241,0.1)",  exact: true },
+    { to: "/shop/admin/products/pending", label: t("shop_pending.nav_label"),  icon: Clock,           color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { to: "/shop/admin/products/new",  label: t("shop.nav_add_product"),      icon: PackagePlus,     color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
     { to: "/shop/inventory/low-stock", label: t("shop.nav_low_stock"),        icon: AlertTriangle,   color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
     { divider: true, label: t("shop.section_catalog") },
@@ -66,7 +67,7 @@ export default function ShopLayout() {
 
       {/* ── Sidebar ── */}
       <aside
-        className="flex flex-col flex-shrink-0 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
+        className="flex flex-col flex-shrink-0 sticky top-0 h-dvh transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
         style={{ width: collapsed ? "68px" : "220px", ...S.sidebar }}
       >
         {/* Brand */}
@@ -104,7 +105,7 @@ export default function ShopLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto" style={{ padding: "8px" }}>
+        <nav className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "8px" }}>
           {NAV_ITEMS.map((item, idx) => {
             if (item.divider) {
               return (

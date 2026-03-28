@@ -5,7 +5,7 @@ import { Divider, Avatar } from "@heroui/react";
 import {
   Store, Settings, ChevronLeft, ChevronRight, FileText,
   BarChart2, Key, Shield, ShieldBan, Package, Clock, MessageSquare, Users,
-  FolderTree, Tag,
+  FolderTree, Tag, Wallet,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -31,7 +31,7 @@ export default function AdminLayout() {
     { to: "/admin/brands",           label: t("shop.brands"),              icon: Tag,            color: "#a855f7", bg: "rgba(168,85,247,0.1)"  },
     { divider: true },
     { to: "/admin/audit-logs",       label: t("admin.audit_logs"),         icon: FileText,       color: "#8b5cf6", bg: "rgba(139,92,246,0.1)"  },
-    { to: "/admin/reconciliation",   label: t("admin.reconciliation"),     icon: BarChart2,      color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
+    { to: "/admin/reconciliation",   label: t("finance.title"),            icon: Wallet,         color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },
     { to: "/admin/api-keys",         label: t("admin.api_keys"),           icon: Key,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
     { divider: true },
     { to: "/admin/system-config",    label: t("admin.system_config"),      icon: Settings,       color: "#64748b", bg: "rgba(100,116,139,0.1)" },
@@ -61,7 +61,7 @@ export default function AdminLayout() {
 
       {/* ── Sidebar ── */}
       <aside
-        className="flex flex-col flex-shrink-0 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
+        className="flex flex-col flex-shrink-0 sticky top-0 h-dvh transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
         style={{ width: collapsed ? "68px" : "220px", ...S.sidebar }}
       >
         {/* Brand */}
@@ -99,7 +99,7 @@ export default function AdminLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto" style={{ padding: "8px" }}>
+        <nav className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "8px" }}>
           {NAV_ITEMS.map((item, idx) => {
             if (item.divider) {
               return <Divider key={`div-${idx}`} className="my-1" style={{ background: S.divider }} />;

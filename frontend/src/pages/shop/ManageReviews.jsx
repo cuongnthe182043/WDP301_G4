@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Card, CardBody, Button, Pagination, Chip, Select, SelectItem, Avatar, Textarea,
+  Card, CardBody, Button, Chip, Select, SelectItem, Avatar, Textarea,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
 import { MessageSquare, Star, Pencil, AlertCircle } from "lucide-react";
 import { shopReviewApi } from "../../services/shopManagementService";
 import { useToast } from "../../components/common/ToastProvider";
 import apiClient from "../../services/apiClient";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const formatDate = (d) => d ? new Date(d).toLocaleDateString("vi-VN") : "—";
 
@@ -43,7 +44,7 @@ export default function ManageReviews() {
   const [ratingFilter, setRating]   = useState("");
   const [productFilter, setProduct] = useState("");
   const [products, setProducts]     = useState([]);
-  const LIMIT = 15;
+  const [limit, setLimit] = useState(15);
 
   // Reply modal
   const [replyTarget, setReplyTarget] = useState(null); // { id, existing }
@@ -60,14 +61,14 @@ export default function ManageReviews() {
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit: limit };
       if (statusFilter)  params.status     = statusFilter;
       if (ratingFilter)  params.rating     = ratingFilter;
       if (productFilter) params.product_id = productFilter;
       const res = await shopReviewApi.getAll(params);
       setReviews(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTotalPages(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTotalPages(Math.ceil((res.data?.total || 0) / limit));
     } catch (e) { toast.error(e?.message || t("admin.refund_load_error")); }
     finally { setLoading(false); }
   }, [page, statusFilter, ratingFilter, productFilter]);
@@ -214,11 +215,7 @@ export default function ManageReviews() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Reply Modal */}
       <Modal isOpen={!!replyTarget} onOpenChange={(o) => !o && setReplyTarget(null)} radius="xl" size="md">

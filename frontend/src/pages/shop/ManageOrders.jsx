@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Card, CardBody, Button, Input, Pagination, Chip,
+  Card, CardBody, Button, Input, Chip,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Spinner, Textarea, Divider, Tooltip,
 } from "@heroui/react";
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { shopOrderApi } from "../../services/shopManagementService";
 import { useToast } from "../../components/common/ToastProvider";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Status config — color and group data only (labels resolved via t() in component)
@@ -144,7 +145,7 @@ export default function ManageOrders() {
   const [activeTab, setActiveTab]   = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm]   = useState("");
-  const LIMIT = 15;
+  const [limit, setLimit] = useState(15);
 
   // Detail modal
   const [detail, setDetail]         = useState(null);
@@ -175,13 +176,13 @@ export default function ManageOrders() {
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit };
       if (activeTab) params.status = activeTab;
       if (searchTerm) params.q = searchTerm;
       const res = await shopOrderApi.getAll(params);
       setOrders(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTotalPages(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTotalPages(Math.ceil((res.data?.total || 0) / limit));
     } catch (e) {
       toast.error(e?.response?.data?.message || e?.message || t("common.error"));
     } finally {
@@ -542,11 +543,7 @@ export default function ManageOrders() {
       </Card>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* ── Detail Modal ───────────────────────────────────────────────────── */}
       <Modal isOpen={detailOpen} onOpenChange={(o) => !o && setDetailOpen(false)}

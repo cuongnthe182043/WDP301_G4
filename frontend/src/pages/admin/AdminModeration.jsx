@@ -12,8 +12,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import moderationService from "../../services/moderationService";
 import UserModerationDetail from "./UserModerationDetail";
-
-const LIMIT = 20;
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const STATUS_COLOR = {
   active: "success", warning: "warning", suspended: "danger",
@@ -77,6 +76,7 @@ function StatsCards({ stats, loading }) {
 function UsersTab({ onRefreshStats }) {
   const { t } = useTranslation();
   const { formatDate } = useLocaleDate();
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);
@@ -95,12 +95,12 @@ function UsersTab({ onRefreshStats }) {
   const [warnReason, setWarnReason] = useState("");
   const [warnLoading, setWarnLoading] = useState(false);
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const params = { page: p, limit: LIMIT };
+      const params = { page: p, limit: limit };
       if (q) params.q = q;
       if (statusFilter) params.status = statusFilter;
       if (sortBy) params.sort_by = sortBy;
@@ -109,7 +109,7 @@ function UsersTab({ onRefreshStats }) {
       setTotal(data.total);
     } catch { toast.error(t("admin.load_failed")); }
     finally { setLoading(false); }
-  }, [q, statusFilter, sortBy]);
+  }, [q, statusFilter, sortBy, limit]);
 
   useEffect(() => { setPage(1); load(1); }, [q, statusFilter, sortBy]); // eslint-disable-line
   useEffect(() => { load(page); }, [page]); // eslint-disable-line
@@ -317,17 +317,10 @@ function UsersTab({ onRefreshStats }) {
               </table>
             </div>
           )}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-divider">
-              <span className="text-xs text-default-500">{page}/{totalPages} ({total})</span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="flat" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>{t("common.prev")}</Button>
-                <Button size="sm" variant="flat" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>{t("common.next")}</Button>
-              </div>
-            </div>
-          )}
         </CardBody>
       </Card>
+
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Ban Modal */}
       <Modal isOpen={!!banTarget} onClose={() => { setBanTarget(null); setBanDays(""); setBanReason(""); }} size="md">
@@ -402,6 +395,7 @@ function UsersTab({ onRefreshStats }) {
 function ViolationsTab() {
   const { t } = useTranslation();
   const { formatDateTime } = useLocaleDate();
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
@@ -411,12 +405,12 @@ function ViolationsTab() {
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const data = await moderationService.listViolations({ page: p, limit: LIMIT, status: statusFilter || undefined });
+      const data = await moderationService.listViolations({ page: p, limit: limit, status: statusFilter || undefined });
       setItems(data.items);
       setTotal(data.total);
     } catch { toast.error(t("admin.load_failed")); }
     finally { setLoading(false); }
-  }, [statusFilter]);
+  }, [statusFilter, limit]);
 
   useEffect(() => { setPage(1); load(1); }, [statusFilter]); // eslint-disable-line
   useEffect(() => { load(page); }, [page]); // eslint-disable-line
@@ -429,7 +423,7 @@ function ViolationsTab() {
     } catch (e) { toast.error(e.message); }
   }
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <>
@@ -529,17 +523,10 @@ function ViolationsTab() {
               </table>
             </div>
           )}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-divider">
-              <span className="text-xs text-default-500">{page}/{totalPages}</span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="flat" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>{t("common.prev")}</Button>
-                <Button size="sm" variant="flat" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>{t("common.next")}</Button>
-              </div>
-            </div>
-          )}
         </CardBody>
       </Card>
+
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
     </>
   );
 }
@@ -550,6 +537,7 @@ function ViolationsTab() {
 function ReportsTab() {
   const { t } = useTranslation();
   const { formatDateTime } = useLocaleDate();
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
@@ -561,12 +549,12 @@ function ReportsTab() {
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const data = await moderationService.listReports({ page: p, limit: LIMIT, status: statusFilter || undefined });
+      const data = await moderationService.listReports({ page: p, limit: limit, status: statusFilter || undefined });
       setItems(data.items);
       setTotal(data.total);
     } catch { toast.error(t("admin.load_failed")); }
     finally { setLoading(false); }
-  }, [statusFilter]);
+  }, [statusFilter, limit]);
 
   useEffect(() => { setPage(1); load(1); }, [statusFilter]); // eslint-disable-line
   useEffect(() => { load(page); }, [page]); // eslint-disable-line
@@ -580,7 +568,7 @@ function ReportsTab() {
     } catch (e) { toast.error(e.message); }
   }
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <>
@@ -660,17 +648,10 @@ function ReportsTab() {
               </table>
             </div>
           )}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-divider">
-              <span className="text-xs text-default-500">{page}/{totalPages}</span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="flat" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>{t("common.prev")}</Button>
-                <Button size="sm" variant="flat" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>{t("common.next")}</Button>
-              </div>
-            </div>
-          )}
         </CardBody>
       </Card>
+
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Resolve Modal */}
       <Modal isOpen={!!resolveTarget} onClose={() => { setResolveTarget(null); setResolveNote(""); }} size="sm">
@@ -705,6 +686,7 @@ function ReportsTab() {
 function AppealsTab() {
   const { t } = useTranslation();
   const { formatDate, formatDateTime } = useLocaleDate();
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
@@ -715,12 +697,12 @@ function AppealsTab() {
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const data = await moderationService.listAppeals({ page: p, limit: LIMIT, status: "pending" });
+      const data = await moderationService.listAppeals({ page: p, limit: limit, status: "pending" });
       setItems(data.items);
       setTotal(data.total);
     } catch { toast.error(t("admin.load_failed")); }
     finally { setLoading(false); }
-  }, []);
+  }, [limit]);
 
   useEffect(() => { load(1); }, []); // eslint-disable-line
   useEffect(() => { load(page); }, [page]); // eslint-disable-line
@@ -734,7 +716,7 @@ function AppealsTab() {
     } catch (e) { toast.error(e.message); }
   }
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <Card radius="xl" shadow="sm">
@@ -792,16 +774,9 @@ function AppealsTab() {
             </table>
           </div>
         )}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-divider">
-            <span className="text-xs text-default-500">{page}/{totalPages}</span>
-            <div className="flex gap-2">
-              <Button size="sm" variant="flat" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>{t("common.prev")}</Button>
-              <Button size="sm" variant="flat" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>{t("common.next")}</Button>
-            </div>
-          </div>
-        )}
       </CardBody>
+
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Review Appeal Modal */}
       <Modal isOpen={!!reviewTarget} onClose={() => { setReviewTarget(null); setAdminNote(""); }} size="md">

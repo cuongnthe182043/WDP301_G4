@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { productService } from "../../services/productService";
-import { Card, CardBody, Input, Chip, Button, Spinner, Pagination } from "@heroui/react";
+import { Card, CardBody, Input, Chip, Button, Spinner } from "@heroui/react";
 import { AlertTriangle, Search, Pencil, RefreshCw, Package } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 export default function LowStockPage() {
   const nav = useNavigate();
@@ -14,11 +15,12 @@ export default function LowStockPage() {
   const [threshold,  setThreshold]  = useState(5);
   const [input,      setInput]      = useState("5");
   const [loading,    setLoading]    = useState(true);
+  const [limit,      setLimit]      = useState(20);
 
   const load = useCallback(async (pg = page, th = threshold) => {
     setLoading(true);
     try {
-      const data = await productService.lowStock(th, pg, 20);
+      const data = await productService.lowStock(th, pg, limit);
       setRows(data?.items || []);
       setTotal(data?.total || 0);
       setTotalPages(data?.totalPages || 1);
@@ -197,17 +199,7 @@ export default function LowStockPage() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination
-            total={totalPages}
-            page={page}
-            onChange={handlePageChange}
-            color="warning"
-            radius="lg"
-          />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={handlePageChange} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
     </div>
   );
 }
