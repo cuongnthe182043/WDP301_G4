@@ -36,6 +36,7 @@ import TermsOfService from "../pages/support/TermsOfService";
 import ShopLayout from "../pages/shop/ShopLayout";
 import Dashboard from "../pages/shop/Dashboard";
 import ManageProducts from "../pages/shop/ManageProducts";
+import ShopPendingProducts from "../pages/shop/ShopPendingProducts";
 import AddProduct from "../pages/shop/AddProduct";
 import LowStockPage from "../pages/shop/LowStockPage";
 import CategoriesPage from "../pages/shop/CategoriesPage";
@@ -178,6 +179,7 @@ export default function AppRouter() {
 
         {/* Products */}
         <Route path="admin/products" element={<ManageProducts />} />
+        <Route path="admin/products/pending" element={<ShopPendingProducts />} />
         <Route path="admin/products/new" element={<AddProduct />} />
         <Route path="admin/products/:id" element={<AddProduct mode="edit" />} />
         <Route path="admin/products/:id/variants" element={<VariantsPage />} />

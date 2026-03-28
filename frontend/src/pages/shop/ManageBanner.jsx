@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  Card, CardBody, Button, Input, Pagination, Chip, Select, SelectItem,
+  Card, CardBody, Button, Input, Chip, Select, SelectItem,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
+import PaginationBar from "../../components/ui/PaginationBar";
 import { Plus, Search, Eye, Pencil, Trash2, Upload } from "lucide-react";
 import { bannerApi } from "../../services/bannerService";
 import { useToast } from "../../components/common/ToastProvider";
@@ -22,7 +23,9 @@ export default function ManageBanner() {
   const [banners,     setBanners]     = useState([]);
   const [loading,     setLoading]     = useState(true);
   const [page,        setPage]        = useState(1);
+  const [total,       setTotal]       = useState(0);
   const [totalPages,  setTotalPages]  = useState(1);
+  const [limit,       setLimit]       = useState(10);
   const [selected,    setSelected]    = useState(null);
   const [mode,        setMode]        = useState(null);
   const [searchInput, setSearchInput] = useState("");
@@ -31,8 +34,8 @@ export default function ManageBanner() {
   const fetch = async (pg = page, kw = searchTerm) => {
     setLoading(true);
     try {
-      const res = await bannerApi.getAll(pg, 10, kw);
-      setBanners(res.data || []); setTotalPages(res.pagination?.totalPages || 1);
+      const res = await bannerApi.getAll(pg, limit, kw);
+      setBanners(res.data || []); setTotal(res.pagination?.total || 0); setTotalPages(res.pagination?.totalPages || 1);
     } catch (e) { toast.error(e?.response?.data?.message || e.message); }
     finally { setLoading(false); }
   };
@@ -125,11 +128,7 @@ export default function ManageBanner() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       <Modal isOpen={!!selected && !!mode} onOpenChange={(o) => !o && closeDialog()} radius="xl" size="lg" scrollBehavior="inside">
         <ModalContent>

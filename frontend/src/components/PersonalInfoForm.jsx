@@ -376,8 +376,8 @@ export default function PersonalInfoForm({ me, onUpdated }) {
             )}
           </AnimatePresence>
 
-          {/* Register Shop button — hidden if user is already a shop owner */}
-          {authUser?.role_name !== "shop_owner" && (
+          {/* Register Shop button — hidden if user is already a shop owner / admin / sales */}
+          {!["shop_owner", "system_admin", "sales"].includes(authUser?.role_name || me?.role_name) && (
             <motion.button
               type="button"
               onClick={() => { setRegisteringShop(true); }}

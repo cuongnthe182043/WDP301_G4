@@ -7,6 +7,7 @@ import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
 import { Search, Pencil, Trash2, Plus, Layers, Upload, Download, CheckCircle, AlertCircle, FileSpreadsheet } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const STATUS_COLOR = {
   active:       "success",
@@ -47,12 +48,12 @@ export default function ManageProducts() {
   const [importResult,  setImportResult]  = useState(null); // { inserted, errors, items }
   const [showImport,    setShowImport]    = useState(false);
 
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { page, limit: LIMIT };
+      const params = { page, limit };
       if (query.trim())           params.q      = query.trim();
       if (statusFilter !== "all") params.status = statusFilter;
       const data = await svc.list(params);
@@ -122,7 +123,7 @@ export default function ManageProducts() {
     }
   };
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="space-y-5">
@@ -256,17 +257,7 @@ export default function ManageProducts() {
       </Card>
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage(p => p - 1)}>
-            {t("shop.product_prev")}
-          </Button>
-          <span className="text-sm text-default-500 self-center">{t("shop.product_page", { page, total: totalPages })}</span>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page >= totalPages} onPress={() => setPage(p => p + 1)}>
-            {t("shop.product_next")}
-          </Button>
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Delete confirm */}
       <Modal isOpen={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)} radius="xl">

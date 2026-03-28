@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   Card, CardBody, Button, Input, Select, SelectItem, Spinner, Chip, Tooltip,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Tabs, Tab,
-  Pagination,
 } from "@heroui/react";
 import {
   Search, RefreshCw, Download, Clock, User, Database, Globe,
@@ -14,8 +13,7 @@ import {
   ChevronRight, Layers,
 } from "lucide-react";
 import apiClient from "../../services/apiClient";
-
-const LIMIT = 20;
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const api = {
   list: (p) => apiClient.get("/admin/audit-logs", { params: p }).then((r) => r.data),
@@ -218,6 +216,7 @@ function SectionLabel({ children }) {
 export default function AuditLogs() {
   const { t } = useTranslation();
 
+  const [limit,    setLimit]    = useState(20);
   const [loading,  setLoading]  = useState(true);
   const [logs,     setLogs]     = useState([]);
   const [total,    setTotal]    = useState(0);
@@ -234,7 +233,7 @@ export default function AuditLogs() {
   const [collections, setCollections] = useState([]);
   const [detailLog,   setDetailLog]   = useState(null);
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   const filteredActions = useMemo(() => {
     if (activeTab === "all") return actions;
@@ -244,7 +243,7 @@ export default function AuditLogs() {
   const load = useCallback(async (p = page) => {
     setLoading(true);
     try {
-      const params = { page: p, limit: LIMIT };
+      const params = { page: p, limit: limit };
       if (actor)      params.actor      = actor;
       if (collection) params.collection = collection;
       if (from)       params.from       = from;
@@ -259,7 +258,7 @@ export default function AuditLogs() {
       setTotal(res.total);
     } catch { /* ignore */ }
     finally { setLoading(false); }
-  }, [actor, actionQ, collection, from, to, page, activeTab]);
+  }, [actor, actionQ, collection, from, to, page, limit, activeTab]);
 
   useEffect(() => {
     api.actions().then(setActions).catch(() => {});
@@ -504,7 +503,7 @@ export default function AuditLogs() {
               </thead>
               <tbody>
                 {logs.map((log, i) => {
-                  const rowNum = (page - 1) * LIMIT + i + 1;
+                  const rowNum = (page - 1) * limit + i + 1;
                   const ua = parseUserAgent(log.user_agent);
                   const rel = formatRelative(log.createdAt);
                   const isEven = i % 2 === 0;
@@ -607,25 +606,7 @@ export default function AuditLogs() {
       </div>
 
       {/* ══ PAGINATION ══════════════════════════════════════════════════════ */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <p className="text-xs text-zinc-400 dark:text-[#6b7280] font-medium tabular-nums">
-            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, total)}</span>
-            {" "}of{" "}
-            <span className="font-bold text-zinc-700 dark:text-[#c8cbd4]">{total.toLocaleString()}</span> entries
-          </p>
-          <Pagination
-            total={totalPages} page={page} onChange={setPage}
-            radius="sm" size="sm" showControls
-            classNames={{
-              cursor: "bg-blue-600 text-white font-bold shadow-sm shadow-blue-600/30",
-              item: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347] text-zinc-600 dark:text-[#c8cbd4] hover:bg-zinc-50 dark:hover:bg-zinc-700",
-              prev: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347]",
-              next: "bg-white dark:bg-[#1a1e2e] border border-zinc-200 dark:border-[#2e3347]",
-            }}
-          />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* ══ DETAIL MODAL ════════════════════════════════════════════════════ */}
       <Modal

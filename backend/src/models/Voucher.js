@@ -8,9 +8,13 @@ const voucherSchema = new mongoose.Schema(
     // Mã voucher (duy nhất)
     code: { type: String, required: true, unique: true, trim: true },
 
+    // Loại voucher: giảm giá sản phẩm hoặc giảm phí vận chuyển
+    voucher_type: { type: String, enum: ["product", "shipping"], default: "product" },
+
     // Loại giảm giá & giá trị
     discount_type: { type: String, enum: ["percent", "fixed"], default: "percent" },
     discount_value: { type: Number, required: true },
+    max_discount: { type: Number, default: 0 }, // giới hạn giảm tối đa (0 = không giới hạn)
 
     // Giới hạn & đếm lượt
     max_uses: { type: Number, required: true },

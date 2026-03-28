@@ -6,7 +6,7 @@ import { checkoutService } from "../../services/checkoutService";
 import chatService from "../../services/chatService";
 import { useAuth } from "../../context/AuthContext";
 import {
-  Avatar, Tabs, Tab, Button, Chip, Pagination, Input,
+  Avatar, Tabs, Tab, Button, Chip, Input,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea,
 } from "@heroui/react";
 import {
@@ -19,6 +19,7 @@ import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
 import { useTranslation } from "react-i18next";
 import { useToast } from "../../components/common/ToastProvider";
+import PaginationBar from "../../components/ui/PaginationBar";
 
 // ─── Status config ────────────────────────────────────────────────────────────
 const STATUS_COLOR = {
@@ -130,6 +131,7 @@ export default function Orders() {
 
   const [tab, setTab]   = useState("");
   const [data, setData] = useState({ items: [], total: 0, page: 1, limit: 10 });
+  const [limit, setLimit] = useState(10);
   const [q, setQ]       = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -151,11 +153,11 @@ export default function Orders() {
     setLoading(true);
     try {
       const status = tab || undefined;
-      const res = await orderService.list({ status, page, limit: 10, q: q || undefined });
+      const res = await orderService.list({ status, page, limit, q: q || undefined });
       setData(res);
     } catch { /* silent */ }
     finally { setLoading(false); }
-  }, [tab, q]);
+  }, [tab, q, limit]);
 
   useEffect(() => { load(1); }, [tab]);
 
@@ -532,18 +534,13 @@ export default function Orders() {
       )}
 
       {/* ── Pagination ────────────────────────────────────────────────────── */}
-      {(data.total || 0) > (data.limit || 10) && (
-        <div className="flex justify-center mt-8">
-          <Pagination
-            total={Math.ceil(data.total / data.limit) || 1}
-            page={data.page}
-            onChange={(p) => load(p)}
-            color="primary"
-            radius="lg"
-            showShadow
-          />
-        </div>
-      )}
+      <PaginationBar
+        total={data.total || 0}
+        page={data.page || 1}
+        limit={limit}
+        onPageChange={(p) => load(p)}
+        onLimitChange={(v) => { setLimit(v); load(1); }}
+      />
 
       {/* ── Cancel modal ──────────────────────────────────────────────────── */}
       <Modal isOpen={cancelModal.open} onClose={closeCancelModal} radius="xl" size="md" backdrop="blur">

@@ -11,6 +11,7 @@ import {
   CheckCircle, XCircle, PauseCircle, Search, RefreshCw,
   Store, Users, Package, DollarSign, Eye,
 } from "lucide-react";
+import PaginationBar from "../../components/ui/PaginationBar";
 import {
   adminListShops, adminApproveShop, adminSuspendShop, adminRejectShop, adminGetShopStats,
 } from "../../services/shopService";
@@ -57,6 +58,7 @@ export default function AdminShops() {
   const [statusFilter, setStatusFilter] = useState("");
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
 
   // Modals
   const [statsModal, setStatsModal] = useState(null);
@@ -69,7 +71,7 @@ export default function AdminShops() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await adminListShops({ page, limit: 20, status: statusFilter || undefined, q: q || undefined });
+      const data = await adminListShops({ page, limit, status: statusFilter || undefined, q: q || undefined });
       setShops(data.items);
       setTotal(data.total);
     } catch {
@@ -77,7 +79,7 @@ export default function AdminShops() {
     } finally {
       setLoading(false);
     }
-  }, [page, statusFilter, q]);
+  }, [page, statusFilter, q, limit]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -297,12 +299,13 @@ export default function AdminShops() {
       </motion.div>
 
       {/* Pagination */}
-      {total > 20 && (
-        <div className="flex justify-center gap-2">
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page <= 1} onPress={() => setPage((p) => p - 1)}>&lsaquo; {t("common.back")}</Button>
-          <Button size="sm" variant="bordered" radius="lg" isDisabled={page * 20 >= total} onPress={() => setPage((p) => p + 1)}>{t("common.show_more")} &rsaquo;</Button>
-        </div>
-      )}
+      <PaginationBar
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={setPage}
+        onLimitChange={(v) => { setLimit(v); setPage(1); }}
+      />
 
       {/* Stats Modal */}
       <Modal isOpen={!!statsModal} onClose={() => setStatsModal(null)} radius="xl" size="lg">

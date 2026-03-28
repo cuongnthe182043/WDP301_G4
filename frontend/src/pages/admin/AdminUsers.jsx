@@ -10,8 +10,7 @@ import {
 } from "lucide-react";
 import apiClient from "../../services/apiClient";
 import { toast } from "sonner";
-
-const LIMIT = 20;
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const api = {
   list:       (p)       => apiClient.get("/admin/users", { params: p }).then((r) => r.data.data),
@@ -40,6 +39,7 @@ function formatDate(d) {
 export default function AdminUsers() {
   const { t } = useTranslation();
 
+  const [limit,      setLimit]      = useState(20);
   const [loading,    setLoading]    = useState(true);
   const [users,      setUsers]      = useState([]);
   const [total,      setTotal]      = useState(0);
@@ -68,12 +68,12 @@ export default function AdminUsers() {
   const [selectedRole,   setSelectedRole]   = useState("");
   const [roleLoading,    setRoleLoading]    = useState(false);
 
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const params = { page: p, limit: LIMIT };
+      const params = { page: p, limit: limit };
       if (q)            params.q      = q;
       if (roleFilter)   params.role   = roleFilter;
       if (statusFilter) params.status = statusFilter;
@@ -85,7 +85,7 @@ export default function AdminUsers() {
     } finally {
       setLoading(false);
     }
-  }, [q, roleFilter, statusFilter, t]);
+  }, [q, roleFilter, statusFilter, limit, t]);
 
   useEffect(() => {
     api.roles().then(setRoles).catch(() => {});
@@ -354,20 +354,10 @@ export default function AdminUsers() {
             </div>
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-divider">
-              <span className="text-xs text-default-500">
-                {t("common.page")} {page} / {totalPages} &nbsp;·&nbsp; {total} {t("admin.users_total_label")}
-              </span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="flat" isDisabled={page <= 1} onPress={() => setPage((p) => p - 1)}>‹</Button>
-                <Button size="sm" variant="flat" isDisabled={page >= totalPages} onPress={() => setPage((p) => p + 1)}>›</Button>
-              </div>
-            </div>
-          )}
         </CardBody>
       </Card>
+
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* ── Detail Modal ── */}
       <Modal isOpen={!!detailUser} onClose={() => setDetailUser(null)} size="xl" scrollBehavior="inside">

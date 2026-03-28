@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Card, CardBody, Button, Input, Pagination, Chip,
+  Card, CardBody, Button, Input, Chip,
   Select, SelectItem, Modal, ModalContent, ModalHeader,
   ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
+import PaginationBar from "../../components/ui/PaginationBar";
 import { Plus, Search, Eye, Pencil, Trash2, X, ChevronDown, ChevronRight } from "lucide-react";
 import { shopFlashsaleApi } from "../../services/flashsaleService";
 import { useToast } from "../../components/common/ToastProvider";
@@ -53,7 +54,9 @@ export default function ManageFlashsale() {
   const [list, setList]             = useState([]);
   const [loading, setLoading]       = useState(true);
   const [page, setPage]             = useState(1);
+  const [total, setTotal]           = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit]           = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm]   = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -74,11 +77,12 @@ export default function ManageFlashsale() {
   const loadList = useCallback(async (pg, kw, status) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: 10 };
+      const params = { page: pg, limit };
       if (kw)     params.title  = kw;
       if (status) params.status = status;
       const res = await shopFlashsaleApi.getAll(params);
       setList(res.data || []);
+      setTotal(res.pagination?.total || 0);
       setTotalPages(res.pagination?.totalPages || 1);
     } catch (e) {
       toast.error(e?.response?.data?.message || e.message);
@@ -402,11 +406,7 @@ export default function ManageFlashsale() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Modal */}
       <Modal

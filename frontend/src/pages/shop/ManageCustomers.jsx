@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Card, CardBody, Button, Input, Pagination, Chip, Avatar,
+  Card, CardBody, Button, Input, Chip, Avatar,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner,
 } from "@heroui/react";
 import { Search, Eye, User } from "lucide-react";
 import { shopCustomerApi } from "../../services/shopManagementService";
+import PaginationBar from "../../components/ui/PaginationBar";
 import { useToast } from "../../components/common/ToastProvider";
 import { useTranslation } from "react-i18next";
 
@@ -26,7 +27,7 @@ export default function ManageCustomers() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm]   = useState("");
-  const LIMIT = 20;
+  const [limit, setLimit] = useState(20);
 
   const [detail, setDetail]       = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -47,12 +48,12 @@ export default function ManageCustomers() {
   const load = useCallback(async (pg = page) => {
     setLoading(true);
     try {
-      const params = { page: pg, limit: LIMIT };
+      const params = { page: pg, limit };
       if (searchTerm) params.q = searchTerm;
       const res = await shopCustomerApi.getAll(params);
       setCustomers(res.data?.items || []);
       setTotal(res.data?.total || 0);
-      setTotalPages(Math.ceil((res.data?.total || 0) / LIMIT));
+      setTotalPages(Math.ceil((res.data?.total || 0) / limit));
     } catch (e) { toast.error(e?.message || t("common.error")); }
     finally { setLoading(false); }
   }, [page, searchTerm]);
@@ -131,11 +132,7 @@ export default function ManageCustomers() {
         </CardBody>
       </Card>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center">
-          <Pagination total={totalPages} page={page} onChange={setPage} color="primary" radius="lg" />
-        </div>
-      )}
+      <PaginationBar total={total} page={page} limit={limit} onPageChange={setPage} onLimitChange={(v) => { setLimit(v); setPage(1); }} />
 
       {/* Detail Modal */}
       <Modal isOpen={detailOpen} onOpenChange={(o) => !o && setDetailOpen(false)} radius="xl" size="2xl" scrollBehavior="inside">

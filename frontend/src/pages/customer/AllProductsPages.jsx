@@ -2,15 +2,14 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Pagination, Input, Select, SelectItem, Chip, Button } from "@heroui/react";
+import { Input, Select, SelectItem, Chip, Button } from "@heroui/react";
 import { Search, SlidersHorizontal, X, Layers } from "lucide-react";
 import { productApi } from "../../services/productService";
 import ProductCard from "../../components/home/ProductCard.jsx";
 import SkeletonProductCard from "../../components/ui/SkeletonProductCard.jsx";
 import EmptyState from "../../components/ui/EmptyState.jsx";
 import PageContainer from "../../components/ui/PageContainer.jsx";
-
-const LIMIT = 24;
+import PaginationBar from "../../components/ui/PaginationBar";
 
 const gridVariants = {
   hidden: {},
@@ -38,11 +37,12 @@ export default function AllProductsPage() {
   const [total, setTotal]       = useState(0);
   const [loading, setLoading]   = useState(false);
   const [localQ, setLocalQ]     = useState(qParam);
+  const [limit, setLimit]       = useState(24);
 
   const fetchProducts = useCallback(async (params) => {
     setLoading(true);
     try {
-      const res = await productApi.getAll({ ...params, limit: LIMIT });
+      const res = await productApi.getAll({ ...params, limit });
       setProducts(res.products || []);
       setTotal(res.total || 0);
     } catch { /* silent */ }
@@ -54,7 +54,7 @@ export default function AllProductsPage() {
   useEffect(() => {
     fetchProducts({ q: qParam || undefined, sort: sortParam, page: pageParam });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qParam, sortParam, pageParam]);
+  }, [qParam, sortParam, pageParam, limit]);
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
@@ -138,7 +138,7 @@ export default function AllProductsPage() {
       {/* ── Product grid ── */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {Array.from({ length: LIMIT }).map((_, i) => <SkeletonProductCard key={i} />)}
+          {Array.from({ length: limit }).map((_, i) => <SkeletonProductCard key={i} />)}
         </div>
       ) : products.length === 0 ? (
         <EmptyState
@@ -159,18 +159,14 @@ export default function AllProductsPage() {
         </motion.div>
       )}
 
-      {total > LIMIT && (
-        <div className="flex justify-center mt-10">
-          <Pagination
-            total={Math.ceil(total / LIMIT)}
-            page={pageParam}
-            onChange={(p) => updateParam("page", p > 1 ? String(p) : "")}
-            color="primary"
-            radius="lg"
-            showShadow
-          />
-        </div>
-      )}
+      <PaginationBar
+        total={total}
+        page={pageParam}
+        limit={limit}
+        onPageChange={(p) => updateParam("page", p > 1 ? String(p) : "")}
+        onLimitChange={(v) => { setLimit(v); updateParam("page", ""); }}
+        sizes={[24, 48, 96]}
+      />
     </PageContainer>
   );
 }
