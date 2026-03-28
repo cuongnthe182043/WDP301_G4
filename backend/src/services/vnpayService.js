@@ -363,10 +363,160 @@ async function failVNPayOrder(orderCode, responseCode) {
   console.log(`[VNPAY] Failed: ${orderCode} | responseCode: ${responseCode}`);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// createWalletDepositUrl
+// Builds a VNPAY payment URL for a wallet deposit (txnRef has "DEP" prefix).
+// The return URL points to /api/wallets/deposit/vnpay/return (separate from orders).
+// Returns: { payUrl }
+// ─────────────────────────────────────────────────────────────────────────────
+async function createWalletDepositUrl(walletId, txnRef, amount, ipAddr) {
+  const createDate = formatVNDate();
+  const expireDate = formatVNDate(new Date(Date.now() + 15 * 60 * 1000));
+
+  // Derive deposit return URL from the order return URL by replacing the path segment,
+  // or from a dedicated env var.
+  const depReturnUrl =
+    process.env.VNPAY_DEPOSIT_RETURN_URL ||
+    vnpayCfg.returnUrl.replace("/payment/vnpay/return", "/wallets/deposit/vnpay/return");
+
+  const isLocalhostIpn = /localhost|127\.0\.0\.1/.test(vnpayCfg.ipnUrl);
+
+  const params = {
+    vnp_Version:    "2.1.0",
+    vnp_Command:    "pay",
+    vnp_TmnCode:    vnpayCfg.tmnCode,
+    vnp_Amount:     String(Math.round(amount) * 100),
+    vnp_CurrCode:   "VND",
+    vnp_TxnRef:     txnRef,
+    vnp_OrderInfo:  `Nap vi ${txnRef}`,
+    vnp_OrderType:  "other",
+    vnp_Locale:     "vn",
+    vnp_ReturnUrl:  depReturnUrl,
+    vnp_IpAddr:     (ipAddr || "127.0.0.1").replace(/^::ffff:/, ""),
+    vnp_CreateDate: createDate,
+    vnp_ExpireDate: expireDate,
+  };
+
+  // Same IPN URL — we distinguish DEP transactions by txnRef prefix in the handler
+  if (!isLocalhostIpn) {
+    params.vnp_IpnUrl = vnpayCfg.ipnUrl;
+  }
+
+  const secureHash   = createSecureHash(params, vnpayCfg.hashSecret);
+  const sortedParams = sortObject(params);
+  const queryStr = Object.keys(sortedParams)
+    .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(sortedParams[k])}`)
+    .join("&");
+  const payUrl = `${vnpayCfg.url}?${queryStr}&vnp_SecureHash=${secureHash}`;
+
+  console.log(`[VNPAY DEP] URL created | wallet: ${walletId} | txnRef: ${txnRef} | amount: ${amount}`);
+  return { payUrl };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// verifyDepositIpn
+// Verifies hash and looks up the pending deposit Transaction by meta.vnp_txn_ref.
+// Returns the same RspCode/message shape as verifyIpn.
+// ─────────────────────────────────────────────────────────────────────────────
+async function verifyDepositIpn(query) {
+  const { isValid, params } = extractAndVerifyHash(query);
+
+  if (!isValid) {
+    return { rspCode: "97", message: "Invalid signature" };
+  }
+
+  const responseCode  = params["vnp_ResponseCode"] || "";
+  const txnRef        = params["vnp_TxnRef"]        || "";
+  const transactionNo = params["vnp_TransactionNo"]  || "";
+  const bankCode      = params["vnp_BankCode"]       || "";
+  const vnpAmount     = Number(params["vnp_Amount"])  || 0;
+  const isSuccess     = responseCode === "00";
+
+  const txn = await Transaction.findOne({ "meta.vnp_txn_ref": txnRef, type: "deposit" }).lean();
+  if (!txn) {
+    console.warn(`[VNPAY DEP IPN] Deposit transaction not found: ${txnRef}`);
+    return { rspCode: "01", message: "Deposit not found" };
+  }
+
+  if (txn.status === "success") {
+    return { rspCode: "02", message: "Already confirmed", txnRef, transactionNo, bankCode, isSuccess: true };
+  }
+
+  const expectedAmount = Math.round(txn.amount) * 100;
+  if (vnpAmount !== expectedAmount) {
+    console.error(
+      `[VNPAY DEP IPN] Amount mismatch | expected: ${expectedAmount} | received: ${vnpAmount} | txnRef: ${txnRef}`
+    );
+    return { rspCode: "04", message: "Invalid amount" };
+  }
+
+  console.log(`[VNPAY DEP IPN] Verified | txnRef: ${txnRef} | success: ${isSuccess} | bank: ${bankCode}`);
+  return { rspCode: "00", message: "Confirm Success", txnRef, transactionNo, bankCode, isSuccess };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// settleWalletDeposit
+// Credits user wallet on successful VNPay deposit.
+// IDEMPOTENT — no-op if transaction is already "success".
+// ─────────────────────────────────────────────────────────────────────────────
+async function settleWalletDeposit(txnRef, transactionNo, bankCode) {
+  const txn = await Transaction.findOne({ "meta.vnp_txn_ref": txnRef, type: "deposit" });
+  if (!txn) {
+    console.warn(`[VNPAY DEP] settleWalletDeposit: not found ${txnRef}`);
+    return null;
+  }
+
+  if (txn.status === "success") {
+    console.log(`[VNPAY DEP] Already settled: ${txnRef} — skipping`);
+    return txn;
+  }
+
+  const wallet = await Wallet.findById(txn.wallet_id);
+  if (!wallet) throw Object.assign(new Error(`Wallet not found: ${txn.wallet_id}`), { status: 404 });
+
+  wallet.balance_available += txn.amount;
+  await wallet.save();
+
+  txn.status = "success";
+  txn.meta   = { ...txn.meta, transactionNo, bankCode, settled_at: new Date().toISOString() };
+  await txn.save();
+
+  await AuditLog.create({
+    action:            "WALLET_DEPOSIT_SUCCESS",
+    target_collection: "transactions",
+    target_id:         txn._id,
+    metadata:          { txnRef, transactionNo, bankCode, amount: txn.amount, walletId: wallet._id },
+  });
+
+  notif.paymentSuccess(wallet.user_id, txnRef, txn.amount).catch(() => {});
+  console.log(`[VNPAY DEP] Settled: ${txnRef} | txn: ${transactionNo} | amount: ${txn.amount}`);
+  return txn;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// failWalletDeposit
+// Marks a pending deposit transaction as failed.
+// IDEMPOTENT — no-op if not in "pending" state.
+// ─────────────────────────────────────────────────────────────────────────────
+async function failWalletDeposit(txnRef, responseCode) {
+  const txn = await Transaction.findOne({ "meta.vnp_txn_ref": txnRef, type: "deposit" });
+  if (!txn || txn.status !== "pending") return;
+
+  txn.status = "failed";
+  await txn.save();
+
+  console.log(`[VNPAY DEP] Failed: ${txnRef} | responseCode: ${responseCode}`);
+}
+
 module.exports = {
   createVNPayUrl,
   verifyIpn,
   verifyReturnUrl,
   settleVNPayOrder,
   failVNPayOrder,
+  // Wallet deposit
+  createWalletDepositUrl,
+  verifyDepositIpn,
+  settleWalletDeposit,
+  failWalletDeposit,
 };

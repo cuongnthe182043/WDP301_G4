@@ -7,7 +7,7 @@ import {
 } from "@heroui/react";
 import {
   Search, Eye, CheckCircle, XCircle, Truck, Package,
-  MapPin, Phone, User, CreditCard, Clock, RefreshCw,
+  MapPin, Phone, User, CreditCard, Clock, RefreshCw, MessageSquare,
 } from "lucide-react";
 import { shopOrderApi } from "../../services/shopManagementService";
 import { useToast } from "../../components/common/ToastProvider";
@@ -676,6 +676,17 @@ export default function ManageOrders() {
                           <span className="font-medium">{detail.customer.name}</span>
                           <span className="text-default-400">{detail.customer.email}</span>
                         </div>
+                      </div>
+                    )}
+
+                    {/* Customer note */}
+                    {detail.note && (
+                      <div className="text-sm border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/20 rounded-xl p-3">
+                        <p className="text-xs font-semibold text-warning-700 dark:text-warning-400 uppercase mb-1.5 flex items-center gap-1.5">
+                          <MessageSquare size={12} />
+                          {t("shop.order_note_label") || "Ghi chú của khách"}
+                        </p>
+                        <p className="text-default-700 dark:text-[#c8cbd4] leading-relaxed">{detail.note}</p>
                       </div>
                     )}
 

@@ -90,6 +90,22 @@ exports.vnpayCreate = async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 exports.vnpayIpn = async (req, res) => {
   try {
+    const txnRef = req.query.vnp_TxnRef || "";
+
+    // Route deposit transactions (DEP-prefixed txnRef) to wallet deposit handler
+    if (txnRef.startsWith("DEP")) {
+      const result = await vnpaySvc.verifyDepositIpn(req.query);
+      res.json({ RspCode: result.rspCode, Message: result.message });
+
+      if (result.rspCode === "00" && result.isSuccess) {
+        await vnpaySvc.settleWalletDeposit(result.txnRef, result.transactionNo, result.bankCode);
+      } else if (result.rspCode === "00" && !result.isSuccess) {
+        await vnpaySvc.failWalletDeposit(result.txnRef, "ipn-fail");
+      }
+      return;
+    }
+
+    // Standard order payment
     const result = await vnpaySvc.verifyIpn(req.query);
 
     // Respond to VNPAY first so it stops retrying, then do async work below

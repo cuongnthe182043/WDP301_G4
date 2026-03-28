@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Package, PackagePlus, AlertTriangle, Clock,
   FolderTree, Tag, Award, ChevronLeft, ChevronRight, Store, Settings,
   ShoppingCart, RefreshCw, Users, Star, Wallet, Megaphone, Ruler,
-  MessageCircle,
+  MessageCircle, AlertCircle,
 } from "lucide-react";
 
 export default function ShopLayout() {
@@ -35,6 +35,7 @@ export default function ShopLayout() {
     { divider: true, label: t("shop.section_engagement") },
     { to: "/shop/messages",            label: "Tin nhắn",                     icon: MessageCircle,   color: "#06b6d4", bg: "rgba(6,182,212,0.1)"   },
     { to: "/shop/reviews",             label: t("shop.nav_reviews"),          icon: Star,            color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+    { to: "/shop/complaints",          label: "Khiếu nại",                    icon: AlertCircle,     color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
     { to: "/shop/marketing",           label: t("shop.nav_marketing"),        icon: Megaphone,       color: "#d946ef", bg: "rgba(217,70,239,0.1)"  },
     { divider: true, label: t("shop.section_finance") },
     { to: "/shop/wallet",              label: t("shop.nav_wallet"),           icon: Wallet,          color: "#14b8a6", bg: "rgba(20,184,166,0.1)"  },

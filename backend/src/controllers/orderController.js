@@ -268,7 +268,7 @@ exports.requestRefund = async (req, res, next) => {
     if (!ord)
       return res.status(404).json({ status: "fail", message: "Không tìm thấy đơn" });
 
-    if (ord.status !== "delivered") {
+    if (!["delivered", "received"].includes(ord.status)) {
       return res.status(400).json({
         status: "fail",
         message: "Chỉ yêu cầu hoàn/đổi sau khi đơn đã giao thành công.",
@@ -329,6 +329,54 @@ exports.requestRefund = async (req, res, next) => {
   }
 };
 
+// ================== CONFIRM RECEIPT ==================
+exports.confirmReceipt = async (req, res, next) => {
+  try {
+    const userId = req.userId || req.user?._id;
+    const id     = req.params.id;
+
+    const ord = await Order.findOne({
+      user_id: userId,
+      $or: [{ _id: id }, { order_code: id }],
+    });
+
+    if (!ord)
+      return res.status(404).json({ status: "fail", message: "Không tìm thấy đơn" });
+
+    if (ord.status !== "delivered") {
+      return res.status(400).json({
+        status: "fail",
+        message: "Chỉ xác nhận nhận hàng khi đơn ở trạng thái đã giao.",
+      });
+    }
+
+    ord.status = "received";
+    ord.received_at = new Date();
+    if (!ord.status_history) ord.status_history = [];
+    ord.status_history.push({
+      status: "received",
+      at:     new Date(),
+      by:     "customer",
+      note:   "Khách hàng xác nhận đã nhận hàng",
+    });
+    await ord.save();
+
+    // Notify shop owner
+    if (ord.shop_id) {
+      const shop = await Shop.findById(ord.shop_id).lean();
+      if (shop?.owner_id) {
+        notif.orderStatusChanged?.(shop.owner_id, ord.order_code, "received").catch?.(() => {});
+      }
+    }
+
+    auditLog.log({ actorId: userId, action: "order.confirm_receipt", targetCollection: "orders", targetId: ord._id, ip: auditLog.getIp(req), userAgent: auditLog.getUA(req), metadata: { order_code: ord.order_code } });
+
+    res.json({ status: "success", data: { order_id: ord._id, status: ord.status } });
+  } catch (e) {
+    next(e);
+  }
+};
+
 // ================== TRACKING ==================
 const TRACKING_LABELS = {
   order_created:         "Đặt hàng thành công",
@@ -343,6 +391,7 @@ const TRACKING_LABELS = {
   in_transit:            "Đang vận chuyển",
   out_for_delivery:      "Đang giao đến bạn",
   delivered:             "Giao hàng thành công",
+  received:              "Khách hàng đã xác nhận nhận hàng",
   delivery_failed:       "Giao hàng thất bại",
   cancelled_by_customer: "Khách hàng đã hủy đơn",
   cancelled_by_shop:     "Shop đã hủy đơn",

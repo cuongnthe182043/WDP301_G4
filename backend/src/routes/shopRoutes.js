@@ -12,6 +12,7 @@ const reviewCtrl = require("../controllers/shopReviewController");
 const walletCtrl = require("../controllers/shopWalletController");
 const marketingRoutes = require("./shopMarketingRoutes");
 const flashCtrl = require("../controllers/flashsaleController");
+const shopTicketCtrl = require("../controllers/shopTicketController");
 
 const router = express.Router();
 
@@ -77,5 +78,10 @@ router.delete("/flashsales/:id",       flashCtrl.shopDelete);
 
 // ── Marketing (campaigns, voucher distribution, credits) ───────────────────
 router.use("/marketing", marketingRoutes);
+
+// ── Complaints / Tickets ────────────────────────────────────────────────────
+router.get("/tickets",             shopTicketCtrl.listTickets);
+router.get("/tickets/:id",         shopTicketCtrl.getTicket);
+router.post("/tickets/:id/reply",  shopTicketCtrl.addReply);
 
 module.exports = router;

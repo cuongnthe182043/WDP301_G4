@@ -14,7 +14,7 @@ import {
 } from "@heroui/react";
 import {
   ArrowLeft, Truck, RefreshCw, CheckCircle2, Circle,
-  Package, Star, FileText, AlertTriangle, Wallet,
+  Package, PackageCheck, Star, FileText, AlertTriangle, Wallet,
   MapPin, Phone, CreditCard, Calendar, MessageSquare,
   Download, RotateCcw, ShoppingBag, XCircle, ChevronDown, ChevronUp,
   Store, Tag, Layers, BarChart2, Info, ExternalLink, BadgeCheck, MessageCircle,
@@ -33,6 +33,7 @@ const STATUS_COLOR = {
   packed: "primary",              picking: "secondary",
   in_transit: "secondary",        out_for_delivery: "secondary",
   shipping: "secondary",          delivered: "success",
+  received:  "success",
   delivery_failed: "danger",
   cancelled_by_customer: "default", cancelled_by_shop: "default",
   canceled_by_customer: "default",  canceled_by_shop: "default",
@@ -51,6 +52,7 @@ const PROGRESS_STEPS = [
   { key: "in_transit",       icon: <Truck size={14} /> },
   { key: "out_for_delivery", icon: <MapPin size={14} /> },
   { key: "delivered",        icon: <CheckCircle2 size={14} /> },
+  { key: "received",         icon: <PackageCheck size={14} /> },
 ];
 const STEP_RANK = Object.fromEntries(PROGRESS_STEPS.map((s, i) => [s.key, i]));
 
@@ -61,7 +63,7 @@ const CANCELLABLE = new Set([
 ]);
 
 // Statuses for refund/return
-const REFUND_ALLOWED = new Set(["delivered", "return_rejected"]);
+const REFUND_ALLOWED = new Set(["delivered", "received", "return_rejected"]);
 
 // PAYMENT method labels/colors
 const PAYMENT_COLOR = { COD: "default", PAYPAL: "primary", VNPAY: "secondary", WALLET: "success" };
@@ -81,7 +83,8 @@ export default function OrderDetail() {
     processing: "Đang chuẩn bị hàng",             packed: "Đã đóng gói",
     picking: "Shipper đang lấy hàng",             in_transit: "Đang vận chuyển",
     out_for_delivery: "Đang giao đến bạn",         shipping: "Đang giao",
-    delivered: "Giao hàng thành công",             delivery_failed: "Giao thất bại",
+    delivered: "Giao hàng thành công",             received: "Đã nhận hàng",
+    delivery_failed: "Giao thất bại",
     cancelled_by_customer: "Khách đã hủy",         cancelled_by_shop: "Shop đã hủy",
     canceled_by_customer: "Khách đã hủy",          canceled_by_shop: "Shop đã hủy",
     return_requested: "Yêu cầu hoàn/đổi",          return_approved: "Đã duyệt hoàn/đổi",
@@ -113,9 +116,10 @@ export default function OrderDetail() {
   const [ticketMessage,   setTicketMessage]   = useState("");
   const [ticketLoading,   setTicketLoading]   = useState(false);
 
-  const [reviewItem,   setReviewItem]   = useState(null);
-  const [reviewOpen,   setReviewOpen]   = useState(false);
-  const [actionLoad,   setActionLoad]   = useState(false);
+  const [reviewItem,      setReviewItem]      = useState(null);
+  const [reviewOpen,      setReviewOpen]      = useState(false);
+  const [actionLoad,      setActionLoad]      = useState(false);
+  const [confirmLoading,  setConfirmLoading]  = useState(false);
 
   // product details map: product_id → { product, variants, brand, category }
   const [productMap,   setProductMap]   = useState(new Map());
@@ -133,7 +137,7 @@ export default function OrderDetail() {
       setOrd(d);
       setTrack(tr);
 
-      if (d?.status === "delivered" || d?.status?.startsWith("return") || d?.status?.startsWith("refund")) {
+      if (d?.status === "delivered" || d?.status === "received" || d?.status?.startsWith("return") || d?.status?.startsWith("refund")) {
         try {
           const rvData = await reviewService.getByOrder(id);
           const list = rvData.reviews || rvData || [];
@@ -174,6 +178,19 @@ export default function OrderDetail() {
   useEffect(() => { load(); }, [id]);
 
   // ── Actions ───────────────────────────────────────────────────────────────
+  const handleConfirmReceipt = async () => {
+    setConfirmLoading(true);
+    try {
+      await orderService.confirmReceipt(id);
+      toast.success("Xác nhận đã nhận hàng thành công!");
+      await load();
+    } catch (e) {
+      toast.error(e?.response?.data?.message || "Không thể xác nhận nhận hàng");
+    } finally {
+      setConfirmLoading(false);
+    }
+  };
+
   const handleCancel = async () => {
     if (!cancelReason.trim()) { toast.error("Vui lòng nhập lý do hủy"); return; }
     setCancelLoading(true);
@@ -321,7 +338,7 @@ export default function OrderDetail() {
     </PageContainer>
   );
 
-  const isDelivered  = ord.status === "delivered";
+  const isDelivered  = ord.status === "delivered" || ord.status === "received";
   const isCancelled  = ord.status.startsWith("cancel");
   const isReturning  = ord.status.startsWith("return") || ord.status.startsWith("refund");
 
@@ -1243,6 +1260,17 @@ export default function OrderDetail() {
                 onPress={handleInvoice}>
                 Hóa đơn
               </Button>
+
+              {/* Confirm receipt */}
+              {ord.status === "delivered" && (
+                <Button color="success" variant="solid" radius="lg" size="sm"
+                  isLoading={confirmLoading}
+                  startContent={<PackageCheck size={14} />}
+                  onPress={handleConfirmReceipt}
+                  className="font-bold text-white">
+                  Đã nhận hàng
+                </Button>
+              )}
 
               {/* Refund/Return/Exchange */}
               {REFUND_ALLOWED.has(ord.status) && !refundInfo && !refundDeadlinePassed() && (
